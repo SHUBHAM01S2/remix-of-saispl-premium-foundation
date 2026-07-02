@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight, Loader2 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { ApplyForm } from "@/components/ApplyForm";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/career")({
   head: () => ({
