@@ -27,10 +27,10 @@ function NotFoundComponent() {
         <div className="absolute -right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-cta/10 blur-3xl" />
       </div>
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(rgba(0,46,110,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,46,110,0.08) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -172,7 +172,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <HeadContent />
         <AnalyticsScripts />

@@ -203,7 +203,7 @@ function OurWorks() {
       </section>
 
       <ScrollReveal>
-        <section className="relative overflow-hidden border-t border-[oklch(1_0_0_/_10%)] bg-surface px-4 py-20 sm:px-6 lg:px-8">
+        <section className="relative overflow-hidden border-t border-border bg-surface px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Let&apos;s Build <span className="text-brand">Yours</span>
