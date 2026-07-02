@@ -1,31 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Monitor, ArrowRight } from "lucide-react";
+import { Monitor, ArrowRight, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
-type Category = "All" | "Web" | "Software" | "AI/Automation" | "Design";
+type Category = "All" | "Website" | "Portal" | "Automation" | "SEO";
 
-const filters: Category[] = ["All", "Web", "Software", "AI/Automation", "Design"];
+const filters: Category[] = ["All", "Website", "Portal", "Automation", "SEO"];
 
 type Project = {
   id: string;
   name: string;
   category: string;
-  industry: string;
+  city: string;
   result: string;
   thumbnail_url: string | null;
+  caseStudySlug?: string;
 };
 
 const fallbackProjects: Project[] = [
-  { id: "1", name: "Global Trade Platform", category: "Web", industry: "Finance / Trading", result: "Reduced order processing time by 68% with AI automation and real-time trade execution.", thumbnail_url: null },
-  { id: "2", name: "MediCare Connect", category: "Software", industry: "Healthcare", result: "Streamlined patient intake for 12,000+ daily users across 40+ hospital branches.", thumbnail_url: null },
-  { id: "3", name: "FinVue Analytics", category: "AI/Automation", industry: "FinTech", result: "Delivered real-time insights and alerts for $2B+ in managed investment assets.", thumbnail_url: null },
-  { id: "4", name: "Logistics Hub AI", category: "AI/Automation", industry: "Logistics", result: "Cut fleet routing costs by 42% using predictive AI models and dynamic scheduling.", thumbnail_url: null },
-  { id: "5", name: "Aura Mobile Experience", category: "Design", industry: "Consumer Tech", result: "Increased user retention by 55% with a complete UX overhaul and design system.", thumbnail_url: null },
-  { id: "6", name: "RetailFlow ERP", category: "Software", industry: "Retail", result: "Unified inventory, sales, and HR into one cloud ERP serving 200+ store locations.", thumbnail_url: null },
-  { id: "7", name: "GreenEnergy Portal", category: "Web", industry: "Energy", result: "Built a public-facing sustainability dashboard tracking live carbon offset metrics.", thumbnail_url: null },
-  { id: "8", name: "NexGen Brand Identity", category: "Design", industry: "Technology", result: "Crafted a modern brand system that 3x'd investor engagement during the Series A round.", thumbnail_url: null },
+  { id: "1", name: "Global Trade Platform", category: "Portal", city: "Mumbai", result: "Reduced order processing time by 68% with AI automation.\nUnified 12 international exchanges into one trading portal.", thumbnail_url: null, caseStudySlug: "global-trade-platform" },
+  { id: "2", name: "MediCare Connect", category: "Portal", city: "Delhi", result: "Streamlined patient intake for 12,000+ daily users.\nSynced 40+ hospital branches into a single cloud EHR.", thumbnail_url: null, caseStudySlug: "medicare-connect" },
+  { id: "3", name: "FinVue Analytics", category: "Automation", city: "Bengaluru", result: "Delivered real-time insights for $2B+ in managed assets.\nCut portfolio risk detection time by 72 hours.", thumbnail_url: null, caseStudySlug: "finvue-analytics" },
+  { id: "4", name: "Logistics Hub AI", category: "Automation", city: "Chandigarh", result: "Cut fleet routing costs by 42% with predictive AI models.\nLifted on-time delivery to 96.4% across 800+ vehicles.", thumbnail_url: null, caseStudySlug: "logistics-hub-ai" },
+  { id: "5", name: "Shimla Heritage Homestay", category: "Website", city: "Shimla", result: "Redesigned booking site increased inquiries by 3x.\nRanked page-1 for 'Shimla homestay' in 90 days.", thumbnail_url: null },
+  { id: "6", name: "Solan Auto Care", category: "SEO", city: "Solan", result: "Grew local Google traffic by 240% in six months.\nRanked #1 for 'car service Solan' and 12 related terms.", thumbnail_url: null },
+  { id: "7", name: "GreenEnergy Portal", category: "Website", city: "Pune", result: "Public sustainability dashboard serving 85K+ monthly visitors.\nTripled partner onboarding requests in one quarter.", thumbnail_url: null, caseStudySlug: "greenenergy-portal" },
+  { id: "8", name: "Hamirpur Blood Bank", category: "Portal", city: "Hamirpur", result: "Digital donor management replaced 4 paper registers.\nCut emergency donor-match time from hours to minutes.", thumbnail_url: null },
 ];
 
 export const Route = createFileRoute("/our-works/")({
