@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebDesignDevelopmentRouteImport } from './routes/web-design-development'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
@@ -30,6 +31,11 @@ import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.q
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
+  id: '/web-design-development',
+  path: '/web-design-development',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-development': typeof WebDesignDevelopmentRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-development': typeof WebDesignDevelopmentRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -192,6 +200,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/web-design-development': typeof WebDesignDevelopmentRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-development'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-development'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/web-design-development'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -283,6 +295,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
   InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
   ReportsIdRoute: typeof ReportsIdRoute
@@ -290,6 +303,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-design-development': {
+      id: '/web-design-development'
+      path: '/web-design-development'
+      fullPath: '/web-design-development'
+      preLoaderRoute: typeof WebDesignDevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -471,6 +491,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
   InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
   ReportsIdRoute: ReportsIdRoute,
