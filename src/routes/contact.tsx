@@ -311,16 +311,25 @@ function Contact() {
               {/* Map */}
               <div className="overflow-hidden rounded-2xl border border-border/50 bg-surface">
                 <iframe
-                  title="Shivaryan Infotech Location"
-                  src="https://www.google.com/maps?q=Bilaspur,Himachal+Pradesh,174001&output=embed"
+                  title="Shivaryan Infotech Office Location"
+                  src="https://maps.google.com/maps?q=Shivaryan+Infotech,Bilaspur,Himachal+Pradesh,174001&hl=en&t=m&z=15&ie=UTF8&iwloc=B&output=embed"
                   width="100%"
-                  height="320"
+                  height="360"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   className="block"
                 />
+                <div className="flex items-center gap-2 border-t border-border/50 bg-surface px-5 py-3">
+                  <MapPin className="h-4 w-4 shrink-0 text-brand" />
+                  <p className="text-sm font-medium text-foreground">
+                    Shivaryan Infotech Office
+                  </p>
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    Bilaspur, HP 174001
+                  </span>
+                </div>
               </div>
             </div>
           </div>
