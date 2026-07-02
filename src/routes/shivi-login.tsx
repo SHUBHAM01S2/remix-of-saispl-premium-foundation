@@ -27,7 +27,7 @@ function ShiviLogin() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/admin", replace: true });
+      if (data.user) navigate({ to: "/shivi", replace: true });
     });
   }, [navigate]);
 
@@ -40,7 +40,7 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      navigate({ to: "/admin", replace: true });
+      navigate({ to: "/shivi", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to sign in");
     } finally {

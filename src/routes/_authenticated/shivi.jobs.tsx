@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/shivi/jobs")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    if (!result.isSuperAdmin) throw redirect({ to: "/admin" });
+    if (!result.isSuperAdmin) throw redirect({ to: "/shivi" });
     return { admin: result.admin };
   },
   component: JobsListPage,
@@ -54,7 +54,7 @@ function JobsListPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-6xl">
-        <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/shivi" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
@@ -64,7 +64,7 @@ function JobsListPage() {
             <p className="mt-1 text-sm text-muted-foreground">Manage careers listed on the public site.</p>
           </div>
           <Link
-            to="/admin/jobs/new"
+            to="/shivi/jobs/new"
             className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> Add New Job
@@ -129,7 +129,7 @@ function JobsListPage() {
                             )}
                           </button>
                           <Link
-                            to="/admin/jobs/$id/edit"
+                            to="/shivi/jobs/$id/edit"
                             params={{ id: j.id }}
                             className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
                           >

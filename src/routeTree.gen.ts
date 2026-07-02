@@ -233,8 +233,8 @@ const AuthenticatedShiviBlogRoute = AuthenticatedShiviBlogRouteImport.update({
 } as any)
 const AuthenticatedShiviAdminsRoute =
   AuthenticatedShiviAdminsRouteImport.update({
-    id: '/admins',
-    path: '/admins',
+    id: '/shivis',
+    path: '/shivis',
     getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
 const AuthenticatedShiviTestimonialsNewRoute =
@@ -873,7 +873,7 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/shivi/admins': {
       id: '/_authenticated/shivi/admins'
-      path: '/admins'
+      path: '/shivis'
       fullPath: '/shivi/admins'
       preLoaderRoute: typeof AuthenticatedShiviAdminsRouteImport
       parentRoute: typeof AuthenticatedShiviRoute

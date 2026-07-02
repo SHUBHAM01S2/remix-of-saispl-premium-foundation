@@ -39,7 +39,7 @@ export function JobForm({ existing }: Props) {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "jobs"] });
-      navigate({ to: "/admin/jobs" });
+      navigate({ to: "/shivi/jobs" });
     },
     onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
@@ -133,7 +133,7 @@ export function JobForm({ existing }: Props) {
         </button>
         <button
           type="button"
-          onClick={() => navigate({ to: "/admin/jobs" })}
+          onClick={() => navigate({ to: "/shivi/jobs" })}
           className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel

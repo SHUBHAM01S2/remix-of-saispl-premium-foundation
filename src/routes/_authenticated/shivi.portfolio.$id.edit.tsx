@@ -32,7 +32,7 @@ function EditPortfolioPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-3xl">
-        <Link to="/admin/portfolio" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/shivi/portfolio" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to projects
         </Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">Edit Project</h1>

@@ -41,7 +41,7 @@ function AdminPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.invalidate();
-    window.location.href = "/shivi";
+    window.location.href = "/shivi-login";
   };
 
   const isSuperAdmin = me?.isSuperAdmin ?? false;
@@ -88,19 +88,19 @@ function AdminPage() {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <Link
-              to="/admin/portfolio"
+              to="/shivi/portfolio"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Portfolio
             </Link>
             <Link
-              to="/admin/blog"
+              to="/shivi/blog"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Blog
             </Link>
             <Link
-              to="/admin/testimonials"
+              to="/shivi/testimonials"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Testimonials
@@ -108,31 +108,31 @@ function AdminPage() {
             {me?.isSuperAdmin && (
               <>
                 <Link
-                  to="/admin/jobs"
+                  to="/shivi/jobs"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Jobs
                 </Link>
                 <Link
-                  to="/admin/contacts"
+                  to="/shivi/contacts"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Contacts
                 </Link>
                 <Link
-                  to="/admin/careers"
+                  to="/shivi/careers"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Careers
                 </Link>
                 <Link
-                  to="/admin/reports"
+                  to="/shivi/reports"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Client Reports
                 </Link>
                 <Link
-                  to="/admin/admins"
+                  to="/shivi/admins"
                   className="rounded-md border border-brand bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/20"
                 >
                   Manage Admins
@@ -218,7 +218,7 @@ function AdminPage() {
                       {new Date(item.createdAt).toLocaleString()}
                     </div>
                     <Link
-                      to={item.type === "contact" ? "/admin/contact/$id" : "/admin/career/$id"}
+                      to={item.type === "contact" ? "/shivi/contact/$id" : "/shivi/career/$id"}
                       params={{ id: item.id }}
                       className="rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
                     >

@@ -84,7 +84,7 @@ export function BlogForm({ existing }: Props) {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "blog"] });
-      navigate({ to: "/admin/blog" });
+      navigate({ to: "/shivi/blog" });
     },
     onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
@@ -259,7 +259,7 @@ export function BlogForm({ existing }: Props) {
         </button>
         <button
           type="button"
-          onClick={() => navigate({ to: "/admin/blog" })}
+          onClick={() => navigate({ to: "/shivi/blog" })}
           className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel

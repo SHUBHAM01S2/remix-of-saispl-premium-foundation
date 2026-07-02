@@ -48,7 +48,7 @@ function TestimonialsListPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-6xl">
-        <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/shivi" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
@@ -58,7 +58,7 @@ function TestimonialsListPage() {
             <p className="mt-1 text-sm text-muted-foreground">Manage client quotes shown on the public site.</p>
           </div>
           <Link
-            to="/admin/testimonials/new"
+            to="/shivi/testimonials/new"
             className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> Add New Testimonial
@@ -120,7 +120,7 @@ function TestimonialsListPage() {
                       <td className="px-4 py-3 text-right">
                         <div className="inline-flex items-center gap-2">
                           <Link
-                            to="/admin/testimonials/$id/edit"
+                            to="/shivi/testimonials/$id/edit"
                             params={{ id: t.id }}
                             className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
                           >
