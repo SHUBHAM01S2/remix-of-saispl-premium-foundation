@@ -6,7 +6,7 @@ import { GlobalReachNote } from "@/components/GlobalReachNote";
 export function CTASection() {
   return (
     <ScrollReveal>
-      <section className="relative overflow-hidden border-t border-[oklch(1_0_0_/_10%)] bg-[var(--color-surface)] px-4 py-24 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-t border-border bg-surface px-4 py-24 sm:px-6 lg:px-8">
         <div className="relative mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-[var(--color-foreground)] sm:text-4xl lg:text-5xl">
             Ready to build something exceptional?
@@ -28,7 +28,7 @@ export function CTASection() {
               href="https://web.whatsapp.com/send?phone=919418031050"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[oklch(1_0_0_/_10%)] px-6 py-3.5 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-surface-elevated)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-primary bg-white px-6 py-3.5 text-sm font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface"
             >
               <MessageCircle className="h-4 w-4" />
               Chat on WhatsApp

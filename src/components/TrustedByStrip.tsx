@@ -17,7 +17,7 @@ export function TrustedByStrip() {
     <ScrollReveal>
       <section
         aria-label="Trusted by"
-        className="border-y border-[oklch(1_0_0_/_6%)] bg-background/60 px-4 py-10 sm:px-6 lg:px-8"
+        className="border-y border-border bg-background/60 px-4 py-10 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-6xl">
           <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">

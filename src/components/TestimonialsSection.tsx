@@ -80,7 +80,7 @@ export function TestimonialsSection() {
 
   return (
     <ScrollReveal>
-      <section className="relative overflow-hidden border-t border-[oklch(1_0_0_/_10%)] bg-background px-4 py-24 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden border-t border-border bg-background px-4 py-24 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand">
             Client Feedback

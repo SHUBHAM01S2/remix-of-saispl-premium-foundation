@@ -12,30 +12,23 @@ export function HeroSection() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.15), transparent)",
+            "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,185,241,0.08), transparent)",
         }}
       />
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 40% at 80% 60%, rgba(99,102,241,0.08), transparent)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(15,23,42,1) 100%)",
+            "radial-gradient(ellipse 60% 40% at 80% 60%, rgba(0,46,110,0.04), transparent)",
         }}
       />
 
       {/* Subtle grid overlay */}
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+            "linear-gradient(rgba(0,46,110,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,46,110,0.08) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
@@ -86,7 +79,7 @@ export function HeroSection() {
             <Button
               variant="outline"
               size="lg"
-              className="rounded-full px-8 py-6 text-base font-semibold border-border/50 hover:bg-surface/50 hover:border-brand/30"
+              className="rounded-full px-8 py-6 text-base font-semibold border-2 border-primary bg-white text-primary hover:bg-primary hover:text-primary-foreground"
               asChild
             >
               <Link to="/our-works">View Our Work</Link>
