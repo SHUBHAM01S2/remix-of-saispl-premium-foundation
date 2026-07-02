@@ -1,8 +1,8 @@
-import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Briefcase, FolderKanban, FileText } from "lucide-react";
-import { checkIsAdmin, getDashboardStats } from "@/lib/admin.functions";
+import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -25,11 +25,16 @@ function AdminPage() {
   const router = useRouter();
   const meFn = useServerFn(checkIsAdmin);
   const statsFn = useServerFn(getDashboardStats);
+  const activityFn = useServerFn(getRecentActivity);
 
   const { data: me } = useQuery({ queryKey: ["admin", "me"], queryFn: () => meFn() });
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
     queryKey: ["admin", "dashboard-stats"],
     queryFn: () => statsFn(),
+  });
+  const { data: activity, isLoading: activityLoading, error: activityError } = useQuery({
+    queryKey: ["admin", "recent-activity"],
+    queryFn: () => activityFn(),
   });
 
   const handleSignOut = async () => {
@@ -111,6 +116,58 @@ function AdminPage() {
             Unable to load stats: {statsError instanceof Error ? statsError.message : "Unknown error"}
           </p>
         )}
+
+        <div className="mt-12 rounded-2xl border border-border/60 bg-card shadow-sm">
+          <div className="flex items-center justify-between border-b border-border/60 px-6 py-4">
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
+              <p className="text-xs text-muted-foreground">
+                Latest contact submissions and career applications
+              </p>
+            </div>
+          </div>
+
+          {activityLoading ? (
+            <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
+          ) : activityError ? (
+            <p className="px-6 py-8 text-sm text-red-600">
+              {activityError instanceof Error ? activityError.message : "Failed to load activity"}
+            </p>
+          ) : !activity || activity.length === 0 ? (
+            <p className="px-6 py-8 text-sm text-muted-foreground">No recent activity.</p>
+          ) : (
+            <ul className="divide-y divide-border/60">
+              {activity.map((item) => {
+                const Icon = item.type === "contact" ? Mail : Briefcase;
+                const badge =
+                  item.type === "contact"
+                    ? "bg-brand/10 text-brand"
+                    : "bg-cta/10 text-cta";
+                return (
+                  <li key={`${item.type}-${item.id}`} className="flex items-center gap-4 px-6 py-4">
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${badge}`}>
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-foreground">{item.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{item.subtitle}</p>
+                    </div>
+                    <div className="hidden text-xs text-muted-foreground sm:block">
+                      {new Date(item.createdAt).toLocaleString()}
+                    </div>
+                    <Link
+                      to={item.type === "contact" ? "/admin/contact/$id" : "/admin/career/$id"}
+                      params={{ id: item.id }}
+                      className="rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      View Details
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
