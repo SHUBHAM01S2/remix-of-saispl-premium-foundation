@@ -84,6 +84,7 @@ export type Database = {
           phone: string | null
           position_applied: string
           resume_url: string | null
+          status: string
         }
         Insert: {
           cover_message?: string | null
@@ -94,6 +95,7 @@ export type Database = {
           phone?: string | null
           position_applied: string
           resume_url?: string | null
+          status?: string
         }
         Update: {
           cover_message?: string | null
@@ -104,6 +106,7 @@ export type Database = {
           phone?: string | null
           position_applied?: string
           resume_url?: string | null
+          status?: string
         }
         Relationships: []
       }
