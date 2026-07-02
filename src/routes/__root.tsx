@@ -17,6 +17,7 @@ import { TechPartners } from "@/components/TechPartners";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
+import { useRouterState } from "@tanstack/react-router";
 
 function NotFoundComponent() {
   return (
@@ -128,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
     scripts: [
       {
@@ -187,6 +188,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isAdmin = pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -197,8 +200,8 @@ function RootComponent() {
       </main>
       <TechPartners />
       <Footer />
-      <WhatsAppChatButton />
-      <BookConsultationButton />
+      {!isAdmin && <WhatsAppChatButton />}
+      {!isAdmin && <BookConsultationButton />}
     </QueryClientProvider>
   );
 }
