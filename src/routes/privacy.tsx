@@ -59,19 +59,29 @@ export const Route = createFileRoute("/privacy")({
       {
         name: "description",
         content:
-          "Read the Privacy Policy to understand how Shivaryan Infotech collects, uses, and protects your personal information.",
+          "How Shivaryan Infotech collects, uses, and protects personal information across our AI, software, and web development services for clients in India and globally.",
       },
       {
-        property: "og:title",
-        content: "Privacy Policy — Shivaryan Infotech",
+        name: "keywords",
+        content:
+          "Shivaryan Infotech privacy policy, data protection, GDPR India, AI software privacy",
       },
+      { property: "og:title", content: "Privacy Policy — Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "Read the Privacy Policy to understand how Shivaryan Infotech collects, uses, and protects your personal information.",
+          "How Shivaryan Infotech collects, uses, and protects your personal information.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/privacy" },
+      { name: "robots", content: "noindex, follow" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Privacy Policy — Shivaryan Infotech" },
+      { name: "twitter:description", content: "How we collect, use, and protect your personal information." },
     ],
+    links: [{ rel: "canonical", href: "/privacy" }],
   }),
+
   component: Privacy,
 });
 
