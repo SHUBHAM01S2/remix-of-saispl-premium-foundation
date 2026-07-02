@@ -19,19 +19,44 @@ import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-24">
+      {/* Ambient background */}
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute -left-1/4 top-1/4 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
+        <div className="absolute -right-1/4 bottom-1/4 h-96 w-96 rounded-full bg-cta/10 blur-3xl" />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="relative z-10 max-w-xl text-center">
+        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-brand">
+          Error 404
         </p>
-        <div className="mt-6">
+        <h1 className="mt-4 bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-7xl font-extrabold tracking-tight text-transparent sm:text-8xl">
+          Page not found
+        </h1>
+        <p className="mx-auto mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
+          The page you're looking for doesn't exist, has moved, or was never
+          built. Let's get you back on track.
+        </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full bg-cta px-7 py-3 text-sm font-semibold text-cta-foreground shadow-lg shadow-cta/20 transition-all hover:brightness-110 hover:shadow-xl"
           >
-            Go home
+            ← Back to Home
+          </Link>
+          <Link
+            to="/contact"
+            className="inline-flex items-center justify-center rounded-full border border-border/60 bg-transparent px-7 py-3 text-sm font-semibold text-foreground transition-colors hover:border-brand/40 hover:bg-surface"
+          >
+            Contact Us
           </Link>
         </div>
       </div>
