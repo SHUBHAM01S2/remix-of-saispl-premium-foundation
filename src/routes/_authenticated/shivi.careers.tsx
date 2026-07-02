@@ -21,7 +21,7 @@ import {
   type CareerApplication,
 } from "@/lib/careers-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/careers")({
+export const Route = createFileRoute("/_authenticated/shivi/careers")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

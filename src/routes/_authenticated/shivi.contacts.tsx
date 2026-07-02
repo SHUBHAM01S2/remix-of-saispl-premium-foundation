@@ -12,7 +12,7 @@ import {
   type ContactSubmission,
 } from "@/lib/contacts-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/contacts")({
+export const Route = createFileRoute("/_authenticated/shivi/contacts")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

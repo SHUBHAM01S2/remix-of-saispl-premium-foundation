@@ -6,7 +6,7 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getJobOpening } from "@/lib/jobs-admin.functions";
 import { JobForm } from "@/components/admin/JobForm";
 
-export const Route = createFileRoute("/_authenticated/admin/jobs/$id/edit")({
+export const Route = createFileRoute("/_authenticated/shivi/jobs/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

@@ -6,7 +6,7 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getBlogPost } from "@/lib/blog-admin.functions";
 import { BlogForm } from "@/components/admin/BlogForm";
 
-export const Route = createFileRoute("/_authenticated/admin/blog/$id/edit")({
+export const Route = createFileRoute("/_authenticated/shivi/blog/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

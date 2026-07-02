@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { PortfolioForm } from "@/components/admin/PortfolioForm";
 
-export const Route = createFileRoute("/_authenticated/admin/portfolio/new")({
+export const Route = createFileRoute("/_authenticated/shivi/portfolio/new")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

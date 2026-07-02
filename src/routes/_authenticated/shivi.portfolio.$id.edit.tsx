@@ -6,7 +6,7 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getPortfolioProject } from "@/lib/portfolio-admin.functions";
 import { PortfolioForm } from "@/components/admin/PortfolioForm";
 
-export const Route = createFileRoute("/_authenticated/admin/portfolio/$id/edit")({
+export const Route = createFileRoute("/_authenticated/shivi/portfolio/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

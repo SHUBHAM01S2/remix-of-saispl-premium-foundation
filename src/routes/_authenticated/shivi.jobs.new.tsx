@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { JobForm } from "@/components/admin/JobForm";
 
-export const Route = createFileRoute("/_authenticated/admin/jobs/new")({
+export const Route = createFileRoute("/_authenticated/shivi/jobs/new")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

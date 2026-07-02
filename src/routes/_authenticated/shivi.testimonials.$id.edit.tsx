@@ -6,7 +6,7 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getTestimonial } from "@/lib/testimonials-admin.functions";
 import { TestimonialForm } from "@/components/admin/TestimonialForm";
 
-export const Route = createFileRoute("/_authenticated/admin/testimonials/$id/edit")({
+export const Route = createFileRoute("/_authenticated/shivi/testimonials/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

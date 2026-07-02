@@ -9,7 +9,7 @@ import {
   slugifyClient,
 } from "@/lib/reports-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/reports")({
+export const Route = createFileRoute("/_authenticated/shivi/reports")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

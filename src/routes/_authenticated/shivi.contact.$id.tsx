@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin, getSubmissionDetail } from "@/lib/admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/contact/$id")({
+export const Route = createFileRoute("/_authenticated/shivi/contact/$id")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

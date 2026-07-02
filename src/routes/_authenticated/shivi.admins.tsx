@@ -12,7 +12,7 @@ import {
   ADMIN_ROLES,
 } from "@/lib/admins-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/admins")({
+export const Route = createFileRoute("/_authenticated/shivi/admins")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

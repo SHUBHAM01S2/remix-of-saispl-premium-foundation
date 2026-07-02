@@ -5,7 +5,7 @@ import { Mail, Briefcase, FolderKanban, FileText } from "lucide-react";
 import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute("/_authenticated/shivi")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     // Signed-in but not an admin — hide the panel behind 404.
