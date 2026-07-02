@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Tag, ShieldCheck, Plus } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { GlobalReachNote } from "@/components/GlobalReachNote";
 
 type Row = {
   name: string;
