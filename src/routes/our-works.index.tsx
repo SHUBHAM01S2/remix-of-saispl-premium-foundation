@@ -83,7 +83,7 @@ function OurWorks() {
             id: p.id,
             name: p.title,
             category: p.category,
-            industry: p.client_industry,
+            city: p.client_industry,
             result: p.results ?? "",
             thumbnail_url: p.thumbnail_url,
           })),
