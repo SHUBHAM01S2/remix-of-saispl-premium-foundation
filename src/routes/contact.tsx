@@ -62,6 +62,7 @@ function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -69,11 +70,42 @@ function Contact() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (submitting) return;
+
+    const name = form.name.trim();
+    const email = form.email.trim();
+    const message = form.message.trim();
+    if (!name || !email || !message) {
+      toast.error("Please fill in your name, email, and message.");
+      return;
+    }
+    if (name.length > 100 || email.length > 255 || message.length > 2000) {
+      toast.error("One of your fields is too long. Please shorten it.");
+      return;
+    }
+
+    setSubmitting(true);
+    const { error } = await supabase.from("contact_submissions").insert({
+      name,
+      email,
+      phone: form.phone.trim() || null,
+      company: form.company.trim() || null,
+      message,
+    });
+    setSubmitting(false);
+
+    if (error) {
+      toast.error("Something went wrong. Please try again.");
+      return;
+    }
+
+    toast.success("Thanks! We'll get back to you within 24 hours.");
     setSubmitted(true);
-    // No backend attached — just a UI feedback for now
+    setForm({ name: "", email: "", phone: "", company: "", message: "" });
   }
+
 
   return (
     <div>
