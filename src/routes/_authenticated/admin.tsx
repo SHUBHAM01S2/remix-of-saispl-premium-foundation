@@ -43,7 +43,9 @@ function AdminPage() {
     window.location.href = "/shivi";
   };
 
-  const cards = [
+  const isSuperAdmin = me?.isSuperAdmin ?? false;
+
+  const superCards = [
     {
       label: "Contact Submissions",
       value: stats?.contactSubmissions,
@@ -56,6 +58,8 @@ function AdminPage() {
       icon: Briefcase,
       accent: "bg-cta/10 text-cta",
     },
+  ];
+  const contentCards = [
     {
       label: "Portfolio Projects",
       value: stats?.portfolioProjects,
@@ -69,6 +73,7 @@ function AdminPage() {
       accent: "bg-violet-500/10 text-violet-600",
     },
   ];
+  const cards = isSuperAdmin ? [...superCards, ...contentCards] : contentCards;
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
