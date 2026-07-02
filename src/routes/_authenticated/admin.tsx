@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useRouter } from "@tanstack/react-router";
+import { createFileRoute, notFound, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { checkIsAdmin } from "@/lib/admin.functions";
@@ -7,9 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
-    if (!result.isAdmin) {
-      throw redirect({ to: "/auth" });
-    }
+    // Signed-in but not an admin — hide the panel behind 404.
+    if (!result.isAdmin) throw notFound();
     return { admin: result.admin };
   },
   component: AdminPage,

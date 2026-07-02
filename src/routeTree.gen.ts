@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDesignDevelopmentRouteImport } from './routes/web-design-development'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ShiviRouteImport } from './routes/shivi'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-marketing'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OurWorksRouteImport } from './routes/our-works'
@@ -24,7 +26,6 @@ import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -50,6 +51,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShiviRoute = ShiviRouteImport.update({
+  id: '/shivi',
+  path: '/shivi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -58,6 +64,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const SeoDigitalMarketingRoute = SeoDigitalMarketingRouteImport.update({
   id: '/seo-digital-marketing',
   path: '/seo-digital-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -110,11 +121,6 @@ const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   path: '/automation-ai-services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -163,7 +169,6 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -174,8 +179,10 @@ export interface FileRoutesByFullPath {
   '/our-works': typeof OurWorksRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
+  '/shivi': typeof ShiviRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
@@ -189,7 +196,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -200,8 +206,10 @@ export interface FileRoutesByTo {
   '/our-works': typeof OurWorksRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
+  '/shivi': typeof ShiviRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
@@ -217,7 +225,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
-  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -228,8 +235,10 @@ export interface FileRoutesById {
   '/our-works': typeof OurWorksRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
+  '/shivi': typeof ShiviRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
@@ -245,7 +254,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -256,8 +264,10 @@ export interface FileRouteTypes {
     | '/our-works'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
+    | '/shivi'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
@@ -271,7 +281,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -282,8 +291,10 @@ export interface FileRouteTypes {
     | '/our-works'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
+    | '/shivi'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
@@ -298,7 +309,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
-    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -309,8 +319,10 @@ export interface FileRouteTypes {
     | '/our-works'
     | '/pricing'
     | '/privacy'
+    | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
+    | '/shivi'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
@@ -326,7 +338,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
-  AuthRoute: typeof AuthRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BlogRoute: typeof BlogRouteWithChildren
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
@@ -337,8 +348,10 @@ export interface RootRouteChildren {
   OurWorksRoute: typeof OurWorksRouteWithChildren
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SeoDigitalMarketingRoute: typeof SeoDigitalMarketingRoute
   ServicesRoute: typeof ServicesRoute
+  ShiviRoute: typeof ShiviRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shivi': {
+      id: '/shivi'
+      path: '/shivi'
+      fullPath: '/shivi'
+      preLoaderRoute: typeof ShiviRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -382,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/seo-digital-marketing'
       fullPath: '/seo-digital-marketing'
       preLoaderRoute: typeof SeoDigitalMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -452,13 +479,6 @@ declare module '@tanstack/react-router' {
       path: '/automation-ai-services'
       fullPath: '/automation-ai-services'
       preLoaderRoute: typeof AutomationAiServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -564,7 +584,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
-  AuthRoute: AuthRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BlogRoute: BlogRouteWithChildren,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
@@ -575,8 +594,10 @@ const rootRouteChildren: RootRouteChildren = {
   OurWorksRoute: OurWorksRouteWithChildren,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SeoDigitalMarketingRoute: SeoDigitalMarketingRoute,
   ServicesRoute: ServicesRoute,
+  ShiviRoute: ShiviRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
