@@ -161,6 +161,52 @@ function Services() {
           </div>
         </div>
       </section>
+
+      {/* Process Timeline */}
+      <section className="bg-background py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              How We <span className="text-brand">Work</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              A proven 4-step process designed to deliver clarity, quality, and momentum from day one.
+            </p>
+          </div>
+
+          <div className="relative">
+            {/* Connecting line (desktop) */}
+            <div className="absolute top-12 left-0 right-0 hidden h-px bg-border md:block" />
+
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+              {processSteps.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <div
+                    key={s.step}
+                    className="relative flex flex-col items-center text-center"
+                  >
+                    {/* Step number + icon */}
+                    <div className="relative z-10 mb-6 flex h-24 w-24 flex-col items-center justify-center rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:-translate-y-1">
+                      <span className="text-xs font-bold uppercase tracking-wider text-brand">
+                        {s.step}
+                      </span>
+                      <Icon className="mt-1 h-5 w-5 text-brand" />
+                    </div>
+
+                    <h3 className="text-base font-semibold text-foreground">
+                      {s.title}
+                    </h3>
+                    <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                      {s.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
