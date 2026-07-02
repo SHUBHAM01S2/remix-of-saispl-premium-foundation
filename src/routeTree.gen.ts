@@ -20,10 +20,13 @@ import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-porta
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
+import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
+import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -80,6 +83,11 @@ const CareMaintenanceRoute = CareMaintenanceRouteImport.update({
   path: '/care-maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -95,15 +103,26 @@ const OurWorksIndexRoute = OurWorksIndexRouteImport.update({
   path: '/',
   getParentRoute: () => OurWorksRoute,
 } as any)
+const ReportsIdRoute = ReportsIdRouteImport.update({
+  id: '/reports/$id',
+  path: '/reports/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OurWorksCaseStudyIdRoute = OurWorksCaseStudyIdRouteImport.update({
   id: '/$caseStudyId',
   path: '/$caseStudyId',
   getParentRoute: () => OurWorksRoute,
 } as any)
+const InternalArchitectureRoute = InternalArchitectureRouteImport.update({
+  id: '/internal/architecture',
+  path: '/internal/architecture',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -115,12 +134,15 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/internal/architecture': typeof InternalArchitectureRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/reports/$id': typeof ReportsIdRoute
   '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -131,13 +153,16 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/internal/architecture': typeof InternalArchitectureRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/reports/$id': typeof ReportsIdRoute
   '/our-works': typeof OurWorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -149,7 +174,9 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/internal/architecture': typeof InternalArchitectureRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/reports/$id': typeof ReportsIdRoute
   '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRouteTypes {
@@ -157,6 +184,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/blog'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -168,12 +196,15 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/internal/architecture'
     | '/our-works/$caseStudyId'
+    | '/reports/$id'
     | '/our-works/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/blog'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -184,12 +215,15 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/internal/architecture'
     | '/our-works/$caseStudyId'
+    | '/reports/$id'
     | '/our-works'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/blog'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -201,13 +235,16 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/internal/architecture'
     | '/our-works/$caseStudyId'
+    | '/reports/$id'
     | '/our-works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
@@ -219,6 +256,8 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  InternalArchitectureRoute: typeof InternalArchitectureRoute
+  ReportsIdRoute: typeof ReportsIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -300,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareMaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -321,12 +367,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurWorksIndexRouteImport
       parentRoute: typeof OurWorksRoute
     }
+    '/reports/$id': {
+      id: '/reports/$id'
+      path: '/reports/$id'
+      fullPath: '/reports/$id'
+      preLoaderRoute: typeof ReportsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/our-works/$caseStudyId': {
       id: '/our-works/$caseStudyId'
       path: '/$caseStudyId'
       fullPath: '/our-works/$caseStudyId'
       preLoaderRoute: typeof OurWorksCaseStudyIdRouteImport
       parentRoute: typeof OurWorksRoute
+    }
+    '/internal/architecture': {
+      id: '/internal/architecture'
+      path: '/internal/architecture'
+      fullPath: '/internal/architecture'
+      preLoaderRoute: typeof InternalArchitectureRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -348,6 +408,7 @@ const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
@@ -359,6 +420,8 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  InternalArchitectureRoute: InternalArchitectureRoute,
+  ReportsIdRoute: ReportsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
