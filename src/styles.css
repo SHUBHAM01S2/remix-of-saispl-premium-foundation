@@ -71,64 +71,69 @@
 :root {
   --radius: 0.625rem;
 
-  /* Paytm theme — navy #002E6E + cyan #00BAF2 on white */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.22 0.09 260);
+  /* Paytm-inspired light theme */
+  --background: #F5F6FA;
+  --foreground: #002E6E;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.09 260);
+  --card: #FFFFFF;
+  --card-foreground: #002E6E;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.09 260);
+  --popover: #FFFFFF;
+  --popover-foreground: #002E6E;
 
-  /* Paytm navy #002E6E */
-  --primary: oklch(0.32 0.14 260);
-  --primary-foreground: oklch(1 0 0);
+  /* Navy #002E6E for primary/headings/buttons */
+  --primary: #002E6E;
+  --primary-foreground: #FFFFFF;
 
-  --secondary: oklch(0.96 0.02 230);
-  --secondary-foreground: oklch(0.32 0.14 260);
+  --secondary: #E8ECF4;
+  --secondary-foreground: #002E6E;
 
-  --muted: oklch(0.96 0.015 230);
-  --muted-foreground: oklch(0.48 0.05 250);
+  --muted: #E8ECF4;
+  --muted-foreground: #5A6B8A;
 
-  /* Paytm cyan #00BAF2 */
-  --accent: oklch(0.74 0.15 226);
-  --accent-foreground: oklch(1 0 0);
+  /* Cyan #00B9F1 for accent/icons/highlights */
+  --accent: #00B9F1;
+  --accent-foreground: #FFFFFF;
 
-  --destructive: oklch(0.62 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
 
-  --border: oklch(0.9 0.02 230);
-  --input: oklch(0.9 0.02 230);
-  --ring: oklch(0.74 0.15 226);
+  --border: #D1D8E8;
+  --input: #D1D8E8;
+  --ring: #00B9F1;
 
-  --chart-1: oklch(0.32 0.14 260);
-  --chart-2: oklch(0.74 0.15 226);
-  --chart-3: oklch(0.7 0.14 165);
-  --chart-4: oklch(0.82 0.15 85);
-  --chart-5: oklch(0.65 0.2 30);
+  --chart-1: #002E6E;
+  --chart-2: #00B9F1;
+  --chart-3: #10B981;
+  --chart-4: #F59E0B;
+  --chart-5: #EF4444;
 
-  --sidebar: oklch(0.32 0.14 260);
-  --sidebar-foreground: oklch(1 0 0);
-  --sidebar-primary: oklch(0.74 0.15 226);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.28 0.12 260);
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.4 0.12 260 / 55%);
-  --sidebar-ring: oklch(0.74 0.15 226);
+  --sidebar: #002E6E;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #00B9F1;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #0A224A;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #1A3A6B;
+  --sidebar-ring: #00B9F1;
 
   /* Brand tokens */
-  --brand: oklch(0.74 0.15 226);
-  --brand-foreground: oklch(1 0 0);
+  --brand: #00B9F1;
+  --brand-foreground: #FFFFFF;
 
-  --cta: oklch(0.74 0.15 226);
-  --cta-foreground: oklch(1 0 0);
+  --cta: #002E6E;
+  --cta-foreground: #FFFFFF;
 
-  --surface: oklch(0.98 0.008 230);
-  --surface-foreground: oklch(0.22 0.09 260);
+  --surface: #FFFFFF;
+  --surface-foreground: #002E6E;
 
-  --surface-elevated: oklch(1 0 0);
-  --surface-elevated-foreground: oklch(0.22 0.09 260);
+  --surface-elevated: #FFFFFF;
+  --surface-elevated-foreground: #002E6E;
+
+  /* Pastel card backgrounds */
+  --card-blue: #D6EEF9;
+  --card-yellow: #FBEBC7;
+  --card-lavender: #DDE4F5;
 }
 
 .dark {
