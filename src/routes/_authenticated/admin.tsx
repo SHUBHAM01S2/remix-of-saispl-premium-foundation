@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, Outlet, useLocation, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Briefcase, FolderKanban, FileText } from "lucide-react";
@@ -23,9 +23,14 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 function AdminPage() {
   const router = useRouter();
+  const location = useLocation();
   const meFn = useServerFn(checkIsAdmin);
   const statsFn = useServerFn(getDashboardStats);
   const activityFn = useServerFn(getRecentActivity);
+
+  if (location.pathname.replace(/\/$/, "") !== "/admin") {
+    return <Outlet />;
+  }
 
   const { data: me } = useQuery({ queryKey: ["admin", "me"], queryFn: () => meFn() });
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
