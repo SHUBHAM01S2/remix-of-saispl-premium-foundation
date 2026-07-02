@@ -12,6 +12,7 @@ function Index() {
     <div>
       <HeroSection />
       <WhatWeDoSection />
+      <WhyChooseUsSection />
     </div>
   );
 }
