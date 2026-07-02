@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Lightbulb, Award, Handshake, User } from "lucide-react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
 const values = [
   {
@@ -60,7 +61,7 @@ function About() {
               "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.12), transparent)",
           }}
         />
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+        <ScrollReveal className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
             About <span className="text-brand">Shivaryan Infotech</span>
           </h1>
@@ -68,42 +69,44 @@ function About() {
             Driving innovation through technological excellence — building the
             digital infrastructure that powers tomorrow's industry leaders.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Our Story */}
       <section className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-border/50 bg-surface p-8 md:p-12">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-            Our Story
-          </h2>
-          <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
-            <p>
-              Shivaryan Infotech was founded with a singular vision: to be the
-              technology partner that businesses rely on when ordinary solutions
-              won't do. From our base in Himachal Pradesh, we have grown into a
-              global force — serving ambitious teams across continents with
-              cutting-edge software, intelligent automation, and transformative
-              digital products.
-            </p>
-            <p>
-              We don't just write code; we engineer outcomes. Every project begins
-              with deep curiosity about our client's business, followed by
-              relentless execution. We push technological boundaries not for the
-              sake of novelty, but because the problems we solve demand it.
-            </p>
-            <p>
-              Today, Shivaryan Infotech stands at the intersection of AI,
-              automation, and human-centered design — helping organizations scale
-              faster, operate smarter, and lead their industries with confidence.
-            </p>
+        <ScrollReveal>
+          <div className="rounded-2xl border border-border/50 bg-surface p-8 md:p-12">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Our Story
+            </h2>
+            <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+              <p>
+                Shivaryan Infotech was founded with a singular vision: to be the
+                technology partner that businesses rely on when ordinary solutions
+                won't do. From our base in Himachal Pradesh, we have grown into a
+                global force — serving ambitious teams across continents with
+                cutting-edge software, intelligent automation, and transformative
+                digital products.
+              </p>
+              <p>
+                We don't just write code; we engineer outcomes. Every project begins
+                with deep curiosity about our client's business, followed by
+                relentless execution. We push technological boundaries not for the
+                sake of novelty, but because the problems we solve demand it.
+              </p>
+              <p>
+                Today, Shivaryan Infotech stands at the intersection of AI,
+                automation, and human-centered design — helping organizations scale
+                faster, operate smarter, and lead their industries with confidence.
+              </p>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Values */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <ScrollReveal className="text-center mb-14">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Our Values
           </h2>
@@ -111,79 +114,76 @@ function About() {
             The principles that guide every decision we make and every product we
             build.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <StaggerContainer className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {values.map((value) => {
             const Icon = value.icon;
             return (
-              <div
-                key={value.title}
-                className="group relative rounded-2xl border border-border/50 bg-surface p-8 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
-              >
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                  <Icon className="h-6 w-6" />
+              <StaggerItem key={value.title}>
+                <div className="group relative rounded-2xl border border-border/50 bg-surface p-8 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {value.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {value.description}
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">
-                  {value.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                  {value.description}
-                </p>
-              </div>
+              </StaggerItem>
             );
           })}
-        </div>
+        </StaggerContainer>
       </section>
 
       {/* Stats */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <StaggerContainer className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated"
-            >
-              <div className="text-3xl font-bold text-brand sm:text-4xl">
-                {stat.value}
+            <StaggerItem key={stat.label}>
+              <div className="rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated">
+                <div className="text-3xl font-bold text-brand sm:text-4xl">
+                  {stat.value}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  {stat.label}
+                </div>
               </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                {stat.label}
-              </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
 
       {/* Team */}
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <ScrollReveal className="text-center mb-14">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Meet the Team
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             The people behind the products.
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <StaggerContainer className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {team.map((member) => (
-            <div
-              key={member.name}
-              className="group relative rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
-            >
-              <div className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                <User className="h-10 w-10" />
+            <StaggerItem key={member.name}>
+              <div className="group relative rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
+                <div className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                  <User className="h-10 w-10" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {member.role}
+                </p>
               </div>
-              <h3 className="text-lg font-semibold text-foreground">
-                {member.name}
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {member.role}
-              </p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </section>
     </div>
   );

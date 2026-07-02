@@ -12,6 +12,7 @@ import {
   Wrench,
   Rocket,
 } from "lucide-react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
 const services = [
   {
@@ -115,7 +116,7 @@ function Services() {
           <div className="absolute -left-1/4 top-0 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
           <div className="absolute -right-1/4 bottom-0 h-96 w-96 rounded-full bg-brand/10 blur-3xl" />
         </div>
-        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+        <ScrollReveal className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             Our <span className="text-brand">Services</span>
           </h1>
@@ -123,87 +124,85 @@ function Services() {
             End-to-end digital and AI solutions tailored to modernize,
             automate, and scale your business.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Service Cards */}
       <section className="bg-background py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((svc) => {
               const Icon = svc.icon;
               return (
-                <div
-                  key={svc.title}
-                  className="group rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
-                >
-                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                    <Icon className="h-6 w-6" />
+                <StaggerItem key={svc.title}>
+                  <div className="group rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
+                    <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {svc.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {svc.description}
+                    </p>
+                    <div className="mt-5">
+                      <Link
+                        to="/contact"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-brand transition-colors hover:text-brand/80"
+                      >
+                        Learn More
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                      </Link>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {svc.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {svc.description}
-                  </p>
-                  <div className="mt-5">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center gap-1 text-sm font-medium text-brand transition-colors hover:text-brand/80"
-                    >
-                      Learn More
-                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </Link>
-                  </div>
-                </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Process Timeline */}
       <section className="bg-background py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 text-center">
+          <ScrollReveal className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               How We <span className="text-brand">Work</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
               A proven 4-step process designed to deliver clarity, quality, and momentum from day one.
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="relative">
             {/* Connecting line (desktop) */}
             <div className="absolute top-12 left-0 right-0 hidden h-px bg-border md:block" />
 
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+            <StaggerContainer className="grid grid-cols-1 gap-8 md:grid-cols-4">
               {processSteps.map((s) => {
                 const Icon = s.icon;
                 return (
-                  <div
-                    key={s.step}
-                    className="relative flex flex-col items-center text-center"
-                  >
-                    {/* Step number + icon */}
-                    <div className="relative z-10 mb-6 flex h-24 w-24 flex-col items-center justify-center rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:-translate-y-1">
-                      <span className="text-xs font-bold uppercase tracking-wider text-brand">
-                        {s.step}
-                      </span>
-                      <Icon className="mt-1 h-5 w-5 text-brand" />
-                    </div>
+                  <StaggerItem key={s.step}>
+                    <div className="relative flex flex-col items-center text-center">
+                      {/* Step number + icon */}
+                      <div className="relative z-10 mb-6 flex h-24 w-24 flex-col items-center justify-center rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:-translate-y-1">
+                        <span className="text-xs font-bold uppercase tracking-wider text-brand">
+                          {s.step}
+                        </span>
+                        <Icon className="mt-1 h-5 w-5 text-brand" />
+                      </div>
 
-                    <h3 className="text-base font-semibold text-foreground">
-                      {s.title}
-                    </h3>
-                    <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
-                      {s.description}
-                    </p>
-                  </div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {s.title}
+                      </h3>
+                      <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground">
+                        {s.description}
+                      </p>
+                    </div>
+                  </StaggerItem>
                 );
               })}
-            </div>
+            </StaggerContainer>
           </div>
         </div>
       </section>
