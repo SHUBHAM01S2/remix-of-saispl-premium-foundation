@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { getReportsBySlug, type ClientReport } from "@/lib/reports-admin.functions";
+import { ReportTrendsChart } from "@/components/client-reports/ReportTrendsChart";
 
 export const Route = createFileRoute("/client-reports/$clientSlug")({
   component: ClientReportPage,
@@ -162,6 +163,24 @@ function ClientReportPage() {
             accent="bg-violet-500/10 text-violet-600"
             sub="Direct chat starts"
           />
+        </section>
+
+        {/* Month-over-month trends */}
+        <section className="mt-10 rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <BarChart3 className="h-4 w-4" />
+            </span>
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">
+                Month-Over-Month Trends
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Site visitors and leads generated over time
+              </p>
+            </div>
+          </div>
+          <ReportTrendsChart reports={data.reports} />
         </section>
 
         {/* Top pages */}
