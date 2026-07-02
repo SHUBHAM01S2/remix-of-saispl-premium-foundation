@@ -194,6 +194,12 @@ function Career() {
           </StaggerContainer>
         </div>
       </section>
+
+      <ApplyForm
+        open={activePosition !== null}
+        onOpenChange={(v) => { if (!v) setActivePosition(null); }}
+        position={activePosition ?? ""}
+      />
     </div>
   );
 }
