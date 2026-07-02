@@ -250,7 +250,7 @@ function Contact() {
 
                       {/* WhatsApp */}
                       <a
-                        href="https://wa.me/919418031050?text=Hi%20Shivaryan%20Infotech,%20I%20would%20like%20to%20discuss%20a%20project."
+                        href="https://web.whatsapp.com/send?phone=919418031050&text=Hi%20Shivaryan%20Infotech,%20I%20would%20like%20to%20discuss%20a%20project."
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
