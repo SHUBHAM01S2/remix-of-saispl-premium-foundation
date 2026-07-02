@@ -27,8 +27,10 @@ export const Route = createFileRoute("/_authenticated/admin/portfolio")({
 
 function PortfolioListPage() {
   const qc = useQueryClient();
+  const { isSuperAdmin } = Route.useRouteContext();
   const listFn = useServerFn(listPortfolioProjects);
   const deleteFn = useServerFn(deletePortfolioProject);
+
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "portfolio"],
@@ -120,18 +122,20 @@ function PortfolioListPage() {
                           >
                             <Pencil className="h-3.5 w-3.5" /> Edit
                           </Link>
-                          <button
-                            onClick={() => handleDelete(p.id, p.title)}
-                            disabled={del.isPending}
-                            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
-                          >
-                            {del.isPending ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-3.5 w-3.5" />
-                            )}
-                            Delete
-                          </button>
+                          {isSuperAdmin && (
+                            <button
+                              onClick={() => handleDelete(p.id, p.title)}
+                              disabled={del.isPending}
+                              className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+                            >
+                              {del.isPending ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-3.5 w-3.5" />
+                              )}
+                              Delete
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>
