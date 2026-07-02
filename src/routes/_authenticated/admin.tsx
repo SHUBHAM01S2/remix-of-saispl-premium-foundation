@@ -35,6 +35,7 @@ function AdminPage() {
   const { data: activity, isLoading: activityLoading, error: activityError } = useQuery({
     queryKey: ["admin", "recent-activity"],
     queryFn: () => activityFn(),
+    enabled: !!me?.isSuperAdmin,
   });
 
   const handleSignOut = async () => {
