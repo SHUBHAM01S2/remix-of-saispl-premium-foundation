@@ -120,3 +120,22 @@ export const deletePortfolioProject = createServerFn({ method: "POST" })
     if (error) throw error;
     return { ok: true };
   });
+
+export const togglePortfolioFeatured = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string; featured: boolean }) => {
+    if (!data?.id) throw new Error("id required");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertContentEditor(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await (supabaseAdmin as any)
+      .from("portfolio_projects")
+      .update({ is_featured: data.featured })
+      .eq("id", data.id)
+      .select()
+      .single();
+    if (error) throw error;
+    return row as PortfolioProject;
+  });

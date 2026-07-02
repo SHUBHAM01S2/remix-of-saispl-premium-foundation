@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Plus, Pencil, Trash2, Loader2, Star } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
-import { deleteTestimonial, listTestimonials } from "@/lib/testimonials-admin.functions";
+import { deleteTestimonial, listTestimonials, toggleTestimonialFeatured } from "@/lib/testimonials-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/testimonials")({
   beforeLoad: async () => {
@@ -31,6 +31,7 @@ function TestimonialsListPage() {
   const { isSuperAdmin } = Route.useRouteContext();
   const listFn = useServerFn(listTestimonials);
   const deleteFn = useServerFn(deleteTestimonial);
+  const toggleFn = useServerFn(toggleTestimonialFeatured);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "testimonials"],
@@ -39,6 +40,11 @@ function TestimonialsListPage() {
 
   const del = useMutation({
     mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "testimonials"] }),
+  });
+
+  const toggle = useMutation({
+    mutationFn: (v: { id: string; featured: boolean }) => toggleFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "testimonials"] }),
   });
 
@@ -85,6 +91,7 @@ function TestimonialsListPage() {
                     <th className="px-4 py-3 text-left">Company</th>
                     <th className="px-4 py-3 text-left">Country</th>
                     <th className="px-4 py-3 text-left">Rating</th>
+                    <th className="px-4 py-3 text-left">Featured</th>
                     <th className="px-4 py-3 text-left">Quote</th>
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
@@ -93,10 +100,7 @@ function TestimonialsListPage() {
                   {data.map((t) => (
                     <tr key={t.id}>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5 font-medium text-foreground">
-                          <span>{t.client_name}</span>
-                          {t.is_featured && <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />}
-                        </div>
+                        <span className="font-medium text-foreground">{t.client_name}</span>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{t.company ?? "—"}</td>
                       <td className="px-4 py-3 text-muted-foreground">{t.country ?? "—"}</td>
@@ -113,6 +117,17 @@ function TestimonialsListPage() {
                             />
                           ))}
                         </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <button
+                          type="button"
+                          onClick={() => toggle.mutate({ id: t.id, featured: !t.is_featured })}
+                          disabled={toggle.isPending}
+                          className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent disabled:opacity-60"
+                        >
+                          <Star className={t.is_featured ? "h-3.5 w-3.5 fill-amber-500 text-amber-500" : "h-3.5 w-3.5 text-muted-foreground"} />
+                          {t.is_featured ? "Featured" : "Not featured"}
+                        </button>
                       </td>
                       <td className="max-w-xs px-4 py-3">
                         <p className="line-clamp-2 text-muted-foreground">{t.quote}</p>

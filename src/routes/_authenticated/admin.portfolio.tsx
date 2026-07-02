@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Plus, Pencil, Trash2, Loader2, Star } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
-import { deletePortfolioProject, listPortfolioProjects } from "@/lib/portfolio-admin.functions";
+import { deletePortfolioProject, listPortfolioProjects, togglePortfolioFeatured } from "@/lib/portfolio-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/portfolio")({
   beforeLoad: async () => {
@@ -31,6 +31,7 @@ function PortfolioListPage() {
   const { isSuperAdmin } = Route.useRouteContext();
   const listFn = useServerFn(listPortfolioProjects);
   const deleteFn = useServerFn(deletePortfolioProject);
+  const toggleFn = useServerFn(togglePortfolioFeatured);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "portfolio"],
@@ -39,6 +40,11 @@ function PortfolioListPage() {
 
   const del = useMutation({
     mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "portfolio"] }),
+  });
+
+  const toggle = useMutation({
+    mutationFn: (v: { id: string; featured: boolean }) => toggleFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "portfolio"] }),
   });
 
@@ -81,10 +87,11 @@ function PortfolioListPage() {
               <table className="w-full text-sm">
                 <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
-                    <th className="px-4 py-3 text-left">Project</th>
+                    <th className="px-4 py-3 text-left">Thumbnail</th>
+                    <th className="px-4 py-3 text-left">Title</th>
+                    <th className="px-4 py-3 text-left">Client Industry</th>
                     <th className="px-4 py-3 text-left">Category</th>
-                    <th className="px-4 py-3 text-left">Industry</th>
-                    <th className="px-4 py-3 text-left">Created</th>
+                    <th className="px-4 py-3 text-left">Featured</th>
                     <th className="px-4 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
@@ -92,23 +99,26 @@ function PortfolioListPage() {
                   {data.map((p) => (
                     <tr key={p.id}>
                       <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          {p.thumbnail_url ? (
-                            <img src={p.thumbnail_url} alt="" className="h-10 w-10 rounded object-cover" />
-                          ) : (
-                            <div className="h-10 w-10 rounded bg-muted" />
-                          )}
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-1.5 font-medium text-foreground">
-                              <span className="truncate">{p.title}</span>
-                              {p.is_featured && <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />}
-                            </div>
-                          </div>
-                        </div>
+                        {p.thumbnail_url ? (
+                          <img src={p.thumbnail_url} alt="" className="h-12 w-16 rounded object-cover" />
+                        ) : (
+                          <div className="h-12 w-16 rounded bg-muted" />
+                        )}
                       </td>
-                      <td className="px-4 py-3 text-muted-foreground">{p.category}</td>
+                      <td className="px-4 py-3 font-medium text-foreground">{p.title}</td>
                       <td className="px-4 py-3 text-muted-foreground">{p.client_industry}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{new Date(p.created_at).toLocaleDateString()}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{p.category}</td>
+                      <td className="px-4 py-3">
+                        <button
+                          type="button"
+                          onClick={() => toggle.mutate({ id: p.id, featured: !p.is_featured })}
+                          disabled={toggle.isPending}
+                          className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent disabled:opacity-60"
+                        >
+                          <Star className={p.is_featured ? "h-3.5 w-3.5 fill-amber-500 text-amber-500" : "h-3.5 w-3.5 text-muted-foreground"} />
+                          {p.is_featured ? "Featured" : "Not featured"}
+                        </button>
+                      </td>
                       <td className="px-4 py-3 text-right">
                         <div className="inline-flex items-center gap-2">
                           <Link
