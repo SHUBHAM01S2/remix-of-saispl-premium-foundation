@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-marketing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OurWorksRouteImport } from './routes/our-works'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
+import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
@@ -36,6 +38,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SeoDigitalMarketingRoute = SeoDigitalMarketingRouteImport.update({
+  id: '/seo-digital-marketing',
+  path: '/seo-digital-marketing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -54,6 +61,11 @@ const ContactRoute = ContactRouteImport.update({
 const CareerRoute = CareerRouteImport.update({
   id: '/career',
   path: '/career',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareMaintenanceRoute = CareMaintenanceRouteImport.update({
+  id: '/care-maintenance',
+  path: '/care-maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -80,10 +92,12 @@ const OurWorksCaseStudyIdRoute = OurWorksCaseStudyIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
   '/our-works': typeof OurWorksRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -93,9 +107,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
+  '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -106,10 +122,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
   '/our-works': typeof OurWorksRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
@@ -121,10 +139,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/care-maintenance'
     | '/career'
     | '/contact'
     | '/our-works'
     | '/privacy'
+    | '/seo-digital-marketing'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
@@ -134,9 +154,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/care-maintenance'
     | '/career'
     | '/contact'
     | '/privacy'
+    | '/seo-digital-marketing'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
@@ -146,10 +168,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/care-maintenance'
     | '/career'
     | '/contact'
     | '/our-works'
     | '/privacy'
+    | '/seo-digital-marketing'
     | '/services'
     | '/sitemap.xml'
     | '/terms'
@@ -160,10 +184,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
   OurWorksRoute: typeof OurWorksRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  SeoDigitalMarketingRoute: typeof SeoDigitalMarketingRoute
   ServicesRoute: typeof ServicesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
@@ -192,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/seo-digital-marketing': {
+      id: '/seo-digital-marketing'
+      path: '/seo-digital-marketing'
+      fullPath: '/seo-digital-marketing'
+      preLoaderRoute: typeof SeoDigitalMarketingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -218,6 +251,13 @@ declare module '@tanstack/react-router' {
       path: '/career'
       fullPath: '/career'
       preLoaderRoute: typeof CareerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/care-maintenance': {
+      id: '/care-maintenance'
+      path: '/care-maintenance'
+      fullPath: '/care-maintenance'
+      preLoaderRoute: typeof CareMaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -268,10 +308,12 @@ const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
   OurWorksRoute: OurWorksRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  SeoDigitalMarketingRoute: SeoDigitalMarketingRoute,
   ServicesRoute: ServicesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
