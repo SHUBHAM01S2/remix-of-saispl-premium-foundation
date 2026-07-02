@@ -40,12 +40,36 @@ const team = [
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Us — Shivaryan Infotech" },
-      { name: "description", content: "Learn about Shivaryan Infotech's mission, story, and values. We innovate and push technological boundaries to create exceptional digital experiences." },
-      { property: "og:title", content: "About Us — Shivaryan Infotech" },
-      { property: "og:description", content: "Learn about Shivaryan Infotech's mission, story, and values. We innovate and push technological boundaries to create exceptional digital experiences." },
+      { title: "About Shivaryan Infotech — AI & Software Team from Himachal Pradesh" },
+      {
+        name: "description",
+        content:
+          "Shivaryan Infotech is an AI automation and software development company based in Himachal Pradesh, India, building custom software, AI agents, and web platforms for global clients.",
+      },
+      {
+        name: "keywords",
+        content:
+          "about Shivaryan Infotech, AI company Himachal Pradesh, software development team India, AI automation experts, custom software developers, global software partner",
+      },
+      { property: "og:title", content: "About Shivaryan Infotech — AI & Software Team from Himachal Pradesh" },
+      {
+        property: "og:description",
+        content:
+          "AI automation and software development from Himachal Pradesh, serving clients across India and worldwide.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/about" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "About Shivaryan Infotech — AI & Software Team from Himachal Pradesh" },
+      {
+        name: "twitter:description",
+        content:
+          "AI and software development from Himachal Pradesh for global clients.",
+      },
     ],
+    links: [{ rel: "canonical", href: "/about" }],
   }),
+
   component: About,
 });
 
