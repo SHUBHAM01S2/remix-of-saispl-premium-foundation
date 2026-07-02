@@ -2,16 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
 
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase
-    .from("admins")
-    .select("id")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("Forbidden");
-}
-
 export type PortfolioProject = {
   id: string;
   title: string;
