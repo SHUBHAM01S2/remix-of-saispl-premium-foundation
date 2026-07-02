@@ -43,10 +43,10 @@ export function FeaturedWorkSection() {
     <section className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Featured Work
           </h2>
-          <p className="mt-3 text-lg text-secondary">
+          <p className="mt-3 text-lg text-muted-foreground">
             Real solutions. Measurable impact.
           </p>
         </ScrollReveal>
@@ -72,10 +72,10 @@ export function FeaturedWorkSection() {
                 </div>
 
                 <div className="p-5">
-                  <h3 className="text-lg font-semibold text-primary">
+                  <h3 className="text-lg font-semibold text-foreground">
                     {project.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-secondary">
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {project.results}
                   </p>
                 </div>
@@ -87,7 +87,7 @@ export function FeaturedWorkSection() {
         <ScrollReveal className="mt-12 text-center" delay={0.2}>
           <Link
             to="/our-works"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-7 py-3 text-sm font-semibold text-primary transition-all duration-300 hover:border-brand/40 hover:bg-surface-elevated hover:text-brand"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-7 py-3 text-sm font-semibold text-foreground transition-all duration-300 hover:border-brand/40 hover:bg-surface-elevated hover:text-brand"
           >
             View All Work
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
