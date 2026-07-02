@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function HeroSection() {
   return (
@@ -42,20 +43,35 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <div className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]"
+          >
             We innovate and push technological boundaries to create{" "}
             <span className="bg-gradient-to-r from-brand to-cta bg-clip-text text-transparent">
               exceptional digital experiences
             </span>
-          </h1>
+          </motion.h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl leading-relaxed"
+          >
             We build AI-powered software, intelligent automation, and transformative
             digital products that help global businesses scale faster, operate smarter,
             and lead their industries.
-          </p>
+          </motion.p>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          >
             <Button
               size="lg"
               className="bg-cta text-cta-foreground hover:bg-cta/90 rounded-full px-8 py-6 text-base font-semibold shadow-lg shadow-cta/20"
@@ -75,7 +91,7 @@ export function HeroSection() {
             >
               <Link to="/our-works">View Our Work</Link>
             </Button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
