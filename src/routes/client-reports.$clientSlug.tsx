@@ -165,6 +165,24 @@ function ClientReportPage() {
           />
         </section>
 
+        {/* Month-over-month trends */}
+        <section className="mt-10 rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand/10 text-brand">
+              <BarChart3 className="h-4 w-4" />
+            </span>
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">
+                Month-Over-Month Trends
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Site visitors and leads generated over time
+              </p>
+            </div>
+          </div>
+          <ReportTrendsChart reports={data.reports} />
+        </section>
+
         {/* Top pages */}
         {current.top_pages && current.top_pages.length > 0 && (
           <section className="mt-10 rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
