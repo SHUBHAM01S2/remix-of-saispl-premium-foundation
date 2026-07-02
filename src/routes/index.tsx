@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CTASection } from "@/components/CTASection";
 import { FeaturedWorkSection } from "@/components/FeaturedWorkSection";
 import { HeroSection } from "@/components/HeroSection";
 import { WhatWeDoSection } from "@/components/WhatWeDoSection";
@@ -15,6 +16,7 @@ function Index() {
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <FeaturedWorkSection />
+      <CTASection />
     </div>
   );
 }
