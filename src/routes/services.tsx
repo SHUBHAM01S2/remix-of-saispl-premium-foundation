@@ -52,6 +52,37 @@ const services = [
   },
 ];
 
+const processSteps = [
+  {
+    step: "01",
+    icon: Search,
+    title: "Discovery & Consultation",
+    description:
+      "We dive deep into your goals, challenges, and users to shape a clear roadmap before a single line of code is written.",
+  },
+  {
+    step: "02",
+    icon: Layers,
+    title: "Design & Prototyping",
+    description:
+      "Wireframes and interactive prototypes bring ideas to life early, so we can refine the experience together.",
+  },
+  {
+    step: "03",
+    icon: Wrench,
+    title: "Development & Testing",
+    description:
+      "Clean, scalable engineering with rigorous QA ensures your product is fast, secure, and built to last.",
+  },
+  {
+    step: "04",
+    icon: Rocket,
+    title: "Launch & Support",
+    description:
+      "Smooth deployment followed by proactive monitoring and ongoing support to keep you ahead.",
+  },
+];
+
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
