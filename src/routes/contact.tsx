@@ -16,23 +16,36 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — Shivaryan Infotech" },
+      { title: "Contact Shivaryan Infotech — AI & Software Development, Bilaspur HP" },
       {
         name: "description",
         content:
-          "Get in touch with Shivaryan Infotech. Reach out for software development, AI automation, and digital transformation solutions.",
+          "Contact Shivaryan Infotech in Bilaspur, Himachal Pradesh for AI automation, custom software, and web development. Serving clients across India and globally.",
       },
       {
-        property: "og:title",
-        content: "Contact — Shivaryan Infotech",
+        name: "keywords",
+        content:
+          "contact Shivaryan Infotech, software company Bilaspur Himachal Pradesh, AI automation contact India, hire AI developers, custom software inquiries",
       },
+      { property: "og:title", content: "Contact Shivaryan Infotech — AI & Software Development" },
       {
         property: "og:description",
         content:
-          "Get in touch with Shivaryan Infotech for enterprise software and AI solutions.",
+          "Reach our team in Bilaspur, Himachal Pradesh for AI automation and software projects worldwide.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/contact" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Contact Shivaryan Infotech — AI & Software Development" },
+      {
+        name: "twitter:description",
+        content:
+          "Talk to our team about AI automation and custom software projects.",
       },
     ],
+    links: [{ rel: "canonical", href: "/contact" }],
   }),
+
   component: Contact,
 });
 
