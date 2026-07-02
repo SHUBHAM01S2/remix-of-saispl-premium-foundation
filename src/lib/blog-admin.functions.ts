@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
 
 async function assertAdmin(ctx: { supabase: any; userId: string }) {
   const { data, error } = await ctx.supabase
@@ -27,7 +28,7 @@ export type BlogPost = {
 export const listBlogPosts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<BlogPost[]> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("blog_posts")
@@ -44,7 +45,7 @@ export const getBlogPost = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }): Promise<BlogPost | null> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("blog_posts")
@@ -76,7 +77,7 @@ export const upsertBlogPost = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
     const payload = {
@@ -115,7 +116,7 @@ export const deleteBlogPost = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("blog_posts")
@@ -132,7 +133,7 @@ export const toggleBlogPublish = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("blog_posts")
