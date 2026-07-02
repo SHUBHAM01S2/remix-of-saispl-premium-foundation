@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { TrustBadges } from "@/components/TrustBadges";
-import { TechPartners } from "@/components/TechPartners";
+
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
 
 const PHONE_RAW = "+919418031050";
@@ -103,11 +102,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Technology Partners */}
-      <TechPartners />
-
-      {/* Trust & Compliance Badges */}
-      <TrustBadges />
 
       {/* Bottom Bar */}
       <div className="border-t border-border">

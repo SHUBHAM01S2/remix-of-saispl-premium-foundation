@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { TechPartners } from "@/components/TechPartners";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
@@ -194,6 +195,7 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </main>
+      <TechPartners />
       <Footer />
       <WhatsAppChatButton />
       <BookConsultationButton />
