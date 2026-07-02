@@ -10,6 +10,7 @@ function Index() {
   return (
     <div>
       <HeroSection />
+      <WhatWeDoSection />
     </div>
   );
 }
