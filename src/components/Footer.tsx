@@ -102,11 +102,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Technology Partners */}
-      <TechPartners />
-
-      {/* Trust & Compliance Badges */}
-      <TrustBadges />
 
       {/* Bottom Bar */}
       <div className="border-t border-border">
