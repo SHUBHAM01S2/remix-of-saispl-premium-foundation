@@ -24,7 +24,7 @@ export function CTASection() {
             </Link>
 
             <a
-              href="https://wa.me/919418031050"
+              href="https://web.whatsapp.com/send?phone=919418031050"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full border border-[oklch(1_0_0_/_10%)] px-6 py-3.5 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-surface-elevated)] focus:outline-none focus:ring-2 focus:ring-[var(--color-ring)] focus:ring-offset-2 focus:ring-offset-[var(--color-surface)]"
