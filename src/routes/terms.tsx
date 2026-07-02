@@ -54,19 +54,29 @@ export const Route = createFileRoute("/terms")({
       {
         name: "description",
         content:
-          "Read the Terms and Conditions for using Shivaryan Infotech's website and services.",
+          "Terms and Conditions governing use of Shivaryan Infotech's website and AI, software, and web development services for clients in India and worldwide.",
       },
       {
-        property: "og:title",
-        content: "Terms and Conditions — Shivaryan Infotech",
+        name: "keywords",
+        content:
+          "Shivaryan Infotech terms, service agreement, AI software terms and conditions, website terms India",
       },
+      { property: "og:title", content: "Terms and Conditions — Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "Read the Terms and Conditions for using Shivaryan Infotech's website and services.",
+          "Terms governing use of Shivaryan Infotech's website and services.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/terms" },
+      { name: "robots", content: "noindex, follow" },
+      { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Terms and Conditions — Shivaryan Infotech" },
+      { name: "twitter:description", content: "Terms governing use of Shivaryan Infotech's website and services." },
     ],
+    links: [{ rel: "canonical", href: "/terms" }],
   }),
+
   component: Terms,
 });
 

@@ -87,23 +87,36 @@ const processSteps = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Our Services — Shivaryan Infotech" },
+      { title: "Services — AI Automation & Software Development | Shivaryan Infotech" },
       {
         name: "description",
         content:
-          "Explore end-to-end digital and AI solutions from Shivaryan Infotech — web development, AI automation, custom portals, UI/UX design, cloud & DevOps, and ongoing support.",
+          "End-to-end services from Shivaryan Infotech: AI agents & automation, custom web and software development, portals, UI/UX design, cloud & DevOps for startups and enterprises in Himachal Pradesh, India, and worldwide.",
       },
       {
-        property: "og:title",
-        content: "Our Services — Shivaryan Infotech",
+        name: "keywords",
+        content:
+          "AI automation services, software development company Himachal Pradesh, custom web development, AI agents, cloud DevOps, UI UX design, business automation India, Shivaryan Infotech services",
       },
+      { property: "og:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "End-to-end digital and AI solutions tailored to modernize, automate, and scale your business.",
+          "AI automation, custom software, portals, design, and cloud services for global clients — from Himachal Pradesh to the world.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/services" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      {
+        name: "twitter:description",
+        content:
+          "AI automation, custom software, portals, design, and cloud services for global clients.",
       },
     ],
+    links: [{ rel: "canonical", href: "/services" }],
   }),
+
   component: Services,
 });
 
