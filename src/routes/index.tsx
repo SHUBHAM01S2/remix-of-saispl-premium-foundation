@@ -14,6 +14,7 @@ function Index() {
       <HeroSection />
       <WhatWeDoSection />
       <WhyChooseUsSection />
+      <FeaturedWorkSection />
     </div>
   );
 }
