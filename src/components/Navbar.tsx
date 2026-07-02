@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Menu } from "lucide-react";
+import { Menu, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
@@ -12,11 +12,50 @@ import {
 } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-const navLinks = [
+type NavLink =
+  | { label: string; to: string; children?: undefined }
+  | { label: string; to: string; children: { label: string; to: string; desc: string }[] };
+
+const serviceLinks = [
+  {
+    label: "Website Design & Development",
+    to: "/services",
+    desc: "Fast, mobile-friendly, conversion-focused websites.",
+  },
+  {
+    label: "Monthly Care & Maintenance",
+    to: "/care-maintenance",
+    desc: "Monthly plans to keep your site fast, safe, and always up.",
+  },
+  {
+    label: "SEO & Local Digital Marketing",
+    to: "/seo-digital-marketing",
+    desc: "Get found on Google by people in your city.",
+  },
+  {
+    label: "WhatsApp & AI Automation",
+    to: "/automation-ai-services",
+    desc: "Auto-reply leads, book appointments, route calls.",
+  },
+  {
+    label: "Custom Portals & Software",
+    to: "/custom-portals-software",
+    desc: "School management, blood-bank systems, admin dashboards.",
+  },
+  {
+    label: "Branding & Graphic Design",
+    to: "/services",
+    desc: "Logos, social media kits, banners, and business identity.",
+  },
+];
+
+const navLinks: NavLink[] = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
-  { label: "Services", to: "/services" },
-  { label: "Our Works", to: "/our-works" },
+  { label: "Services", to: "/services", children: serviceLinks },
+  { label: "Pricing", to: "/pricing" },
+  { label: "Portfolio", to: "/our-works" },
+  { label: "Blog", to: "/blog" },
   { label: "Career", to: "/career" },
   { label: "Contact", to: "/contact" },
 ];
@@ -42,17 +81,19 @@ function Logo() {
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const { location } = useRouterState();
   const pathname = location.pathname;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const isActive = (to: string) =>
+    to === "/" ? pathname === "/" : pathname.startsWith(to);
 
   return (
     <header
@@ -64,7 +105,6 @@ export function Navbar() {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
         <div className="shrink-0">
           <Logo />
         </div>
@@ -72,10 +112,46 @@ export function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => {
-            const active =
-              link.to === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.to);
+            const active = isActive(link.to);
+            if (link.children) {
+              return (
+                <div key={link.to} className="group relative">
+                  <Link
+                    to={link.to}
+                    className={cn(
+                      "relative flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                      active
+                        ? "text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                  >
+                    {link.label}
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
+                    {active && (
+                      <span className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-brand" />
+                    )}
+                  </Link>
+                  <div className="invisible absolute left-1/2 top-full z-50 w-[340px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                    <div className="rounded-xl border border-border/60 bg-background/95 p-2 shadow-xl backdrop-blur-md">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.label}
+                          to={child.to}
+                          className="flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-surface"
+                        >
+                          <span className="text-sm font-semibold text-foreground">
+                            {child.label}
+                          </span>
+                          <span className="text-xs leading-snug text-muted-foreground">
+                            {child.desc}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
             return (
               <Link
                 key={link.to}
@@ -122,18 +198,51 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] border-l border-border bg-background p-0 sm:w-[360px]">
               <div className="flex h-full flex-col">
-                {/* Mobile Header */}
                 <div className="flex items-center justify-between border-b border-border px-6 py-4">
                   <Logo />
                 </div>
 
-                {/* Mobile Nav Links */}
-                <nav className="flex flex-1 flex-col gap-1 px-4 py-6">
+                <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-6">
                   {navLinks.map((link) => {
-                    const active =
-                      link.to === "/"
-                        ? pathname === "/"
-                        : pathname.startsWith(link.to);
+                    const active = isActive(link.to);
+                    if (link.children) {
+                      return (
+                        <div key={link.to} className="flex flex-col">
+                          <button
+                            type="button"
+                            onClick={() => setServicesOpen((v) => !v)}
+                            className={cn(
+                              "flex items-center justify-between rounded-lg px-4 py-3 text-base font-medium transition-colors",
+                              active
+                                ? "bg-surface text-foreground"
+                                : "text-muted-foreground hover:bg-surface hover:text-foreground"
+                            )}
+                          >
+                            {link.label}
+                            <ChevronDown
+                              className={cn(
+                                "h-4 w-4 transition-transform",
+                                servicesOpen && "rotate-180"
+                              )}
+                            />
+                          </button>
+                          {servicesOpen && (
+                            <div className="ml-3 mt-1 flex flex-col gap-1 border-l border-border/60 pl-3">
+                              {link.children.map((child) => (
+                                <SheetClose asChild key={child.label}>
+                                  <Link
+                                    to={child.to}
+                                    className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-surface hover:text-foreground"
+                                  >
+                                    {child.label}
+                                  </Link>
+                                </SheetClose>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
                     return (
                       <SheetClose asChild key={link.to}>
                         <Link
@@ -152,7 +261,6 @@ export function Navbar() {
                   })}
                 </nav>
 
-                {/* Mobile CTA */}
                 <div className="border-t border-border px-4 py-6">
                   <SheetClose asChild>
                     <Link
