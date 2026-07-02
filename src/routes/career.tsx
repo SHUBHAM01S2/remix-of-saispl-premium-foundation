@@ -5,12 +5,36 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 export const Route = createFileRoute("/career")({
   head: () => ({
     meta: [
-      { title: "Careers — Shivaryan Infotech" },
-      { name: "description", content: "Join Shivaryan Infotech and build the future of AI and software with our growing global team." },
-      { property: "og:title", content: "Careers — Shivaryan Infotech" },
-      { property: "og:description", content: "Join Shivaryan Infotech and build the future of AI and software with our growing global team." },
+      { title: "Careers — AI & Software Jobs at Shivaryan Infotech (Himachal Pradesh & Remote)" },
+      {
+        name: "description",
+        content:
+          "Explore careers at Shivaryan Infotech. Join our AI, software, and design team in Himachal Pradesh or work remotely on global projects for clients around the world.",
+      },
+      {
+        name: "keywords",
+        content:
+          "careers Shivaryan Infotech, AI jobs India, software developer jobs Himachal Pradesh, remote developer jobs, AI automation careers, tech jobs Bilaspur",
+      },
+      { property: "og:title", content: "Careers — AI & Software Jobs at Shivaryan Infotech" },
+      {
+        property: "og:description",
+        content:
+          "Join our AI, software, and design team in Himachal Pradesh or remotely on global projects.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/career" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Careers — AI & Software Jobs at Shivaryan Infotech" },
+      {
+        name: "twitter:description",
+        content:
+          "Build AI and software for global clients — from Himachal Pradesh or remote.",
+      },
     ],
+    links: [{ rel: "canonical", href: "/career" }],
   }),
+
   component: Career,
 });
 
