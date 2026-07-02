@@ -14,39 +14,15 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 type NavLink =
   | { label: string; to: string; children?: undefined }
-  | { label: string; to: string; children: { label: string; to: string; desc: string }[] };
+  | { label: string; to: string; children: { label: string; to: string }[] };
 
 const serviceLinks = [
-  {
-    label: "Website Design & Development",
-    to: "/services",
-    desc: "Fast, mobile-friendly, conversion-focused websites.",
-  },
-  {
-    label: "Monthly Care & Maintenance",
-    to: "/care-maintenance",
-    desc: "Monthly plans to keep your site fast, safe, and always up.",
-  },
-  {
-    label: "SEO & Local Digital Marketing",
-    to: "/seo-digital-marketing",
-    desc: "Get found on Google by people in your city.",
-  },
-  {
-    label: "WhatsApp & AI Automation",
-    to: "/automation-ai-services",
-    desc: "Auto-reply leads, book appointments, route calls.",
-  },
-  {
-    label: "Custom Portals & Software",
-    to: "/custom-portals-software",
-    desc: "School management, blood-bank systems, admin dashboards.",
-  },
-  {
-    label: "Branding & Graphic Design",
-    to: "/services",
-    desc: "Logos, social media kits, banners, and business identity.",
-  },
+  { label: "Website Design & Development", to: "/services" },
+  { label: "Monthly Care & Maintenance", to: "/care-maintenance" },
+  { label: "SEO & Local Digital Marketing", to: "/seo-digital-marketing" },
+  { label: "WhatsApp & AI Automation", to: "/automation-ai-services" },
+  { label: "Custom Portals & Software", to: "/custom-portals-software" },
+  { label: "Branding & Graphic Design", to: "/services" },
 ];
 
 const navLinks: NavLink[] = [
