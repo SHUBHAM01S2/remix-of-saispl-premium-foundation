@@ -29,6 +29,7 @@ import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -130,12 +131,17 @@ const InternalArchitectureRoute = InternalArchitectureRouteImport.update({
   path: '/internal/architecture',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -157,7 +164,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -179,7 +187,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/sitemap.xml'
     | '/terms'
+    | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -269,7 +281,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
@@ -428,8 +440,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternalArchitectureRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface OurWorksRouteChildren {
   OurWorksCaseStudyIdRoute: typeof OurWorksCaseStudyIdRoute
@@ -449,7 +478,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
@@ -468,3 +497,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
