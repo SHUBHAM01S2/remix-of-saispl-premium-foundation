@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
+import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 
 const TermsRoute = TermsRouteImport.update({
@@ -113,6 +114,11 @@ const OurWorksCaseStudyIdRoute = OurWorksCaseStudyIdRouteImport.update({
   path: '/$caseStudyId',
   getParentRoute: () => OurWorksRoute,
 } as any)
+const InternalQuarterlyAddonsRoute = InternalQuarterlyAddonsRouteImport.update({
+  id: '/internal/quarterly-addons',
+  path: '/internal/quarterly-addons',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InternalArchitectureRoute = InternalArchitectureRouteImport.update({
   id: '/internal/architecture',
   path: '/internal/architecture',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/internal/architecture': typeof InternalArchitectureRoute
+  '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/our-works/': typeof OurWorksIndexRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/internal/architecture': typeof InternalArchitectureRoute
+  '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/our-works': typeof OurWorksIndexRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/internal/architecture': typeof InternalArchitectureRoute
+  '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/our-works/': typeof OurWorksIndexRoute
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/internal/architecture'
+    | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/our-works/'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/internal/architecture'
+    | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/our-works'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/internal/architecture'
+    | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/our-works/'
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
+  InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
   ReportsIdRoute: typeof ReportsIdRoute
 }
 
@@ -381,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurWorksCaseStudyIdRouteImport
       parentRoute: typeof OurWorksRoute
     }
+    '/internal/quarterly-addons': {
+      id: '/internal/quarterly-addons'
+      path: '/internal/quarterly-addons'
+      fullPath: '/internal/quarterly-addons'
+      preLoaderRoute: typeof InternalQuarterlyAddonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/internal/architecture': {
       id: '/internal/architecture'
       path: '/internal/architecture'
@@ -421,8 +441,19 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
+  InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
   ReportsIdRoute: ReportsIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
