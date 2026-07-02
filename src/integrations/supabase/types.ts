@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author_name: string | null
+          category: string | null
+          content: string | null
+          cover_image_url: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          published_at: string | null
+          slug: string
+          title: string
+        }
+        Insert: {
+          author_name?: string | null
+          category?: string | null
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug: string
+          title: string
+        }
+        Update: {
+          author_name?: string | null
+          category?: string | null
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          published_at?: string | null
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       career_applications: {
         Row: {
           cover_message: string | null
@@ -47,11 +86,53 @@ export type Database = {
         }
         Relationships: []
       }
+      client_reports: {
+        Row: {
+          client_name: string
+          created_at: string
+          id: string
+          leads_from_forms: number
+          month: string
+          next_month_recommendation: string | null
+          site_visitors: number
+          top_pages: string[]
+          uptime_percentage: number
+          whatsapp_taps: number
+          work_done_this_month: string | null
+        }
+        Insert: {
+          client_name: string
+          created_at?: string
+          id?: string
+          leads_from_forms?: number
+          month: string
+          next_month_recommendation?: string | null
+          site_visitors?: number
+          top_pages?: string[]
+          uptime_percentage?: number
+          whatsapp_taps?: number
+          work_done_this_month?: string | null
+        }
+        Update: {
+          client_name?: string
+          created_at?: string
+          id?: string
+          leads_from_forms?: number
+          month?: string
+          next_month_recommendation?: string | null
+          site_visitors?: number
+          top_pages?: string[]
+          uptime_percentage?: number
+          whatsapp_taps?: number
+          work_done_this_month?: string | null
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           company: string | null
           created_at: string
-          email: string
+          email: string | null
           id: string
           message: string
           name: string
@@ -60,7 +141,7 @@ export type Database = {
         Insert: {
           company?: string | null
           created_at?: string
-          email: string
+          email?: string | null
           id?: string
           message: string
           name: string
@@ -69,7 +150,7 @@ export type Database = {
         Update: {
           company?: string | null
           created_at?: string
-          email?: string
+          email?: string | null
           id?: string
           message?: string
           name?: string
@@ -149,6 +230,72 @@ export type Database = {
           solution?: string | null
           thumbnail_url?: string | null
           title?: string
+        }
+        Relationships: []
+      }
+      quarterly_addons: {
+        Row: {
+          addon_type: string
+          client_name: string
+          completed_date: string | null
+          created_at: string
+          id: string
+          quarter: string
+          scheduled_date: string | null
+          status: string
+        }
+        Insert: {
+          addon_type: string
+          client_name: string
+          completed_date?: string | null
+          created_at?: string
+          id?: string
+          quarter: string
+          scheduled_date?: string | null
+          status?: string
+        }
+        Update: {
+          addon_type?: string
+          client_name?: string
+          completed_date?: string | null
+          created_at?: string
+          id?: string
+          quarter?: string
+          scheduled_date?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          client_name: string
+          company: string | null
+          country: string | null
+          created_at: string
+          id: string
+          is_featured: boolean
+          quote: string
+          rating: number
+        }
+        Insert: {
+          client_name: string
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          quote: string
+          rating?: number
+        }
+        Update: {
+          client_name?: string
+          company?: string | null
+          country?: string | null
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          quote?: string
+          rating?: number
         }
         Relationships: []
       }
