@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { getReportsBySlug, type ClientReport } from "@/lib/reports-admin.functions";
+import { ReportTrendsChart } from "@/components/client-reports/ReportTrendsChart";
 
 export const Route = createFileRoute("/client-reports/$clientSlug")({
   component: ClientReportPage,
