@@ -1,5 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, Mail, Phone } from "lucide-react";
+import { TrustBadges } from "@/components/TrustBadges";
+import { TechPartners } from "@/components/TechPartners";
+import { formatPhoneDisplay, toTelHref } from "@/lib/format";
+
+const PHONE_RAW = "+919418031050";
 
 const quickLinks = [
   { label: "Home", to: "/" },
@@ -87,16 +92,22 @@ export function Footer() {
               <li className="flex items-center gap-3">
                 <Phone className="h-4 w-4 shrink-0 text-brand" />
                 <a
-                  href="tel:+919418031050"
+                  href={`tel:${toTelHref(PHONE_RAW)}`}
                   className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                 >
-                  +91 94180-31050
+                  {formatPhoneDisplay(PHONE_RAW)}
                 </a>
               </li>
             </ul>
           </div>
         </div>
       </div>
+
+      {/* Technology Partners */}
+      <TechPartners />
+
+      {/* Trust & Compliance Badges */}
+      <TrustBadges />
 
       {/* Bottom Bar */}
       <div className="border-t border-border">
