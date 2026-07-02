@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, useRouter, notFound } from "@tanstack/rea
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/shivi")({
+export const Route = createFileRoute("/shivi-login")({
   ssr: false,
   component: ShiviLogin,
   head: () => ({

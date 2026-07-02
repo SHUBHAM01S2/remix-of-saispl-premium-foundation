@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDesignDevelopmentRouteImport } from './routes/web-design-development'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ShiviRouteImport } from './routes/shivi'
+import { Route as ShiviLoginRouteImport } from './routes/shivi-login'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-marketing'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -72,9 +72,9 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShiviRoute = ShiviRouteImport.update({
-  id: '/shivi',
-  path: '/shivi',
+const ShiviLoginRoute = ShiviLoginRouteImport.update({
+  id: '/shivi-login',
+  path: '/shivi-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -326,10 +326,11 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof AuthenticatedShiviRouteWithChildren
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/shivi': typeof AuthenticatedShiviRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
@@ -373,10 +374,11 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof AuthenticatedShiviRouteWithChildren
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/shivi': typeof AuthenticatedShiviRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
@@ -422,7 +424,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof ShiviRoute
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
@@ -472,10 +474,11 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/shivi'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
@@ -519,10 +522,11 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/shivi'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
@@ -567,7 +571,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
@@ -617,7 +621,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SeoDigitalMarketingRoute: typeof SeoDigitalMarketingRoute
   ServicesRoute: typeof ServicesRoute
-  ShiviRoute: typeof ShiviRoute
+  ShiviLoginRoute: typeof ShiviLoginRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
@@ -650,11 +654,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/shivi': {
-      id: '/shivi'
-      path: '/shivi'
-      fullPath: '/shivi'
-      preLoaderRoute: typeof ShiviRouteImport
+    '/shivi-login': {
+      id: '/shivi-login'
+      path: '/shivi-login'
+      fullPath: '/shivi-login'
+      preLoaderRoute: typeof ShiviLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -1125,7 +1129,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SeoDigitalMarketingRoute: SeoDigitalMarketingRoute,
   ServicesRoute: ServicesRoute,
-  ShiviRoute: ShiviRoute,
+  ShiviLoginRoute: ShiviLoginRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
