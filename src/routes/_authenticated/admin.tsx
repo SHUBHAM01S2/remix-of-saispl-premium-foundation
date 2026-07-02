@@ -230,6 +230,7 @@ function AdminPage() {
             </ul>
           )}
         </div>
+        )}
       </div>
     </div>
   );
