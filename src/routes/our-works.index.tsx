@@ -145,17 +145,26 @@ function OurWorks() {
                 .replace(/[^a-z0-9]+/g, "-")
                 .replace(/(^-|-$)/g, "");
               return (
-                <StaggerItem key={project.name}>
+                <StaggerItem key={project.id}>
                   <Link
                     to="/our-works/$caseStudyId"
                     params={{ caseStudyId: slug }}
                     className="group relative block overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
                   >
-                    {/* Screenshot placeholder */}
-                    <div className="relative flex h-52 items-center justify-center bg-gradient-to-br from-surface-elevated to-surface">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                        <Monitor className="h-8 w-8" />
-                      </div>
+                    {/* Screenshot */}
+                    <div className="relative flex h-52 items-center justify-center overflow-hidden bg-gradient-to-br from-surface-elevated to-surface">
+                      {project.thumbnail_url ? (
+                        <img
+                          src={project.thumbnail_url}
+                          alt={project.name}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                          <Monitor className="h-8 w-8" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
                       <span className="absolute right-3 top-3 rounded-full border border-border/50 bg-surface/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
                         {project.industry}
