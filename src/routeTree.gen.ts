@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 
 const TermsRoute = TermsRouteImport.update({
@@ -59,6 +60,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OurWorksIndexRoute = OurWorksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OurWorksRoute,
+} as any)
 const OurWorksCaseStudyIdRoute = OurWorksCaseStudyIdRouteImport.update({
   id: '/$caseStudyId',
   path: '/$caseStudyId',
@@ -75,17 +81,18 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
-  '/our-works': typeof OurWorksRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/our-works': typeof OurWorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +105,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,17 +119,18 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/our-works/$caseStudyId'
+    | '/our-works/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/career'
     | '/contact'
-    | '/our-works'
     | '/privacy'
     | '/services'
     | '/terms'
     | '/our-works/$caseStudyId'
+    | '/our-works'
   id:
     | '__root__'
     | '/'
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/terms'
     | '/our-works/$caseStudyId'
+    | '/our-works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -204,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/our-works/': {
+      id: '/our-works/'
+      path: '/'
+      fullPath: '/our-works/'
+      preLoaderRoute: typeof OurWorksIndexRouteImport
+      parentRoute: typeof OurWorksRoute
+    }
     '/our-works/$caseStudyId': {
       id: '/our-works/$caseStudyId'
       path: '/$caseStudyId'
@@ -216,10 +233,12 @@ declare module '@tanstack/react-router' {
 
 interface OurWorksRouteChildren {
   OurWorksCaseStudyIdRoute: typeof OurWorksCaseStudyIdRoute
+  OurWorksIndexRoute: typeof OurWorksIndexRoute
 }
 
 const OurWorksRouteChildren: OurWorksRouteChildren = {
   OurWorksCaseStudyIdRoute: OurWorksCaseStudyIdRoute,
+  OurWorksIndexRoute: OurWorksIndexRoute,
 }
 
 const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
@@ -239,13 +258,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
