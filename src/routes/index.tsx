@@ -47,9 +47,11 @@ function Index() {
   return (
     <div>
       <HeroSection />
+      <TrustedByStrip />
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <FeaturedWorkSection />
+      <TestimonialsSection />
       <CTASection />
     </div>
   );
