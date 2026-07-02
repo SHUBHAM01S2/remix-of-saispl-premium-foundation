@@ -135,6 +135,56 @@ function About() {
           })}
         </div>
       </section>
+
+      {/* Stats */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated"
+            >
+              <div className="text-3xl font-bold text-brand sm:text-4xl">
+                {stat.value}
+              </div>
+              <div className="mt-2 text-sm text-muted-foreground">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Meet the Team
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+            The people behind the products.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {team.map((member) => (
+            <div
+              key={member.name}
+              className="group relative rounded-2xl border border-border/50 bg-surface p-6 text-center transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
+            >
+              <div className="mx-auto mb-4 inline-flex h-20 w-20 items-center justify-center rounded-full bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                <User className="h-10 w-10" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">
+                {member.name}
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {member.role}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
