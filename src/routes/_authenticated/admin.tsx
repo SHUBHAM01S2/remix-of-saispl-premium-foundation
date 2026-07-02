@@ -80,7 +80,7 @@ function AdminPage() {
               Signed in as {me?.admin?.email ?? me?.email} · Role: {me?.admin?.role}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Link
               to="/admin/portfolio"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -99,30 +99,40 @@ function AdminPage() {
             >
               Manage Testimonials
             </Link>
-            <Link
-              to="/admin/jobs"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Jobs
-            </Link>
-            <Link
-              to="/admin/contacts"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Contacts
-            </Link>
-            <Link
-              to="/admin/careers"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Careers
-            </Link>
-            <Link
-              to="/admin/reports"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Client Reports
-            </Link>
+            {me?.isSuperAdmin && (
+              <>
+                <Link
+                  to="/admin/jobs"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Jobs
+                </Link>
+                <Link
+                  to="/admin/contacts"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Contacts
+                </Link>
+                <Link
+                  to="/admin/careers"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Careers
+                </Link>
+                <Link
+                  to="/admin/reports"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Client Reports
+                </Link>
+                <Link
+                  to="/admin/admins"
+                  className="rounded-md border border-brand bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/20"
+                >
+                  Manage Admins
+                </Link>
+              </>
+            )}
             <button
               onClick={handleSignOut}
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
