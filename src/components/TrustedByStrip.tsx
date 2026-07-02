@@ -10,6 +10,9 @@ const LOGOS = [
 ];
 
 export function TrustedByStrip() {
+  // Duplicate list for seamless marquee loop
+  const loop = [...LOGOS, ...LOGOS];
+
   return (
     <ScrollReveal>
       <section
@@ -20,18 +23,29 @@ export function TrustedByStrip() {
           <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
             Trusted by teams worldwide
           </p>
-          <ul className="mt-6 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 md:grid-cols-6">
-            {LOGOS.map((name) => (
-              <li key={name} className="flex justify-center">
-                <div
-                  className="group flex h-12 min-w-[120px] items-center justify-center rounded-md border border-dashed border-border/40 px-4 text-sm font-semibold tracking-wide text-muted-foreground grayscale opacity-60 transition-all duration-300 hover:grayscale-0 hover:opacity-100 hover:border-brand/30 hover:text-brand"
-                  title={`${name} logo (placeholder)`}
-                >
-                  {name}
-                </div>
-              </li>
-            ))}
-          </ul>
+
+          <div
+            className="group relative mt-6 overflow-hidden"
+            style={{
+              maskImage:
+                "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            }}
+          >
+            <ul className="flex w-max animate-marquee-rtl items-center gap-6 group-hover:[animation-play-state:paused]">
+              {loop.map((name, i) => (
+                <li key={`${name}-${i}`} className="shrink-0">
+                  <div
+                    className="flex h-12 w-[160px] items-center justify-center rounded-md border border-dashed border-border/40 px-4 text-sm font-semibold tracking-wide text-muted-foreground opacity-70 transition-all duration-300 hover:border-brand/30 hover:text-brand hover:opacity-100"
+                    title={`${name} logo (placeholder)`}
+                  >
+                    {name}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
     </ScrollReveal>
