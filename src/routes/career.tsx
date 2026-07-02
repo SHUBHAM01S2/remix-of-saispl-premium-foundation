@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight, Loader2 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { ApplyForm } from "@/components/ApplyForm";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/career")({
   head: () => ({
@@ -58,41 +59,40 @@ const benefits = [
   },
 ];
 
-const openings = [
-  {
-    title: "Senior Full-Stack Developer",
-    department: "Engineering",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "AI / ML Engineer",
-    department: "AI Labs",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "UI/UX Designer",
-    department: "Design",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "DevOps Engineer",
-    department: "Platform",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "Product Manager",
-    department: "Product",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "Business Development Executive",
-    department: "Sales",
-    location: "Remote (India / International)",
-  },
-];
+type JobOpening = {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string | null;
+};
 
 function Career() {
   const [activePosition, setActivePosition] = useState<string | null>(null);
+  const [openings, setOpenings] = useState<JobOpening[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await (supabase as any)
+        .from("job_openings")
+        .select("id, title, department, location, type, description")
+        .eq("is_active", true)
+        .order("created_at", { ascending: true });
+      if (cancelled) return;
+      if (error) {
+        setError(error.message);
+      } else {
+        setOpenings((data as JobOpening[]) ?? []);
+      }
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="bg-background">
       {/* Hero */}
@@ -164,34 +164,50 @@ function Career() {
               Find a role that matches your skills and ambitions. All positions are remote-friendly.
             </p>
           </ScrollReveal>
-          <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {openings.map((job) => (
-              <StaggerItem key={job.title}>
-                <div className="flex flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
-                  <h3 className="text-base font-semibold text-foreground">{job.title}</h3>
-                  <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <span className="inline-flex items-center gap-1.5">
-                      <Users className="h-4 w-4" />
-                      {job.department}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="h-4 w-4" />
-                      {job.location}
-                    </span>
+          {loading ? (
+            <div className="flex justify-center py-12 text-muted-foreground">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+          ) : error ? (
+            <p className="text-center text-sm text-destructive">Unable to load openings right now. Please try again later.</p>
+          ) : openings.length === 0 ? (
+            <p className="text-center text-muted-foreground">No open positions at the moment — check back soon!</p>
+          ) : (
+            <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {openings.map((job) => (
+                <StaggerItem key={job.id}>
+                  <div className="flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
+                    <h3 className="text-base font-semibold text-foreground">{job.title}</h3>
+                    <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                      <span className="inline-flex items-center gap-1.5">
+                        <Users className="h-4 w-4" />
+                        {job.department}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5">
+                        <MapPin className="h-4 w-4" />
+                        {job.location}
+                      </span>
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium capitalize text-brand">
+                        {job.type}
+                      </span>
+                    </div>
+                    {job.description && (
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{job.description}</p>
+                    )}
+                    <div className="mt-5 flex items-center gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setActivePosition(job.title)}
+                        className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
+                      >
+                        Apply Now
+                      </button>
+                    </div>
                   </div>
-                  <div className="mt-5 flex items-center gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setActivePosition(job.title)}
-                      className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
-                    >
-                      Apply Now
-                    </button>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          )}
         </div>
       </section>
 
