@@ -102,7 +102,40 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Shivaryan Infotech",
+          legalName: "Shivaryan Infotech (SAISPL)",
+          url: "/",
+          email: "Help@saispl.com",
+          telephone: "+91-94180-31050",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Bilaspur",
+            addressLocality: "Bilaspur",
+            addressRegion: "Himachal Pradesh",
+            postalCode: "174001",
+            addressCountry: "IN",
+          },
+          contactPoint: [
+            {
+              "@type": "ContactPoint",
+              telephone: "+91-94180-31050",
+              email: "Help@saispl.com",
+              contactType: "customer support",
+              areaServed: "Worldwide",
+              availableLanguage: ["English", "Hindi"],
+            },
+          ],
+        }),
+      },
+    ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
