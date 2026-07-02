@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebDesignDevelopmentRouteImport } from './routes/web-design-development'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ShiviRouteImport } from './routes/shivi'
+import { Route as ShiviLoginRouteImport } from './routes/shivi-login'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-marketing'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -35,27 +35,27 @@ import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.q
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as ClientReportsClientSlugRouteImport } from './routes/client-reports.$clientSlug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
-import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
-import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
-import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin.jobs'
-import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authenticated/admin.contacts'
-import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
-import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
-import { Route as AuthenticatedAdminAdminsRouteImport } from './routes/_authenticated/admin.admins'
-import { Route as AuthenticatedAdminTestimonialsNewRouteImport } from './routes/_authenticated/admin.testimonials.new'
-import { Route as AuthenticatedAdminReportsNewRouteImport } from './routes/_authenticated/admin.reports.new'
-import { Route as AuthenticatedAdminPortfolioNewRouteImport } from './routes/_authenticated/admin.portfolio.new'
-import { Route as AuthenticatedAdminJobsNewRouteImport } from './routes/_authenticated/admin.jobs.new'
-import { Route as AuthenticatedAdminContactIdRouteImport } from './routes/_authenticated/admin.contact.$id'
-import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authenticated/admin.career.$id'
-import { Route as AuthenticatedAdminBlogNewRouteImport } from './routes/_authenticated/admin.blog.new'
-import { Route as AuthenticatedAdminTestimonialsIdEditRouteImport } from './routes/_authenticated/admin.testimonials.$id.edit'
-import { Route as AuthenticatedAdminReportsIdEditRouteImport } from './routes/_authenticated/admin.reports.$id.edit'
-import { Route as AuthenticatedAdminPortfolioIdEditRouteImport } from './routes/_authenticated/admin.portfolio.$id.edit'
-import { Route as AuthenticatedAdminJobsIdEditRouteImport } from './routes/_authenticated/admin.jobs.$id.edit'
-import { Route as AuthenticatedAdminBlogIdEditRouteImport } from './routes/_authenticated/admin.blog.$id.edit'
+import { Route as AuthenticatedShiviRouteImport } from './routes/_authenticated/shivi'
+import { Route as AuthenticatedShiviTestimonialsRouteImport } from './routes/_authenticated/shivi.testimonials'
+import { Route as AuthenticatedShiviReportsRouteImport } from './routes/_authenticated/shivi.reports'
+import { Route as AuthenticatedShiviPortfolioRouteImport } from './routes/_authenticated/shivi.portfolio'
+import { Route as AuthenticatedShiviJobsRouteImport } from './routes/_authenticated/shivi.jobs'
+import { Route as AuthenticatedShiviContactsRouteImport } from './routes/_authenticated/shivi.contacts'
+import { Route as AuthenticatedShiviCareersRouteImport } from './routes/_authenticated/shivi.careers'
+import { Route as AuthenticatedShiviBlogRouteImport } from './routes/_authenticated/shivi.blog'
+import { Route as AuthenticatedShiviAdminsRouteImport } from './routes/_authenticated/shivi.admins'
+import { Route as AuthenticatedShiviTestimonialsNewRouteImport } from './routes/_authenticated/shivi.testimonials.new'
+import { Route as AuthenticatedShiviReportsNewRouteImport } from './routes/_authenticated/shivi.reports.new'
+import { Route as AuthenticatedShiviPortfolioNewRouteImport } from './routes/_authenticated/shivi.portfolio.new'
+import { Route as AuthenticatedShiviJobsNewRouteImport } from './routes/_authenticated/shivi.jobs.new'
+import { Route as AuthenticatedShiviContactIdRouteImport } from './routes/_authenticated/shivi.contact.$id'
+import { Route as AuthenticatedShiviCareerIdRouteImport } from './routes/_authenticated/shivi.career.$id'
+import { Route as AuthenticatedShiviBlogNewRouteImport } from './routes/_authenticated/shivi.blog.new'
+import { Route as AuthenticatedShiviTestimonialsIdEditRouteImport } from './routes/_authenticated/shivi.testimonials.$id.edit'
+import { Route as AuthenticatedShiviReportsIdEditRouteImport } from './routes/_authenticated/shivi.reports.$id.edit'
+import { Route as AuthenticatedShiviPortfolioIdEditRouteImport } from './routes/_authenticated/shivi.portfolio.$id.edit'
+import { Route as AuthenticatedShiviJobsIdEditRouteImport } from './routes/_authenticated/shivi.jobs.$id.edit'
+import { Route as AuthenticatedShiviBlogIdEditRouteImport } from './routes/_authenticated/shivi.blog.$id.edit'
 
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
   id: '/web-design-development',
@@ -72,9 +72,9 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ShiviRoute = ShiviRouteImport.update({
-  id: '/shivi',
-  path: '/shivi',
+const ShiviLoginRoute = ShiviLoginRouteImport.update({
+  id: '/shivi-login',
+  path: '/shivi-login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -186,128 +186,128 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedShiviRoute = AuthenticatedShiviRouteImport.update({
+  id: '/shivi',
+  path: '/shivi',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminTestimonialsRoute =
-  AuthenticatedAdminTestimonialsRouteImport.update({
+const AuthenticatedShiviTestimonialsRoute =
+  AuthenticatedShiviTestimonialsRouteImport.update({
     id: '/testimonials',
     path: '/testimonials',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminReportsRoute =
-  AuthenticatedAdminReportsRouteImport.update({
+const AuthenticatedShiviReportsRoute =
+  AuthenticatedShiviReportsRouteImport.update({
     id: '/reports',
     path: '/reports',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminPortfolioRoute =
-  AuthenticatedAdminPortfolioRouteImport.update({
+const AuthenticatedShiviPortfolioRoute =
+  AuthenticatedShiviPortfolioRouteImport.update({
     id: '/portfolio',
     path: '/portfolio',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
+const AuthenticatedShiviJobsRoute = AuthenticatedShiviJobsRouteImport.update({
   id: '/jobs',
   path: '/jobs',
-  getParentRoute: () => AuthenticatedAdminRoute,
+  getParentRoute: () => AuthenticatedShiviRoute,
 } as any)
-const AuthenticatedAdminContactsRoute =
-  AuthenticatedAdminContactsRouteImport.update({
+const AuthenticatedShiviContactsRoute =
+  AuthenticatedShiviContactsRouteImport.update({
     id: '/contacts',
     path: '/contacts',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminCareersRoute =
-  AuthenticatedAdminCareersRouteImport.update({
+const AuthenticatedShiviCareersRoute =
+  AuthenticatedShiviCareersRouteImport.update({
     id: '/careers',
     path: '/careers',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
+const AuthenticatedShiviBlogRoute = AuthenticatedShiviBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
-  getParentRoute: () => AuthenticatedAdminRoute,
+  getParentRoute: () => AuthenticatedShiviRoute,
 } as any)
-const AuthenticatedAdminAdminsRoute =
-  AuthenticatedAdminAdminsRouteImport.update({
+const AuthenticatedShiviAdminsRoute =
+  AuthenticatedShiviAdminsRouteImport.update({
     id: '/admins',
     path: '/admins',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminTestimonialsNewRoute =
-  AuthenticatedAdminTestimonialsNewRouteImport.update({
+const AuthenticatedShiviTestimonialsNewRoute =
+  AuthenticatedShiviTestimonialsNewRouteImport.update({
     id: '/new',
     path: '/new',
-    getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
+    getParentRoute: () => AuthenticatedShiviTestimonialsRoute,
   } as any)
-const AuthenticatedAdminReportsNewRoute =
-  AuthenticatedAdminReportsNewRouteImport.update({
+const AuthenticatedShiviReportsNewRoute =
+  AuthenticatedShiviReportsNewRouteImport.update({
     id: '/new',
     path: '/new',
-    getParentRoute: () => AuthenticatedAdminReportsRoute,
+    getParentRoute: () => AuthenticatedShiviReportsRoute,
   } as any)
-const AuthenticatedAdminPortfolioNewRoute =
-  AuthenticatedAdminPortfolioNewRouteImport.update({
+const AuthenticatedShiviPortfolioNewRoute =
+  AuthenticatedShiviPortfolioNewRouteImport.update({
     id: '/new',
     path: '/new',
-    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
+    getParentRoute: () => AuthenticatedShiviPortfolioRoute,
   } as any)
-const AuthenticatedAdminJobsNewRoute =
-  AuthenticatedAdminJobsNewRouteImport.update({
+const AuthenticatedShiviJobsNewRoute =
+  AuthenticatedShiviJobsNewRouteImport.update({
     id: '/new',
     path: '/new',
-    getParentRoute: () => AuthenticatedAdminJobsRoute,
+    getParentRoute: () => AuthenticatedShiviJobsRoute,
   } as any)
-const AuthenticatedAdminContactIdRoute =
-  AuthenticatedAdminContactIdRouteImport.update({
+const AuthenticatedShiviContactIdRoute =
+  AuthenticatedShiviContactIdRouteImport.update({
     id: '/contact/$id',
     path: '/contact/$id',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminCareerIdRoute =
-  AuthenticatedAdminCareerIdRouteImport.update({
+const AuthenticatedShiviCareerIdRoute =
+  AuthenticatedShiviCareerIdRouteImport.update({
     id: '/career/$id',
     path: '/career/$id',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedShiviRoute,
   } as any)
-const AuthenticatedAdminBlogNewRoute =
-  AuthenticatedAdminBlogNewRouteImport.update({
+const AuthenticatedShiviBlogNewRoute =
+  AuthenticatedShiviBlogNewRouteImport.update({
     id: '/new',
     path: '/new',
-    getParentRoute: () => AuthenticatedAdminBlogRoute,
+    getParentRoute: () => AuthenticatedShiviBlogRoute,
   } as any)
-const AuthenticatedAdminTestimonialsIdEditRoute =
-  AuthenticatedAdminTestimonialsIdEditRouteImport.update({
+const AuthenticatedShiviTestimonialsIdEditRoute =
+  AuthenticatedShiviTestimonialsIdEditRouteImport.update({
     id: '/$id/edit',
     path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
+    getParentRoute: () => AuthenticatedShiviTestimonialsRoute,
   } as any)
-const AuthenticatedAdminReportsIdEditRoute =
-  AuthenticatedAdminReportsIdEditRouteImport.update({
+const AuthenticatedShiviReportsIdEditRoute =
+  AuthenticatedShiviReportsIdEditRouteImport.update({
     id: '/$id/edit',
     path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminReportsRoute,
+    getParentRoute: () => AuthenticatedShiviReportsRoute,
   } as any)
-const AuthenticatedAdminPortfolioIdEditRoute =
-  AuthenticatedAdminPortfolioIdEditRouteImport.update({
+const AuthenticatedShiviPortfolioIdEditRoute =
+  AuthenticatedShiviPortfolioIdEditRouteImport.update({
     id: '/$id/edit',
     path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
+    getParentRoute: () => AuthenticatedShiviPortfolioRoute,
   } as any)
-const AuthenticatedAdminJobsIdEditRoute =
-  AuthenticatedAdminJobsIdEditRouteImport.update({
+const AuthenticatedShiviJobsIdEditRoute =
+  AuthenticatedShiviJobsIdEditRouteImport.update({
     id: '/$id/edit',
     path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminJobsRoute,
+    getParentRoute: () => AuthenticatedShiviJobsRoute,
   } as any)
-const AuthenticatedAdminBlogIdEditRoute =
-  AuthenticatedAdminBlogIdEditRouteImport.update({
+const AuthenticatedShiviBlogIdEditRoute =
+  AuthenticatedShiviBlogIdEditRouteImport.update({
     id: '/$id/edit',
     path: '/$id/edit',
-    getParentRoute: () => AuthenticatedAdminBlogRoute,
+    getParentRoute: () => AuthenticatedShiviBlogRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -326,37 +326,37 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof ShiviRoute
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/shivi': typeof AuthenticatedShiviRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/admin/admins': typeof AuthenticatedAdminAdminsRoute
-  '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
-  '/admin/careers': typeof AuthenticatedAdminCareersRoute
-  '/admin/contacts': typeof AuthenticatedAdminContactsRoute
-  '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
-  '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
-  '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
-  '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
-  '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
-  '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
-  '/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
-  '/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
-  '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
-  '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
-  '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
-  '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
-  '/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
+  '/shivi/admins': typeof AuthenticatedShiviAdminsRoute
+  '/shivi/blog': typeof AuthenticatedShiviBlogRouteWithChildren
+  '/shivi/careers': typeof AuthenticatedShiviCareersRoute
+  '/shivi/contacts': typeof AuthenticatedShiviContactsRoute
+  '/shivi/jobs': typeof AuthenticatedShiviJobsRouteWithChildren
+  '/shivi/portfolio': typeof AuthenticatedShiviPortfolioRouteWithChildren
+  '/shivi/reports': typeof AuthenticatedShiviReportsRouteWithChildren
+  '/shivi/testimonials': typeof AuthenticatedShiviTestimonialsRouteWithChildren
+  '/shivi/blog/new': typeof AuthenticatedShiviBlogNewRoute
+  '/shivi/career/$id': typeof AuthenticatedShiviCareerIdRoute
+  '/shivi/contact/$id': typeof AuthenticatedShiviContactIdRoute
+  '/shivi/jobs/new': typeof AuthenticatedShiviJobsNewRoute
+  '/shivi/portfolio/new': typeof AuthenticatedShiviPortfolioNewRoute
+  '/shivi/reports/new': typeof AuthenticatedShiviReportsNewRoute
+  '/shivi/testimonials/new': typeof AuthenticatedShiviTestimonialsNewRoute
+  '/shivi/blog/$id/edit': typeof AuthenticatedShiviBlogIdEditRoute
+  '/shivi/jobs/$id/edit': typeof AuthenticatedShiviJobsIdEditRoute
+  '/shivi/portfolio/$id/edit': typeof AuthenticatedShiviPortfolioIdEditRoute
+  '/shivi/reports/$id/edit': typeof AuthenticatedShiviReportsIdEditRoute
+  '/shivi/testimonials/$id/edit': typeof AuthenticatedShiviTestimonialsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -374,37 +374,37 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof ShiviRoute
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/shivi': typeof AuthenticatedShiviRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/admin/admins': typeof AuthenticatedAdminAdminsRoute
-  '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
-  '/admin/careers': typeof AuthenticatedAdminCareersRoute
-  '/admin/contacts': typeof AuthenticatedAdminContactsRoute
-  '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
-  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
-  '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
-  '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
-  '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
-  '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
-  '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
-  '/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
-  '/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
-  '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
-  '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
-  '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
-  '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
-  '/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
+  '/shivi/admins': typeof AuthenticatedShiviAdminsRoute
+  '/shivi/blog': typeof AuthenticatedShiviBlogRouteWithChildren
+  '/shivi/careers': typeof AuthenticatedShiviCareersRoute
+  '/shivi/contacts': typeof AuthenticatedShiviContactsRoute
+  '/shivi/jobs': typeof AuthenticatedShiviJobsRouteWithChildren
+  '/shivi/portfolio': typeof AuthenticatedShiviPortfolioRouteWithChildren
+  '/shivi/reports': typeof AuthenticatedShiviReportsRouteWithChildren
+  '/shivi/testimonials': typeof AuthenticatedShiviTestimonialsRouteWithChildren
+  '/shivi/blog/new': typeof AuthenticatedShiviBlogNewRoute
+  '/shivi/career/$id': typeof AuthenticatedShiviCareerIdRoute
+  '/shivi/contact/$id': typeof AuthenticatedShiviContactIdRoute
+  '/shivi/jobs/new': typeof AuthenticatedShiviJobsNewRoute
+  '/shivi/portfolio/new': typeof AuthenticatedShiviPortfolioNewRoute
+  '/shivi/reports/new': typeof AuthenticatedShiviReportsNewRoute
+  '/shivi/testimonials/new': typeof AuthenticatedShiviTestimonialsNewRoute
+  '/shivi/blog/$id/edit': typeof AuthenticatedShiviBlogIdEditRoute
+  '/shivi/jobs/$id/edit': typeof AuthenticatedShiviJobsIdEditRoute
+  '/shivi/portfolio/$id/edit': typeof AuthenticatedShiviPortfolioIdEditRoute
+  '/shivi/reports/$id/edit': typeof AuthenticatedShiviReportsIdEditRoute
+  '/shivi/testimonials/$id/edit': typeof AuthenticatedShiviTestimonialsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -424,37 +424,37 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
-  '/shivi': typeof ShiviRoute
+  '/shivi-login': typeof ShiviLoginRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/shivi': typeof AuthenticatedShiviRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
-  '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
-  '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
-  '/_authenticated/admin/contacts': typeof AuthenticatedAdminContactsRoute
-  '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
-  '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
-  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
-  '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  '/_authenticated/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
-  '/_authenticated/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
-  '/_authenticated/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
-  '/_authenticated/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
-  '/_authenticated/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
-  '/_authenticated/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
-  '/_authenticated/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
-  '/_authenticated/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
-  '/_authenticated/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
-  '/_authenticated/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
-  '/_authenticated/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
-  '/_authenticated/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
+  '/_authenticated/shivi/admins': typeof AuthenticatedShiviAdminsRoute
+  '/_authenticated/shivi/blog': typeof AuthenticatedShiviBlogRouteWithChildren
+  '/_authenticated/shivi/careers': typeof AuthenticatedShiviCareersRoute
+  '/_authenticated/shivi/contacts': typeof AuthenticatedShiviContactsRoute
+  '/_authenticated/shivi/jobs': typeof AuthenticatedShiviJobsRouteWithChildren
+  '/_authenticated/shivi/portfolio': typeof AuthenticatedShiviPortfolioRouteWithChildren
+  '/_authenticated/shivi/reports': typeof AuthenticatedShiviReportsRouteWithChildren
+  '/_authenticated/shivi/testimonials': typeof AuthenticatedShiviTestimonialsRouteWithChildren
+  '/_authenticated/shivi/blog/new': typeof AuthenticatedShiviBlogNewRoute
+  '/_authenticated/shivi/career/$id': typeof AuthenticatedShiviCareerIdRoute
+  '/_authenticated/shivi/contact/$id': typeof AuthenticatedShiviContactIdRoute
+  '/_authenticated/shivi/jobs/new': typeof AuthenticatedShiviJobsNewRoute
+  '/_authenticated/shivi/portfolio/new': typeof AuthenticatedShiviPortfolioNewRoute
+  '/_authenticated/shivi/reports/new': typeof AuthenticatedShiviReportsNewRoute
+  '/_authenticated/shivi/testimonials/new': typeof AuthenticatedShiviTestimonialsNewRoute
+  '/_authenticated/shivi/blog/$id/edit': typeof AuthenticatedShiviBlogIdEditRoute
+  '/_authenticated/shivi/jobs/$id/edit': typeof AuthenticatedShiviJobsIdEditRoute
+  '/_authenticated/shivi/portfolio/$id/edit': typeof AuthenticatedShiviPortfolioIdEditRoute
+  '/_authenticated/shivi/reports/$id/edit': typeof AuthenticatedShiviReportsIdEditRoute
+  '/_authenticated/shivi/testimonials/$id/edit': typeof AuthenticatedShiviTestimonialsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -474,37 +474,37 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
-    | '/admin'
+    | '/shivi'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/admin/admins'
-    | '/admin/blog'
-    | '/admin/careers'
-    | '/admin/contacts'
-    | '/admin/jobs'
-    | '/admin/portfolio'
-    | '/admin/reports'
-    | '/admin/testimonials'
-    | '/admin/blog/new'
-    | '/admin/career/$id'
-    | '/admin/contact/$id'
-    | '/admin/jobs/new'
-    | '/admin/portfolio/new'
-    | '/admin/reports/new'
-    | '/admin/testimonials/new'
-    | '/admin/blog/$id/edit'
-    | '/admin/jobs/$id/edit'
-    | '/admin/portfolio/$id/edit'
-    | '/admin/reports/$id/edit'
-    | '/admin/testimonials/$id/edit'
+    | '/shivi/admins'
+    | '/shivi/blog'
+    | '/shivi/careers'
+    | '/shivi/contacts'
+    | '/shivi/jobs'
+    | '/shivi/portfolio'
+    | '/shivi/reports'
+    | '/shivi/testimonials'
+    | '/shivi/blog/new'
+    | '/shivi/career/$id'
+    | '/shivi/contact/$id'
+    | '/shivi/jobs/new'
+    | '/shivi/portfolio/new'
+    | '/shivi/reports/new'
+    | '/shivi/testimonials/new'
+    | '/shivi/blog/$id/edit'
+    | '/shivi/jobs/$id/edit'
+    | '/shivi/portfolio/$id/edit'
+    | '/shivi/reports/$id/edit'
+    | '/shivi/testimonials/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -522,37 +522,37 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
-    | '/admin'
+    | '/shivi'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/admin/admins'
-    | '/admin/blog'
-    | '/admin/careers'
-    | '/admin/contacts'
-    | '/admin/jobs'
-    | '/admin/portfolio'
-    | '/admin/reports'
-    | '/admin/testimonials'
-    | '/admin/blog/new'
-    | '/admin/career/$id'
-    | '/admin/contact/$id'
-    | '/admin/jobs/new'
-    | '/admin/portfolio/new'
-    | '/admin/reports/new'
-    | '/admin/testimonials/new'
-    | '/admin/blog/$id/edit'
-    | '/admin/jobs/$id/edit'
-    | '/admin/portfolio/$id/edit'
-    | '/admin/reports/$id/edit'
-    | '/admin/testimonials/$id/edit'
+    | '/shivi/admins'
+    | '/shivi/blog'
+    | '/shivi/careers'
+    | '/shivi/contacts'
+    | '/shivi/jobs'
+    | '/shivi/portfolio'
+    | '/shivi/reports'
+    | '/shivi/testimonials'
+    | '/shivi/blog/new'
+    | '/shivi/career/$id'
+    | '/shivi/contact/$id'
+    | '/shivi/jobs/new'
+    | '/shivi/portfolio/new'
+    | '/shivi/reports/new'
+    | '/shivi/testimonials/new'
+    | '/shivi/blog/$id/edit'
+    | '/shivi/jobs/$id/edit'
+    | '/shivi/portfolio/$id/edit'
+    | '/shivi/reports/$id/edit'
+    | '/shivi/testimonials/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -571,37 +571,37 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/seo-digital-marketing'
     | '/services'
-    | '/shivi'
+    | '/shivi-login'
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
-    | '/_authenticated/admin'
+    | '/_authenticated/shivi'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/_authenticated/admin/admins'
-    | '/_authenticated/admin/blog'
-    | '/_authenticated/admin/careers'
-    | '/_authenticated/admin/contacts'
-    | '/_authenticated/admin/jobs'
-    | '/_authenticated/admin/portfolio'
-    | '/_authenticated/admin/reports'
-    | '/_authenticated/admin/testimonials'
-    | '/_authenticated/admin/blog/new'
-    | '/_authenticated/admin/career/$id'
-    | '/_authenticated/admin/contact/$id'
-    | '/_authenticated/admin/jobs/new'
-    | '/_authenticated/admin/portfolio/new'
-    | '/_authenticated/admin/reports/new'
-    | '/_authenticated/admin/testimonials/new'
-    | '/_authenticated/admin/blog/$id/edit'
-    | '/_authenticated/admin/jobs/$id/edit'
-    | '/_authenticated/admin/portfolio/$id/edit'
-    | '/_authenticated/admin/reports/$id/edit'
-    | '/_authenticated/admin/testimonials/$id/edit'
+    | '/_authenticated/shivi/admins'
+    | '/_authenticated/shivi/blog'
+    | '/_authenticated/shivi/careers'
+    | '/_authenticated/shivi/contacts'
+    | '/_authenticated/shivi/jobs'
+    | '/_authenticated/shivi/portfolio'
+    | '/_authenticated/shivi/reports'
+    | '/_authenticated/shivi/testimonials'
+    | '/_authenticated/shivi/blog/new'
+    | '/_authenticated/shivi/career/$id'
+    | '/_authenticated/shivi/contact/$id'
+    | '/_authenticated/shivi/jobs/new'
+    | '/_authenticated/shivi/portfolio/new'
+    | '/_authenticated/shivi/reports/new'
+    | '/_authenticated/shivi/testimonials/new'
+    | '/_authenticated/shivi/blog/$id/edit'
+    | '/_authenticated/shivi/jobs/$id/edit'
+    | '/_authenticated/shivi/portfolio/$id/edit'
+    | '/_authenticated/shivi/reports/$id/edit'
+    | '/_authenticated/shivi/testimonials/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -621,7 +621,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SeoDigitalMarketingRoute: typeof SeoDigitalMarketingRoute
   ServicesRoute: typeof ServicesRoute
-  ShiviRoute: typeof ShiviRoute
+  ShiviLoginRoute: typeof ShiviLoginRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
@@ -654,11 +654,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/shivi': {
-      id: '/shivi'
-      path: '/shivi'
-      fullPath: '/shivi'
-      preLoaderRoute: typeof ShiviRouteImport
+    '/shivi-login': {
+      id: '/shivi-login'
+      path: '/shivi-login'
+      fullPath: '/shivi-login'
+      preLoaderRoute: typeof ShiviLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -815,276 +815,276 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/shivi': {
+      id: '/_authenticated/shivi'
+      path: '/shivi'
+      fullPath: '/shivi'
+      preLoaderRoute: typeof AuthenticatedShiviRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/testimonials': {
-      id: '/_authenticated/admin/testimonials'
+    '/_authenticated/shivi/testimonials': {
+      id: '/_authenticated/shivi/testimonials'
       path: '/testimonials'
-      fullPath: '/admin/testimonials'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/testimonials'
+      preLoaderRoute: typeof AuthenticatedShiviTestimonialsRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/reports': {
-      id: '/_authenticated/admin/reports'
+    '/_authenticated/shivi/reports': {
+      id: '/_authenticated/shivi/reports'
       path: '/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/reports'
+      preLoaderRoute: typeof AuthenticatedShiviReportsRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/portfolio': {
-      id: '/_authenticated/admin/portfolio'
+    '/_authenticated/shivi/portfolio': {
+      id: '/_authenticated/shivi/portfolio'
       path: '/portfolio'
-      fullPath: '/admin/portfolio'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/portfolio'
+      preLoaderRoute: typeof AuthenticatedShiviPortfolioRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/jobs': {
-      id: '/_authenticated/admin/jobs'
+    '/_authenticated/shivi/jobs': {
+      id: '/_authenticated/shivi/jobs'
       path: '/jobs'
-      fullPath: '/admin/jobs'
-      preLoaderRoute: typeof AuthenticatedAdminJobsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/jobs'
+      preLoaderRoute: typeof AuthenticatedShiviJobsRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/contacts': {
-      id: '/_authenticated/admin/contacts'
+    '/_authenticated/shivi/contacts': {
+      id: '/_authenticated/shivi/contacts'
       path: '/contacts'
-      fullPath: '/admin/contacts'
-      preLoaderRoute: typeof AuthenticatedAdminContactsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/contacts'
+      preLoaderRoute: typeof AuthenticatedShiviContactsRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/careers': {
-      id: '/_authenticated/admin/careers'
+    '/_authenticated/shivi/careers': {
+      id: '/_authenticated/shivi/careers'
       path: '/careers'
-      fullPath: '/admin/careers'
-      preLoaderRoute: typeof AuthenticatedAdminCareersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/careers'
+      preLoaderRoute: typeof AuthenticatedShiviCareersRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/blog': {
-      id: '/_authenticated/admin/blog'
+    '/_authenticated/shivi/blog': {
+      id: '/_authenticated/shivi/blog'
       path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/blog'
+      preLoaderRoute: typeof AuthenticatedShiviBlogRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/admins': {
-      id: '/_authenticated/admin/admins'
+    '/_authenticated/shivi/admins': {
+      id: '/_authenticated/shivi/admins'
       path: '/admins'
-      fullPath: '/admin/admins'
-      preLoaderRoute: typeof AuthenticatedAdminAdminsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/admins'
+      preLoaderRoute: typeof AuthenticatedShiviAdminsRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/testimonials/new': {
-      id: '/_authenticated/admin/testimonials/new'
+    '/_authenticated/shivi/testimonials/new': {
+      id: '/_authenticated/shivi/testimonials/new'
       path: '/new'
-      fullPath: '/admin/testimonials/new'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsNewRouteImport
-      parentRoute: typeof AuthenticatedAdminTestimonialsRoute
+      fullPath: '/shivi/testimonials/new'
+      preLoaderRoute: typeof AuthenticatedShiviTestimonialsNewRouteImport
+      parentRoute: typeof AuthenticatedShiviTestimonialsRoute
     }
-    '/_authenticated/admin/reports/new': {
-      id: '/_authenticated/admin/reports/new'
+    '/_authenticated/shivi/reports/new': {
+      id: '/_authenticated/shivi/reports/new'
       path: '/new'
-      fullPath: '/admin/reports/new'
-      preLoaderRoute: typeof AuthenticatedAdminReportsNewRouteImport
-      parentRoute: typeof AuthenticatedAdminReportsRoute
+      fullPath: '/shivi/reports/new'
+      preLoaderRoute: typeof AuthenticatedShiviReportsNewRouteImport
+      parentRoute: typeof AuthenticatedShiviReportsRoute
     }
-    '/_authenticated/admin/portfolio/new': {
-      id: '/_authenticated/admin/portfolio/new'
+    '/_authenticated/shivi/portfolio/new': {
+      id: '/_authenticated/shivi/portfolio/new'
       path: '/new'
-      fullPath: '/admin/portfolio/new'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioNewRouteImport
-      parentRoute: typeof AuthenticatedAdminPortfolioRoute
+      fullPath: '/shivi/portfolio/new'
+      preLoaderRoute: typeof AuthenticatedShiviPortfolioNewRouteImport
+      parentRoute: typeof AuthenticatedShiviPortfolioRoute
     }
-    '/_authenticated/admin/jobs/new': {
-      id: '/_authenticated/admin/jobs/new'
+    '/_authenticated/shivi/jobs/new': {
+      id: '/_authenticated/shivi/jobs/new'
       path: '/new'
-      fullPath: '/admin/jobs/new'
-      preLoaderRoute: typeof AuthenticatedAdminJobsNewRouteImport
-      parentRoute: typeof AuthenticatedAdminJobsRoute
+      fullPath: '/shivi/jobs/new'
+      preLoaderRoute: typeof AuthenticatedShiviJobsNewRouteImport
+      parentRoute: typeof AuthenticatedShiviJobsRoute
     }
-    '/_authenticated/admin/contact/$id': {
-      id: '/_authenticated/admin/contact/$id'
+    '/_authenticated/shivi/contact/$id': {
+      id: '/_authenticated/shivi/contact/$id'
       path: '/contact/$id'
-      fullPath: '/admin/contact/$id'
-      preLoaderRoute: typeof AuthenticatedAdminContactIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/contact/$id'
+      preLoaderRoute: typeof AuthenticatedShiviContactIdRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/career/$id': {
-      id: '/_authenticated/admin/career/$id'
+    '/_authenticated/shivi/career/$id': {
+      id: '/_authenticated/shivi/career/$id'
       path: '/career/$id'
-      fullPath: '/admin/career/$id'
-      preLoaderRoute: typeof AuthenticatedAdminCareerIdRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/shivi/career/$id'
+      preLoaderRoute: typeof AuthenticatedShiviCareerIdRouteImport
+      parentRoute: typeof AuthenticatedShiviRoute
     }
-    '/_authenticated/admin/blog/new': {
-      id: '/_authenticated/admin/blog/new'
+    '/_authenticated/shivi/blog/new': {
+      id: '/_authenticated/shivi/blog/new'
       path: '/new'
-      fullPath: '/admin/blog/new'
-      preLoaderRoute: typeof AuthenticatedAdminBlogNewRouteImport
-      parentRoute: typeof AuthenticatedAdminBlogRoute
+      fullPath: '/shivi/blog/new'
+      preLoaderRoute: typeof AuthenticatedShiviBlogNewRouteImport
+      parentRoute: typeof AuthenticatedShiviBlogRoute
     }
-    '/_authenticated/admin/testimonials/$id/edit': {
-      id: '/_authenticated/admin/testimonials/$id/edit'
+    '/_authenticated/shivi/testimonials/$id/edit': {
+      id: '/_authenticated/shivi/testimonials/$id/edit'
       path: '/$id/edit'
-      fullPath: '/admin/testimonials/$id/edit'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminTestimonialsRoute
+      fullPath: '/shivi/testimonials/$id/edit'
+      preLoaderRoute: typeof AuthenticatedShiviTestimonialsIdEditRouteImport
+      parentRoute: typeof AuthenticatedShiviTestimonialsRoute
     }
-    '/_authenticated/admin/reports/$id/edit': {
-      id: '/_authenticated/admin/reports/$id/edit'
+    '/_authenticated/shivi/reports/$id/edit': {
+      id: '/_authenticated/shivi/reports/$id/edit'
       path: '/$id/edit'
-      fullPath: '/admin/reports/$id/edit'
-      preLoaderRoute: typeof AuthenticatedAdminReportsIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminReportsRoute
+      fullPath: '/shivi/reports/$id/edit'
+      preLoaderRoute: typeof AuthenticatedShiviReportsIdEditRouteImport
+      parentRoute: typeof AuthenticatedShiviReportsRoute
     }
-    '/_authenticated/admin/portfolio/$id/edit': {
-      id: '/_authenticated/admin/portfolio/$id/edit'
+    '/_authenticated/shivi/portfolio/$id/edit': {
+      id: '/_authenticated/shivi/portfolio/$id/edit'
       path: '/$id/edit'
-      fullPath: '/admin/portfolio/$id/edit'
-      preLoaderRoute: typeof AuthenticatedAdminPortfolioIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminPortfolioRoute
+      fullPath: '/shivi/portfolio/$id/edit'
+      preLoaderRoute: typeof AuthenticatedShiviPortfolioIdEditRouteImport
+      parentRoute: typeof AuthenticatedShiviPortfolioRoute
     }
-    '/_authenticated/admin/jobs/$id/edit': {
-      id: '/_authenticated/admin/jobs/$id/edit'
+    '/_authenticated/shivi/jobs/$id/edit': {
+      id: '/_authenticated/shivi/jobs/$id/edit'
       path: '/$id/edit'
-      fullPath: '/admin/jobs/$id/edit'
-      preLoaderRoute: typeof AuthenticatedAdminJobsIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminJobsRoute
+      fullPath: '/shivi/jobs/$id/edit'
+      preLoaderRoute: typeof AuthenticatedShiviJobsIdEditRouteImport
+      parentRoute: typeof AuthenticatedShiviJobsRoute
     }
-    '/_authenticated/admin/blog/$id/edit': {
-      id: '/_authenticated/admin/blog/$id/edit'
+    '/_authenticated/shivi/blog/$id/edit': {
+      id: '/_authenticated/shivi/blog/$id/edit'
       path: '/$id/edit'
-      fullPath: '/admin/blog/$id/edit'
-      preLoaderRoute: typeof AuthenticatedAdminBlogIdEditRouteImport
-      parentRoute: typeof AuthenticatedAdminBlogRoute
+      fullPath: '/shivi/blog/$id/edit'
+      preLoaderRoute: typeof AuthenticatedShiviBlogIdEditRouteImport
+      parentRoute: typeof AuthenticatedShiviBlogRoute
     }
   }
 }
 
-interface AuthenticatedAdminBlogRouteChildren {
-  AuthenticatedAdminBlogNewRoute: typeof AuthenticatedAdminBlogNewRoute
-  AuthenticatedAdminBlogIdEditRoute: typeof AuthenticatedAdminBlogIdEditRoute
+interface AuthenticatedShiviBlogRouteChildren {
+  AuthenticatedShiviBlogNewRoute: typeof AuthenticatedShiviBlogNewRoute
+  AuthenticatedShiviBlogIdEditRoute: typeof AuthenticatedShiviBlogIdEditRoute
 }
 
-const AuthenticatedAdminBlogRouteChildren: AuthenticatedAdminBlogRouteChildren =
+const AuthenticatedShiviBlogRouteChildren: AuthenticatedShiviBlogRouteChildren =
   {
-    AuthenticatedAdminBlogNewRoute: AuthenticatedAdminBlogNewRoute,
-    AuthenticatedAdminBlogIdEditRoute: AuthenticatedAdminBlogIdEditRoute,
+    AuthenticatedShiviBlogNewRoute: AuthenticatedShiviBlogNewRoute,
+    AuthenticatedShiviBlogIdEditRoute: AuthenticatedShiviBlogIdEditRoute,
   }
 
-const AuthenticatedAdminBlogRouteWithChildren =
-  AuthenticatedAdminBlogRoute._addFileChildren(
-    AuthenticatedAdminBlogRouteChildren,
+const AuthenticatedShiviBlogRouteWithChildren =
+  AuthenticatedShiviBlogRoute._addFileChildren(
+    AuthenticatedShiviBlogRouteChildren,
   )
 
-interface AuthenticatedAdminJobsRouteChildren {
-  AuthenticatedAdminJobsNewRoute: typeof AuthenticatedAdminJobsNewRoute
-  AuthenticatedAdminJobsIdEditRoute: typeof AuthenticatedAdminJobsIdEditRoute
+interface AuthenticatedShiviJobsRouteChildren {
+  AuthenticatedShiviJobsNewRoute: typeof AuthenticatedShiviJobsNewRoute
+  AuthenticatedShiviJobsIdEditRoute: typeof AuthenticatedShiviJobsIdEditRoute
 }
 
-const AuthenticatedAdminJobsRouteChildren: AuthenticatedAdminJobsRouteChildren =
+const AuthenticatedShiviJobsRouteChildren: AuthenticatedShiviJobsRouteChildren =
   {
-    AuthenticatedAdminJobsNewRoute: AuthenticatedAdminJobsNewRoute,
-    AuthenticatedAdminJobsIdEditRoute: AuthenticatedAdminJobsIdEditRoute,
+    AuthenticatedShiviJobsNewRoute: AuthenticatedShiviJobsNewRoute,
+    AuthenticatedShiviJobsIdEditRoute: AuthenticatedShiviJobsIdEditRoute,
   }
 
-const AuthenticatedAdminJobsRouteWithChildren =
-  AuthenticatedAdminJobsRoute._addFileChildren(
-    AuthenticatedAdminJobsRouteChildren,
+const AuthenticatedShiviJobsRouteWithChildren =
+  AuthenticatedShiviJobsRoute._addFileChildren(
+    AuthenticatedShiviJobsRouteChildren,
   )
 
-interface AuthenticatedAdminPortfolioRouteChildren {
-  AuthenticatedAdminPortfolioNewRoute: typeof AuthenticatedAdminPortfolioNewRoute
-  AuthenticatedAdminPortfolioIdEditRoute: typeof AuthenticatedAdminPortfolioIdEditRoute
+interface AuthenticatedShiviPortfolioRouteChildren {
+  AuthenticatedShiviPortfolioNewRoute: typeof AuthenticatedShiviPortfolioNewRoute
+  AuthenticatedShiviPortfolioIdEditRoute: typeof AuthenticatedShiviPortfolioIdEditRoute
 }
 
-const AuthenticatedAdminPortfolioRouteChildren: AuthenticatedAdminPortfolioRouteChildren =
+const AuthenticatedShiviPortfolioRouteChildren: AuthenticatedShiviPortfolioRouteChildren =
   {
-    AuthenticatedAdminPortfolioNewRoute: AuthenticatedAdminPortfolioNewRoute,
-    AuthenticatedAdminPortfolioIdEditRoute:
-      AuthenticatedAdminPortfolioIdEditRoute,
+    AuthenticatedShiviPortfolioNewRoute: AuthenticatedShiviPortfolioNewRoute,
+    AuthenticatedShiviPortfolioIdEditRoute:
+      AuthenticatedShiviPortfolioIdEditRoute,
   }
 
-const AuthenticatedAdminPortfolioRouteWithChildren =
-  AuthenticatedAdminPortfolioRoute._addFileChildren(
-    AuthenticatedAdminPortfolioRouteChildren,
+const AuthenticatedShiviPortfolioRouteWithChildren =
+  AuthenticatedShiviPortfolioRoute._addFileChildren(
+    AuthenticatedShiviPortfolioRouteChildren,
   )
 
-interface AuthenticatedAdminReportsRouteChildren {
-  AuthenticatedAdminReportsNewRoute: typeof AuthenticatedAdminReportsNewRoute
-  AuthenticatedAdminReportsIdEditRoute: typeof AuthenticatedAdminReportsIdEditRoute
+interface AuthenticatedShiviReportsRouteChildren {
+  AuthenticatedShiviReportsNewRoute: typeof AuthenticatedShiviReportsNewRoute
+  AuthenticatedShiviReportsIdEditRoute: typeof AuthenticatedShiviReportsIdEditRoute
 }
 
-const AuthenticatedAdminReportsRouteChildren: AuthenticatedAdminReportsRouteChildren =
+const AuthenticatedShiviReportsRouteChildren: AuthenticatedShiviReportsRouteChildren =
   {
-    AuthenticatedAdminReportsNewRoute: AuthenticatedAdminReportsNewRoute,
-    AuthenticatedAdminReportsIdEditRoute: AuthenticatedAdminReportsIdEditRoute,
+    AuthenticatedShiviReportsNewRoute: AuthenticatedShiviReportsNewRoute,
+    AuthenticatedShiviReportsIdEditRoute: AuthenticatedShiviReportsIdEditRoute,
   }
 
-const AuthenticatedAdminReportsRouteWithChildren =
-  AuthenticatedAdminReportsRoute._addFileChildren(
-    AuthenticatedAdminReportsRouteChildren,
+const AuthenticatedShiviReportsRouteWithChildren =
+  AuthenticatedShiviReportsRoute._addFileChildren(
+    AuthenticatedShiviReportsRouteChildren,
   )
 
-interface AuthenticatedAdminTestimonialsRouteChildren {
-  AuthenticatedAdminTestimonialsNewRoute: typeof AuthenticatedAdminTestimonialsNewRoute
-  AuthenticatedAdminTestimonialsIdEditRoute: typeof AuthenticatedAdminTestimonialsIdEditRoute
+interface AuthenticatedShiviTestimonialsRouteChildren {
+  AuthenticatedShiviTestimonialsNewRoute: typeof AuthenticatedShiviTestimonialsNewRoute
+  AuthenticatedShiviTestimonialsIdEditRoute: typeof AuthenticatedShiviTestimonialsIdEditRoute
 }
 
-const AuthenticatedAdminTestimonialsRouteChildren: AuthenticatedAdminTestimonialsRouteChildren =
+const AuthenticatedShiviTestimonialsRouteChildren: AuthenticatedShiviTestimonialsRouteChildren =
   {
-    AuthenticatedAdminTestimonialsNewRoute:
-      AuthenticatedAdminTestimonialsNewRoute,
-    AuthenticatedAdminTestimonialsIdEditRoute:
-      AuthenticatedAdminTestimonialsIdEditRoute,
+    AuthenticatedShiviTestimonialsNewRoute:
+      AuthenticatedShiviTestimonialsNewRoute,
+    AuthenticatedShiviTestimonialsIdEditRoute:
+      AuthenticatedShiviTestimonialsIdEditRoute,
   }
 
-const AuthenticatedAdminTestimonialsRouteWithChildren =
-  AuthenticatedAdminTestimonialsRoute._addFileChildren(
-    AuthenticatedAdminTestimonialsRouteChildren,
+const AuthenticatedShiviTestimonialsRouteWithChildren =
+  AuthenticatedShiviTestimonialsRoute._addFileChildren(
+    AuthenticatedShiviTestimonialsRouteChildren,
   )
 
-interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminAdminsRoute: typeof AuthenticatedAdminAdminsRoute
-  AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
-  AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
-  AuthenticatedAdminContactsRoute: typeof AuthenticatedAdminContactsRoute
-  AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRouteWithChildren
-  AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
-  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRouteWithChildren
-  AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
-  AuthenticatedAdminCareerIdRoute: typeof AuthenticatedAdminCareerIdRoute
-  AuthenticatedAdminContactIdRoute: typeof AuthenticatedAdminContactIdRoute
+interface AuthenticatedShiviRouteChildren {
+  AuthenticatedShiviAdminsRoute: typeof AuthenticatedShiviAdminsRoute
+  AuthenticatedShiviBlogRoute: typeof AuthenticatedShiviBlogRouteWithChildren
+  AuthenticatedShiviCareersRoute: typeof AuthenticatedShiviCareersRoute
+  AuthenticatedShiviContactsRoute: typeof AuthenticatedShiviContactsRoute
+  AuthenticatedShiviJobsRoute: typeof AuthenticatedShiviJobsRouteWithChildren
+  AuthenticatedShiviPortfolioRoute: typeof AuthenticatedShiviPortfolioRouteWithChildren
+  AuthenticatedShiviReportsRoute: typeof AuthenticatedShiviReportsRouteWithChildren
+  AuthenticatedShiviTestimonialsRoute: typeof AuthenticatedShiviTestimonialsRouteWithChildren
+  AuthenticatedShiviCareerIdRoute: typeof AuthenticatedShiviCareerIdRoute
+  AuthenticatedShiviContactIdRoute: typeof AuthenticatedShiviContactIdRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminAdminsRoute: AuthenticatedAdminAdminsRoute,
-  AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
-  AuthenticatedAdminCareersRoute: AuthenticatedAdminCareersRoute,
-  AuthenticatedAdminContactsRoute: AuthenticatedAdminContactsRoute,
-  AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRouteWithChildren,
-  AuthenticatedAdminPortfolioRoute:
-    AuthenticatedAdminPortfolioRouteWithChildren,
-  AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRouteWithChildren,
-  AuthenticatedAdminTestimonialsRoute:
-    AuthenticatedAdminTestimonialsRouteWithChildren,
-  AuthenticatedAdminCareerIdRoute: AuthenticatedAdminCareerIdRoute,
-  AuthenticatedAdminContactIdRoute: AuthenticatedAdminContactIdRoute,
+const AuthenticatedShiviRouteChildren: AuthenticatedShiviRouteChildren = {
+  AuthenticatedShiviAdminsRoute: AuthenticatedShiviAdminsRoute,
+  AuthenticatedShiviBlogRoute: AuthenticatedShiviBlogRouteWithChildren,
+  AuthenticatedShiviCareersRoute: AuthenticatedShiviCareersRoute,
+  AuthenticatedShiviContactsRoute: AuthenticatedShiviContactsRoute,
+  AuthenticatedShiviJobsRoute: AuthenticatedShiviJobsRouteWithChildren,
+  AuthenticatedShiviPortfolioRoute:
+    AuthenticatedShiviPortfolioRouteWithChildren,
+  AuthenticatedShiviReportsRoute: AuthenticatedShiviReportsRouteWithChildren,
+  AuthenticatedShiviTestimonialsRoute:
+    AuthenticatedShiviTestimonialsRouteWithChildren,
+  AuthenticatedShiviCareerIdRoute: AuthenticatedShiviCareerIdRoute,
+  AuthenticatedShiviContactIdRoute: AuthenticatedShiviContactIdRoute,
 }
 
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+const AuthenticatedShiviRouteWithChildren =
+  AuthenticatedShiviRoute._addFileChildren(AuthenticatedShiviRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedShiviRoute: typeof AuthenticatedShiviRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedShiviRoute: AuthenticatedShiviRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -1129,7 +1129,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SeoDigitalMarketingRoute: SeoDigitalMarketingRoute,
   ServicesRoute: ServicesRoute,
-  ShiviRoute: ShiviRoute,
+  ShiviLoginRoute: ShiviLoginRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,

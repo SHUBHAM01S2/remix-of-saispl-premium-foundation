@@ -42,7 +42,7 @@ function ResetPasswordPage() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       await supabase.auth.signOut();
-      navigate({ to: "/shivi", replace: true });
+      navigate({ to: "/shivi-login", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to reset password");
     } finally {

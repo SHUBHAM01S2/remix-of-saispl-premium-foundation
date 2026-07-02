@@ -6,11 +6,11 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getJobOpening } from "@/lib/jobs-admin.functions";
 import { JobForm } from "@/components/admin/JobForm";
 
-export const Route = createFileRoute("/_authenticated/admin/jobs/$id/edit")({
+export const Route = createFileRoute("/_authenticated/shivi/jobs/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    if (!result.isSuperAdmin) throw redirect({ to: "/admin" });
+    if (!result.isSuperAdmin) throw redirect({ to: "/shivi" });
     return { admin: result.admin };
   },
   component: EditJobPage,
@@ -33,7 +33,7 @@ function EditJobPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-3xl">
-        <Link to="/admin/jobs" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/shivi/jobs" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to jobs
         </Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">Edit Job</h1>
