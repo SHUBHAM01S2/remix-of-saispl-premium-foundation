@@ -24,7 +24,6 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
@@ -106,11 +105,6 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OurWorksIndexRoute = OurWorksIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => OurWorksRoute,
-} as any)
 const ReportsIdRoute = ReportsIdRouteImport.update({
   id: '/reports/$id',
   path: '/reports/$id',
@@ -158,7 +152,6 @@ export interface FileRoutesByFullPath {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -169,6 +162,7 @@ export interface FileRoutesByTo {
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
+  '/our-works': typeof OurWorksRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
@@ -180,7 +174,6 @@ export interface FileRoutesByTo {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/our-works': typeof OurWorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -204,7 +197,6 @@ export interface FileRoutesById {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -229,7 +221,6 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/our-works/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -240,6 +231,7 @@ export interface FileRouteTypes {
     | '/career'
     | '/contact'
     | '/custom-portals-software'
+    | '/our-works'
     | '/pricing'
     | '/privacy'
     | '/seo-digital-marketing'
@@ -251,7 +243,6 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/our-works'
   id:
     | '__root__'
     | '/'
@@ -274,7 +265,6 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
-    | '/our-works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -405,13 +395,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/our-works/': {
-      id: '/our-works/'
-      path: '/'
-      fullPath: '/our-works/'
-      preLoaderRoute: typeof OurWorksIndexRouteImport
-      parentRoute: typeof OurWorksRoute
-    }
     '/reports/$id': {
       id: '/reports/$id'
       path: '/reports/$id'
@@ -462,12 +445,10 @@ const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface OurWorksRouteChildren {
   OurWorksCaseStudyIdRoute: typeof OurWorksCaseStudyIdRoute
-  OurWorksIndexRoute: typeof OurWorksIndexRoute
 }
 
 const OurWorksRouteChildren: OurWorksRouteChildren = {
   OurWorksCaseStudyIdRoute: OurWorksCaseStudyIdRoute,
-  OurWorksIndexRoute: OurWorksIndexRoute,
 }
 
 const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
