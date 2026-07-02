@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Lightbulb, Award, Handshake } from "lucide-react";
+import { Lightbulb, Award, Handshake, User } from "lucide-react";
 
 const values = [
   {
