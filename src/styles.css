@@ -59,6 +59,11 @@
   --color-surface-elevated: var(--surface-elevated);
   --color-surface-elevated-foreground: var(--surface-elevated-foreground);
 
+  /* Pastel card backgrounds */
+  --color-card-blue: var(--card-blue);
+  --color-card-yellow: var(--card-yellow);
+  --color-card-lavender: var(--card-lavender);
+
   /* Typography */
   --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
