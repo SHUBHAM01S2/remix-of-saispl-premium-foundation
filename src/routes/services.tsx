@@ -147,8 +147,8 @@ function Services() {
             {services.map((svc) => {
               const Icon = svc.icon;
               return (
-                <StaggerItem key={svc.title}>
-                  <div className="group rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
+                <StaggerItem key={svc.title} className="h-full">
+                  <div className="group flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
                     <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
                       <Icon className="h-6 w-6" />
                     </div>
@@ -158,7 +158,7 @@ function Services() {
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                       {svc.description}
                     </p>
-                    <div className="mt-5">
+                    <div className="mt-auto pt-5">
                       <Link
                         to="/contact"
                         className="inline-flex items-center gap-1 text-sm font-medium text-brand transition-colors hover:text-brand/80"
