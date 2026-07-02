@@ -14,7 +14,9 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-marketing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OurWorksRouteImport } from './routes/our-works'
+import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-portals-software'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
@@ -48,9 +50,19 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OurWorksRoute = OurWorksRouteImport.update({
   id: '/our-works',
   path: '/our-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomPortalsSoftwareRoute = CustomPortalsSoftwareRouteImport.update({
+  id: '/custom-portals-software',
+  path: '/custom-portals-software',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -95,7 +107,9 @@ export interface FileRoutesByFullPath {
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
@@ -110,6 +124,8 @@ export interface FileRoutesByTo {
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/custom-portals-software': typeof CustomPortalsSoftwareRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
@@ -125,7 +141,9 @@ export interface FileRoutesById {
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
+  '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/seo-digital-marketing': typeof SeoDigitalMarketingRoute
   '/services': typeof ServicesRoute
@@ -142,7 +160,9 @@ export interface FileRouteTypes {
     | '/care-maintenance'
     | '/career'
     | '/contact'
+    | '/custom-portals-software'
     | '/our-works'
+    | '/pricing'
     | '/privacy'
     | '/seo-digital-marketing'
     | '/services'
@@ -157,6 +177,8 @@ export interface FileRouteTypes {
     | '/care-maintenance'
     | '/career'
     | '/contact'
+    | '/custom-portals-software'
+    | '/pricing'
     | '/privacy'
     | '/seo-digital-marketing'
     | '/services'
@@ -171,7 +193,9 @@ export interface FileRouteTypes {
     | '/care-maintenance'
     | '/career'
     | '/contact'
+    | '/custom-portals-software'
     | '/our-works'
+    | '/pricing'
     | '/privacy'
     | '/seo-digital-marketing'
     | '/services'
@@ -187,7 +211,9 @@ export interface RootRouteChildren {
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
+  CustomPortalsSoftwareRoute: typeof CustomPortalsSoftwareRoute
   OurWorksRoute: typeof OurWorksRouteWithChildren
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   SeoDigitalMarketingRoute: typeof SeoDigitalMarketingRoute
   ServicesRoute: typeof ServicesRoute
@@ -232,11 +258,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/our-works': {
       id: '/our-works'
       path: '/our-works'
       fullPath: '/our-works'
       preLoaderRoute: typeof OurWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-portals-software': {
+      id: '/custom-portals-software'
+      path: '/custom-portals-software'
+      fullPath: '/custom-portals-software'
+      preLoaderRoute: typeof CustomPortalsSoftwareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -311,7 +351,9 @@ const rootRouteChildren: RootRouteChildren = {
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
+  CustomPortalsSoftwareRoute: CustomPortalsSoftwareRoute,
   OurWorksRoute: OurWorksRouteWithChildren,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   SeoDigitalMarketingRoute: SeoDigitalMarketingRoute,
   ServicesRoute: ServicesRoute,
@@ -321,3 +363,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
