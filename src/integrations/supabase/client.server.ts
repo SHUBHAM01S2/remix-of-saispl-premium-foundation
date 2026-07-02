@@ -30,18 +30,28 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createSupabaseAdminClient() {
-  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const env = process.env as Record<string, string | undefined>;
+  const SUPABASE_URL = env["SUPABASE_URL"];
+  const serviceRoleKeyName = env["APP_SUPABASE_SERVICE_ROLE_KEY"]
+    ? "APP_SUPABASE_SERVICE_ROLE_KEY"
+    : "SUPABASE_SERVICE_ROLE_KEY";
   const SUPABASE_SERVICE_ROLE_KEY =
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.APP_SUPABASE_SERVICE_ROLE_KEY;
+    env["APP_SUPABASE_SERVICE_ROLE_KEY"] || env["SUPABASE_SERVICE_ROLE_KEY"];
 
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
     const missing = [
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
-      ...(!SUPABASE_SERVICE_ROLE_KEY ? ['SUPABASE_SERVICE_ROLE_KEY'] : []),
+      ...(!SUPABASE_SERVICE_ROLE_KEY
+        ? ['APP_SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SERVICE_ROLE_KEY']
+        : []),
     ];
     const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
+  }
+
+  if (serviceRoleKeyName !== "SUPABASE_SERVICE_ROLE_KEY") {
+    console.info(`[Supabase] Using ${serviceRoleKeyName} for admin operations.`);
   }
 
   return createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
