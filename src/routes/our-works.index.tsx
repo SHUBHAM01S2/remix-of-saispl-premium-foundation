@@ -61,23 +61,36 @@ const projects = [
 export const Route = createFileRoute("/our-works/")({
   head: () => ({
     meta: [
-      { title: "Our Work — Shivaryan Infotech" },
+      { title: "Our Work — AI, Software & Web Portfolio | Shivaryan Infotech" },
       {
         name: "description",
         content:
-          "Explore Shivaryan Infotech's portfolio of web, software, AI, and design projects — real solutions with measurable impact.",
+          "Case studies from Shivaryan Infotech: AI automation, custom software, web platforms, and product design delivered to clients across Himachal Pradesh, India, and globally.",
       },
       {
-        property: "og:title",
-        content: "Our Work — Shivaryan Infotech",
+        name: "keywords",
+        content:
+          "AI automation case studies, software development portfolio, web development projects, Shivaryan Infotech work, AI agents India, global software clients, Himachal Pradesh tech company",
       },
+      { property: "og:title", content: "Our Work — AI, Software & Web Portfolio | Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "A curated portfolio of digital products, AI solutions, and design systems built for global clients.",
+          "Real projects with measurable impact — AI, software, and design work built for global clients.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/our-works" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Our Work — AI, Software & Web Portfolio | Shivaryan Infotech" },
+      {
+        name: "twitter:description",
+        content:
+          "AI, software, and design projects delivered for global clients.",
       },
     ],
+    links: [{ rel: "canonical", href: "/our-works" }],
   }),
+
   component: OurWorks,
 });
 
