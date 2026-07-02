@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { GlobalReachNote } from "@/components/GlobalReachNote";
 
 export function CTASection() {
   return (
@@ -43,6 +44,10 @@ export function CTASection() {
               Help@saispl.com
             </a>
           </p>
+
+          <div className="mt-8 flex justify-center">
+            <GlobalReachNote />
+          </div>
         </div>
       </section>
     </ScrollReveal>

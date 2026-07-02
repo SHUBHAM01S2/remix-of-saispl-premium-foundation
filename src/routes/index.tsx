@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CTASection } from "@/components/CTASection";
 import { FeaturedWorkSection } from "@/components/FeaturedWorkSection";
 import { HeroSection } from "@/components/HeroSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
+import { TrustedByStrip } from "@/components/TrustedByStrip";
 import { WhatWeDoSection } from "@/components/WhatWeDoSection";
 import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 
@@ -45,9 +47,11 @@ function Index() {
   return (
     <div>
       <HeroSection />
+      <TrustedByStrip />
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <FeaturedWorkSection />
+      <TestimonialsSection />
       <CTASection />
     </div>
   );
