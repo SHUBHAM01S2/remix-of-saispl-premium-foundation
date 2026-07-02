@@ -44,6 +44,10 @@ export function CTASection() {
               Help@saispl.com
             </a>
           </p>
+
+          <div className="mt-8 flex justify-center">
+            <GlobalReachNote />
+          </div>
         </div>
       </section>
     </ScrollReveal>
