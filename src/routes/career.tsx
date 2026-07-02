@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight } from "lucide-react";
+import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
 export const Route = createFileRoute("/career")({
   head: () => ({
@@ -70,7 +71,7 @@ function Career() {
       {/* Hero */}
       <section className="relative overflow-hidden px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20 lg:px-8 lg:pt-40 lg:pb-28">
         <div className="absolute top-0 right-0 -z-10 h-72 w-72 translate-x-1/3 -translate-y-1/3 rounded-full bg-brand/20 blur-3xl" />
-        <div className="mx-auto max-w-3xl text-center">
+        <ScrollReveal className="mx-auto max-w-3xl text-center">
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Join <span className="text-brand">Shivaryan Infotech</span>
           </h1>
@@ -92,79 +93,77 @@ function Career() {
               Contact Us
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Why Work With Us */}
       <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center">
+          <ScrollReveal className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Why Work With <span className="text-brand">Us</span>
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               We are building a workplace where great people do their best work.
             </p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          </ScrollReveal>
+          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {benefits.map((b) => {
               const Icon = b.icon;
               return (
-                <div
-                  key={b.title}
-                  className="group rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1"
-                >
-                  <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-brand/10 p-3">
-                    <Icon className="h-6 w-6 text-brand" />
+                <StaggerItem key={b.title}>
+                  <div className="group rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
+                    <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-brand/10 p-3">
+                      <Icon className="h-6 w-6 text-brand" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">{b.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground">{b.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
-                </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Current Openings */}
       <section id="openings" className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-12 text-center">
+          <ScrollReveal className="mb-12 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               Current <span className="text-brand">Openings</span>
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Find a role that matches your skills and ambitions. All positions are remote-friendly.
             </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          </ScrollReveal>
+          <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {openings.map((job) => (
-              <div
-                key={job.title}
-                className="flex flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1"
-              >
-                <h3 className="text-base font-semibold text-foreground">{job.title}</h3>
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5">
-                    <Users className="h-4 w-4" />
-                    {job.department}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <MapPin className="h-4 w-4" />
-                    {job.location}
-                  </span>
+              <StaggerItem key={job.title}>
+                <div className="flex flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
+                  <h3 className="text-base font-semibold text-foreground">{job.title}</h3>
+                  <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5">
+                      <Users className="h-4 w-4" />
+                      {job.department}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <MapPin className="h-4 w-4" />
+                      {job.location}
+                    </span>
+                  </div>
+                  <div className="mt-5 flex items-center gap-3 pt-2">
+                    <a
+                      href={`mailto:Help@saispl.com?subject=Application for ${encodeURIComponent(job.title)}`}
+                      className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
+                    >
+                      Apply Now
+                    </a>
+                  </div>
                 </div>
-                <div className="mt-5 flex items-center gap-3 pt-2">
-                  <a
-                    href={`mailto:Help@saispl.com?subject=Application for ${encodeURIComponent(job.title)}`}
-                    className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
-                  >
-                    Apply Now
-                  </a>
-                </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
     </div>
