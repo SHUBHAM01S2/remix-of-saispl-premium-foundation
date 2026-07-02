@@ -28,6 +28,13 @@ const capabilities = [
   },
 ];
 
+const pastelCardClasses = [
+  "bg-card-blue",
+  "bg-card-yellow",
+  "bg-card-lavender",
+  "bg-card-blue",
+];
+
 export function WhatWeDoSection() {
   return (
     <section className="relative py-20 md:py-28">
@@ -43,11 +50,11 @@ export function WhatWeDoSection() {
         </ScrollReveal>
 
         <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {capabilities.map((cap) => {
+          {capabilities.map((cap, idx) => {
             const Icon = cap.icon;
             return (
               <StaggerItem key={cap.title} className="h-full">
-                <div className="group flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
+                <div className={`group flex h-full flex-col rounded-2xl border border-border/50 p-7 transition-all duration-300 hover:border-brand/30 hover:-translate-y-1 hover:shadow-lg ${pastelCardClasses[idx]}`}>
                   <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
                     <Icon className="h-6 w-6" />
                   </div>
