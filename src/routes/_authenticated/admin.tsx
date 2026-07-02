@@ -105,6 +105,12 @@ function AdminPage() {
             >
               Manage Jobs
             </Link>
+            <Link
+              to="/admin/contacts"
+              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            >
+              Manage Contacts
+            </Link>
             <button
               onClick={handleSignOut}
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
