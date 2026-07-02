@@ -51,3 +51,85 @@ export const getDashboardStats = createServerFn({ method: "GET" })
 
     return { contactSubmissions, careerApplications, portfolioProjects, blogPosts };
   });
+
+async function assertAdmin(ctx: { supabase: any; userId: string }) {
+  const { data, error } = await ctx.supabase
+    .from("admins")
+    .select("id")
+    .eq("id", ctx.userId)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error("Forbidden");
+}
+
+export type ActivityItem = {
+  id: string;
+  type: "contact" | "career";
+  name: string;
+  subtitle: string;
+  createdAt: string;
+};
+
+export const getRecentActivity = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<ActivityItem[]> => {
+    await assertAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+
+    const [contacts, careers] = await Promise.all([
+      admin
+        .from("contact_submissions")
+        .select("id, name, email, created_at")
+        .order("created_at", { ascending: false })
+        .limit(10),
+      admin
+        .from("career_applications")
+        .select("id, name, position_applied, created_at")
+        .order("created_at", { ascending: false })
+        .limit(10),
+    ]);
+
+    if (contacts.error) throw contacts.error;
+    if (careers.error) throw careers.error;
+
+    const items: ActivityItem[] = [
+      ...(contacts.data ?? []).map((r: any) => ({
+        id: r.id,
+        type: "contact" as const,
+        name: r.name,
+        subtitle: r.email ?? "Contact submission",
+        createdAt: r.created_at,
+      })),
+      ...(careers.data ?? []).map((r: any) => ({
+        id: r.id,
+        type: "career" as const,
+        name: r.name,
+        subtitle: `Applied: ${r.position_applied}`,
+        createdAt: r.created_at,
+      })),
+    ];
+
+    items.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    return items.slice(0, 10);
+  });
+
+export const getSubmissionDetail = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { type: "contact" | "career"; id: string }) => {
+    if (data.type !== "contact" && data.type !== "career") throw new Error("Invalid type");
+    if (typeof data.id !== "string" || !data.id) throw new Error("Invalid id");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const table = data.type === "contact" ? "contact_submissions" : "career_applications";
+    const { data: row, error } = await (supabaseAdmin as any)
+      .from(table)
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw error;
+    return { type: data.type, row: row as Record<string, any> | null };
+  });
