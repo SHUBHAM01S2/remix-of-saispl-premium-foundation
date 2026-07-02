@@ -47,19 +47,19 @@ export function ReportTrendsChart({ reports }: Props) {
         >
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="hsl(var(--border))"
+            stroke="var(--border)"
             vertical={false}
           />
           <XAxis
             dataKey="month"
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-foreground)"
             fontSize={12}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
             yAxisId="left"
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-foreground)"
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -68,7 +68,7 @@ export function ReportTrendsChart({ reports }: Props) {
           <YAxis
             yAxisId="right"
             orientation="right"
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-foreground)"
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -76,19 +76,19 @@ export function ReportTrendsChart({ reports }: Props) {
           />
           <Tooltip
             contentStyle={{
-              background: "hsl(var(--card))",
-              border: "1px solid hsl(var(--border))",
+              background: "var(--card)",
+              border: "1px solid var(--border)",
               borderRadius: 8,
               fontSize: 12,
             }}
-            labelStyle={{ color: "hsl(var(--foreground))", fontWeight: 600 }}
+            labelStyle={{ color: "var(--foreground)", fontWeight: 600 }}
           />
           <Legend wrapperStyle={{ fontSize: 12 }} />
           <Bar
             yAxisId="left"
             dataKey="visitors"
             name="Site Visitors"
-            fill="hsl(var(--brand))"
+            fill="var(--brand)"
             radius={[6, 6, 0, 0]}
             maxBarSize={40}
           />
@@ -97,9 +97,9 @@ export function ReportTrendsChart({ reports }: Props) {
             type="monotone"
             dataKey="leads"
             name="Leads Generated"
-            stroke="hsl(var(--cta))"
+            stroke="var(--cta)"
             strokeWidth={2.5}
-            dot={{ r: 4, fill: "hsl(var(--cta))" }}
+            dot={{ r: 4, fill: "var(--cta)" }}
             activeDot={{ r: 6 }}
           />
         </ComposedChart>
