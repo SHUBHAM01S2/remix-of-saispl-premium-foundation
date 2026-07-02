@@ -4,28 +4,28 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin, getSubmissionDetail } from "@/lib/admin.functions";
 
-export const Route = createFileRoute("/_authenticated/shivi/career/$id")({
+export const Route = createFileRoute("/_authenticated/admin/contact/$id")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    if (!result.isSuperAdmin) throw redirect({ to: "/shivi" });
+    if (!result.isSuperAdmin) throw redirect({ to: "/admin" });
     return { admin: result.admin };
   },
-  component: CareerDetailPage,
+  component: ContactDetailPage,
   head: () => ({
     meta: [
-      { title: "Career Application — Admin" },
+      { title: "Contact Submission — Admin" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
 });
 
-function CareerDetailPage() {
+function ContactDetailPage() {
   const { id } = Route.useParams();
   const fn = useServerFn(getSubmissionDetail);
   const { data, isLoading, error } = useQuery({
-    queryKey: ["admin", "career", id],
-    queryFn: () => fn({ data: { type: "career", id } }),
+    queryKey: ["admin", "contact", id],
+    queryFn: () => fn({ data: { type: "contact", id } }),
   });
 
   const row = data?.row;
@@ -34,14 +34,14 @@ function CareerDetailPage() {
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-3xl">
         <Link
-          to="/shivi"
+          to="/admin"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">
-          Career Application
+          Contact Submission
         </h1>
 
         <div className="mt-8 rounded-2xl border border-border/60 bg-card p-6 shadow-sm">
@@ -56,33 +56,16 @@ function CareerDetailPage() {
           ) : (
             <dl className="grid gap-4 sm:grid-cols-2">
               <Field label="Name" value={row.name} />
-              <Field label="Email" value={row.email} />
+              <Field label="Email" value={row.email ?? "—"} />
               <Field label="Phone" value={row.phone ?? "—"} />
-              <Field label="Position Applied" value={row.position_applied} />
+              <Field label="Company" value={row.company ?? "—"} />
               <Field label="Received" value={new Date(row.created_at).toLocaleString()} />
-              {row.resume_url && (
-                <div>
-                  <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    Resume
-                  </dt>
-                  <dd className="mt-1 text-sm">
-                    <a
-                      href={row.resume_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-brand underline"
-                    >
-                      Open resume
-                    </a>
-                  </dd>
-                </div>
-              )}
               <div className="sm:col-span-2">
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  Cover Message
+                  Message
                 </dt>
                 <dd className="mt-1 whitespace-pre-wrap text-sm text-foreground">
-                  {row.cover_message ?? "—"}
+                  {row.message}
                 </dd>
               </div>
             </dl>

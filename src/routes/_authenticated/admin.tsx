@@ -5,7 +5,7 @@ import { Mail, Briefcase, FolderKanban, FileText } from "lucide-react";
 import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/shivi")({
+export const Route = createFileRoute("/_authenticated/admin")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     // Signed-in but not an admin — hide the panel behind 404.
@@ -41,7 +41,7 @@ function AdminPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.invalidate();
-    window.location.href = "/shivi-login";
+    window.location.href = "/shivi";
   };
 
   const isSuperAdmin = me?.isSuperAdmin ?? false;
@@ -88,19 +88,19 @@ function AdminPage() {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <Link
-              to="/shivi/portfolio"
+              to="/admin/portfolio"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Portfolio
             </Link>
             <Link
-              to="/shivi/blog"
+              to="/admin/blog"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Blog
             </Link>
             <Link
-              to="/shivi/testimonials"
+              to="/admin/testimonials"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
             >
               Manage Testimonials
@@ -108,31 +108,31 @@ function AdminPage() {
             {me?.isSuperAdmin && (
               <>
                 <Link
-                  to="/shivi/jobs"
+                  to="/admin/jobs"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Jobs
                 </Link>
                 <Link
-                  to="/shivi/contacts"
+                  to="/admin/contacts"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Contacts
                 </Link>
                 <Link
-                  to="/shivi/careers"
+                  to="/admin/careers"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Manage Careers
                 </Link>
                 <Link
-                  to="/shivi/reports"
+                  to="/admin/reports"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Client Reports
                 </Link>
                 <Link
-                  to="/shivi/admins"
+                  to="/admin/admins"
                   className="rounded-md border border-brand bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/20"
                 >
                   Manage Admins
@@ -218,7 +218,7 @@ function AdminPage() {
                       {new Date(item.createdAt).toLocaleString()}
                     </div>
                     <Link
-                      to={item.type === "contact" ? "/shivi/contact/$id" : "/shivi/career/$id"}
+                      to={item.type === "contact" ? "/admin/contact/$id" : "/admin/career/$id"}
                       params={{ id: item.id }}
                       className="rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
                     >

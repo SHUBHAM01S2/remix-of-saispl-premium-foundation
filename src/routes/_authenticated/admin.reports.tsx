@@ -9,11 +9,11 @@ import {
   slugifyClient,
 } from "@/lib/reports-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/shivi/reports")({
+export const Route = createFileRoute("/_authenticated/admin/reports")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    if (!result.isSuperAdmin) throw redirect({ to: "/shivi" });
+    if (!result.isSuperAdmin) throw redirect({ to: "/admin" });
     return { admin: result.admin };
   },
   component: ReportsPage,
@@ -44,7 +44,7 @@ function ReportsPage() {
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-7xl">
         <Link
-          to="/shivi"
+          to="/admin"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
@@ -60,7 +60,7 @@ function ReportsPage() {
             </p>
           </div>
           <Link
-            to="/shivi/reports/new"
+            to="/admin/reports/new"
             className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> Add Monthly Report
@@ -130,7 +130,7 @@ function ReportsPage() {
                               View
                             </Link>
                             <Link
-                              to="/shivi/reports/$id/edit"
+                              to="/admin/reports/$id/edit"
                               params={{ id: r.id }}
                               className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2 py-1 text-xs font-medium text-foreground hover:bg-accent"
                             >

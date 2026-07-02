@@ -6,7 +6,7 @@ import { checkIsAdmin } from "@/lib/admin.functions";
 import { getTestimonial } from "@/lib/testimonials-admin.functions";
 import { TestimonialForm } from "@/components/admin/TestimonialForm";
 
-export const Route = createFileRoute("/_authenticated/shivi/testimonials/$id/edit")({
+export const Route = createFileRoute("/_authenticated/admin/testimonials/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
@@ -32,7 +32,7 @@ function EditTestimonialPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-3xl">
-        <Link to="/shivi/testimonials" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/admin/testimonials" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to testimonials
         </Link>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground">Edit Testimonial</h1>

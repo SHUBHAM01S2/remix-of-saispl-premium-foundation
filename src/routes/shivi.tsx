@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, useRouter, notFound } from "@tanstack/rea
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/shivi-login")({
+export const Route = createFileRoute("/shivi")({
   ssr: false,
   component: ShiviLogin,
   head: () => ({
@@ -27,7 +27,7 @@ function ShiviLogin() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/shivi", replace: true });
+      if (data.user) navigate({ to: "/admin", replace: true });
     });
   }, [navigate]);
 
@@ -40,7 +40,7 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      navigate({ to: "/shivi", replace: true });
+      navigate({ to: "/admin", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to sign in");
     } finally {

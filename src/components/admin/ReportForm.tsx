@@ -74,7 +74,7 @@ export function ReportForm({ existing }: Props) {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "reports"] });
-      navigate({ to: "/shivi/reports" });
+      navigate({ to: "/admin/reports" });
     },
     onError: (e) => setError(e instanceof Error ? e.message : "Failed to save"),
   });
@@ -200,7 +200,7 @@ export function ReportForm({ existing }: Props) {
         </button>
         <button
           type="button"
-          onClick={() => navigate({ to: "/shivi/reports" })}
+          onClick={() => navigate({ to: "/admin/reports" })}
           className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel

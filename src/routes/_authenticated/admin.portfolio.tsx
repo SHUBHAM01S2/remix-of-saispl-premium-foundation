@@ -10,7 +10,7 @@ import {
   deletePortfolioProject,
 } from "@/lib/portfolio-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/shivi/portfolio")({
+export const Route = createFileRoute("/_authenticated/admin/portfolio")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
@@ -50,7 +50,7 @@ function PortfolioListPage() {
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
       <div className="mx-auto max-w-6xl">
-        <Link to="/shivi" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/admin" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
@@ -60,7 +60,7 @@ function PortfolioListPage() {
             <p className="mt-1 text-sm text-muted-foreground">Manage case studies shown on the public site.</p>
           </div>
           <Link
-            to="/shivi/portfolio/new"
+            to="/admin/portfolio/new"
             className="inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> Add New Project
@@ -116,7 +116,7 @@ function PortfolioListPage() {
                       <td className="px-4 py-3 text-right">
                         <div className="inline-flex items-center gap-2">
                           <Link
-                            to="/shivi/portfolio/$id/edit"
+                            to="/admin/portfolio/$id/edit"
                             params={{ id: p.id }}
                             className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
                           >

@@ -39,7 +39,7 @@ export function TestimonialForm({ existing }: Props) {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "testimonials"] });
-      navigate({ to: "/shivi/testimonials" });
+      navigate({ to: "/admin/testimonials" });
     },
     onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
@@ -139,7 +139,7 @@ export function TestimonialForm({ existing }: Props) {
         </button>
         <button
           type="button"
-          onClick={() => navigate({ to: "/shivi/testimonials" })}
+          onClick={() => navigate({ to: "/admin/testimonials" })}
           className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel
