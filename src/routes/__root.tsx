@@ -15,6 +15,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
 import { BookConsultationButton } from "@/components/BookConsultationButton";
+import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 
 function NotFoundComponent() {
   return (
