@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
+import { assertContentEditor } from "@/lib/admin-auth";
 
 export type Testimonial = {
   id: string;
@@ -102,7 +102,7 @@ export const deleteTestimonial = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertSuperAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("testimonials")
