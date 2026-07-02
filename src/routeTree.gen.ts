@@ -24,13 +24,16 @@ import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
   id: '/web-design-development',
@@ -107,9 +110,18 @@ const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   path: '/automation-ai-services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -142,10 +154,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -161,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -170,6 +189,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -185,6 +205,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -194,7 +215,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/auth': typeof AuthRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
@@ -210,6 +233,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -221,6 +245,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -236,6 +261,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/admin'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -245,6 +271,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -260,6 +287,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/admin'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -268,7 +296,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
+    | '/auth'
     | '/automation-ai-services'
     | '/blog'
     | '/branding-graphic-design'
@@ -284,6 +314,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/_authenticated/admin'
     | '/blog/$slug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -293,7 +324,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AuthRoute: typeof AuthRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BlogRoute: typeof BlogRouteWithChildren
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
@@ -421,11 +454,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AutomationAiServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -470,8 +517,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
@@ -497,7 +562,9 @@ const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AuthRoute: AuthRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BlogRoute: BlogRouteWithChildren,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
