@@ -10,7 +10,7 @@ import {
   deletePortfolioProject,
 } from "@/lib/portfolio-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/portfolio")({
+export const Route = createFileRoute("/_authenticated/admin/portfolio/")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

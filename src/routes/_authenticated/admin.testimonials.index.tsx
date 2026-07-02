@@ -8,7 +8,7 @@ import {
   deleteTestimonial,
 } from "@/lib/testimonials-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/testimonials")({
+export const Route = createFileRoute("/_authenticated/admin/testimonials/")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
