@@ -177,6 +177,7 @@ function AdminPage() {
           </p>
         )}
 
+        {isSuperAdmin && (
         <div className="mt-12 rounded-2xl border border-border/60 bg-card shadow-sm">
           <div className="flex items-center justify-between border-b border-border/60 px-6 py-4">
             <div>
@@ -186,6 +187,7 @@ function AdminPage() {
               </p>
             </div>
           </div>
+
 
           {activityLoading ? (
             <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
