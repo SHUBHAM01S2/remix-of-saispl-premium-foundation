@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
+import { assertContentEditor } from "@/lib/admin-auth";
 
 export type BlogPost = {
   id: string;
@@ -55,6 +55,7 @@ export type UpsertBlogInput = {
   category: string | null;
   cover_image_url: string | null;
   author_name: string | null;
+  published_at: string | null;
 };
 
 export const upsertBlogPost = createServerFn({ method: "POST" })
@@ -78,6 +79,7 @@ export const upsertBlogPost = createServerFn({ method: "POST" })
       category: data.category,
       cover_image_url: data.cover_image_url,
       author_name: data.author_name,
+      published_at: data.published_at,
     };
     if (data.id) {
       const { data: row, error } = await admin
@@ -106,7 +108,7 @@ export const deleteBlogPost = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertSuperAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("blog_posts")

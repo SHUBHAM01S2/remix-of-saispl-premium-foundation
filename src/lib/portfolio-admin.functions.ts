@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
+import { assertContentEditor } from "@/lib/admin-auth";
 
 export type PortfolioProject = {
   id: string;
@@ -111,7 +111,7 @@ export const deletePortfolioProject = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertSuperAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("portfolio_projects")
@@ -119,4 +119,23 @@ export const deletePortfolioProject = createServerFn({ method: "POST" })
       .eq("id", data.id);
     if (error) throw error;
     return { ok: true };
+  });
+
+export const togglePortfolioFeatured = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string; featured: boolean }) => {
+    if (!data?.id) throw new Error("id required");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertContentEditor(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await (supabaseAdmin as any)
+      .from("portfolio_projects")
+      .update({ is_featured: data.featured })
+      .eq("id", data.id)
+      .select()
+      .single();
+    if (error) throw error;
+    return row as PortfolioProject;
   });

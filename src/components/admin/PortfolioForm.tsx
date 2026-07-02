@@ -10,6 +10,7 @@ import {
 } from "@/lib/portfolio-admin.functions";
 
 const SIGNED_URL_TTL = 60 * 60 * 24 * 365 * 10; // ~10 years
+const PORTFOLIO_CATEGORIES = ["Website", "Portal", "Automation", "SEO"] as const;
 
 async function uploadFile(file: File, folder: "thumbnails" | "screenshots"): Promise<string> {
   const ext = file.name.split(".").pop() ?? "bin";
@@ -127,12 +128,19 @@ export function PortfolioForm({ existing }: Props) {
           />
         </Field>
         <Field label="Category" required>
-          <input
+          <select
             required
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className={inputCls}
-          />
+          >
+            <option value="">Select category</option>
+            {PORTFOLIO_CATEGORIES.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
         </Field>
         <Field label="Featured">
           <label className="mt-2 inline-flex cursor-pointer items-center gap-2">

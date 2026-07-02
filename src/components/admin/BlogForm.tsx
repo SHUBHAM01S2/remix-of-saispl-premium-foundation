@@ -38,6 +38,17 @@ async function uploadCover(file: File): Promise<string> {
 
 type Props = { existing?: BlogPost };
 
+function toDateTimeInput(value: string | null): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, 16);
+}
+
+function fromDateTimeInput(value: string): string | null {
+  return value ? new Date(value).toISOString() : null;
+}
+
 export function BlogForm({ existing }: Props) {
   const navigate = useNavigate();
   const qc = useQueryClient();
@@ -51,6 +62,7 @@ export function BlogForm({ existing }: Props) {
   const [category, setCategory] = useState(existing?.category ?? "");
   const [authorName, setAuthorName] = useState(existing?.author_name ?? "");
   const [coverUrl, setCoverUrl] = useState<string | null>(existing?.cover_image_url ?? null);
+  const [publishedAt, setPublishedAt] = useState(toDateTimeInput(existing?.published_at ?? null));
 
   const [uploadingCover, setUploadingCover] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -80,6 +92,7 @@ export function BlogForm({ existing }: Props) {
           category: category || null,
           cover_image_url: coverUrl,
           author_name: authorName || null,
+          published_at: fromDateTimeInput(publishedAt),
         },
       }),
     onSuccess: () => {
@@ -177,6 +190,18 @@ export function BlogForm({ existing }: Props) {
           />
         </Field>
       </div>
+
+      <Field label="Published at">
+        <input
+          type="datetime-local"
+          value={publishedAt}
+          onChange={(e) => setPublishedAt(e.target.value)}
+          className={inputCls}
+        />
+        <p className="mt-1 text-xs text-muted-foreground">
+          Leave empty to save as draft. Set a date/time to publish publicly.
+        </p>
+      </Field>
 
       <Field label="Cover Image">
         <div className="flex items-center gap-4">
