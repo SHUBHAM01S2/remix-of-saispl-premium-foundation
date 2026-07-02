@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { GlobalReachNote } from "@/components/GlobalReachNote";
 
 export function CTASection() {
   return (
