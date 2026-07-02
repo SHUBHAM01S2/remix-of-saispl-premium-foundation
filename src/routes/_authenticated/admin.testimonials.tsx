@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/admin/testimonials")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    return { admin: result.admin };
+    return { admin: result.admin, isSuperAdmin: result.isSuperAdmin };
   },
   component: TestimonialsListPage,
   head: () => ({
