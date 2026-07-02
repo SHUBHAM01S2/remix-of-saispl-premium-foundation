@@ -77,6 +77,81 @@ export type Database = {
         }
         Relationships: []
       }
+      job_openings: {
+        Row: {
+          created_at: string
+          department: string
+          description: string | null
+          id: string
+          is_active: boolean
+          location: string
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          department: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          location: string
+          title: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          department?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          location?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      portfolio_projects: {
+        Row: {
+          category: string
+          challenge: string | null
+          client_industry: string
+          created_at: string
+          id: string
+          is_featured: boolean
+          results: string | null
+          screenshot_urls: string[]
+          solution: string | null
+          thumbnail_url: string | null
+          title: string
+        }
+        Insert: {
+          category: string
+          challenge?: string | null
+          client_industry: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          results?: string | null
+          screenshot_urls?: string[]
+          solution?: string | null
+          thumbnail_url?: string | null
+          title: string
+        }
+        Update: {
+          category?: string
+          challenge?: string | null
+          client_industry?: string
+          created_at?: string
+          id?: string
+          is_featured?: boolean
+          results?: string | null
+          screenshot_urls?: string[]
+          solution?: string | null
+          thumbnail_url?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
