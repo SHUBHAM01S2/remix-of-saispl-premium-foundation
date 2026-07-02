@@ -169,6 +169,7 @@ function RootComponent() {
       </main>
       <Footer />
       <WhatsAppChatButton />
+      <BookConsultationButton />
     </QueryClientProvider>
   );
 }
