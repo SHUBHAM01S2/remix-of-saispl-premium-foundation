@@ -33,21 +33,25 @@ import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
+import { Route as ClientReportsClientSlugRouteImport } from './routes/client-reports.$clientSlug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
+import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin.jobs'
 import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authenticated/admin.contacts'
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 import { Route as AuthenticatedAdminTestimonialsNewRouteImport } from './routes/_authenticated/admin.testimonials.new'
+import { Route as AuthenticatedAdminReportsNewRouteImport } from './routes/_authenticated/admin.reports.new'
 import { Route as AuthenticatedAdminPortfolioNewRouteImport } from './routes/_authenticated/admin.portfolio.new'
 import { Route as AuthenticatedAdminJobsNewRouteImport } from './routes/_authenticated/admin.jobs.new'
 import { Route as AuthenticatedAdminContactIdRouteImport } from './routes/_authenticated/admin.contact.$id'
 import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authenticated/admin.career.$id'
 import { Route as AuthenticatedAdminBlogNewRouteImport } from './routes/_authenticated/admin.blog.new'
 import { Route as AuthenticatedAdminTestimonialsIdEditRouteImport } from './routes/_authenticated/admin.testimonials.$id.edit'
+import { Route as AuthenticatedAdminReportsIdEditRouteImport } from './routes/_authenticated/admin.reports.$id.edit'
 import { Route as AuthenticatedAdminPortfolioIdEditRouteImport } from './routes/_authenticated/admin.portfolio.$id.edit'
 import { Route as AuthenticatedAdminJobsIdEditRouteImport } from './routes/_authenticated/admin.jobs.$id.edit'
 import { Route as AuthenticatedAdminBlogIdEditRouteImport } from './routes/_authenticated/admin.blog.$id.edit'
@@ -171,6 +175,11 @@ const InternalArchitectureRoute = InternalArchitectureRouteImport.update({
   path: '/internal/architecture',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientReportsClientSlugRoute = ClientReportsClientSlugRouteImport.update({
+  id: '/client-reports/$clientSlug',
+  path: '/client-reports/$clientSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -185,6 +194,12 @@ const AuthenticatedAdminTestimonialsRoute =
   AuthenticatedAdminTestimonialsRouteImport.update({
     id: '/testimonials',
     path: '/testimonials',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminReportsRoute =
+  AuthenticatedAdminReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminPortfolioRoute =
@@ -221,6 +236,12 @@ const AuthenticatedAdminTestimonialsNewRoute =
     path: '/new',
     getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
   } as any)
+const AuthenticatedAdminReportsNewRoute =
+  AuthenticatedAdminReportsNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminReportsRoute,
+  } as any)
 const AuthenticatedAdminPortfolioNewRoute =
   AuthenticatedAdminPortfolioNewRouteImport.update({
     id: '/new',
@@ -256,6 +277,12 @@ const AuthenticatedAdminTestimonialsIdEditRoute =
     id: '/$id/edit',
     path: '/$id/edit',
     getParentRoute: () => AuthenticatedAdminTestimonialsRoute,
+  } as any)
+const AuthenticatedAdminReportsIdEditRoute =
+  AuthenticatedAdminReportsIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAdminReportsRoute,
   } as any)
 const AuthenticatedAdminPortfolioIdEditRoute =
   AuthenticatedAdminPortfolioIdEditRouteImport.update({
@@ -298,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/web-design-development': typeof WebDesignDevelopmentRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -307,16 +335,19 @@ export interface FileRoutesByFullPath {
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
+  '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
   '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
   '/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
+  '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
   '/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -341,6 +372,7 @@ export interface FileRoutesByTo {
   '/web-design-development': typeof WebDesignDevelopmentRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -350,16 +382,19 @@ export interface FileRoutesByTo {
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
+  '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
   '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
   '/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
+  '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
   '/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
 }
 export interface FileRoutesById {
@@ -386,6 +421,7 @@ export interface FileRoutesById {
   '/web-design-development': typeof WebDesignDevelopmentRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
@@ -395,16 +431,19 @@ export interface FileRoutesById {
   '/_authenticated/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
+  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/_authenticated/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/_authenticated/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/_authenticated/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/_authenticated/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
   '/_authenticated/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/_authenticated/admin/reports/new': typeof AuthenticatedAdminReportsNewRoute
   '/_authenticated/admin/testimonials/new': typeof AuthenticatedAdminTestimonialsNewRoute
   '/_authenticated/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/_authenticated/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/_authenticated/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
+  '/_authenticated/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
   '/_authenticated/admin/testimonials/$id/edit': typeof AuthenticatedAdminTestimonialsIdEditRoute
 }
 export interface FileRouteTypes {
@@ -431,6 +470,7 @@ export interface FileRouteTypes {
     | '/web-design-development'
     | '/admin'
     | '/blog/$slug'
+    | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -440,16 +480,19 @@ export interface FileRouteTypes {
     | '/admin/contacts'
     | '/admin/jobs'
     | '/admin/portfolio'
+    | '/admin/reports'
     | '/admin/testimonials'
     | '/admin/blog/new'
     | '/admin/career/$id'
     | '/admin/contact/$id'
     | '/admin/jobs/new'
     | '/admin/portfolio/new'
+    | '/admin/reports/new'
     | '/admin/testimonials/new'
     | '/admin/blog/$id/edit'
     | '/admin/jobs/$id/edit'
     | '/admin/portfolio/$id/edit'
+    | '/admin/reports/$id/edit'
     | '/admin/testimonials/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -474,6 +517,7 @@ export interface FileRouteTypes {
     | '/web-design-development'
     | '/admin'
     | '/blog/$slug'
+    | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -483,16 +527,19 @@ export interface FileRouteTypes {
     | '/admin/contacts'
     | '/admin/jobs'
     | '/admin/portfolio'
+    | '/admin/reports'
     | '/admin/testimonials'
     | '/admin/blog/new'
     | '/admin/career/$id'
     | '/admin/contact/$id'
     | '/admin/jobs/new'
     | '/admin/portfolio/new'
+    | '/admin/reports/new'
     | '/admin/testimonials/new'
     | '/admin/blog/$id/edit'
     | '/admin/jobs/$id/edit'
     | '/admin/portfolio/$id/edit'
+    | '/admin/reports/$id/edit'
     | '/admin/testimonials/$id/edit'
   id:
     | '__root__'
@@ -518,6 +565,7 @@ export interface FileRouteTypes {
     | '/web-design-development'
     | '/_authenticated/admin'
     | '/blog/$slug'
+    | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
@@ -527,16 +575,19 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/contacts'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/portfolio'
+    | '/_authenticated/admin/reports'
     | '/_authenticated/admin/testimonials'
     | '/_authenticated/admin/blog/new'
     | '/_authenticated/admin/career/$id'
     | '/_authenticated/admin/contact/$id'
     | '/_authenticated/admin/jobs/new'
     | '/_authenticated/admin/portfolio/new'
+    | '/_authenticated/admin/reports/new'
     | '/_authenticated/admin/testimonials/new'
     | '/_authenticated/admin/blog/$id/edit'
     | '/_authenticated/admin/jobs/$id/edit'
     | '/_authenticated/admin/portfolio/$id/edit'
+    | '/_authenticated/admin/reports/$id/edit'
     | '/_authenticated/admin/testimonials/$id/edit'
   fileRoutesById: FileRoutesById
 }
@@ -561,6 +612,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
+  ClientReportsClientSlugRoute: typeof ClientReportsClientSlugRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
   InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
   ReportsIdRoute: typeof ReportsIdRoute
@@ -736,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternalArchitectureRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/client-reports/$clientSlug': {
+      id: '/client-reports/$clientSlug'
+      path: '/client-reports/$clientSlug'
+      fullPath: '/client-reports/$clientSlug'
+      preLoaderRoute: typeof ClientReportsClientSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
@@ -755,6 +814,13 @@ declare module '@tanstack/react-router' {
       path: '/testimonials'
       fullPath: '/admin/testimonials'
       preLoaderRoute: typeof AuthenticatedAdminTestimonialsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/reports': {
+      id: '/_authenticated/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/portfolio': {
@@ -799,6 +865,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTestimonialsNewRouteImport
       parentRoute: typeof AuthenticatedAdminTestimonialsRoute
     }
+    '/_authenticated/admin/reports/new': {
+      id: '/_authenticated/admin/reports/new'
+      path: '/new'
+      fullPath: '/admin/reports/new'
+      preLoaderRoute: typeof AuthenticatedAdminReportsNewRouteImport
+      parentRoute: typeof AuthenticatedAdminReportsRoute
+    }
     '/_authenticated/admin/portfolio/new': {
       id: '/_authenticated/admin/portfolio/new'
       path: '/new'
@@ -840,6 +913,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/testimonials/$id/edit'
       preLoaderRoute: typeof AuthenticatedAdminTestimonialsIdEditRouteImport
       parentRoute: typeof AuthenticatedAdminTestimonialsRoute
+    }
+    '/_authenticated/admin/reports/$id/edit': {
+      id: '/_authenticated/admin/reports/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/admin/reports/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminReportsIdEditRouteImport
+      parentRoute: typeof AuthenticatedAdminReportsRoute
     }
     '/_authenticated/admin/portfolio/$id/edit': {
       id: '/_authenticated/admin/portfolio/$id/edit'
@@ -914,6 +994,22 @@ const AuthenticatedAdminPortfolioRouteWithChildren =
     AuthenticatedAdminPortfolioRouteChildren,
   )
 
+interface AuthenticatedAdminReportsRouteChildren {
+  AuthenticatedAdminReportsNewRoute: typeof AuthenticatedAdminReportsNewRoute
+  AuthenticatedAdminReportsIdEditRoute: typeof AuthenticatedAdminReportsIdEditRoute
+}
+
+const AuthenticatedAdminReportsRouteChildren: AuthenticatedAdminReportsRouteChildren =
+  {
+    AuthenticatedAdminReportsNewRoute: AuthenticatedAdminReportsNewRoute,
+    AuthenticatedAdminReportsIdEditRoute: AuthenticatedAdminReportsIdEditRoute,
+  }
+
+const AuthenticatedAdminReportsRouteWithChildren =
+  AuthenticatedAdminReportsRoute._addFileChildren(
+    AuthenticatedAdminReportsRouteChildren,
+  )
+
 interface AuthenticatedAdminTestimonialsRouteChildren {
   AuthenticatedAdminTestimonialsNewRoute: typeof AuthenticatedAdminTestimonialsNewRoute
   AuthenticatedAdminTestimonialsIdEditRoute: typeof AuthenticatedAdminTestimonialsIdEditRoute
@@ -938,6 +1034,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminContactsRoute: typeof AuthenticatedAdminContactsRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRouteWithChildren
   AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
+  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRouteWithChildren
   AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
   AuthenticatedAdminCareerIdRoute: typeof AuthenticatedAdminCareerIdRoute
   AuthenticatedAdminContactIdRoute: typeof AuthenticatedAdminContactIdRoute
@@ -950,6 +1047,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRouteWithChildren,
   AuthenticatedAdminPortfolioRoute:
     AuthenticatedAdminPortfolioRouteWithChildren,
+  AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRouteWithChildren,
   AuthenticatedAdminTestimonialsRoute:
     AuthenticatedAdminTestimonialsRouteWithChildren,
   AuthenticatedAdminCareerIdRoute: AuthenticatedAdminCareerIdRoute,
@@ -1013,6 +1111,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
+  ClientReportsClientSlugRoute: ClientReportsClientSlugRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
   InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
   ReportsIdRoute: ReportsIdRoute,
