@@ -22,6 +22,20 @@ const values = [
   },
 ];
 
+const stats = [
+  { label: "Projects Delivered", value: "150+" },
+  { label: "Happy Clients", value: "80+" },
+  { label: "Years of Experience", value: "8+" },
+  { label: "Countries Served", value: "12+" },
+];
+
+const team = [
+  { name: "Rahul Sharma", role: "Founder & CEO" },
+  { name: "Priya Patel", role: "Lead Developer" },
+  { name: "Amit Verma", role: "AI & Automation Lead" },
+  { name: "Neha Gupta", role: "Product Designer" },
+];
+
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
