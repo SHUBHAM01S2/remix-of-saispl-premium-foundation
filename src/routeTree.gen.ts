@@ -35,8 +35,11 @@ import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.q
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
+import { Route as AuthenticatedAdminPortfolioNewRouteImport } from './routes/_authenticated/admin.portfolio.new'
 import { Route as AuthenticatedAdminContactIdRouteImport } from './routes/_authenticated/admin.contact.$id'
 import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authenticated/admin.career.$id'
+import { Route as AuthenticatedAdminPortfolioIdEditRouteImport } from './routes/_authenticated/admin.portfolio.$id.edit'
 
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
   id: '/web-design-development',
@@ -167,6 +170,18 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminPortfolioRoute =
+  AuthenticatedAdminPortfolioRouteImport.update({
+    id: '/portfolio',
+    path: '/portfolio',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPortfolioNewRoute =
+  AuthenticatedAdminPortfolioNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
+  } as any)
 const AuthenticatedAdminContactIdRoute =
   AuthenticatedAdminContactIdRouteImport.update({
     id: '/contact/$id',
@@ -178,6 +193,12 @@ const AuthenticatedAdminCareerIdRoute =
     id: '/career/$id',
     path: '/career/$id',
     getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPortfolioIdEditRoute =
+  AuthenticatedAdminPortfolioIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAdminPortfolioRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -206,8 +227,11 @@ export interface FileRoutesByFullPath {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
+  '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -235,8 +259,11 @@ export interface FileRoutesByTo {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
+  '/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -266,8 +293,11 @@ export interface FileRoutesById {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/_authenticated/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
+  '/_authenticated/admin/portfolio/new': typeof AuthenticatedAdminPortfolioNewRoute
+  '/_authenticated/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -297,8 +327,11 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/admin/portfolio'
     | '/admin/career/$id'
     | '/admin/contact/$id'
+    | '/admin/portfolio/new'
+    | '/admin/portfolio/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -326,8 +359,11 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/admin/portfolio'
     | '/admin/career/$id'
     | '/admin/contact/$id'
+    | '/admin/portfolio/new'
+    | '/admin/portfolio/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -356,8 +392,11 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/career/$id'
     | '/_authenticated/admin/contact/$id'
+    | '/_authenticated/admin/portfolio/new'
+    | '/_authenticated/admin/portfolio/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -570,6 +609,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/portfolio': {
+      id: '/_authenticated/admin/portfolio'
+      path: '/portfolio'
+      fullPath: '/admin/portfolio'
+      preLoaderRoute: typeof AuthenticatedAdminPortfolioRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/portfolio/new': {
+      id: '/_authenticated/admin/portfolio/new'
+      path: '/new'
+      fullPath: '/admin/portfolio/new'
+      preLoaderRoute: typeof AuthenticatedAdminPortfolioNewRouteImport
+      parentRoute: typeof AuthenticatedAdminPortfolioRoute
+    }
     '/_authenticated/admin/contact/$id': {
       id: '/_authenticated/admin/contact/$id'
       path: '/contact/$id'
@@ -584,15 +637,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCareerIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/portfolio/$id/edit': {
+      id: '/_authenticated/admin/portfolio/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/admin/portfolio/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminPortfolioIdEditRouteImport
+      parentRoute: typeof AuthenticatedAdminPortfolioRoute
+    }
   }
 }
 
+interface AuthenticatedAdminPortfolioRouteChildren {
+  AuthenticatedAdminPortfolioNewRoute: typeof AuthenticatedAdminPortfolioNewRoute
+  AuthenticatedAdminPortfolioIdEditRoute: typeof AuthenticatedAdminPortfolioIdEditRoute
+}
+
+const AuthenticatedAdminPortfolioRouteChildren: AuthenticatedAdminPortfolioRouteChildren =
+  {
+    AuthenticatedAdminPortfolioNewRoute: AuthenticatedAdminPortfolioNewRoute,
+    AuthenticatedAdminPortfolioIdEditRoute:
+      AuthenticatedAdminPortfolioIdEditRoute,
+  }
+
+const AuthenticatedAdminPortfolioRouteWithChildren =
+  AuthenticatedAdminPortfolioRoute._addFileChildren(
+    AuthenticatedAdminPortfolioRouteChildren,
+  )
+
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
   AuthenticatedAdminCareerIdRoute: typeof AuthenticatedAdminCareerIdRoute
   AuthenticatedAdminContactIdRoute: typeof AuthenticatedAdminContactIdRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminPortfolioRoute:
+    AuthenticatedAdminPortfolioRouteWithChildren,
   AuthenticatedAdminCareerIdRoute: AuthenticatedAdminCareerIdRoute,
   AuthenticatedAdminContactIdRoute: AuthenticatedAdminContactIdRoute,
 }
