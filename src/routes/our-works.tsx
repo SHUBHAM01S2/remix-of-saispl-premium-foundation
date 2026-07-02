@@ -128,35 +128,49 @@ function OurWorks() {
 
           {/* Portfolio grid */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((project) => (
-              <div
-                key={project.name}
-                className="group relative overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
-              >
-                {/* Screenshot placeholder */}
-                <div className="relative flex h-52 items-center justify-center bg-gradient-to-br from-surface-elevated to-surface">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                    <Monitor className="h-8 w-8" />
+            {filtered.map((project) => {
+              const slug = project.name
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/(^-|-$)/g, "");
+              return (
+                <Link
+                  key={project.name}
+                  to="/our-works/$caseStudyId"
+                  params={{ caseStudyId: slug }}
+                  className="group relative overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
+                >
+                  {/* Screenshot placeholder */}
+                  <div className="relative flex h-52 items-center justify-center bg-gradient-to-br from-surface-elevated to-surface">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                      <Monitor className="h-8 w-8" />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
+                    <span className="absolute right-3 top-3 rounded-full border border-border/50 bg-surface/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
+                      {project.industry}
+                    </span>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
-                  <span className="absolute right-3 top-3 rounded-full border border-border/50 bg-surface/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
-                    {project.industry}
-                  </span>
-                </div>
 
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {project.name}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {project.result}
-                  </p>
-                  <span className="mt-3 inline-block rounded-md bg-brand/10 px-2 py-1 text-xs font-medium text-brand">
-                    {project.category}
-                  </span>
-                </div>
-              </div>
-            ))}
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {project.name}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {project.result}
+                    </p>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="inline-block rounded-md bg-brand/10 px-2 py-1 text-xs font-medium text-brand">
+                        {project.category}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-brand opacity-0 transition-opacity group-hover:opacity-100">
+                        View Case Study
+                        <ArrowRight className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
 
           {filtered.length === 0 && (
