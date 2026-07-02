@@ -16,6 +16,7 @@ function Index() {
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <FeaturedWorkSection />
+      <CTASection />
     </div>
   );
 }
