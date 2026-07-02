@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { isSuperAdminRole, canEditContent } from "@/lib/admin-auth";
 
 export const checkIsAdmin = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -15,6 +16,8 @@ export const checkIsAdmin = createServerFn({ method: "GET" })
     return {
       isAdmin: !!admin,
       admin,
+      isSuperAdmin: admin ? isSuperAdminRole(admin.role) : false,
+      canEditContent: admin ? canEditContent(admin.role) : false,
       email: (context.claims as { email?: string } | undefined)?.email ?? null,
     };
   });
