@@ -87,13 +87,16 @@ function Contact() {
     }
 
     setSubmitting(true);
-    const { error } = await supabase.from("contact_submissions").insert({
-      name,
-      email,
-      phone: form.phone.trim() || null,
-      company: form.company.trim() || null,
-      message,
-    });
+    const { error } = await (supabase as any)
+      .from("contact_submissions")
+      .insert({
+        name,
+        email,
+        phone: form.phone.trim() || null,
+        company: form.company.trim() || null,
+        message,
+      });
+
     setSubmitting(false);
 
     if (error) {
