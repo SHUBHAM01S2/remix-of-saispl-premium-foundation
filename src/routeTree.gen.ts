@@ -21,6 +21,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
@@ -89,6 +90,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
+  id: '/automation-ai-services',
+  path: '/automation-ai-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -128,6 +134,7 @@ const InternalArchitectureRoute = InternalArchitectureRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/automation-ai-services'
     | '/blog'
     | '/care-maintenance'
     | '/career'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/automation-ai-services'
     | '/blog'
     | '/care-maintenance'
     | '/career'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/automation-ai-services'
     | '/blog'
     | '/care-maintenance'
     | '/career'
@@ -256,6 +268,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BlogRoute: typeof BlogRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
@@ -359,6 +372,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/automation-ai-services': {
+      id: '/automation-ai-services'
+      path: '/automation-ai-services'
+      fullPath: '/automation-ai-services'
+      preLoaderRoute: typeof AutomationAiServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -428,6 +448,7 @@ const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AutomationAiServicesRoute: AutomationAiServicesRoute,
   BlogRoute: BlogRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
@@ -447,13 +468,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
