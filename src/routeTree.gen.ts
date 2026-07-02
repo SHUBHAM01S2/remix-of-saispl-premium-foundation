@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OurWorksRouteImport } from './routes/our-works'
@@ -23,6 +24,11 @@ import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$cas
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/our-works': typeof OurWorksRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/our-works/': typeof OurWorksIndexRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/our-works': typeof OurWorksIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/our-works': typeof OurWorksRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/services': typeof ServicesRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/our-works/': typeof OurWorksIndexRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/our-works'
     | '/privacy'
     | '/services'
+    | '/sitemap.xml'
     | '/terms'
     | '/our-works/$caseStudyId'
     | '/our-works/'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/privacy'
     | '/services'
+    | '/sitemap.xml'
     | '/terms'
     | '/our-works/$caseStudyId'
     | '/our-works'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/our-works'
     | '/privacy'
     | '/services'
+    | '/sitemap.xml'
     | '/terms'
     | '/our-works/$caseStudyId'
     | '/our-works/'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   OurWorksRoute: typeof OurWorksRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ServicesRoute: typeof ServicesRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
 }
 
@@ -163,6 +176,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -253,6 +273,7 @@ const rootRouteChildren: RootRouteChildren = {
   OurWorksRoute: OurWorksRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ServicesRoute: ServicesRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
