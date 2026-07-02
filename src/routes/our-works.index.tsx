@@ -1,61 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Monitor, ArrowRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
 
 type Category = "All" | "Web" | "Software" | "AI/Automation" | "Design";
 
 const filters: Category[] = ["All", "Web", "Software", "AI/Automation", "Design"];
 
-const projects = [
-  {
-    name: "Global Trade Platform",
-    category: "Web",
-    industry: "Finance / Trading",
-    result: "Reduced order processing time by 68% with AI automation and real-time trade execution.",
-  },
-  {
-    name: "MediCare Connect",
-    category: "Software",
-    industry: "Healthcare",
-    result: "Streamlined patient intake for 12,000+ daily users across 40+ hospital branches.",
-  },
-  {
-    name: "FinVue Analytics",
-    category: "AI/Automation",
-    industry: "FinTech",
-    result: "Delivered real-time insights and alerts for $2B+ in managed investment assets.",
-  },
-  {
-    name: "Logistics Hub AI",
-    category: "AI/Automation",
-    industry: "Logistics",
-    result: "Cut fleet routing costs by 42% using predictive AI models and dynamic scheduling.",
-  },
-  {
-    name: "Aura Mobile Experience",
-    category: "Design",
-    industry: "Consumer Tech",
-    result: "Increased user retention by 55% with a complete UX overhaul and design system.",
-  },
-  {
-    name: "RetailFlow ERP",
-    category: "Software",
-    industry: "Retail",
-    result: "Unified inventory, sales, and HR into one cloud ERP serving 200+ store locations.",
-  },
-  {
-    name: "GreenEnergy Portal",
-    category: "Web",
-    industry: "Energy",
-    result: "Built a public-facing sustainability dashboard tracking live carbon offset metrics.",
-  },
-  {
-    name: "NexGen Brand Identity",
-    category: "Design",
-    industry: "Technology",
-    result: "Crafted a modern brand system that 3x'd investor engagement during the Series A round.",
-  },
+type Project = {
+  id: string;
+  name: string;
+  category: string;
+  industry: string;
+  result: string;
+  thumbnail_url: string | null;
+};
+
+const fallbackProjects: Project[] = [
+  { id: "1", name: "Global Trade Platform", category: "Web", industry: "Finance / Trading", result: "Reduced order processing time by 68% with AI automation and real-time trade execution.", thumbnail_url: null },
+  { id: "2", name: "MediCare Connect", category: "Software", industry: "Healthcare", result: "Streamlined patient intake for 12,000+ daily users across 40+ hospital branches.", thumbnail_url: null },
+  { id: "3", name: "FinVue Analytics", category: "AI/Automation", industry: "FinTech", result: "Delivered real-time insights and alerts for $2B+ in managed investment assets.", thumbnail_url: null },
+  { id: "4", name: "Logistics Hub AI", category: "AI/Automation", industry: "Logistics", result: "Cut fleet routing costs by 42% using predictive AI models and dynamic scheduling.", thumbnail_url: null },
+  { id: "5", name: "Aura Mobile Experience", category: "Design", industry: "Consumer Tech", result: "Increased user retention by 55% with a complete UX overhaul and design system.", thumbnail_url: null },
+  { id: "6", name: "RetailFlow ERP", category: "Software", industry: "Retail", result: "Unified inventory, sales, and HR into one cloud ERP serving 200+ store locations.", thumbnail_url: null },
+  { id: "7", name: "GreenEnergy Portal", category: "Web", industry: "Energy", result: "Built a public-facing sustainability dashboard tracking live carbon offset metrics.", thumbnail_url: null },
+  { id: "8", name: "NexGen Brand Identity", category: "Design", industry: "Technology", result: "Crafted a modern brand system that 3x'd investor engagement during the Series A round.", thumbnail_url: null },
 ];
 
 export const Route = createFileRoute("/our-works/")({
@@ -96,6 +66,33 @@ export const Route = createFileRoute("/our-works/")({
 
 function OurWorks() {
   const [activeFilter, setActiveFilter] = useState<Category>("All");
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      const { data, error } = await (supabase as any)
+        .from("portfolio_projects")
+        .select("id, title, client_industry, category, thumbnail_url, results")
+        .order("created_at", { ascending: false });
+      if (!active) return;
+      if (!error && data && data.length > 0) {
+        setProjects(
+          (data as Array<{ id: string; title: string; client_industry: string; category: string; thumbnail_url: string | null; results: string | null }>).map((p) => ({
+            id: p.id,
+            name: p.title,
+            category: p.category,
+            industry: p.client_industry,
+            result: p.results ?? "",
+            thumbnail_url: p.thumbnail_url,
+          })),
+        );
+      }
+    })();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const filtered =
     activeFilter === "All"
@@ -148,17 +145,26 @@ function OurWorks() {
                 .replace(/[^a-z0-9]+/g, "-")
                 .replace(/(^-|-$)/g, "");
               return (
-                <StaggerItem key={project.name}>
+                <StaggerItem key={project.id}>
                   <Link
                     to="/our-works/$caseStudyId"
                     params={{ caseStudyId: slug }}
                     className="group relative block overflow-hidden rounded-2xl border border-border/50 bg-surface transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1"
                   >
-                    {/* Screenshot placeholder */}
-                    <div className="relative flex h-52 items-center justify-center bg-gradient-to-br from-surface-elevated to-surface">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                        <Monitor className="h-8 w-8" />
-                      </div>
+                    {/* Screenshot */}
+                    <div className="relative flex h-52 items-center justify-center overflow-hidden bg-gradient-to-br from-surface-elevated to-surface">
+                      {project.thumbnail_url ? (
+                        <img
+                          src={project.thumbnail_url}
+                          alt={project.name}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
+                          <Monitor className="h-8 w-8" />
+                        </div>
+                      )}
                       <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60" />
                       <span className="absolute right-3 top-3 rounded-full border border-border/50 bg-surface/80 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur-sm">
                         {project.industry}
