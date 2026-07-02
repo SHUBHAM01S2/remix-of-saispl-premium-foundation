@@ -82,7 +82,7 @@ function About() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(99,102,241,0.12), transparent)",
+              "radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,185,241,0.08), transparent)",
           }}
         />
         <ScrollReveal className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
