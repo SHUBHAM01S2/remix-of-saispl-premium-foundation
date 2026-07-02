@@ -134,6 +134,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <WhatsAppChatButton />
     </QueryClientProvider>
   );
 }
