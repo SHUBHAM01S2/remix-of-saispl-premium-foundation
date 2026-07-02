@@ -7,6 +7,10 @@ import {
   Cloud,
   Headset,
   ArrowRight,
+  Search,
+  Layers,
+  Wrench,
+  Rocket,
 } from "lucide-react";
 
 const services = [
