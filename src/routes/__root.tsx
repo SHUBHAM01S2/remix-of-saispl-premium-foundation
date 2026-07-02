@@ -174,6 +174,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark">
       <head>
         <HeadContent />
+        <AnalyticsScripts />
       </head>
       <body>
         {children}
