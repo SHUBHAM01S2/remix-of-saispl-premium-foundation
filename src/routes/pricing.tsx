@@ -274,6 +274,9 @@ function Pricing() {
             Get a Free Quote
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
+          <div className="mt-8 flex justify-center">
+            <GlobalReachNote />
+          </div>
         </div>
       </section>
     </div>
