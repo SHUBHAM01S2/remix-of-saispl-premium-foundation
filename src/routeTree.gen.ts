@@ -38,6 +38,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin.jobs'
+import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authenticated/admin.contacts'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 import { Route as AuthenticatedAdminTestimonialsNewRouteImport } from './routes/_authenticated/admin.testimonials.new'
 import { Route as AuthenticatedAdminPortfolioNewRouteImport } from './routes/_authenticated/admin.portfolio.new'
@@ -196,6 +197,12 @@ const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
   path: '/jobs',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminContactsRoute =
+  AuthenticatedAdminContactsRouteImport.update({
+    id: '/contacts',
+    path: '/contacts',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -289,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
@@ -330,6 +338,7 @@ export interface FileRoutesByTo {
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
@@ -373,6 +382,7 @@ export interface FileRoutesById {
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/_authenticated/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
@@ -416,6 +426,7 @@ export interface FileRouteTypes {
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/admin/blog'
+    | '/admin/contacts'
     | '/admin/jobs'
     | '/admin/portfolio'
     | '/admin/testimonials'
@@ -457,6 +468,7 @@ export interface FileRouteTypes {
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/admin/blog'
+    | '/admin/contacts'
     | '/admin/jobs'
     | '/admin/portfolio'
     | '/admin/testimonials'
@@ -499,6 +511,7 @@ export interface FileRouteTypes {
     | '/our-works/$caseStudyId'
     | '/reports/$id'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/admin/contacts'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/testimonials'
@@ -745,6 +758,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminJobsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/contacts': {
+      id: '/_authenticated/admin/contacts'
+      path: '/contacts'
+      fullPath: '/admin/contacts'
+      preLoaderRoute: typeof AuthenticatedAdminContactsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/blog'
@@ -894,6 +914,7 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
+  AuthenticatedAdminContactsRoute: typeof AuthenticatedAdminContactsRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRouteWithChildren
   AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
   AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRouteWithChildren
@@ -903,6 +924,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
+  AuthenticatedAdminContactsRoute: AuthenticatedAdminContactsRoute,
   AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRouteWithChildren,
   AuthenticatedAdminPortfolioRoute:
     AuthenticatedAdminPortfolioRouteWithChildren,
@@ -976,3 +998,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
