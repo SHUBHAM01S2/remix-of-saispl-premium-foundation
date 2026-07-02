@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/admin/testimonials")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
-    return { admin: result.admin };
+    return { admin: result.admin, isSuperAdmin: result.isSuperAdmin };
   },
   component: TestimonialsListPage,
   head: () => ({
@@ -25,8 +25,10 @@ export const Route = createFileRoute("/_authenticated/admin/testimonials")({
 
 function TestimonialsListPage() {
   const qc = useQueryClient();
+  const { isSuperAdmin } = Route.useRouteContext();
   const listFn = useServerFn(listTestimonials);
   const deleteFn = useServerFn(deleteTestimonial);
+
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "testimonials"],
@@ -124,18 +126,20 @@ function TestimonialsListPage() {
                           >
                             <Pencil className="h-3.5 w-3.5" /> Edit
                           </Link>
-                          <button
-                            onClick={() => handleDelete(t.id, t.client_name)}
-                            disabled={del.isPending}
-                            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
-                          >
-                            {del.isPending ? (
-                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            ) : (
-                              <Trash2 className="h-3.5 w-3.5" />
-                            )}
-                            Delete
-                          </button>
+                          {isSuperAdmin && (
+                            <button
+                              onClick={() => handleDelete(t.id, t.client_name)}
+                              disabled={del.isPending}
+                              className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+                            >
+                              {del.isPending ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-3.5 w-3.5" />
+                              )}
+                              Delete
+                            </button>
+                          )}
                         </div>
                       </td>
                     </tr>

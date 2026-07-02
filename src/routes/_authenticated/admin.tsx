@@ -35,6 +35,7 @@ function AdminPage() {
   const { data: activity, isLoading: activityLoading, error: activityError } = useQuery({
     queryKey: ["admin", "recent-activity"],
     queryFn: () => activityFn(),
+    enabled: !!me?.isSuperAdmin,
   });
 
   const handleSignOut = async () => {
@@ -43,7 +44,9 @@ function AdminPage() {
     window.location.href = "/shivi";
   };
 
-  const cards = [
+  const isSuperAdmin = me?.isSuperAdmin ?? false;
+
+  const superCards = [
     {
       label: "Contact Submissions",
       value: stats?.contactSubmissions,
@@ -56,6 +59,8 @@ function AdminPage() {
       icon: Briefcase,
       accent: "bg-cta/10 text-cta",
     },
+  ];
+  const contentCards = [
     {
       label: "Portfolio Projects",
       value: stats?.portfolioProjects,
@@ -69,6 +74,7 @@ function AdminPage() {
       accent: "bg-violet-500/10 text-violet-600",
     },
   ];
+  const cards = isSuperAdmin ? [...superCards, ...contentCards] : contentCards;
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
@@ -80,7 +86,7 @@ function AdminPage() {
               Signed in as {me?.admin?.email ?? me?.email} · Role: {me?.admin?.role}
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <Link
               to="/admin/portfolio"
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -99,30 +105,40 @@ function AdminPage() {
             >
               Manage Testimonials
             </Link>
-            <Link
-              to="/admin/jobs"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Jobs
-            </Link>
-            <Link
-              to="/admin/contacts"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Contacts
-            </Link>
-            <Link
-              to="/admin/careers"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Manage Careers
-            </Link>
-            <Link
-              to="/admin/reports"
-              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-            >
-              Client Reports
-            </Link>
+            {me?.isSuperAdmin && (
+              <>
+                <Link
+                  to="/admin/jobs"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Jobs
+                </Link>
+                <Link
+                  to="/admin/contacts"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Contacts
+                </Link>
+                <Link
+                  to="/admin/careers"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Manage Careers
+                </Link>
+                <Link
+                  to="/admin/reports"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Client Reports
+                </Link>
+                <Link
+                  to="/admin/admins"
+                  className="rounded-md border border-brand bg-brand/10 px-4 py-2 text-sm font-medium text-brand transition-colors hover:bg-brand/20"
+                >
+                  Manage Admins
+                </Link>
+              </>
+            )}
             <button
               onClick={handleSignOut}
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -161,6 +177,7 @@ function AdminPage() {
           </p>
         )}
 
+        {isSuperAdmin && (
         <div className="mt-12 rounded-2xl border border-border/60 bg-card shadow-sm">
           <div className="flex items-center justify-between border-b border-border/60 px-6 py-4">
             <div>
@@ -170,6 +187,7 @@ function AdminPage() {
               </p>
             </div>
           </div>
+
 
           {activityLoading ? (
             <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
@@ -212,6 +230,7 @@ function AdminPage() {
             </ul>
           )}
         </div>
+        )}
       </div>
     </div>
   );

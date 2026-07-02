@@ -1,15 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase
-    .from("admins")
-    .select("id")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("Forbidden");
-}
+import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
 
 export type PortfolioProject = {
   id: string;
@@ -28,7 +19,7 @@ export type PortfolioProject = {
 export const listPortfolioProjects = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<PortfolioProject[]> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("portfolio_projects")
@@ -45,7 +36,7 @@ export const getPortfolioProject = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }): Promise<PortfolioProject | null> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("portfolio_projects")
@@ -79,7 +70,7 @@ export const upsertPortfolioProject = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const payload = {
       title: data.title.trim(),
@@ -120,7 +111,7 @@ export const deletePortfolioProject = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("portfolio_projects")

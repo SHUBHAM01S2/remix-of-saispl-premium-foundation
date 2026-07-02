@@ -1,15 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase
-    .from("admins")
-    .select("id")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("Forbidden");
-}
+import { assertSuperAdmin } from "@/lib/admin-auth";
 
 export type CareerStatus =
   | "new"
@@ -40,7 +31,7 @@ export type CareerApplication = {
 export const listCareerApplications = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<CareerApplication[]> => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("career_applications")
@@ -62,7 +53,7 @@ export const updateCareerStatus = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("career_applications")
@@ -81,7 +72,7 @@ export const getResumeDownloadUrl = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }): Promise<{ url: string }> => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     // If already an absolute URL, return as-is.
     if (/^https?:\/\//i.test(data.path)) return { url: data.path };
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

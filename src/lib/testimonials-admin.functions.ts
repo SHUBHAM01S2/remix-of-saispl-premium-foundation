@@ -1,15 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase
-    .from("admins")
-    .select("id")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("Forbidden");
-}
+import { assertContentEditor, assertSuperAdmin } from "@/lib/admin-auth";
 
 export type Testimonial = {
   id: string;
@@ -25,7 +16,7 @@ export type Testimonial = {
 export const listTestimonials = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<Testimonial[]> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("testimonials")
@@ -42,7 +33,7 @@ export const getTestimonial = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }): Promise<Testimonial | null> => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("testimonials")
@@ -73,7 +64,7 @@ export const upsertTestimonial = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertContentEditor(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
     const payload = {
@@ -111,7 +102,7 @@ export const deleteTestimonial = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("testimonials")

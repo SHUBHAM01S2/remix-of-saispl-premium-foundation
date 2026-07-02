@@ -1,15 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function assertAdmin(ctx: { supabase: any; userId: string }) {
-  const { data, error } = await ctx.supabase
-    .from("admins")
-    .select("id")
-    .eq("id", ctx.userId)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) throw new Error("Forbidden");
-}
+import { assertSuperAdmin } from "@/lib/admin-auth";
 
 export type JobOpening = {
   id: string;
@@ -33,7 +24,7 @@ export const JOB_TYPES = [
 export const listJobOpenings = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<JobOpening[]> => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("job_openings")
@@ -50,7 +41,7 @@ export const getJobOpening = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }): Promise<JobOpening | null> => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("job_openings")
@@ -81,7 +72,7 @@ export const upsertJobOpening = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
     const payload = {
@@ -119,7 +110,7 @@ export const deleteJobOpening = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await (supabaseAdmin as any)
       .from("job_openings")
@@ -136,7 +127,7 @@ export const toggleJobActive = createServerFn({ method: "POST" })
     return data;
   })
   .handler(async ({ context, data }) => {
-    await assertAdmin(context as any);
+    await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await (supabaseAdmin as any)
       .from("job_openings")

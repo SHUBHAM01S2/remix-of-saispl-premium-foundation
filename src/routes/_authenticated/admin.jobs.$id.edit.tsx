@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound , redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/admin/jobs/$id/edit")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
+    if (!result.isSuperAdmin) throw redirect({ to: "/admin" });
     return { admin: result.admin };
   },
   component: EditJobPage,
