@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HeroSection } from "@/components/HeroSection";
 import { WhatWeDoSection } from "@/components/WhatWeDoSection";
+import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 
 export const Route = createFileRoute("/")({
   component: Index,
