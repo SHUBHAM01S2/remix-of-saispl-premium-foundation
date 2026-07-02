@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { ApplyForm } from "@/components/ApplyForm";
 
 export const Route = createFileRoute("/career")({
   head: () => ({
@@ -90,6 +92,7 @@ const openings = [
 ];
 
 function Career() {
+  const [activePosition, setActivePosition] = useState<string | null>(null);
   return (
     <div className="bg-background">
       {/* Hero */}
@@ -177,12 +180,13 @@ function Career() {
                     </span>
                   </div>
                   <div className="mt-5 flex items-center gap-3 pt-2">
-                    <a
-                      href={`mailto:Help@saispl.com?subject=Application for ${encodeURIComponent(job.title)}`}
+                    <button
+                      type="button"
+                      onClick={() => setActivePosition(job.title)}
                       className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
                     >
                       Apply Now
-                    </a>
+                    </button>
                   </div>
                 </div>
               </StaggerItem>
