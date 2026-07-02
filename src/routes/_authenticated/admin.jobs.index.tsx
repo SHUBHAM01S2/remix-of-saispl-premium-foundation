@@ -9,7 +9,7 @@ import {
   toggleJobActive,
 } from "@/lib/jobs-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/jobs")({
+export const Route = createFileRoute("/_authenticated/admin/jobs/")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();

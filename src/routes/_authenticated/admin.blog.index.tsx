@@ -9,7 +9,7 @@ import {
   toggleBlogPublish,
 } from "@/lib/blog-admin.functions";
 
-export const Route = createFileRoute("/_authenticated/admin/blog")({
+export const Route = createFileRoute("/_authenticated/admin/blog/")({
   beforeLoad: async () => {
     const result = await checkIsAdmin();
     if (!result.isAdmin) throw notFound();
