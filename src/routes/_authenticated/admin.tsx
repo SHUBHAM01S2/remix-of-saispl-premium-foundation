@@ -93,6 +93,12 @@ function AdminPage() {
             >
               Manage Blog
             </Link>
+            <Link
+              to="/admin/testimonials"
+              className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            >
+              Manage Testimonials
+            </Link>
             <button
               onClick={handleSignOut}
               className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
