@@ -28,7 +28,7 @@ function AdminPage() {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.invalidate();
-    window.location.href = "/auth";
+    window.location.href = "/shivi";
   };
 
   return (
