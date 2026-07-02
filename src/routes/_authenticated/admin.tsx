@@ -22,15 +22,20 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 function AdminPage() {
-  const router = useRouter();
   const location = useLocation();
-  const meFn = useServerFn(checkIsAdmin);
-  const statsFn = useServerFn(getDashboardStats);
-  const activityFn = useServerFn(getRecentActivity);
 
   if (location.pathname.replace(/\/$/, "") !== "/admin") {
     return <Outlet />;
   }
+
+  return <AdminDashboard />;
+}
+
+function AdminDashboard() {
+  const router = useRouter();
+  const meFn = useServerFn(checkIsAdmin);
+  const statsFn = useServerFn(getDashboardStats);
+  const activityFn = useServerFn(getRecentActivity);
 
   const { data: me } = useQuery({ queryKey: ["admin", "me"], queryFn: () => meFn() });
   const { data: stats, isLoading: statsLoading, error: statsError } = useQuery({
