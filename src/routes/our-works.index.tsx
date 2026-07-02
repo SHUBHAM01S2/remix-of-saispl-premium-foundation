@@ -1,61 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Monitor, ArrowRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
 
 type Category = "All" | "Web" | "Software" | "AI/Automation" | "Design";
 
 const filters: Category[] = ["All", "Web", "Software", "AI/Automation", "Design"];
 
-const projects = [
-  {
-    name: "Global Trade Platform",
-    category: "Web",
-    industry: "Finance / Trading",
-    result: "Reduced order processing time by 68% with AI automation and real-time trade execution.",
-  },
-  {
-    name: "MediCare Connect",
-    category: "Software",
-    industry: "Healthcare",
-    result: "Streamlined patient intake for 12,000+ daily users across 40+ hospital branches.",
-  },
-  {
-    name: "FinVue Analytics",
-    category: "AI/Automation",
-    industry: "FinTech",
-    result: "Delivered real-time insights and alerts for $2B+ in managed investment assets.",
-  },
-  {
-    name: "Logistics Hub AI",
-    category: "AI/Automation",
-    industry: "Logistics",
-    result: "Cut fleet routing costs by 42% using predictive AI models and dynamic scheduling.",
-  },
-  {
-    name: "Aura Mobile Experience",
-    category: "Design",
-    industry: "Consumer Tech",
-    result: "Increased user retention by 55% with a complete UX overhaul and design system.",
-  },
-  {
-    name: "RetailFlow ERP",
-    category: "Software",
-    industry: "Retail",
-    result: "Unified inventory, sales, and HR into one cloud ERP serving 200+ store locations.",
-  },
-  {
-    name: "GreenEnergy Portal",
-    category: "Web",
-    industry: "Energy",
-    result: "Built a public-facing sustainability dashboard tracking live carbon offset metrics.",
-  },
-  {
-    name: "NexGen Brand Identity",
-    category: "Design",
-    industry: "Technology",
-    result: "Crafted a modern brand system that 3x'd investor engagement during the Series A round.",
-  },
+type Project = {
+  id: string;
+  name: string;
+  category: string;
+  industry: string;
+  result: string;
+  thumbnail_url: string | null;
+};
+
+const fallbackProjects: Project[] = [
+  { id: "1", name: "Global Trade Platform", category: "Web", industry: "Finance / Trading", result: "Reduced order processing time by 68% with AI automation and real-time trade execution.", thumbnail_url: null },
+  { id: "2", name: "MediCare Connect", category: "Software", industry: "Healthcare", result: "Streamlined patient intake for 12,000+ daily users across 40+ hospital branches.", thumbnail_url: null },
+  { id: "3", name: "FinVue Analytics", category: "AI/Automation", industry: "FinTech", result: "Delivered real-time insights and alerts for $2B+ in managed investment assets.", thumbnail_url: null },
+  { id: "4", name: "Logistics Hub AI", category: "AI/Automation", industry: "Logistics", result: "Cut fleet routing costs by 42% using predictive AI models and dynamic scheduling.", thumbnail_url: null },
+  { id: "5", name: "Aura Mobile Experience", category: "Design", industry: "Consumer Tech", result: "Increased user retention by 55% with a complete UX overhaul and design system.", thumbnail_url: null },
+  { id: "6", name: "RetailFlow ERP", category: "Software", industry: "Retail", result: "Unified inventory, sales, and HR into one cloud ERP serving 200+ store locations.", thumbnail_url: null },
+  { id: "7", name: "GreenEnergy Portal", category: "Web", industry: "Energy", result: "Built a public-facing sustainability dashboard tracking live carbon offset metrics.", thumbnail_url: null },
+  { id: "8", name: "NexGen Brand Identity", category: "Design", industry: "Technology", result: "Crafted a modern brand system that 3x'd investor engagement during the Series A round.", thumbnail_url: null },
 ];
 
 export const Route = createFileRoute("/our-works/")({
