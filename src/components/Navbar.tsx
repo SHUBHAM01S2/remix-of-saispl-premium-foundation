@@ -107,20 +107,15 @@ export function Navbar() {
                       <span className="absolute bottom-0 left-1/2 h-0.5 w-6 -translate-x-1/2 rounded-full bg-brand" />
                     )}
                   </Link>
-                  <div className="invisible absolute left-1/2 top-full z-50 w-[340px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
+                  <div className="invisible absolute left-1/2 top-full z-50 w-[280px] -translate-x-1/2 pt-2 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100">
                     <div className="rounded-xl border border-border/60 bg-background/95 p-2 shadow-xl backdrop-blur-md">
                       {link.children.map((child) => (
                         <Link
                           key={child.label}
                           to={child.to}
-                          className="flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-surface"
+                          className="block rounded-lg px-3 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
                         >
-                          <span className="text-sm font-semibold text-foreground">
-                            {child.label}
-                          </span>
-                          <span className="text-xs leading-snug text-muted-foreground">
-                            {child.desc}
-                          </span>
+                          {child.label}
                         </Link>
                       ))}
                     </div>
