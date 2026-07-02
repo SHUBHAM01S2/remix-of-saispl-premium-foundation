@@ -17,12 +17,12 @@ type NavLink =
   | { label: string; to: string; children: { label: string; to: string }[] };
 
 const serviceLinks = [
-  { label: "Website Design & Development", to: "/services" },
+  { label: "Website Design & Development", to: "/web-design-development" },
   { label: "Monthly Care & Maintenance", to: "/care-maintenance" },
   { label: "SEO & Local Digital Marketing", to: "/seo-digital-marketing" },
   { label: "WhatsApp & AI Automation", to: "/automation-ai-services" },
   { label: "Custom Portals & Software", to: "/custom-portals-software" },
-  { label: "Branding & Graphic Design", to: "/services" },
+  { label: "Branding & Graphic Design", to: "/branding-graphic-design" },
 ];
 
 const navLinks: NavLink[] = [

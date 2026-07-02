@@ -21,6 +21,7 @@ import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-porta
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
+import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
 import { Route as AboutRouteImport } from './routes/about'
@@ -91,6 +92,11 @@ const CareMaintenanceRoute = CareMaintenanceRouteImport.update({
   path: '/care-maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandingGraphicDesignRoute = BrandingGraphicDesignRouteImport.update({
+  id: '/branding-graphic-design',
+  path: '/branding-graphic-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
+  '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
+  '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -189,6 +197,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/blog': typeof BlogRouteWithChildren
+  '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
   '/contact': typeof ContactRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/automation-ai-services'
     | '/blog'
+    | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/automation-ai-services'
     | '/blog'
+    | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -260,6 +271,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/automation-ai-services'
     | '/blog'
+    | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
     | '/contact'
@@ -284,6 +296,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BlogRoute: typeof BlogRouteWithChildren
+  BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
   ContactRoute: typeof ContactRoute
@@ -387,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareMaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/branding-graphic-design': {
+      id: '/branding-graphic-design'
+      path: '/branding-graphic-design'
+      fullPath: '/branding-graphic-design'
+      preLoaderRoute: typeof BrandingGraphicDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -480,6 +500,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BlogRoute: BlogRouteWithChildren,
+  BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
   ContactRoute: ContactRoute,
