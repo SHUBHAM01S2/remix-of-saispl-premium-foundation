@@ -59,41 +59,40 @@ const benefits = [
   },
 ];
 
-const openings = [
-  {
-    title: "Senior Full-Stack Developer",
-    department: "Engineering",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "AI / ML Engineer",
-    department: "AI Labs",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "UI/UX Designer",
-    department: "Design",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "DevOps Engineer",
-    department: "Platform",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "Product Manager",
-    department: "Product",
-    location: "Remote (India / International)",
-  },
-  {
-    title: "Business Development Executive",
-    department: "Sales",
-    location: "Remote (India / International)",
-  },
-];
+type JobOpening = {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string | null;
+};
 
 function Career() {
   const [activePosition, setActivePosition] = useState<string | null>(null);
+  const [openings, setOpenings] = useState<JobOpening[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await (supabase as any)
+        .from("job_openings")
+        .select("id, title, department, location, type, description")
+        .eq("is_active", true)
+        .order("created_at", { ascending: true });
+      if (cancelled) return;
+      if (error) {
+        setError(error.message);
+      } else {
+        setOpenings((data as JobOpening[]) ?? []);
+      }
+      setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="bg-background">
       {/* Hero */}
