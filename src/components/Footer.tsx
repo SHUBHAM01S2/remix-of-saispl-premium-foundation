@@ -7,7 +7,7 @@ const quickLinks = [
   { label: "Services", to: "/services" },
   { label: "Our Works", to: "/our-works" },
   { label: "Career", to: "/career" },
-  { label: project_urls, the following links should be: [{ label: "Contact", to: "/contact" },
+  { label: "Contact", to: "/contact" },
   { label: "Terms and Conditions", to: "/terms" },
   { label: "Privacy Policy", to: "/privacy" },
 ];
