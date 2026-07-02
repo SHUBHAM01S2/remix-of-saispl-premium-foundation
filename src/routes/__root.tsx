@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
+import { BookConsultationButton } from "@/components/BookConsultationButton";
 
 function NotFoundComponent() {
   return (
