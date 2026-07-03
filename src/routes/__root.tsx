@@ -201,7 +201,6 @@ function RootComponent() {
       <TechPartners />
       <Footer />
       {!isAdmin && <WhatsAppChatButton />}
-      {!isAdmin && <BookConsultationButton />}
     </QueryClientProvider>
   );
 }
