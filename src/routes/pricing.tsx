@@ -37,7 +37,7 @@ const webPackages: Plan[] = [
   {
     name: "Starter Site",
     tagline: "For new brands getting online",
-    price: { INR: "₹35K – 60K", USD: "$800 – $1,500" },
+    price: { INR: "₹35K – 60K", USD: "$800 – $1,500", GBP: "£600 – £1,100", EUR: "€700 – €1,300" },
     suffix: "one-time",
     icon: Zap,
     features: [
@@ -51,7 +51,7 @@ const webPackages: Plan[] = [
   {
     name: "Growth Business Site",
     tagline: "Most chosen by SMBs",
-    price: { INR: "₹75K – 1.5L", USD: "$1,800 – $3,500" },
+    price: { INR: "₹75K – 1.5L", USD: "$1,800 – $3,500", GBP: "£1,350 – £2,600", EUR: "€1,600 – €3,000" },
     suffix: "one-time",
     icon: Rocket,
     highlighted: true,
@@ -68,7 +68,7 @@ const webPackages: Plan[] = [
   {
     name: "Premium Conversion",
     tagline: "For serious growth",
-    price: { INR: "₹1.75L – 3.5L", USD: "$3,800 – $7,000" },
+    price: { INR: "₹1.75L – 3.5L", USD: "$3,800 – $7,000", GBP: "£2,900 – £5,300", EUR: "€3,300 – €6,100" },
     suffix: "one-time",
     icon: Sparkles,
     features: [
@@ -83,7 +83,7 @@ const webPackages: Plan[] = [
   {
     name: "Portal / Web App",
     tagline: "Custom software builds",
-    price: { INR: "₹2.5L+", USD: "$6,000+" },
+    price: { INR: "₹2.5L+", USD: "$6,000+", GBP: "£4,500+", EUR: "€5,200+" },
     suffix: "starting",
     icon: Building2,
     features: [
