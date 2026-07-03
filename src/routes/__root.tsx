@@ -15,7 +15,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { TechPartners } from "@/components/TechPartners";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
-import { BookConsultationButton } from "@/components/BookConsultationButton";
+
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { useRouterState } from "@tanstack/react-router";
 
