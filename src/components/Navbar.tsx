@@ -18,7 +18,7 @@ type NavLink =
 
 const serviceLinks = [
   { label: "Website Design & Development", to: "/web-design-development" },
-  { label: "Monthly Care & Maintenance", to: "/care-maintenance" },
+  
   { label: "SEO & Local Digital Marketing", to: "/seo-digital-marketing" },
   { label: "WhatsApp & AI Automation", to: "/automation-ai-services" },
   { label: "Custom Portals & Software", to: "/custom-portals-software" },
