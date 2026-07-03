@@ -104,7 +104,7 @@ function Contact() {
         name,
         email: email || null,
         phone,
-        company: businessType || null,
+        business_type: businessType || null,
         message,
       });
     setSubmitting(false);

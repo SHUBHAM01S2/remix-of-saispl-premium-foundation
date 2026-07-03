@@ -16,7 +16,7 @@ export type ContactSubmission = {
   name: string;
   email: string | null;
   phone: string | null;
-  company: string | null;
+  business_type: string | null;
   message: string;
   status: ContactStatus;
   created_at: string;
@@ -29,7 +29,7 @@ export const listContactSubmissions = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await (supabaseAdmin as any)
       .from("contact_submissions")
-      .select("id, name, email, phone, company, message, status, created_at")
+      .select("id, name, email, phone, business_type, message, status, created_at")
       .order("created_at", { ascending: false });
     if (error) throw error;
     return (data ?? []).map((r: any) => ({

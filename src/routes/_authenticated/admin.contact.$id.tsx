@@ -58,7 +58,7 @@ function ContactDetailPage() {
               <Field label="Name" value={row.name} />
               <Field label="Email" value={row.email ?? "—"} />
               <Field label="Phone" value={row.phone ?? "—"} />
-              <Field label="Company" value={row.company ?? "—"} />
+              <Field label="Business Type" value={row.business_type ?? "—"} />
               <Field label="Received" value={new Date(row.created_at).toLocaleString()} />
               <div className="sm:col-span-2">
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">

@@ -28,7 +28,7 @@ export const Route = createFileRoute("/_authenticated/admin/contacts")({
   }),
 });
 
-type SortKey = "name" | "email" | "company" | "status" | "created_at";
+type SortKey = "name" | "email" | "business_type" | "status" | "created_at";
 type SortDir = "asc" | "desc";
 
 const STATUS_STYLES: Record<ContactStatus, string> = {
@@ -67,7 +67,7 @@ function ContactsPage() {
       return (
         r.name.toLowerCase().includes(q) ||
         (r.email ?? "").toLowerCase().includes(q) ||
-        (r.company ?? "").toLowerCase().includes(q) ||
+        (r.business_type ?? "").toLowerCase().includes(q) ||
         (r.phone ?? "").toLowerCase().includes(q) ||
         r.message.toLowerCase().includes(q)
       );
@@ -119,7 +119,7 @@ function ContactsPage() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search name, email, company, message…"
+              placeholder="Search name, email, business type, message…"
               className="w-full rounded-md border border-input bg-background pl-9 pr-3 py-2 text-sm text-foreground outline-none focus:border-brand focus:ring-1 focus:ring-brand"
             />
           </div>
@@ -157,7 +157,7 @@ function ContactsPage() {
                     <Th onClick={() => toggleSort("name")}>Name <SortIcon k="name" /></Th>
                     <Th onClick={() => toggleSort("email")}>Email <SortIcon k="email" /></Th>
                     <th className="px-4 py-3 text-left">Phone</th>
-                    <Th onClick={() => toggleSort("company")}>Company <SortIcon k="company" /></Th>
+                    <Th onClick={() => toggleSort("business_type")}>Business Type <SortIcon k="business_type" /></Th>
                     <th className="px-4 py-3 text-left">Message</th>
                     <Th onClick={() => toggleSort("created_at")}>Date <SortIcon k="created_at" /></Th>
                     <Th onClick={() => toggleSort("status")}>Status <SortIcon k="status" /></Th>
@@ -185,7 +185,7 @@ function ContactsPage() {
                         )}
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{r.phone ?? "—"}</td>
-                      <td className="px-4 py-3 text-muted-foreground">{r.company ?? "—"}</td>
+                      <td className="px-4 py-3 text-muted-foreground">{r.business_type ?? "—"}</td>
                       <td className="px-4 py-3 text-muted-foreground max-w-xs">
                         <p className="line-clamp-2">{r.message}</p>
                       </td>
