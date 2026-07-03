@@ -121,7 +121,7 @@ export function TestimonialsSection() {
                   Client Feedback
                 </span>
               </div>
-              <h2 className="mt-5 max-w-2xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              <h2 className="mt-5 max-w-2xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 Trusted by teams building{" "}
                 <span className="text-brand">serious products.</span>
               </h2>
@@ -159,7 +159,7 @@ export function TestimonialsSection() {
             {/* Soft glow behind card */}
             <div className="pointer-events-none absolute -inset-x-6 -inset-y-6 rounded-[2rem] bg-gradient-to-br from-brand/10 via-transparent to-transparent blur-2xl" />
 
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-xl md:p-14">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl sm:rounded-3xl sm:p-8 md:p-14">
               {/* Corner ornament */}
               <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/15 blur-3xl" />
               <Quote
@@ -186,7 +186,7 @@ export function TestimonialsSection() {
                     ))}
                   </div>
 
-                  <blockquote className="mt-6 max-w-4xl text-2xl font-medium leading-relaxed tracking-tight text-foreground md:text-3xl md:leading-[1.35]">
+                  <blockquote className="mt-6 max-w-4xl text-lg font-medium leading-relaxed tracking-tight text-foreground sm:text-2xl md:text-3xl md:leading-[1.35]">
                     <span className="text-brand">“</span>
                     {current.quote}
                     <span className="text-brand">”</span>
@@ -211,59 +211,67 @@ export function TestimonialsSection() {
             </div>
           </div>
 
-          {/* Thumbnail selector */}
-          {total > 1 && (
-            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {visible.map((t, i) => {
-                const active = i === index;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setIndex(i)}
-                    className={`group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300 ${
-                      active
-                        ? "border-brand/50 bg-brand/[0.06] shadow-[0_0_0_1px_hsl(var(--brand)/0.3),0_20px_60px_-20px_hsl(var(--brand)/0.4)]"
-                        : "border-white/10 bg-white/[0.02] hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.04]"
-                    }`}
+        </div>
+
+        {/* Marquee row - right to left */}
+        {total > 1 && (
+          <div
+            className="relative mt-14 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+            aria-hidden="true"
+          >
+            <style>{`
+              @keyframes testimonials-marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .testimonials-marquee-track {
+                animation: testimonials-marquee 40s linear infinite;
+              }
+              .testimonials-marquee-wrap:hover .testimonials-marquee-track {
+                animation-play-state: paused;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .testimonials-marquee-track { animation: none; }
+              }
+            `}</style>
+            <div className="testimonials-marquee-wrap">
+              <div className="testimonials-marquee-track flex w-max gap-4 sm:gap-6">
+                {[...visible, ...visible].map((t, i) => (
+                  <div
+                    key={`${t.id}-${i}`}
+                    className="w-[280px] shrink-0 rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-xl sm:w-[340px] md:w-[380px]"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="h-px flex-1 bg-white/10" />
-                      <div className="flex gap-0.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-gradient-to-br from-brand/30 to-brand/5 font-mono text-[10px] font-semibold text-foreground">
+                          {initials(t.client_name)}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="truncate text-xs font-semibold text-foreground">
+                            {t.client_name}
+                          </div>
+                          {t.company && (
+                            <div className="truncate font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                              {t.company}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 gap-0.5">
                         {Array.from({ length: t.rating }).map((_, s) => (
-                          <Star
-                            key={s}
-                            className={`h-3 w-3 ${
-                              active ? "fill-brand text-brand" : "fill-muted-foreground/50 text-muted-foreground/50"
-                            }`}
-                          />
+                          <Star key={s} className="h-3 w-3 fill-brand text-brand" />
                         ))}
                       </div>
                     </div>
-                    <p className="mt-3 line-clamp-2 text-sm text-foreground/80">
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-foreground/80">
                       “{t.quote}”
                     </p>
-                    <div className="mt-4 flex items-center gap-2">
-                      <div
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          active ? "bg-brand shadow-[0_0_8px_hsl(var(--brand))]" : "bg-muted-foreground/40"
-                        }`}
-                      />
-                      <span className="text-xs font-semibold text-foreground">
-                        {t.client_name}
-                      </span>
-                      {t.company && (
-                        <span className="truncate text-xs text-muted-foreground">
-                          · {t.company}
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     </ScrollReveal>
   );
