@@ -3,11 +3,11 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Calendar, User, BookOpen } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
-import type { BlogPost } from "./blog";
+import { SEED, type BlogPost } from "./blog.index";
 
-// Local seed fallback mirrors the list page so detail pages work before the
-// Supabase table is populated.
-const SEED_INDEX: Record<string, BlogPost> = {};
+const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
+  SEED.map((p) => [p.slug, p]),
+);
 
 async function fetchBySlug(slug: string): Promise<BlogPost | null> {
   const { data, error } = await supabase
