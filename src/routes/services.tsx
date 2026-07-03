@@ -99,7 +99,7 @@ const stats = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { title: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         name: "description",
         content:
