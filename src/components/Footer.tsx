@@ -18,12 +18,13 @@ const companyLinks = [
 ];
 
 const productLinks = [
-  { label: "Web Development", to: "/services" },
-  { label: "AI & Automation", to: "/services" },
-  { label: "Custom Portals", to: "/services" },
-  { label: "UI/UX Design", to: "/services" },
+  { label: "Web Development", to: "/web-design-development" },
+  { label: "AI & Automation", to: "/automation-ai-services" },
+  { label: "Custom Portals", to: "/custom-portals-software" },
+  { label: "UI/UX Design", to: "/branding-graphic-design" },
   { label: "Pricing", to: "/pricing" },
 ];
+
 
 const resourceLinks = [
   { label: "Case Studies", to: "/our-works" },
@@ -114,10 +115,11 @@ export function Footer() {
                 className="group inline-flex items-center gap-1.5 text-sm text-foreground/70 transition-colors hover:text-foreground"
               >
                 <MessageCircle className="h-3.5 w-3.5 text-brand" />
-                Support on WhatsApp
+                Support
                 <ArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
             </li>
+
           </FooterColumn>
 
           <FooterColumn title="Contact Us">
