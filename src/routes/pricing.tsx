@@ -245,7 +245,7 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 
       <div className="mt-5 flex items-baseline gap-2">
         <span className="text-3xl font-extrabold tracking-tight text-foreground">
-          {plan.price}
+          {plan.price[currency]}
         </span>
         {plan.suffix && (
           <span className="text-sm text-muted-foreground">{plan.suffix}</span>
