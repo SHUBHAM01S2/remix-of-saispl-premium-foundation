@@ -94,7 +94,10 @@ export function WhatWeDoSection() {
             const Icon = iconForCapability(cap.icon);
             return (
               <StaggerItem key={cap.id} className="h-full">
-                <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1">
+                <Link
+                  to="/contact"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1"
+                >
                   <div
                     className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                     style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
@@ -123,8 +126,9 @@ export function WhatWeDoSection() {
                       <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                     </div>
                   )}
-                </div>
+                </Link>
               </StaggerItem>
+
             );
           })}
         </StaggerContainer>
