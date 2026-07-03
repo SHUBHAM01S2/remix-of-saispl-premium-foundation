@@ -13,47 +13,54 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 const services = [
   {
     icon: Code,
+    tag: "Engineering",
     title: "Web & Software Development",
     description:
       "Scalable web apps and custom software engineered for performance, security, and long-term growth.",
-    tags: ["React / Next.js", "Node · TypeScript", "Cloud Architecture"],
+    meta: "React · Node · TS",
   },
   {
     icon: Bot,
+    tag: "AI · Automation",
     title: "AI Agents & Automation",
     description:
       "Intelligent AI agents and automated workflows that cut costs, remove bottlenecks, and accelerate outcomes.",
-    tags: ["LLMs · RAG", "Agents · Tools"],
+    meta: "LLMs · RAG · Agents",
   },
   {
     icon: LayoutDashboard,
+    tag: "Platforms",
     title: "Custom Portals & Dashboards",
     description:
       "Tailored dashboards and portals that unify data and give teams real-time operational visibility.",
-    tags: ["Dashboards", "APIs"],
+    meta: "Dashboards · APIs",
   },
   {
     icon: PenTool,
+    tag: "Design",
     title: "UI/UX & Product Design",
     description:
       "User-centered design and prototyping that transforms complex ideas into intuitive, high-converting products.",
-    tags: ["UX · UI", "Motion"],
+    meta: "UX · UI · Motion",
   },
   {
     icon: Cloud,
+    tag: "Cloud · DevOps",
     title: "Cloud & DevOps",
     description:
       "Reliable cloud infrastructure, CI/CD pipelines, and DevOps practices for seamless, zero-downtime delivery.",
-    tags: ["AWS · GCP", "CI/CD · K8s"],
+    meta: "AWS · GCP · K8s",
   },
   {
     icon: Headset,
+    tag: "Support",
     title: "Ongoing Support & Maintenance",
     description:
       "Proactive monitoring, updates, and dedicated support to keep your systems running smoothly around the clock.",
-    tags: ["24/7", "SLAs"],
+    meta: "24/7 · SLAs",
   },
 ];
+
 
 const processSteps = [
   {
