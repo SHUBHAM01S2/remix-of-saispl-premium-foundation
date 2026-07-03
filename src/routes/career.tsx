@@ -193,38 +193,67 @@ function Career() {
             <p className="text-center text-muted-foreground">No open positions at the moment — check back soon!</p>
           ) : (
             <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {openings.map((job) => (
-                <StaggerItem key={job.id}>
-                  <div className="flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
-                    <h3 className="text-base font-semibold text-foreground">{job.title}</h3>
-                    <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                      <span className="inline-flex items-center gap-1.5">
-                        <Users className="h-4 w-4" />
-                        {job.department}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <MapPin className="h-4 w-4" />
-                        {job.location}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-brand/10 px-2 py-0.5 text-xs font-medium capitalize text-brand">
-                        {job.type}
-                      </span>
+              {openings.map((job, idx) => {
+                const num = String(idx + 1).padStart(2, "0");
+                return (
+                  <StaggerItem key={job.id}>
+                    <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                      <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }} />
+                      <div className="pointer-events-none absolute inset-0 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.12]" style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px)", backgroundSize: "24px 24px", maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)" }} />
+                      <div className="pointer-events-none absolute -right-2 -bottom-6 select-none text-[8rem] font-black leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-brand/10" style={displayFont}>{num}</div>
+
+                      <div className="relative flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          <span className="h-1 w-1 rounded-full bg-brand" />
+                          {job.type}
+                        </span>
+                        <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
+                      </div>
+
+                      <div className="relative mt-8 flex items-center gap-4">
+                        <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                          <Briefcase className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
+                          <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
+                        </div>
+                        <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
+                      </div>
+
+                      <h3 className="relative mt-6 text-xl font-bold leading-tight text-foreground" style={displayFont}>{job.title}</h3>
+
+                      <div className="relative mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1.5">
+                          <Users className="h-3.5 w-3.5 text-brand" />
+                          {job.department}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                          <MapPin className="h-3.5 w-3.5 text-brand" />
+                          {job.location}
+                        </span>
+                      </div>
+
+                      {job.description && (
+                        <p className="relative mt-4 text-sm leading-relaxed text-muted-foreground line-clamp-3">{job.description}</p>
+                      )}
+
+                      <div className="relative mt-6 flex-1" />
+
+                      <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-brand">
+                          <Sparkles className="h-3 w-3" />
+                          Remote friendly
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setActivePosition(job.title)}
+                          className="inline-flex items-center gap-1 rounded-full bg-cta px-3.5 py-1.5 text-xs font-semibold text-cta-foreground transition-all hover:bg-cta/90"
+                        >
+                          Apply <ArrowRight className="h-3 w-3" />
+                        </button>
+                      </div>
                     </div>
-                    {job.description && (
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{job.description}</p>
-                    )}
-                    <div className="mt-5 flex items-center gap-3 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setActivePosition(job.title)}
-                        className="inline-flex items-center justify-center rounded-lg bg-cta px-4 py-2 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90"
-                      >
-                        Apply Now
-                      </button>
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
+                  </StaggerItem>
+                );
+              })}
             </StaggerContainer>
           )}
         </div>
