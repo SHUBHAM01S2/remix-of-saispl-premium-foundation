@@ -1,69 +1,179 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Tag, ShieldCheck, Plus } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Rocket,
+  Building2,
+  Layers,
+  MessageSquare,
+  Bot,
+  PenTool,
+  FileText,
+  Palette,
+} from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { GlobalReachNote } from "@/components/GlobalReachNote";
 
-type Row = {
+type Plan = {
   name: string;
-  fee: string;
-  inclusions: string;
+  tagline: string;
+  price: string;
+  suffix?: string;
+  icon: typeof Zap;
+  features: string[];
   highlighted?: boolean;
+  badge?: string;
 };
 
-const webPackages: Row[] = [
+const webPackages: Plan[] = [
   {
     name: "Starter Site",
-    fee: "Rs.35,000 – Rs.60,000",
-    inclusions: "Up to 5 pages, mobile-ready, contact form, basic SEO setup",
+    tagline: "For new brands getting online",
+    price: "₹35K – 60K",
+    suffix: "one-time",
+    icon: Zap,
+    features: [
+      "Up to 5 pages",
+      "Mobile-ready responsive design",
+      "Contact form + WhatsApp button",
+      "Basic on-page SEO setup",
+      "1 round of revisions",
+    ],
   },
   {
     name: "Growth Business Site",
-    fee: "Rs.75,000 – Rs.1,50,000",
-    inclusions: "Up to 10 pages, CMS, blog, on-page SEO, WhatsApp/lead capture",
+    tagline: "Most chosen by SMBs",
+    price: "₹75K – 1.5L",
+    suffix: "one-time",
+    icon: Rocket,
     highlighted: true,
+    badge: "Most Popular",
+    features: [
+      "Up to 10 pages + CMS",
+      "Blog & content system",
+      "On-page SEO + schema",
+      "WhatsApp / lead capture flows",
+      "Analytics setup",
+      "2 rounds of revisions",
+    ],
   },
   {
-    name: "Premium Conversion Site",
-    fee: "Rs.1,75,000 – Rs.3,50,000",
-    inclusions: "Custom design, conversion copy, analytics, A/B testing, integrations",
+    name: "Premium Conversion",
+    tagline: "For serious growth",
+    price: "₹1.75L – 3.5L",
+    suffix: "one-time",
+    icon: Sparkles,
+    features: [
+      "Fully custom design",
+      "Conversion-focused copy",
+      "A/B testing setup",
+      "Advanced integrations",
+      "Speed & Core Web Vitals",
+      "3 rounds of revisions",
+    ],
   },
   {
     name: "Portal / Web App",
-    fee: "Rs.2,50,000+",
-    inclusions: "Custom portal, dashboards, user roles, database, integrations",
+    tagline: "Custom software builds",
+    price: "₹2.5L+",
+    suffix: "starting",
+    icon: Building2,
+    features: [
+      "Custom portal / dashboard",
+      "User roles & auth",
+      "Database + API design",
+      "Third-party integrations",
+      "Post-launch support",
+    ],
   },
 ];
 
-const carePlans: Row[] = [
+const carePlans: Plan[] = [
   {
     name: "Care Basic",
-    fee: "Rs.3,000 – Rs.6,000",
-    inclusions: "Security updates, uptime check, 1 change/month, backup",
+    tagline: "Keep the lights on",
+    price: "₹3K – 6K",
+    suffix: "/month",
+    icon: ShieldCheck,
+    features: [
+      "Security & core updates",
+      "Uptime monitoring",
+      "1 content change / month",
+      "Weekly backups",
+    ],
   },
   {
     name: "Care Plus",
-    fee: "Rs.7,000 – Rs.12,000",
-    inclusions: "2–4 changes/mo, speed check, quarterly report",
+    tagline: "Steady improvements",
+    price: "₹7K – 12K",
+    suffix: "/month",
+    icon: Layers,
     highlighted: true,
+    badge: "Recommended",
+    features: [
+      "Everything in Care Basic",
+      "2–4 changes / month",
+      "Speed & health check",
+      "Quarterly performance report",
+    ],
   },
   {
     name: "Growth Plan",
-    fee: "Rs.15,000 – Rs.25,000",
-    inclusions: "Landing pages, SEO hygiene, monthly review call",
+    tagline: "Websites that keep growing",
+    price: "₹15K – 25K",
+    suffix: "/month",
+    icon: Rocket,
+    features: [
+      "Landing page every month",
+      "SEO hygiene & content tweaks",
+      "Monthly review call",
+      "Priority turnaround",
+    ],
   },
   {
     name: "Growth + Automation",
-    fee: "Rs.25,000 – Rs.45,000",
-    inclusions: "Automation tweaks, WhatsApp/CRM support, KPI dashboard",
+    tagline: "Full-stack growth partner",
+    price: "₹25K – 45K",
+    suffix: "/month",
+    icon: Sparkles,
+    features: [
+      "Everything in Growth Plan",
+      "Automation tweaks & flows",
+      "WhatsApp / CRM support",
+      "KPI dashboard access",
+    ],
   },
 ];
 
 const addOns = [
-  { name: "WhatsApp Automation Setup", price: "Rs.15,000 – Rs.35,000 one-time" },
-  { name: "AI Website Chat Agent", price: "Rs.20,000 – Rs.40,000 one-time" },
-  { name: "Logo + Branding Kit", price: "Rs.8,000 – Rs.20,000" },
-  { name: "Extra landing page", price: "Rs.5,000 – Rs.12,000 per page" },
-  { name: "SEO Article (1 blog post)", price: "Rs.2,000 – Rs.4,000 per piece" },
+  { name: "WhatsApp Automation", price: "₹15K – 35K", note: "one-time", icon: MessageSquare },
+  { name: "AI Website Chat Agent", price: "₹20K – 40K", note: "one-time", icon: Bot },
+  { name: "Logo + Branding Kit", price: "₹8K – 20K", note: "one-time", icon: Palette },
+  { name: "Extra Landing Page", price: "₹5K – 12K", note: "per page", icon: PenTool },
+  { name: "SEO Article", price: "₹2K – 4K", note: "per piece", icon: FileText },
+];
+
+const faqs = [
+  {
+    q: "How is pricing decided within a range?",
+    a: "Ranges depend on complexity, custom design work, integrations, and content readiness. We give a fixed quote after a short scoping call — no surprises later.",
+  },
+  {
+    q: "Do you charge hourly?",
+    a: "No. Every engagement is a fixed-scope, fixed-price package. If scope changes, we send a small change order first.",
+  },
+  {
+    q: "Can I switch care plans later?",
+    a: "Yes — you can upgrade or downgrade any month. Nothing is locked in beyond the current month.",
+  },
+  {
+    q: "Do you work with international clients?",
+    a: "Yes. We serve clients across India and globally. Payments in INR or USD.",
+  },
 ];
 
 export const Route = createFileRoute("/pricing")({
@@ -85,197 +195,275 @@ export const Route = createFileRoute("/pricing")({
       { property: "og:url", content: "/pricing" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Pricing | Shivaryan Infotech" },
-      {
-        name: "twitter:description",
-        content: "Clear, honest pricing — no surprises.",
-      },
+      { name: "twitter:description", content: "Clear, honest pricing — no surprises." },
     ],
     links: [{ rel: "canonical", href: "/pricing" }],
   }),
   component: Pricing,
 });
 
-function PricingTable({ title, rows }: { title: string; rows: Row[] }) {
+function PlanCard({ plan }: { plan: Plan }) {
+  const Icon = plan.icon;
   return (
-    <div>
-      <ScrollReveal className="mb-6">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          {title}
-        </h2>
-      </ScrollReveal>
+    <div
+      className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 transition-all duration-300 ${
+        plan.highlighted
+          ? "border-brand/60 bg-gradient-to-b from-brand/10 via-surface to-surface shadow-[0_20px_60px_-20px] shadow-brand/30 lg:-translate-y-2"
+          : "border-border/60 bg-surface hover:-translate-y-1 hover:border-brand/30 hover:shadow-xl"
+      }`}
+    >
+      {plan.highlighted && (
+        <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand/25 blur-3xl" />
+      )}
 
-      {/* Desktop table */}
-      <ScrollReveal className="hidden overflow-hidden rounded-2xl border border-border/60 bg-surface md:block">
-        <table className="w-full text-left">
-          <thead className="border-b border-border/60 bg-surface-elevated">
-            <tr>
-              <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Package
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Price
-              </th>
-              <th className="px-6 py-4 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                Inclusions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, idx) => (
-              <tr
-                key={row.name}
-                className={`border-b border-border/40 last:border-b-0 transition-colors hover:bg-surface-elevated/60 ${
-                  row.highlighted ? "bg-brand/5" : ""
-                } ${idx % 2 === 1 && !row.highlighted ? "bg-surface-elevated/30" : ""}`}
-              >
-                <td className="px-6 py-5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base font-semibold text-foreground">
-                      {row.name}
-                    </span>
-                    {row.highlighted && (
-                      <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand">
-                        Popular
-                      </span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-6 py-5 text-sm font-medium text-foreground">
-                  {row.fee}
-                </td>
-                <td className="px-6 py-5 text-sm leading-relaxed text-muted-foreground">
-                  {row.inclusions}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </ScrollReveal>
+      {plan.badge && (
+        <div className="absolute right-6 top-6">
+          <span className="inline-flex items-center gap-1 rounded-full bg-brand px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cta-foreground shadow-lg shadow-brand/30">
+            <Sparkles className="h-3 w-3" />
+            {plan.badge}
+          </span>
+        </div>
+      )}
 
-      {/* Mobile cards */}
-      <StaggerContainer className="grid gap-4 md:hidden">
-        {rows.map((row) => (
-          <StaggerItem key={row.name}>
-            <div
-              className={`rounded-2xl border p-5 ${
-                row.highlighted
-                  ? "border-brand/40 bg-brand/5"
-                  : "border-border/60 bg-surface"
+      <div
+        className={`mb-5 flex h-12 w-12 items-center justify-center rounded-2xl ${
+          plan.highlighted ? "bg-brand text-cta-foreground" : "bg-brand/10 text-brand"
+        }`}
+      >
+        <Icon className="h-6 w-6" />
+      </div>
+
+      <h3 className="text-xl font-bold text-foreground">{plan.name}</h3>
+      <p className="mt-1 text-sm text-muted-foreground">{plan.tagline}</p>
+
+      <div className="mt-5 flex items-baseline gap-2">
+        <span className="text-3xl font-extrabold tracking-tight text-foreground">
+          {plan.price}
+        </span>
+        {plan.suffix && (
+          <span className="text-sm text-muted-foreground">{plan.suffix}</span>
+        )}
+      </div>
+
+      <div className="my-6 h-px w-full bg-gradient-to-r from-transparent via-border to-transparent" />
+
+      <ul className="flex-1 space-y-3">
+        {plan.features.map((f) => (
+          <li key={f} className="flex items-start gap-3 text-sm text-foreground/90">
+            <span
+              className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                plan.highlighted ? "bg-brand text-cta-foreground" : "bg-brand/10 text-brand"
               }`}
             >
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-foreground">
-                  {row.name}
-                </h3>
-                {row.highlighted && (
-                  <span className="rounded-full bg-brand/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand">
-                    Popular
-                  </span>
-                )}
-              </div>
-              <p className="mt-2 text-sm font-medium text-brand">{row.fee}</p>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {row.inclusions}
-              </p>
-            </div>
-          </StaggerItem>
+              <Check className="h-3 w-3" strokeWidth={3} />
+            </span>
+            <span className="leading-relaxed">{f}</span>
+          </li>
         ))}
-      </StaggerContainer>
+      </ul>
+
+      <Link
+        to="/contact"
+        className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition-all ${
+          plan.highlighted
+            ? "bg-cta text-cta-foreground shadow-lg shadow-cta/30 hover:brightness-110"
+            : "border border-border bg-background text-foreground hover:border-brand/40 hover:bg-brand/5"
+        }`}
+      >
+        Get Started
+        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      </Link>
     </div>
   );
 }
 
 function Pricing() {
+  const [tab, setTab] = useState<"web" | "care">("web");
+  const plans = tab === "web" ? webPackages : carePlans;
+
   return (
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden bg-background py-20 md:py-28">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute -left-1/4 top-0 h-96 w-96 rounded-full bg-brand/20 blur-3xl" />
-          <div className="absolute -right-1/4 bottom-0 h-96 w-96 rounded-full bg-brand/10 blur-3xl" />
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute -left-1/4 top-0 h-[28rem] w-[28rem] rounded-full bg-brand/20 blur-3xl" />
+          <div className="absolute -right-1/4 bottom-0 h-[28rem] w-[28rem] rounded-full bg-brand/10 blur-3xl" />
         </div>
-        <ScrollReveal className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand">
-            <Tag className="h-6 w-6" />
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
-            Clear, Honest Pricing —{" "}
-            <span className="text-brand">No Surprises</span>
+        <ScrollReveal className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand">
+            <Sparkles className="h-3.5 w-3.5" />
+            Simple Pricing
+          </span>
+          <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            Pricing that scales{" "}
+            <span className="bg-gradient-to-r from-brand to-brand/60 bg-clip-text text-transparent">
+              with your business
+            </span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Fixed packages for websites, portals, and monthly care — plus
-            simple add-ons when you need more.
+            Fixed packages for websites, portals, and monthly care — no hourly
+            billing, no scope-creep surprises.
           </p>
+
+          {/* Toggle */}
+          <div className="mt-10 inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
+            <button
+              onClick={() => setTab("web")}
+              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                tab === "web"
+                  ? "bg-cta text-cta-foreground shadow-md"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Web Design Packages
+            </button>
+            <button
+              onClick={() => setTab("care")}
+              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                tab === "care"
+                  ? "bg-cta text-cta-foreground shadow-md"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Monthly Care Plans
+            </button>
+          </div>
         </ScrollReveal>
       </section>
 
-      {/* Web Design Packages */}
-      <section className="bg-background pb-16 md:pb-20">
+      {/* Plans grid */}
+      <section className="bg-background pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PricingTable title="Web Design Packages" rows={webPackages} />
-        </div>
-      </section>
-
-      {/* Monthly Care Plans */}
-      <section className="bg-background pb-16 md:pb-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PricingTable title="Monthly Care Plans" rows={carePlans} />
-        </div>
-      </section>
-
-      {/* Add-Ons */}
-      <section className="bg-background pb-16 md:pb-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ScrollReveal className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
-              <Plus className="h-5 w-5" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              Add-Ons
-            </h2>
-          </ScrollReveal>
-
-          <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {addOns.map((item) => (
-              <StaggerItem key={item.name}>
-                <div className="h-full rounded-xl border border-border/50 bg-surface p-5 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-0.5">
-                  <h3 className="text-base font-semibold text-foreground">
-                    {item.name}
-                  </h3>
-                  <p className="mt-2 text-sm font-medium text-brand">
-                    {item.price}
-                  </p>
-                </div>
+          <StaggerContainer
+            key={tab}
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+          >
+            {plans.map((plan) => (
+              <StaggerItem key={plan.name} className="h-full">
+                <PlanCard plan={plan} />
               </StaggerItem>
             ))}
           </StaggerContainer>
 
-          <ScrollReveal className="mt-10">
-            <div className="flex items-start gap-3 rounded-2xl border border-brand/30 bg-brand/5 p-6">
-              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand/15 text-brand">
-                <ShieldCheck className="h-4 w-4" />
+          <ScrollReveal className="mt-12">
+            <div className="flex flex-col items-start gap-3 rounded-2xl border border-brand/30 bg-gradient-to-r from-brand/10 via-brand/5 to-transparent p-6 sm:flex-row sm:items-center">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-brand/20 text-brand">
+                <ShieldCheck className="h-5 w-5" />
               </div>
               <p className="text-sm leading-relaxed text-foreground md:text-base">
-                All pricing is fixed. No hourly billing surprises. No scope
-                creep charges.
+                <strong className="font-semibold">Fixed pricing, always.</strong>{" "}
+                No hourly billing surprises. No scope-creep charges. Every quote
+                is locked before we start.
               </p>
             </div>
           </ScrollReveal>
         </div>
       </section>
 
+      {/* Add-Ons */}
+      <section className="bg-surface/40 py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-12 max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-wider text-brand">
+              Extend anything
+            </span>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Add-Ons & Extras
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Bolt these onto any package or care plan whenever you're ready.
+            </p>
+          </ScrollReveal>
+
+          <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {addOns.map((item) => {
+              const Icon = item.icon;
+              return (
+                <StaggerItem key={item.name}>
+                  <div className="group flex h-full items-start gap-4 rounded-2xl border border-border/60 bg-surface p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-lg">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand group-hover:text-cta-foreground">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-base font-semibold text-foreground">
+                        {item.name}
+                      </h3>
+                      <div className="mt-1 flex items-baseline gap-1.5">
+                        <span className="text-sm font-bold text-brand">
+                          {item.price}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {item.note}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </StaggerItem>
+              );
+            })}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* FAQs */}
+      <section className="bg-background py-20 md:py-24">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-12 text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Frequently asked
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Answers to what most clients ask before starting.
+            </p>
+          </ScrollReveal>
+
+          <StaggerContainer className="space-y-4">
+            {faqs.map((f) => (
+              <StaggerItem key={f.q}>
+                <details className="group rounded-2xl border border-border/60 bg-surface p-5 open:border-brand/40 open:bg-surface-elevated">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
+                    <span className="text-base font-semibold text-foreground">
+                      {f.q}
+                    </span>
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/60 bg-background text-brand transition-transform group-open:rotate-45">
+                      <ArrowRight className="h-4 w-4 -rotate-45" />
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {f.a}
+                  </p>
+                </details>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-background pb-20 md:pb-28">
-        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <Link
-            to="/contact"
-            className="group inline-flex items-center gap-2 rounded-full bg-cta px-8 py-3.5 text-sm font-semibold text-cta-foreground shadow-lg transition-all hover:brightness-110 hover:shadow-xl"
-          >
-            Get a Free Quote
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
-          <div className="mt-8 flex justify-center">
-            <GlobalReachNote />
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-3xl border border-brand/30 bg-gradient-to-br from-brand/15 via-surface to-surface p-10 text-center md:p-14">
+            <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-brand/30 blur-3xl" />
+            <div className="pointer-events-none absolute -right-20 -bottom-20 h-64 w-64 rounded-full bg-brand/20 blur-3xl" />
+            <div className="relative">
+              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                Not sure which fits?
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                Tell us about your project in 2 minutes and we'll send back a
+                fixed, no-obligation quote within 4 business hours.
+              </p>
+              <Link
+                to="/contact"
+                className="group mt-8 inline-flex items-center gap-2 rounded-full bg-cta px-8 py-3.5 text-sm font-semibold text-cta-foreground shadow-lg shadow-cta/30 transition-all hover:brightness-110 hover:shadow-xl"
+              >
+                Get a Free Quote
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <div className="mt-8 flex justify-center">
+                <GlobalReachNote />
+              </div>
+            </div>
           </div>
         </div>
       </section>
