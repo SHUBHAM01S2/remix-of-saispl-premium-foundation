@@ -6,7 +6,6 @@ import {
   PenTool,
   Cloud,
   Headset,
-  ArrowRight,
   ArrowUpRight,
   Search,
   Layers,
