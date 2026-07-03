@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Boxes, HeartPulse, LineChart, Truck, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveCaseStudySlug } from "@/lib/case-study-slugs";
 
 type FeaturedProject = {
   id: string;
@@ -61,6 +62,7 @@ export function FeaturedWorkSection() {
           {projects.map((project) => {
             const Icon = iconFor(project.client_industry);
             const loc = (project as any).location ?? project.client_industry;
+            const slug = resolveCaseStudySlug(project.title);
             return (
               <StaggerItem key={project.id}>
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/25">
@@ -99,13 +101,24 @@ export function FeaturedWorkSection() {
                     <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {project.results}
                     </p>
-                    <Link
-                      to="/our-works"
-                      className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
-                    >
-                      View Case Study
-                      <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
-                    </Link>
+                    {slug ? (
+                      <Link
+                        to="/our-works/$caseStudyId"
+                        params={{ caseStudyId: slug }}
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                      >
+                        View Case Study
+                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/our-works"
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                      >
+                        View All Work
+                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </StaggerItem>
