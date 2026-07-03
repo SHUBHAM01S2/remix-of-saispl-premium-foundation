@@ -287,9 +287,8 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 }
 
 function Pricing() {
-  const [tab, setTab] = useState<"web" | "care">("web");
   const [currency, setCurrency] = useState<Currency>("INR");
-  const plans = tab === "web" ? webPackages : carePlans;
+  const plans = webPackages;
 
   return (
     <div>
@@ -311,34 +310,15 @@ function Pricing() {
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Fixed packages for websites, portals, and monthly care — no hourly
+            Fixed packages for websites, portals, and custom builds — no hourly
             billing, no scope-creep surprises.
           </p>
 
-          {/* Toggle */}
+          {/* Currency Switch */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
-              <button
-                onClick={() => setTab("web")}
-                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                  tab === "web"
-                    ? "bg-cta text-cta-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Web Design Packages
-              </button>
-              <button
-                onClick={() => setTab("care")}
-                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                  tab === "care"
-                    ? "bg-cta text-cta-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Monthly Care Plans
-              </button>
-            </div>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Currency
+            </span>
             <div className="inline-flex flex-wrap rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
               {(["INR", "USD", "GBP", "EUR"] as Currency[]).map((c) => (
                 <button
@@ -358,6 +338,7 @@ function Pricing() {
           </div>
         </ScrollReveal>
       </section>
+
 
       {/* Plans grid */}
       <section className="bg-background pb-16 md:pb-24">
