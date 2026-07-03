@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Sparkles, Bot, Code2, Cpu, LayoutGrid, Boxes, Zap, Workflow } from "lucide-react";
+import { ArrowRight, Sparkles, Bot, Code2, Cpu, LayoutGrid, Boxes, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
 
 // px offsets from horizontal center of the hero container.
