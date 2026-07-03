@@ -29,6 +29,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as ServicesWebsiteDesignDevelopmentRouteImport } from './routes/services_.website-design-development'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
@@ -164,6 +165,12 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServicesWebsiteDesignDevelopmentRoute =
+  ServicesWebsiteDesignDevelopmentRouteImport.update({
+    id: '/services_/website-design-development',
+    path: '/services/website-design-development',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ReportsIdRoute = ReportsIdRouteImport.update({
   id: '/reports/$id',
   path: '/reports/$id',
@@ -392,6 +399,7 @@ export interface FileRoutesByFullPath {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/services/website-design-development': typeof ServicesWebsiteDesignDevelopmentRoute
   '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
@@ -448,6 +456,7 @@ export interface FileRoutesByTo {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/services/website-design-development': typeof ServicesWebsiteDesignDevelopmentRoute
   '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
@@ -501,6 +510,7 @@ export interface FileRoutesById {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/services_/website-design-development': typeof ServicesWebsiteDesignDevelopmentRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
@@ -559,6 +569,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/services/website-design-development'
     | '/blog/'
     | '/admin/admins'
     | '/admin/blog'
@@ -615,6 +626,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/services/website-design-development'
     | '/blog'
     | '/admin/admins'
     | '/admin/capabilities'
@@ -667,6 +679,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/services_/website-design-development'
     | '/blog/'
     | '/_authenticated/admin/admins'
     | '/_authenticated/admin/blog'
@@ -723,6 +736,7 @@ export interface RootRouteChildren {
   InternalArchitectureRoute: typeof InternalArchitectureRoute
   InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
   ReportsIdRoute: typeof ReportsIdRoute
+  ServicesWebsiteDesignDevelopmentRoute: typeof ServicesWebsiteDesignDevelopmentRoute
   BlogIndexRoute: typeof BlogIndexRoute
 }
 
@@ -866,6 +880,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services_/website-design-development': {
+      id: '/services_/website-design-development'
+      path: '/services/website-design-development'
+      fullPath: '/services/website-design-development'
+      preLoaderRoute: typeof ServicesWebsiteDesignDevelopmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports/$id': {
@@ -1311,6 +1332,7 @@ const rootRouteChildren: RootRouteChildren = {
   InternalArchitectureRoute: InternalArchitectureRoute,
   InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
   ReportsIdRoute: ReportsIdRoute,
+  ServicesWebsiteDesignDevelopmentRoute: ServicesWebsiteDesignDevelopmentRoute,
   BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
