@@ -40,7 +40,7 @@ const filters = ["All", "Engineering", "AI · Automation", "Platforms", "Design"
 
 export function WhatWeDoSection() {
   return (
-    <section className="relative py-24 md:py-32">
+    <section className="relative py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">

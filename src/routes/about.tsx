@@ -71,20 +71,42 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <div className="bg-[#FDFDFD] text-slate-900">
-      <div className="mx-auto max-w-6xl px-6 py-24 md:py-28">
+    <div className="relative isolate overflow-hidden bg-background text-foreground">
+      {/* ambient background */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[600px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 100% at 50% 0%, color-mix(in oklab, var(--color-brand) 18%, transparent), transparent 70%)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+          maskImage: "radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 20%, black 40%, transparent 80%)",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-6xl px-6 py-20 md:py-24">
         {/* Hero */}
-        <section className="mb-32 flex flex-col items-center justify-between gap-16 lg:mb-40 lg:flex-row">
+        <section className="mb-24 flex flex-col items-center justify-between gap-16 lg:mb-28 lg:flex-row">
           <ScrollReveal className="max-w-2xl">
-            <nav className="mb-8 flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-slate-400">
+            <nav className="mb-8 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground">
               <span>Home</span>
-              <span className="h-px w-4 bg-slate-200" />
-              <span className="text-slate-900">About</span>
+              <span className="h-px w-4 bg-white/20" />
+              <span className="text-foreground">About</span>
             </nav>
-            <h1 className="mb-10 text-5xl font-bold leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
-              Engineering the intelligent future.
+            <h1 className="mb-8 text-5xl font-semibold leading-[0.98] tracking-tight md:text-6xl lg:text-7xl">
+              Engineering the{" "}
+              <span className="bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent italic">
+                intelligent future.
+              </span>
             </h1>
-            <p className="mb-12 max-w-lg text-lg leading-relaxed text-slate-500 md:text-xl">
+            <p className="mb-10 max-w-lg text-lg leading-relaxed text-muted-foreground md:text-xl">
               Driven by design. Powered by data. Focused on people. Shivaryan Infotech
               helps teams unlock their full potential with ethical, scalable, and
               user-first AI technology.
@@ -92,39 +114,42 @@ function About() {
             <div className="flex flex-wrap items-center gap-6">
               <Link
                 to="/contact"
-                className="group flex items-center gap-2 rounded-full bg-[#FF6B4E] px-10 py-5 font-semibold text-white shadow-xl shadow-orange-100 transition-all hover:bg-[#EE5A3D]"
+                className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-all hover:brightness-110"
               >
                 Get in Touch
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
-              <span className="hidden font-medium text-slate-400 sm:block">
+              <span className="hidden text-sm font-medium text-muted-foreground sm:block">
                 Trusted by 80+ teams worldwide
               </span>
             </div>
           </ScrollReveal>
 
           <ScrollReveal className="flex w-full flex-1 justify-center lg:justify-end">
-            <div className="relative flex aspect-square w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-[3rem] border border-slate-100 bg-slate-50 p-10 text-center">
-              <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-orange-100/40 blur-3xl" />
+            <div className="relative flex aspect-square w-full max-w-sm flex-col items-center justify-center overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.03] p-10 text-center backdrop-blur">
+              <div
+                className="absolute -right-10 -top-10 h-40 w-40 rounded-full blur-3xl"
+                style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }}
+              />
               <div className="relative mb-8 h-36 w-36">
-                <div className="absolute inset-0 animate-[spin_10s_linear_infinite] rounded-full border-8 border-[#FF6B4E] border-t-transparent" />
-                <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-slate-800">
+                <div className="absolute inset-0 animate-[spin_10s_linear_infinite] rounded-full border-8 border-brand border-t-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-foreground">
                   98%
                 </div>
               </div>
-              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">
                 Client Satisfaction
               </p>
               <p className="text-6xl font-bold tracking-tighter">150+</p>
-              <p className="mt-1 text-xs text-slate-400">Projects Delivered</p>
+              <p className="mt-1 text-xs text-muted-foreground">Projects Delivered</p>
             </div>
           </ScrollReveal>
         </section>
 
         {/* Story */}
-        <section className="mb-32 grid items-center gap-16 lg:mb-40 lg:grid-cols-2 lg:gap-20">
+        <section className="mb-24 grid items-center gap-16 lg:mb-28 lg:grid-cols-2 lg:gap-20">
           <ScrollReveal>
-            <div className="overflow-hidden rounded-[2.5rem]">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10">
               <img
                 src={studioImg}
                 alt="Shivaryan Infotech studio"
@@ -133,18 +158,22 @@ function About() {
                 loading="lazy"
                 className="h-full w-full object-cover"
               />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
             </div>
           </ScrollReveal>
           <ScrollReveal>
-            <h2 className="mb-10 text-3xl font-bold leading-tight md:text-4xl">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-brand">
+              Our story
+            </p>
+            <h2 className="mb-8 text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
               It all started with a frustration.
             </h2>
-            <p className="mb-6 text-lg leading-relaxed text-slate-500">
+            <p className="mb-6 text-base leading-relaxed text-muted-foreground md:text-lg">
               We were tired of bloated, clunky software that slowed teams down instead
               of lifting them up. So we built a better way — combining clean design,
               ethical AI, and intuitive functionality from our base in Himachal Pradesh.
             </p>
-            <p className="text-lg leading-relaxed text-slate-500">
+            <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
               What began as a small side project is now a growing platform trusted by
               teams across the globe. Our mission remains the same: engineer outcomes,
               not just code — and make work more human along the way.
@@ -153,15 +182,19 @@ function About() {
         </section>
 
         {/* Stats */}
-        <section className="mb-32 lg:mb-40">
-          <StaggerContainer className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <section className="mb-24 lg:mb-28">
+          <StaggerContainer className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {stats.map((stat) => (
               <StaggerItem key={stat.label}>
-                <div className="rounded-[2rem] border border-slate-100 bg-white p-8 transition-colors hover:border-slate-200 md:p-10">
-                  <p className="mb-6 text-xs font-bold uppercase tracking-widest text-slate-400">
+                <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-8 transition-all hover:border-white/20 hover:-translate-y-1 md:p-10">
+                  <div
+                    className="pointer-events-none absolute -top-16 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
+                  />
+                  <p className="relative mb-5 text-[10px] font-bold uppercase tracking-[0.25em] text-muted-foreground">
                     {stat.label}
                   </p>
-                  <p className="text-4xl font-bold tracking-tighter md:text-5xl">
+                  <p className="relative text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
                     {stat.value}
                   </p>
                 </div>
@@ -171,35 +204,42 @@ function About() {
         </section>
 
         {/* Values */}
-        <section className="mb-32 lg:mb-40">
+        <section className="mb-24 lg:mb-28">
           <ScrollReveal>
-            <div className="mb-16 flex flex-col justify-between gap-8 md:flex-row md:items-end lg:mb-20">
+            <div className="mb-14 flex flex-col justify-between gap-8 md:flex-row md:items-end">
               <div className="max-w-xl">
-                <h2 className="mb-4 text-4xl font-bold md:text-5xl">
-                  What we believe in.
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-brand">
+                  What we believe in
+                </p>
+                <h2 className="text-4xl font-semibold tracking-tight md:text-5xl leading-[1.05]">
+                  Principles that shape{" "}
+                  <span className="italic text-muted-foreground">everything we ship.</span>
                 </h2>
-                <div className="h-1 w-20 rounded-full bg-[#FF6B4E]" />
               </div>
-              <p className="max-w-xs leading-relaxed text-slate-500">
+              <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
                 Our values guide everything we create — from product design to how we
                 work as a team.
               </p>
             </div>
           </ScrollReveal>
 
-          <StaggerContainer className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {values.map((value) => {
               const Icon = value.icon;
               return (
                 <StaggerItem key={value.title}>
-                  <div className="group h-full rounded-[2.5rem] border border-slate-100/60 bg-slate-50 p-10 transition-all duration-500 hover:border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-100 md:p-12">
+                  <div className="group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-8 transition-all duration-300 hover:border-white/20 hover:-translate-y-1 md:p-10">
                     <div
-                      className={`mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm ${value.accent}`}
-                    >
-                      <Icon className="h-7 w-7" />
+                      className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                      style={{ background: "color-mix(in oklab, var(--color-brand) 35%, transparent)" }}
+                    />
+                    <div className="relative mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-inner">
+                      <Icon className="h-6 w-6 text-foreground/90" />
                     </div>
-                    <h3 className="mb-6 text-2xl font-bold">{value.title}</h3>
-                    <p className="leading-relaxed text-slate-500">
+                    <h3 className="relative mb-4 text-xl font-semibold text-foreground md:text-2xl">
+                      {value.title}
+                    </h3>
+                    <p className="relative text-sm leading-relaxed text-muted-foreground md:text-base">
                       {value.description}
                     </p>
                   </div>
@@ -211,22 +251,26 @@ function About() {
 
         {/* Team */}
         <section>
-          <ScrollReveal className="mb-20 text-center lg:mb-24">
-            <h2 className="mb-6 text-4xl font-bold md:text-5xl">
-              Meet the founders.
+          <ScrollReveal className="mb-16 text-center lg:mb-20">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-brand">
+              The team
+            </p>
+            <h2 className="mb-5 text-4xl font-semibold tracking-tight md:text-5xl leading-[1.05]">
+              Meet the{" "}
+              <span className="italic text-muted-foreground">founders.</span>
             </h2>
-            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-500">
+            <p className="mx-auto max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
               A close-knit team of designers, engineers, and thinkers united by one
               mission: building technology that makes life simpler, smarter, and more
               human.
             </p>
           </ScrollReveal>
 
-          <StaggerContainer className="grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-12">
+          <StaggerContainer className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
             {team.map((member) => (
               <StaggerItem key={member.name}>
                 <div className="group text-center">
-                  <div className="relative mb-8 aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100">
+                  <div className="relative mb-6 aspect-[4/5] overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]">
                     <img
                       src={member.img}
                       alt={member.name}
@@ -235,10 +279,10 @@ function About() {
                       loading="lazy"
                       className="h-full w-full scale-100 object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
                   </div>
-                  <h3 className="text-2xl font-bold">{member.name}</h3>
-                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-slate-400">
+                  <h3 className="text-xl font-semibold text-foreground md:text-2xl">{member.name}</h3>
+                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
                     {member.role}
                   </p>
                 </div>
