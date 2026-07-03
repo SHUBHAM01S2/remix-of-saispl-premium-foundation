@@ -198,7 +198,8 @@ function Contact() {
                   </a>
                   <a
                     href={`mailto:${OFFICE.email}`}
-                    className="text-zinc-300 transition-colors hover:text-blue-400"
+                    rel="noopener"
+                    className="relative z-10 inline-block cursor-pointer text-zinc-300 transition-colors [pointer-events:auto] hover:text-blue-400"
                   >
                     {OFFICE.email}
                   </a>
