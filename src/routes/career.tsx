@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight, Loader2 } from "lucide-react";
+import { Globe, Zap, TrendingUp, MapPin, Users, ArrowRight, ArrowUpRight, Sparkles, Briefcase, Loader2 } from "lucide-react";
+
+const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { ApplyForm } from "@/components/ApplyForm";
 import { supabase } from "@/integrations/supabase/client";
