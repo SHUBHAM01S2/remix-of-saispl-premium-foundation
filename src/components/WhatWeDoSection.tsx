@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Globe, Cpu, LayoutDashboard, PenTool, ArrowUpRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+
 
 const capabilities = [
   {
@@ -39,6 +41,10 @@ const capabilities = [
 const filters = ["All", "Engineering", "AI · Automation", "Platforms", "Design"];
 
 export function WhatWeDoSection() {
+  const [active, setActive] = useState<string>("All");
+  const visible =
+    active === "All" ? capabilities : capabilities.filter((c) => c.tag === active);
+
   return (
     <section className="relative py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -52,27 +58,30 @@ export function WhatWeDoSection() {
             </h2>
           </div>
 
-          {/* pill filter — visual, non-interactive */}
+          {/* pill filter */}
           <div className="flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur">
-            {filters.map((f, i) => (
-              <span
+            {filters.map((f) => (
+              <button
                 key={f}
+                type="button"
+                onClick={() => setActive(f)}
                 className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
-                  i === 0
+                  active === f
                     ? "bg-foreground text-background"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {f}
-              </span>
+              </button>
             ))}
           </div>
         </ScrollReveal>
 
-        <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {capabilities.map((cap) => {
+        <StaggerContainer key={active} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {visible.map((cap) => {
             const Icon = cap.icon;
             return (
+
               <StaggerItem key={cap.title} className="h-full">
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1">
                   {/* glow */}
