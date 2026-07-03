@@ -24,7 +24,7 @@ const reasons = [
 
 export function WhyChooseUsSection() {
   return (
-    <section className="relative py-20 md:py-28">
+    <section className="relative py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <ScrollReveal className="text-center mb-14">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

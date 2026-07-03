@@ -40,7 +40,7 @@ export function FeaturedWorkSection() {
   }, []);
 
   return (
-    <section className="bg-background py-20 md:py-28">
+    <section className="bg-background py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal className="mb-12 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
