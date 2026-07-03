@@ -249,33 +249,78 @@ function Services() {
               <StaggerItem key={svc.title} className="h-full">
                 <Link
                   to="/contact"
-                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]"
                 >
+                  {/* hover glow */}
                   <div
-                    className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-                    style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
+                    className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
                   />
+                  {/* subtle grid overlay */}
+                  <div
+                    className="pointer-events-none absolute inset-0 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.12]"
+                    style={{
+                      backgroundImage:
+                        "linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px)",
+                      backgroundSize: "24px 24px",
+                      maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
+                      WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
+                    }}
+                  />
+                  {/* giant background number */}
+                  <div
+                    className="pointer-events-none absolute -right-2 -bottom-6 select-none text-[8rem] font-black leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-brand/10"
+                    style={displayFont}
+                  >
+                    {svc.num}
+                  </div>
+
                   <div className="relative flex items-center justify-between">
-                    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="h-1 w-1 rounded-full bg-brand" />
                       {svc.tag}
                     </span>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+                    <span className="font-mono text-[10px] tracking-widest text-zinc-600">
+                      {svc.num}
+                    </span>
                   </div>
 
-                  <div className="relative mt-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-inner">
-                    <Icon className="h-6 w-6 text-foreground/85" />
+                  <div className="relative mt-8 flex items-center gap-4">
+                    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                      <Icon className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
+                      <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
+                    </div>
+                    <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
                   </div>
 
-                  <h3 className="relative mt-6 text-lg font-semibold text-foreground" style={displayFont}>
+                  <h3 className="relative mt-6 text-xl font-bold leading-tight text-foreground" style={displayFont}>
                     {svc.title}
                   </h3>
                   <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
                     {svc.description}
                   </p>
 
-                  <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-                    <span>{svc.meta}</span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                  <ul className="relative mt-5 space-y-2">
+                    {svc.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2.5 text-[13px] text-zinc-300">
+                        <span className="mt-[3px] flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-brand/10">
+                          <Check className="h-2.5 w-2.5 text-brand" strokeWidth={3} />
+                        </span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="relative mt-6 flex-1" />
+
+                  <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-brand">
+                      <Sparkles className="h-3 w-3" />
+                      {svc.deliverable}
+                    </span>
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-600">
+                      {svc.meta.split(" · ")[0]}
+                    </span>
                   </div>
                 </Link>
               </StaggerItem>
