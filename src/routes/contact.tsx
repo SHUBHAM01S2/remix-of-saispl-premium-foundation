@@ -57,10 +57,12 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   const [form, setForm] = useState({
     name: "",
+    email: "",
     phone: "",
     businessType: "",
     message: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
