@@ -96,62 +96,8 @@ const webPackages: Plan[] = [
   },
 ];
 
-const carePlans: Plan[] = [
-  {
-    name: "Care Basic",
-    tagline: "Keep the lights on",
-    price: { INR: "₹3K – 6K", USD: "$80 – $120", GBP: "£60 – £90", EUR: "€70 – €105" },
-    suffix: "/month",
-    icon: ShieldCheck,
-    features: [
-      "Security & core updates",
-      "Uptime monitoring",
-      "1 content change / month",
-      "Weekly backups",
-    ],
-  },
-  {
-    name: "Care Plus",
-    tagline: "Steady improvements",
-    price: { INR: "₹7K – 12K", USD: "$150 – $250", GBP: "£110 – £190", EUR: "€130 – €220" },
-    suffix: "/month",
-    icon: Layers,
-    highlighted: true,
-    badge: "Recommended",
-    features: [
-      "Everything in Care Basic",
-      "2–4 changes / month",
-      "Speed & health check",
-      "Quarterly performance report",
-    ],
-  },
-  {
-    name: "Growth Plan",
-    tagline: "Websites that keep growing",
-    price: { INR: "₹15K – 25K", USD: "$300 – $600", GBP: "£225 – £450", EUR: "€260 – €520" },
-    suffix: "/month",
-    icon: Rocket,
-    features: [
-      "Landing page every month",
-      "SEO hygiene & content tweaks",
-      "Monthly review call",
-      "Priority turnaround",
-    ],
-  },
-  {
-    name: "Growth + Automation",
-    tagline: "Full-stack growth partner",
-    price: { INR: "₹25K – 45K", USD: "$600 – $1,200", GBP: "£450 – £900", EUR: "€520 – €1,050" },
-    suffix: "/month",
-    icon: Sparkles,
-    features: [
-      "Everything in Growth Plan",
-      "Automation tweaks & flows",
-      "WhatsApp / CRM support",
-      "KPI dashboard access",
-    ],
-  },
-];
+
+
 
 const addOns: {
   name: string;
@@ -176,9 +122,10 @@ const faqs = [
     a: "No. Every engagement is a fixed-scope, fixed-price package. If scope changes, we send a small change order first.",
   },
   {
-    q: "Can I switch care plans later?",
-    a: "Yes — you can upgrade or downgrade any month. Nothing is locked in beyond the current month.",
+    q: "Do you offer discounts for long engagements?",
+    a: "Yes — multi-package or retainer engagements get preferential pricing. Ask us for a bundle quote.",
   },
+
   {
     q: "Do you work with international clients?",
     a: "Yes. We serve clients across India and globally. Payments in INR or USD.",
@@ -188,17 +135,18 @@ const faqs = [
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Websites, Portals, Care Plans & Add-Ons | Shivaryan Infotech" },
+      { title: "Pricing — Websites, Portals & Add-Ons | Shivaryan Infotech" },
       {
         name: "description",
         content:
-          "Clear, honest pricing from Shivaryan Infotech: web design packages, monthly care plans, and add-ons like WhatsApp automation, AI chat agent, and SEO articles. Fixed pricing, no scope-creep charges.",
+          "Clear, honest pricing from Shivaryan Infotech: web design packages and add-ons like WhatsApp automation, AI chat agent, and SEO articles. Fixed pricing, no scope-creep charges.",
       },
-      { property: "og:title", content: "Pricing — Websites, Portals & Care Plans | Shivaryan Infotech" },
+      { property: "og:title", content: "Pricing — Websites, Portals & Add-Ons | Shivaryan Infotech" },
+
       {
         property: "og:description",
         content:
-          "Fixed pricing for web design, custom portals, monthly care, and add-ons. No hourly billing surprises.",
+          "Fixed pricing for web design, custom portals, and add-ons. No hourly billing surprises.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/pricing" },
@@ -287,9 +235,8 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 }
 
 function Pricing() {
-  const [tab, setTab] = useState<"web" | "care">("web");
   const [currency, setCurrency] = useState<Currency>("INR");
-  const plans = tab === "web" ? webPackages : carePlans;
+  const plans = webPackages;
 
   return (
     <div>
@@ -311,34 +258,15 @@ function Pricing() {
             </span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Fixed packages for websites, portals, and monthly care — no hourly
+            Fixed packages for websites, portals, and custom builds — no hourly
             billing, no scope-creep surprises.
           </p>
 
-          {/* Toggle */}
+          {/* Currency Switch */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
-              <button
-                onClick={() => setTab("web")}
-                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                  tab === "web"
-                    ? "bg-cta text-cta-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Web Design Packages
-              </button>
-              <button
-                onClick={() => setTab("care")}
-                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                  tab === "care"
-                    ? "bg-cta text-cta-foreground shadow-md"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                Monthly Care Plans
-              </button>
-            </div>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Currency
+            </span>
             <div className="inline-flex flex-wrap rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
               {(["INR", "USD", "GBP", "EUR"] as Currency[]).map((c) => (
                 <button
@@ -359,13 +287,15 @@ function Pricing() {
         </ScrollReveal>
       </section>
 
+
       {/* Plans grid */}
       <section className="bg-background pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <StaggerContainer
-            key={tab}
+            key={currency}
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
           >
+
             {plans.map((plan) => (
               <StaggerItem key={plan.name} className="h-full">
                 <PlanCard plan={plan} currency={currency} />
@@ -399,7 +329,7 @@ function Pricing() {
               Add-Ons & Extras
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Bolt these onto any package or care plan whenever you're ready.
+              Bolt these onto any package whenever you're ready.
             </p>
           </ScrollReveal>
 
