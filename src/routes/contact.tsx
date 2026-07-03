@@ -30,6 +30,7 @@ const OFFICE = {
 };
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: zodValidator(contactSearchSchema),
   head: () => ({
     meta: [
       { title: "Contact Shivaryan Infotech — Bilaspur, Himachal Pradesh" },
@@ -59,13 +60,15 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { service, subject } = Route.useSearch();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    businessType: "",
-    message: "",
+    businessType: service ?? "",
+    message: subject ? `Regarding: ${subject}\n\n` : "",
   });
+
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
