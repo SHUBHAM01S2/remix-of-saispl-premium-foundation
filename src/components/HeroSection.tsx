@@ -83,7 +83,7 @@ export function HeroSection() {
                 <div
                   className="flex h-full w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.10] to-white/[0.02] backdrop-blur-xl"
                   style={{
-                    transform: `rotate(${t.rot}deg)`,
+                    ["--r" as any]: `${t.rot}deg`,
                     animation: `hero-float ${6 + i}s ease-in-out infinite`,
                     animationDelay: `${i * 0.4}s`,
                     boxShadow:
