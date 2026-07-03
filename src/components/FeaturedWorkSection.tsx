@@ -101,13 +101,24 @@ export function FeaturedWorkSection() {
                     <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {project.results}
                     </p>
-                    <Link
-                      to="/our-works"
-                      className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
-                    >
-                      View Case Study
-                      <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
-                    </Link>
+                    {slug ? (
+                      <Link
+                        to="/our-works/$caseStudyId"
+                        params={{ caseStudyId: slug }}
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                      >
+                        View Case Study
+                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/our-works"
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                      >
+                        View All Work
+                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </StaggerItem>
