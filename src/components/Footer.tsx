@@ -1,9 +1,13 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Mail, Phone, ArrowUpRight, Sparkles } from "lucide-react";
+import { MapPin, Mail, Phone, ArrowUpRight, Sparkles, MessageCircle } from "lucide-react";
 
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
+import { EmailContactLink } from "@/components/EmailContactLink";
 
 const PHONE_RAW = "+919418031050";
+const WHATSAPP_URL =
+  "https://wa.me/919418031050?text=Hi%20Shivaryan%20Infotech%2C%20I%20need%20support%20with%20a%20project.";
+
 
 const companyLinks = [
   { label: "About Us", to: "/about" },
