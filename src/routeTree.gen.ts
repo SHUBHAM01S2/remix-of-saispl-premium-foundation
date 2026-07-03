@@ -24,11 +24,11 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
@@ -137,11 +137,6 @@ const BrandingGraphicDesignRoute = BrandingGraphicDesignRouteImport.update({
   path: '/branding-graphic-design',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   id: '/automation-ai-services',
   path: '/automation-ai-services',
@@ -159,6 +154,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReportsIdRoute = ReportsIdRouteImport.update({
@@ -187,9 +187,9 @@ const ClientReportsClientSlugRoute = ClientReportsClientSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
@@ -349,7 +349,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -372,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -402,7 +402,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -425,6 +424,7 @@ export interface FileRoutesByTo {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
@@ -452,7 +452,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
-  '/blog': typeof BlogRouteWithChildren
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
@@ -475,6 +474,7 @@ export interface FileRoutesById {
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
   '/reports/$id': typeof ReportsIdRoute
+  '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -507,7 +507,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/automation-ai-services'
-    | '/blog'
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
@@ -530,6 +529,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/blog/'
     | '/admin/admins'
     | '/admin/blog'
     | '/admin/careers'
@@ -560,7 +560,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/automation-ai-services'
-    | '/blog'
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
@@ -583,6 +582,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/blog'
     | '/admin/admins'
     | '/admin/careers'
     | '/admin/contacts'
@@ -609,7 +609,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/automation-ai-services'
-    | '/blog'
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
@@ -632,6 +631,7 @@ export interface FileRouteTypes {
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
     | '/reports/$id'
+    | '/blog/'
     | '/_authenticated/admin/admins'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/careers'
@@ -664,7 +664,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
-  BlogRoute: typeof BlogRouteWithChildren
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
@@ -680,10 +679,12 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   ClientReportsClientSlugRoute: typeof ClientReportsClientSlugRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
   InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
   ReportsIdRoute: typeof ReportsIdRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -793,13 +794,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandingGraphicDesignRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/automation-ai-services': {
       id: '/automation-ai-services'
       path: '/automation-ai-services'
@@ -826,6 +820,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reports/$id': {
@@ -865,10 +866,10 @@ declare module '@tanstack/react-router' {
     }
     '/blog/$slug': {
       id: '/blog/$slug'
-      path: '/$slug'
+      path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -1192,16 +1193,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface BlogRouteChildren {
-  BlogSlugRoute: typeof BlogSlugRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogSlugRoute: BlogSlugRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
-
 interface OurWorksRouteChildren {
   OurWorksCaseStudyIdRoute: typeof OurWorksCaseStudyIdRoute
 }
@@ -1219,7 +1210,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
-  BlogRoute: BlogRouteWithChildren,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
@@ -1235,21 +1225,13 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
+  BlogSlugRoute: BlogSlugRoute,
   ClientReportsClientSlugRoute: ClientReportsClientSlugRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
   InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
   ReportsIdRoute: ReportsIdRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

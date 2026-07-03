@@ -109,7 +109,7 @@ async function fetchBlogPosts(): Promise<BlogPost[]> {
   return data as unknown as BlogPost[];
 }
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "Blog & Insights — Local SEO, Web Design & Automation | Shivaryan Infotech" },
