@@ -67,7 +67,7 @@ export function HeroSection() {
             return (
               <div
                 key={i}
-                className="pointer-events-none absolute hidden animate-in fade-in zoom-in-75 md:block"
+                className="pointer-events-none absolute hidden animate-in fade-in zoom-in-75 xl:block"
                 style={{
                   left: `calc(50% + ${t.x}px)`,
                   top: `calc(50% + ${t.y}px)`,
