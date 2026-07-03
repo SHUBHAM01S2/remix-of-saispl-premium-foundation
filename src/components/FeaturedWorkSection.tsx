@@ -48,24 +48,42 @@ export function FeaturedWorkSection() {
 
   return (
     <section className="relative py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      {/* Subtle grid + radial glow backdrop */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 opacity-70"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 20%, color-mix(in oklab, var(--color-brand) 10%, transparent) 0%, transparent 60%)",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <ScrollReveal className="mb-16 text-center">
-          <span className="mb-4 inline-block text-[11px] font-bold uppercase tracking-[0.28em] text-brand">
+          <p className="mb-4 font-mono text-[11px] font-medium uppercase tracking-[0.28em] text-muted-foreground">
             Featured Work
-          </span>
-          <h2 className="text-5xl font-extrabold tracking-tighter text-foreground md:text-6xl">
-            Real solutions. <span className="text-muted-foreground">Measurable impact.</span>
+          </p>
+          <h2 className="text-4xl font-bold tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            Real solutions. <span className="text-brand">Measurable impact.</span>
           </h2>
         </ScrollReveal>
 
-        <StaggerContainer className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => {
+        <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {projects.map((project, idx) => {
             const Icon = iconFor(project.client_industry);
             const loc = (project as any).location ?? project.client_industry;
             const slug = resolveCaseStudySlug(project.title);
+            const n = String(idx + 1).padStart(2, "0");
             return (
               <StaggerItem key={project.id}>
-                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/25">
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white/[0.04] hover:shadow-[0_0_30px_-10px_color-mix(in_oklab,var(--color-brand)_50%,transparent)]">
                   <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-white/[0.02]">
                     {project.thumbnail_url ? (
                       <img
@@ -80,21 +98,24 @@ export function FeaturedWorkSection() {
                           className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                           style={{
                             background:
-                              "linear-gradient(to top right, color-mix(in oklab, var(--color-brand) 8%, transparent), transparent)",
+                              "linear-gradient(to top right, color-mix(in oklab, var(--color-brand) 10%, transparent), transparent)",
                           }}
                         />
                         <Icon className="h-14 w-14 text-brand/30 transition-all duration-500 group-hover:scale-110 group-hover:text-brand" />
                       </>
                     )}
-                    <span className="absolute right-4 top-4 rounded-full border border-white/10 bg-black/40 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground backdrop-blur-md">
-                      {project.client_industry}
-                    </span>
                   </div>
-                  <div className="flex flex-1 flex-col p-8">
-                    <h3 className="text-xl font-bold text-foreground transition-colors group-hover:text-brand">
+                  <div className="flex flex-1 flex-col p-6 md:p-8">
+                    <div className="mb-6 flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand shadow-[0_0_8px_color-mix(in_oklab,var(--color-brand)_80%,transparent)]" />
+                      <span className="font-mono text-[11px] font-medium tracking-[0.15em] text-brand">
+                        {n} · {project.client_industry}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-brand md:text-xl">
                       {project.title}
                     </h3>
-                    <div className="mt-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                    <div className="mt-2 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
                       <MapPin className="h-3 w-3 text-brand" />
                       {loc}
                     </div>
@@ -105,18 +126,18 @@ export function FeaturedWorkSection() {
                       <Link
                         to="/our-works/$caseStudyId"
                         params={{ caseStudyId: slug }}
-                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:text-brand"
                       >
                         View Case Study
-                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1" />
                       </Link>
                     ) : (
                       <Link
                         to="/our-works"
-                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-foreground"
+                        className="group/link mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-foreground transition-colors hover:text-brand"
                       >
                         View All Work
-                        <span className="block h-px w-4 bg-white/30 transition-all group-hover/link:w-8 group-hover/link:bg-brand" />
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1" />
                       </Link>
                     )}
                   </div>
@@ -125,6 +146,7 @@ export function FeaturedWorkSection() {
             );
           })}
         </StaggerContainer>
+
 
         <ScrollReveal className="mt-14 text-center" delay={0.2}>
           <Link
