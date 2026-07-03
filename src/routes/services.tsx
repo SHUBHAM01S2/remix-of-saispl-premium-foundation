@@ -12,51 +12,99 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 
 const services = [
   {
+    num: "01",
     icon: Globe,
     tag: "Websites",
     title: "Website Design & Development",
     description:
       "Custom business websites built for speed, trust, SEO readiness, and lead generation.",
+    features: [
+      "Responsive & mobile-first builds",
+      "SEO-ready architecture",
+      "CMS or headless setup",
+      "Blazing-fast Core Web Vitals",
+    ],
+    deliverable: "Live site in 3–5 weeks",
     meta: "WEBSITES · SEO · CMS",
   },
   {
+    num: "02",
     icon: Search,
     tag: "Marketing",
     title: "SEO & Local Digital Marketing",
     description:
       "Improve visibility, rankings, and local discovery to generate more qualified enquiries.",
+    features: [
+      "Technical & on-page SEO",
+      "Google Business optimisation",
+      "Local citations & backlinks",
+      "Monthly performance reports",
+    ],
+    deliverable: "Rank tracking from week 1",
     meta: "SEO · LOCAL · CONTENT",
   },
   {
+    num: "03",
     icon: Bot,
     tag: "Automation",
     title: "WhatsApp & AI Automation",
     description:
       "Automate lead capture, responses, follow-ups, and customer workflows with smart systems.",
+    features: [
+      "WhatsApp Business API setup",
+      "AI chatbots & auto-replies",
+      "CRM & lead sync",
+      "Drip follow-up sequences",
+    ],
+    deliverable: "Save 20+ hrs / week",
     meta: "WHATSAPP · AI · WORKFLOWS",
   },
   {
+    num: "04",
     icon: LayoutDashboard,
     tag: "Software",
     title: "Custom Portals & Software",
     description:
       "Tailored portals, dashboards, and workflow tools built around your business operations.",
+    features: [
+      "Admin & client dashboards",
+      "Role-based access control",
+      "API & 3rd-party integrations",
+      "Scalable cloud hosting",
+    ],
+    deliverable: "MVP in 4–6 weeks",
     meta: "PORTALS · DASHBOARDS · APIS",
   },
   {
+    num: "05",
     icon: Palette,
     tag: "Design",
     title: "Branding & Graphic Design",
     description:
       "Professional brand identity, creatives, and design assets that strengthen credibility.",
+    features: [
+      "Logo & visual identity",
+      "Brand guidelines",
+      "Social & ad creatives",
+      "Pitch decks & brochures",
+    ],
+    deliverable: "Full brand kit delivered",
     meta: "LOGO · BRANDING · CREATIVES",
   },
   {
+    num: "06",
     icon: LifeBuoy,
     tag: "Support",
     title: "Website Maintenance & Support",
     description:
       "Ongoing updates, security, monitoring, and improvements to keep your website performing reliably.",
+    features: [
+      "24/7 uptime monitoring",
+      "Security patches & backups",
+      "Content & design updates",
+      "Priority support SLA",
+    ],
+    deliverable: "Avg. response < 2 hrs",
     meta: "SUPPORT · UPDATES · SECURITY",
   },
 ];
