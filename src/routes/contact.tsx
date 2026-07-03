@@ -13,7 +13,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 const OFFICE = {
-  address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001",
+  address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001, India",
   phone: "+91 94180-31050",
   phoneHref: "+919418031050",
   email: "Help@saispl.com",
@@ -166,9 +166,9 @@ function Contact() {
                   Office
                 </h3>
                 <p className="leading-relaxed text-zinc-300">
-                  Bilaspur, Himachal Pradesh
+                  Bilaspur, Himachal Pradesh 174001,
                   <br />
-                  174001, India
+                  India
                 </p>
               </div>
               <div className="space-y-3">
@@ -377,7 +377,7 @@ function Contact() {
             <MapPin className="h-4 w-4 shrink-0 text-blue-400" />
             <p className="text-sm font-medium text-white">Bilaspur Office</p>
             <span className="ml-auto text-xs text-zinc-500">
-              Himachal Pradesh 174001
+              Bilaspur, Himachal Pradesh 174001, India
             </span>
           </div>
         </div>
