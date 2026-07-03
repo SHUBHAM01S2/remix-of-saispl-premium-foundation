@@ -2,6 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlobalReachNote } from "@/components/GlobalReachNote";
+import { EmailContactLink } from "@/components/EmailContactLink";
+
 
 const STATS = [
   { value: "24h", label: "Scoping call" },
