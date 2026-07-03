@@ -65,12 +65,9 @@ export function HeroSection() {
           {orbitTiles.map((t, i) => {
             const Icon = t.icon;
             return (
-              <motion.div
+              <div
                 key={i}
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.9, delay: 0.35 + t.delay, ease: [0.16, 1, 0.3, 1] }}
-                className="pointer-events-none absolute hidden md:block"
+                className="pointer-events-none absolute hidden animate-in fade-in zoom-in-75 md:block"
                 style={{
                   left: `calc(50% + ${t.x}px)`,
                   top: `calc(50% + ${t.y}px)`,
@@ -78,22 +75,24 @@ export function HeroSection() {
                   height: t.size,
                   marginLeft: -t.size / 2,
                   marginTop: -t.size / 2,
+                  animationDuration: "900ms",
+                  animationDelay: `${350 + t.delay * 1000}ms`,
+                  animationFillMode: "both",
                 }}
               >
-                <motion.div
-                  animate={{ y: [0, -10, 0], rotate: [t.rot, t.rot + 4, t.rot] }}
-                  transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}
-                  className="flex items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+                <div
+                  className="flex h-full w-full items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.10] to-white/[0.02] backdrop-blur-xl"
                   style={{
-                    width: t.size,
-                    height: t.size,
+                    transform: `rotate(${t.rot}deg)`,
+                    animation: `hero-float ${6 + i}s ease-in-out infinite`,
+                    animationDelay: `${i * 0.4}s`,
                     boxShadow:
-                      "inset 0 1px 0 rgba(255,255,255,0.08), 0 30px 80px -20px color-mix(in oklab, var(--color-brand) 35%, transparent)",
+                      "inset 0 1px 0 rgba(255,255,255,0.1), 0 30px 80px -20px color-mix(in oklab, var(--color-brand) 45%, transparent)",
                   }}
                 >
-                  <Icon className="text-foreground/80" style={{ width: t.size * 0.42, height: t.size * 0.42 }} />
-                </motion.div>
-              </motion.div>
+                  <Icon className="text-foreground/85" style={{ width: t.size * 0.42, height: t.size * 0.42 }} />
+                </div>
+              </div>
             );
           })}
 
