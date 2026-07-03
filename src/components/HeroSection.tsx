@@ -71,7 +71,7 @@ export function HeroSection() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.35 + t.delay, ease: [0.16, 1, 0.3, 1] }}
                 className="pointer-events-none absolute left-1/2 top-1/2 hidden md:block"
-                style={{ transform: `translate(-50%,-50%) translate(${t.x}, ${t.y})` }}
+                style={{ transform: `translate(-50%,-50%) translate(${t.x}px, ${t.y}px)` }}
               >
                 <motion.div
                   animate={{ y: [0, -10, 0], rotate: [t.rot, t.rot + 4, t.rot] }}
