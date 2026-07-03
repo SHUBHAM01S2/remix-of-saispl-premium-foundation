@@ -51,7 +51,7 @@ function Index() {
       <WhatWeDoSection />
       <WhyChooseUsSection />
       <FeaturedWorkSection />
-      
+      <TestimonialsSection />
       <CTASection />
     </div>
   );
