@@ -2,14 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Bot, Code2, Cpu, LayoutGrid, Boxes, Zap, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
 
+// px offsets from horizontal center of the hero container
 const orbitTiles = [
-  { icon: Bot,       x: "-42%", y: "-8%",  size: 92,  rot: -14, delay: 0.0 },
-  { icon: Code2,     x: "-30%", y: "38%",  size: 76,  rot: 10,  delay: 0.15 },
-  { icon: Cpu,       x: "-52%", y: "22%",  size: 64,  rot: -6,  delay: 0.25 },
-  { icon: LayoutGrid,x: "38%",  y: "-14%", size: 84,  rot: 12,  delay: 0.1 },
-  { icon: Boxes,     x: "48%",  y: "28%",  size: 96,  rot: -10, delay: 0.2 },
-  { icon: Workflow,  x: "32%",  y: "44%",  size: 68,  rot: 8,   delay: 0.3 },
-  { icon: Zap,       x: "-8%",  y: "-38%", size: 56,  rot: -18, delay: 0.35 },
+  { icon: Bot,        x: -420, y: -40,  size: 92, rot: -14, delay: 0.0 },
+  { icon: Code2,      x: -320, y: 220,  size: 76, rot: 10,  delay: 0.15 },
+  { icon: Cpu,        x: -500, y: 120,  size: 64, rot: -6,  delay: 0.25 },
+  { icon: LayoutGrid, x: 380,  y: -60,  size: 84, rot: 12,  delay: 0.1 },
+  { icon: Boxes,      x: 470,  y: 180,  size: 96, rot: -10, delay: 0.2 },
+  { icon: Workflow,   x: 320,  y: 260,  size: 68, rot: 8,   delay: 0.3 },
+  { icon: Zap,        x: -80,  y: -220, size: 56, rot: -18, delay: 0.35 },
 ];
 
 export function HeroSection() {
