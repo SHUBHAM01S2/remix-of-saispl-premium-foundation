@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, Tag, ArrowRight, Calendar, ArrowUpRight, Sparkles } from "lucide-react";
+import { BookOpen, Tag, ArrowRight, Calendar, ArrowUpRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
