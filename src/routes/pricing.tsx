@@ -100,7 +100,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Basic",
     tagline: "Keep the lights on",
-    price: { INR: "₹3K – 6K", USD: "$80 – $120" },
+    price: { INR: "₹3K – 6K", USD: "$80 – $120", GBP: "£60 – £90", EUR: "€70 – €105" },
     suffix: "/month",
     icon: ShieldCheck,
     features: [
@@ -113,7 +113,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Plus",
     tagline: "Steady improvements",
-    price: { INR: "₹7K – 12K", USD: "$150 – $250" },
+    price: { INR: "₹7K – 12K", USD: "$150 – $250", GBP: "£110 – £190", EUR: "€130 – €220" },
     suffix: "/month",
     icon: Layers,
     highlighted: true,
@@ -128,7 +128,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth Plan",
     tagline: "Websites that keep growing",
-    price: { INR: "₹15K – 25K", USD: "$300 – $600" },
+    price: { INR: "₹15K – 25K", USD: "$300 – $600", GBP: "£225 – £450", EUR: "€260 – €520" },
     suffix: "/month",
     icon: Rocket,
     features: [
@@ -141,7 +141,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth + Automation",
     tagline: "Full-stack growth partner",
-    price: { INR: "₹25K – 45K", USD: "$600 – $1,200" },
+    price: { INR: "₹25K – 45K", USD: "$600 – $1,200", GBP: "£450 – £900", EUR: "€520 – €1,050" },
     suffix: "/month",
     icon: Sparkles,
     features: [
@@ -155,15 +155,15 @@ const carePlans: Plan[] = [
 
 const addOns: {
   name: string;
-  price: { INR: string; USD: string };
+  price: Price;
   note: string;
   icon: typeof MessageSquare;
 }[] = [
-  { name: "WhatsApp Automation", price: { INR: "₹15K – 35K", USD: "$300 – $700" }, note: "one-time", icon: MessageSquare },
-  { name: "AI Website Chat Agent", price: { INR: "₹20K – 40K", USD: "$400 – $800" }, note: "one-time", icon: Bot },
-  { name: "Logo + Branding Kit", price: { INR: "₹8K – 20K", USD: "$200 – $500" }, note: "one-time", icon: Palette },
-  { name: "Extra Landing Page", price: { INR: "₹5K – 12K", USD: "$150 – $350" }, note: "per page", icon: PenTool },
-  { name: "SEO Article", price: { INR: "₹2K – 4K", USD: "$60 – $120" }, note: "per piece", icon: FileText },
+  { name: "WhatsApp Automation", price: { INR: "₹15K – 35K", USD: "$300 – $700", GBP: "£225 – £525", EUR: "€260 – €610" }, note: "one-time", icon: MessageSquare },
+  { name: "AI Website Chat Agent", price: { INR: "₹20K – 40K", USD: "$400 – $800", GBP: "£300 – £600", EUR: "€350 – €700" }, note: "one-time", icon: Bot },
+  { name: "Logo + Branding Kit", price: { INR: "₹8K – 20K", USD: "$200 – $500", GBP: "£150 – £375", EUR: "€175 – €435" }, note: "one-time", icon: Palette },
+  { name: "Extra Landing Page", price: { INR: "₹5K – 12K", USD: "$150 – $350", GBP: "£110 – £265", EUR: "€130 – €305" }, note: "per page", icon: PenTool },
+  { name: "SEO Article", price: { INR: "₹2K – 4K", USD: "$60 – $120", GBP: "£45 – £90", EUR: "€52 – €105" }, note: "per piece", icon: FileText },
 ];
 
 const faqs = [
