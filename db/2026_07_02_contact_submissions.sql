@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS public.contact_submissions (
   name text NOT NULL,
   email text NOT NULL,
   phone text,
-  company text,
+  business_type text,
   message text NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now()
 );
