@@ -162,27 +162,40 @@ function Services() {
               const Icon = svc.icon;
               return (
                 <StaggerItem key={svc.title} className="h-full">
-                  <div className="group flex h-full flex-col rounded-2xl border border-border/50 bg-surface p-7 transition-all duration-300 hover:border-brand/30 hover:bg-surface-elevated hover:-translate-y-1">
-                    <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-brand transition-colors group-hover:bg-brand/20">
-                      <Icon className="h-6 w-6" />
+                  <Link
+                    to="/contact"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1"
+                  >
+                    {/* glow */}
+                    <div
+                      className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                      style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
+                    />
+                    <div className="relative flex items-center justify-between">
+                      <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        {svc.tag}
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground">
+
+                    <div className="relative mt-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-inner">
+                      <Icon className="h-6 w-6 text-foreground/85" />
+                    </div>
+
+                    <h3 className="relative mt-6 text-lg font-semibold text-foreground">
                       {svc.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
                       {svc.description}
                     </p>
-                    <div className="mt-auto pt-5">
-                      <Link
-                        to="/contact"
-                        className="inline-flex items-center gap-1 text-sm font-medium text-brand transition-colors hover:text-brand/80"
-                      >
-                        Learn More
-                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
+
+                    <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+                      <span>{svc.meta}</span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand" />
                     </div>
-                  </div>
+                  </Link>
                 </StaggerItem>
+
               );
             })}
           </StaggerContainer>
