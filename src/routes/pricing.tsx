@@ -18,10 +18,12 @@ import {
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { GlobalReachNote } from "@/components/GlobalReachNote";
 
+type Currency = "INR" | "USD";
+
 type Plan = {
   name: string;
   tagline: string;
-  price: string;
+  price: { INR: string; USD: string };
   suffix?: string;
   icon: typeof Zap;
   features: string[];
@@ -33,7 +35,7 @@ const webPackages: Plan[] = [
   {
     name: "Starter Site",
     tagline: "For new brands getting online",
-    price: "₹35K – 60K",
+    price: { INR: "₹35K – 60K", USD: "$800 – $1,500" },
     suffix: "one-time",
     icon: Zap,
     features: [
@@ -47,7 +49,7 @@ const webPackages: Plan[] = [
   {
     name: "Growth Business Site",
     tagline: "Most chosen by SMBs",
-    price: "₹75K – 1.5L",
+    price: { INR: "₹75K – 1.5L", USD: "$1,800 – $3,500" },
     suffix: "one-time",
     icon: Rocket,
     highlighted: true,
@@ -64,7 +66,7 @@ const webPackages: Plan[] = [
   {
     name: "Premium Conversion",
     tagline: "For serious growth",
-    price: "₹1.75L – 3.5L",
+    price: { INR: "₹1.75L – 3.5L", USD: "$3,800 – $7,000" },
     suffix: "one-time",
     icon: Sparkles,
     features: [
@@ -79,7 +81,7 @@ const webPackages: Plan[] = [
   {
     name: "Portal / Web App",
     tagline: "Custom software builds",
-    price: "₹2.5L+",
+    price: { INR: "₹2.5L+", USD: "$6,000+" },
     suffix: "starting",
     icon: Building2,
     features: [
@@ -96,7 +98,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Basic",
     tagline: "Keep the lights on",
-    price: "₹3K – 6K",
+    price: { INR: "₹3K – 6K", USD: "$80 – $120" },
     suffix: "/month",
     icon: ShieldCheck,
     features: [
@@ -109,7 +111,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Plus",
     tagline: "Steady improvements",
-    price: "₹7K – 12K",
+    price: { INR: "₹7K – 12K", USD: "$150 – $250" },
     suffix: "/month",
     icon: Layers,
     highlighted: true,
@@ -124,7 +126,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth Plan",
     tagline: "Websites that keep growing",
-    price: "₹15K – 25K",
+    price: { INR: "₹15K – 25K", USD: "$300 – $600" },
     suffix: "/month",
     icon: Rocket,
     features: [
@@ -137,7 +139,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth + Automation",
     tagline: "Full-stack growth partner",
-    price: "₹25K – 45K",
+    price: { INR: "₹25K – 45K", USD: "$600 – $1,200" },
     suffix: "/month",
     icon: Sparkles,
     features: [
@@ -149,12 +151,17 @@ const carePlans: Plan[] = [
   },
 ];
 
-const addOns = [
-  { name: "WhatsApp Automation", price: "₹15K – 35K", note: "one-time", icon: MessageSquare },
-  { name: "AI Website Chat Agent", price: "₹20K – 40K", note: "one-time", icon: Bot },
-  { name: "Logo + Branding Kit", price: "₹8K – 20K", note: "one-time", icon: Palette },
-  { name: "Extra Landing Page", price: "₹5K – 12K", note: "per page", icon: PenTool },
-  { name: "SEO Article", price: "₹2K – 4K", note: "per piece", icon: FileText },
+const addOns: {
+  name: string;
+  price: { INR: string; USD: string };
+  note: string;
+  icon: typeof MessageSquare;
+}[] = [
+  { name: "WhatsApp Automation", price: { INR: "₹15K – 35K", USD: "$300 – $700" }, note: "one-time", icon: MessageSquare },
+  { name: "AI Website Chat Agent", price: { INR: "₹20K – 40K", USD: "$400 – $800" }, note: "one-time", icon: Bot },
+  { name: "Logo + Branding Kit", price: { INR: "₹8K – 20K", USD: "$200 – $500" }, note: "one-time", icon: Palette },
+  { name: "Extra Landing Page", price: { INR: "₹5K – 12K", USD: "$150 – $350" }, note: "per page", icon: PenTool },
+  { name: "SEO Article", price: { INR: "₹2K – 4K", USD: "$60 – $120" }, note: "per piece", icon: FileText },
 ];
 
 const faqs = [
@@ -202,7 +209,7 @@ export const Route = createFileRoute("/pricing")({
   component: Pricing,
 });
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
   const Icon = plan.icon;
   return (
     <div
@@ -238,7 +245,7 @@ function PlanCard({ plan }: { plan: Plan }) {
 
       <div className="mt-5 flex items-baseline gap-2">
         <span className="text-3xl font-extrabold tracking-tight text-foreground">
-          {plan.price}
+          {plan.price[currency]}
         </span>
         {plan.suffix && (
           <span className="text-sm text-muted-foreground">{plan.suffix}</span>
@@ -279,6 +286,7 @@ function PlanCard({ plan }: { plan: Plan }) {
 
 function Pricing() {
   const [tab, setTab] = useState<"web" | "care">("web");
+  const [currency, setCurrency] = useState<Currency>("INR");
   const plans = tab === "web" ? webPackages : carePlans;
 
   return (
@@ -306,27 +314,53 @@ function Pricing() {
           </p>
 
           {/* Toggle */}
-          <div className="mt-10 inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
-            <button
-              onClick={() => setTab("web")}
-              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                tab === "web"
-                  ? "bg-cta text-cta-foreground shadow-md"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Web Design Packages
-            </button>
-            <button
-              onClick={() => setTab("care")}
-              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                tab === "care"
-                  ? "bg-cta text-cta-foreground shadow-md"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Monthly Care Plans
-            </button>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
+              <button
+                onClick={() => setTab("web")}
+                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                  tab === "web"
+                    ? "bg-cta text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Web Design Packages
+              </button>
+              <button
+                onClick={() => setTab("care")}
+                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                  tab === "care"
+                    ? "bg-cta text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Monthly Care Plans
+              </button>
+            </div>
+            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
+              <button
+                onClick={() => setCurrency("INR")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  currency === "INR"
+                    ? "bg-brand text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-pressed={currency === "INR"}
+              >
+                ₹ INR
+              </button>
+              <button
+                onClick={() => setCurrency("USD")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  currency === "USD"
+                    ? "bg-brand text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-pressed={currency === "USD"}
+              >
+                $ USD
+              </button>
+            </div>
           </div>
         </ScrollReveal>
       </section>
@@ -340,7 +374,7 @@ function Pricing() {
           >
             {plans.map((plan) => (
               <StaggerItem key={plan.name} className="h-full">
-                <PlanCard plan={plan} />
+                <PlanCard plan={plan} currency={currency} />
               </StaggerItem>
             ))}
           </StaggerContainer>
@@ -390,7 +424,7 @@ function Pricing() {
                       </h3>
                       <div className="mt-1 flex items-baseline gap-1.5">
                         <span className="text-sm font-bold text-brand">
-                          {item.price}
+                          {item.price[currency]}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           {item.note}
