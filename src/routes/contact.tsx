@@ -12,6 +12,7 @@ import {
   Smartphone,
   Clock,
 } from "lucide-react";
+
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
