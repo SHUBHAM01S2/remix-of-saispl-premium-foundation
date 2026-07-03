@@ -31,11 +31,11 @@ const stats = [
 ];
 
 const team = [
-  { name: "Rahul Sharma", role: "Founder & CEO" },
-  { name: "Priya Patel", role: "Lead Developer" },
-  { name: "Amit Verma", role: "AI & Automation Lead" },
-  { name: "Neha Gupta", role: "Product Designer" },
+  { name: "Ankit Chandle", role: "Founder" },
+  { name: "Shubham Sharma", role: "Product Manager" },
+  { name: "Anuj", role: "Full Stack Developer" },
 ];
+
 
 export const Route = createFileRoute("/about")({
   head: () => ({
