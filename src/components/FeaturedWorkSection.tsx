@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, Boxes, HeartPulse, LineChart, Truck, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveCaseStudySlug } from "@/lib/case-study-slugs";
 
 type FeaturedProject = {
   id: string;
