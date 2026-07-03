@@ -190,88 +190,50 @@ function Services() {
         </div>
       </div>
 
-      {/* Expressive services grid */}
+      {/* Services grid — homepage style */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
-        <StaggerContainer className="grid grid-cols-1 gap-6 md:grid-cols-12">
-          {/* Large feature card */}
-          <StaggerItem className="md:col-span-8">
-            <div className="group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition-all hover:border-brand/50 hover:bg-white/[0.05] md:p-10">
-              <div className="relative z-10">
-                <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl border border-brand/30 bg-brand/20 text-brand transition-all group-hover:bg-brand group-hover:text-white">
-                  <FeatureIcon className="h-6 w-6" />
-                </div>
-                <h3
-                  className="mb-4 text-3xl font-bold text-foreground md:text-4xl"
-                  style={displayFont}
-                >
-                  {feature.title}
-                </h3>
-                <p className="mb-8 max-w-md text-lg text-muted-foreground">
-                  {feature.description}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {feature.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs text-foreground"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div className="pointer-events-none absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-brand/10 blur-[100px] transition-all group-hover:bg-brand/20" />
-            </div>
-          </StaggerItem>
-
-          {/* Vertical card */}
-          <StaggerItem className="md:col-span-4">
-            <Link
-              to="/contact"
-              className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition-all hover:border-brand/50 hover:bg-white/[0.05] md:p-10"
-            >
-              <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl border border-brand/30 bg-brand/20 text-brand transition-all group-hover:bg-brand group-hover:text-white">
-                <VerticalIcon className="h-6 w-6" />
-              </div>
-              <div>
-                <h3
-                  className="mb-4 text-2xl font-bold text-foreground"
-                  style={displayFont}
-                >
-                  {vertical.title}
-                </h3>
-                <p className="text-muted-foreground">{vertical.description}</p>
-              </div>
-              <ArrowUpRight className="absolute right-6 top-6 h-5 w-5 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
-            </Link>
-          </StaggerItem>
-
-          {/* Remaining cards */}
-          {rest.map((svc) => {
+        <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((svc) => {
             const Icon = svc.icon;
             return (
-              <StaggerItem key={svc.title} className="md:col-span-4">
+              <StaggerItem key={svc.title} className="h-full">
                 <Link
                   to="/contact"
-                  className="group relative flex h-full flex-col rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition-all hover:border-brand/50 hover:bg-white/[0.05]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
                 >
-                  <div className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-foreground/85 transition-all group-hover:border-brand/40 group-hover:text-brand">
-                    <Icon className="h-5 w-5" />
+                  <div
+                    className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
+                  />
+                  <div className="relative flex items-center justify-between">
+                    <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      {svc.tag}
+                    </span>
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
                   </div>
-                  <h3
-                    className="mb-2 text-xl font-bold text-foreground"
-                    style={displayFont}
-                  >
+
+                  <div className="relative mt-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-inner">
+                    <Icon className="h-6 w-6 text-foreground/85" />
+                  </div>
+
+                  <h3 className="relative mt-6 text-lg font-semibold text-foreground" style={displayFont}>
                     {svc.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground">{svc.description}</p>
-                  <ArrowUpRight className="absolute right-5 top-5 h-4 w-4 text-muted-foreground transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground" />
+                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {svc.description}
+                  </p>
+
+                  <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+                    <span>{svc.meta}</span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                  </div>
                 </Link>
               </StaggerItem>
             );
           })}
         </StaggerContainer>
       </section>
+
 
       {/* Process timeline */}
       <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
