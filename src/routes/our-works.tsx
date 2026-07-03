@@ -86,6 +86,7 @@ function OurWorks() {
             city: p.client_industry,
             result: p.results ?? "",
             thumbnail_url: p.thumbnail_url,
+            caseStudySlug: resolveCaseStudySlug(p.title) ?? undefined,
           })),
         );
       }
