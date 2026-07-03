@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, Tag, ArrowRight, Calendar } from "lucide-react";
+import { BookOpen, Tag, ArrowRight, Calendar, ArrowUpRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -227,55 +227,84 @@ function BlogIndex() {
       {/* Posts */}
       <section className="bg-background pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <StaggerContainer className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((post) => (
-              <StaggerItem key={post.id}>
-                <Link
-                  to="/blog/$slug"
-                  params={{ slug: post.slug }}
-                  className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/50 bg-surface transition-colors hover:border-brand/40"
-                >
-                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-background">
-                    {post.cover_image_url ? (
-                      <img
-                        src={post.cover_image_url}
-                        alt={post.title}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand/20 to-brand/5">
-                        <BookOpen className="h-10 w-10 text-brand/60" />
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((post, idx) => {
+              const num = String(idx + 1).padStart(2, "0");
+              const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
+              return (
+                <StaggerItem key={post.id}>
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: post.slug }}
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]"
+                  >
+                    <div
+                      className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                      style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                    />
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.12]"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px)",
+                        backgroundSize: "24px 24px",
+                        maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
+                        WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
+                      }}
+                    />
+                    <div
+                      className="pointer-events-none absolute -right-2 -bottom-6 select-none text-[8rem] font-black leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-brand/10"
+                      style={displayFont}
+                    >
+                      {num}
+                    </div>
+
+                    <div className="relative flex items-center justify-between">
+                      {post.category ? (
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          <span className="h-1 w-1 rounded-full bg-brand" />
+                          {post.category}
+                        </span>
+                      ) : <span />}
+                      <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
+                    </div>
+
+                    <div className="relative mt-8 flex items-center gap-4">
+                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                        {post.cover_image_url ? (
+                          <img src={post.cover_image_url} alt={post.title} loading="lazy" className="h-full w-full rounded-2xl object-cover" />
+                        ) : (
+                          <BookOpen className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
+                        )}
+                        <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
                       </div>
-                    )}
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    {post.category && (
-                      <span className="inline-flex w-fit items-center rounded-full border border-brand/30 bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
-                        {post.category}
-                      </span>
-                    )}
-                    <h2 className="mt-3 text-lg font-semibold leading-snug text-foreground group-hover:text-brand">
+                      <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
+                    </div>
+
+                    <h2 className="relative mt-6 text-xl font-bold leading-tight text-foreground group-hover:text-brand" style={displayFont}>
                       {post.title}
                     </h2>
                     {post.excerpt && (
-                      <p className="mt-2 text-sm text-muted-foreground line-clamp-3">
+                      <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-3">
                         {post.excerpt}
                       </p>
                     )}
-                    <div className="mt-auto flex items-center justify-between pt-5 text-xs text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <Calendar className="h-3.5 w-3.5" />
+
+                    <div className="relative mt-6 flex-1" />
+
+                    <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-brand">
+                        <Calendar className="h-3 w-3" />
                         {formatDate(post.published_at) || "Draft"}
                       </span>
-                      <span className="inline-flex items-center gap-1 text-sm font-medium text-brand">
-                        Read <ArrowRight className="h-3.5 w-3.5" />
+                      <span className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider text-brand">
+                        Read <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
-                  </div>
-                </Link>
-              </StaggerItem>
-            ))}
+                  </Link>
+                </StaggerItem>
+              );
+            })}
           </StaggerContainer>
 
           {filtered.length === 0 && (
