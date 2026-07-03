@@ -7,6 +7,7 @@ import {
   Cloud,
   Headset,
   ArrowRight,
+  ArrowUpRight,
   Search,
   Layers,
   Wrench,
@@ -17,41 +18,54 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 const services = [
   {
     icon: Code,
+    tag: "Engineering",
     title: "Web & Software Development",
     description:
       "Scalable web apps and custom software built with modern stacks to power your business growth.",
+    meta: "React · Node · TS",
   },
   {
     icon: Bot,
+    tag: "AI · Automation",
     title: "AI Agents & Automation",
     description:
       "Intelligent AI agents and automated workflows that reduce costs and accelerate outcomes.",
+    meta: "LLMs · RAG · Agents",
   },
   {
     icon: LayoutDashboard,
+    tag: "Platforms",
     title: "Custom Portals & Dashboards",
     description:
       "Tailored dashboards and portals that unify data and give teams real-time visibility.",
+    meta: "Dashboards · APIs",
   },
   {
     icon: PenTool,
+    tag: "Design",
     title: "UI/UX & Product Design",
     description:
       "User-centered design and prototyping that transforms ideas into intuitive digital products.",
+    meta: "UX · UI · Motion",
   },
   {
     icon: Cloud,
+    tag: "Infrastructure",
     title: "Cloud & DevOps",
     description:
       "Reliable cloud infrastructure, CI/CD pipelines, and DevOps practices for seamless delivery.",
+    meta: "AWS · CI/CD · K8s",
   },
   {
     icon: Headset,
+    tag: "Support",
     title: "Ongoing Support & Maintenance",
     description:
       "Proactive monitoring, updates, and dedicated support to keep your systems running smoothly.",
+    meta: "24/7 · SLAs",
   },
 ];
+
 
 const processSteps = [
   {
