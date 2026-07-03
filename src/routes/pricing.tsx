@@ -344,9 +344,10 @@ function Pricing() {
       <section className="bg-background pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <StaggerContainer
-            key={tab}
+            key={currency}
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
           >
+
             {plans.map((plan) => (
               <StaggerItem key={plan.name} className="h-full">
                 <PlanCard plan={plan} currency={currency} />
