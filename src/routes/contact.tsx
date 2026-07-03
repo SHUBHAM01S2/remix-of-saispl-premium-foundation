@@ -77,6 +77,7 @@ function Contact() {
     if (submitting) return;
 
     const name = form.name.trim();
+    const email = form.email.trim();
     const phone = form.phone.trim();
     const businessType = form.businessType.trim();
     const message = form.message.trim();
@@ -85,7 +86,17 @@ function Contact() {
       toast.error("Please share your name, phone and a short message.");
       return;
     }
-    if (name.length > 100 || phone.length > 30 || businessType.length > 100 || message.length > 2000) {
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    if (
+      name.length > 100 ||
+      email.length > 255 ||
+      phone.length > 30 ||
+      businessType.length > 100 ||
+      message.length > 2000
+    ) {
       toast.error("One of your fields is too long. Please shorten it.");
       return;
     }
@@ -95,7 +106,7 @@ function Contact() {
       .from("contact_submissions")
       .insert({
         name,
-        email: null,
+        email: email || null,
         phone,
         company: businessType || null,
         message,
@@ -109,7 +120,8 @@ function Contact() {
 
     toast.success("Thanks! We respond within 4 business hours.");
     setSubmitted(true);
-    setForm({ name: "", phone: "", businessType: "", message: "" });
+    setForm({ name: "", email: "", phone: "", businessType: "", message: "" });
+
   }
 
   return (
