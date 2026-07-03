@@ -208,18 +208,19 @@ function Services() {
             Our Services
           </span>
           <h1
-            className="max-w-4xl text-5xl font-black leading-[0.9] tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-8xl"
+            className="max-w-5xl text-5xl font-black leading-[0.9] tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]"
             style={displayFont}
           >
-            WE BUILD{" "}
+            SERVICES BUILT FOR{" "}
             <span className="bg-gradient-to-r from-brand to-indigo-400 bg-clip-text text-transparent">
-              DIGITAL
+              GROWTH, VISIBILITY,
             </span>{" "}
-            MOMENTUM.
+            AND AUTOMATION.
           </h1>
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Transforming complex challenges into seamless digital experiences through
-            strategic design and high-performance engineering.
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            From websites and SEO to WhatsApp automation, portals, branding, and
+            maintenance—we help businesses build digital systems that attract leads
+            and support long-term growth.
           </p>
         </ScrollReveal>
       </section>
