@@ -52,11 +52,11 @@ export const Route = createFileRoute("/web-design-development")({
           "Websites built to convert & grow. Custom, fast, SEO-ready websites for growing businesses.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/services/website-design-development" },
+      { property: "og:url", content: "/web-design-development" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Website Design & Development — SAISPL" },
     ],
-    links: [{ rel: "canonical", href: "/services/website-design-development" }],
+    links: [{ rel: "canonical", href: "/web-design-development" }],
   }),
   component: WebsiteDesignDevelopmentPage,
 });
