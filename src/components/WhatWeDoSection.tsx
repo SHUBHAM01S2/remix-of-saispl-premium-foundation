@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Globe, Cpu, LayoutDashboard, PenTool, ArrowUpRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+
 
 const capabilities = [
   {
