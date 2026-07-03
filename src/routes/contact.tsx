@@ -185,6 +185,20 @@ function Contact() {
                       />
                     </Field>
 
+                    <Field id="email" label="Email" icon={Mail}>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        value={form.email}
+                        onChange={handleChange}
+                        className={inputCls}
+                      />
+                    </Field>
+
+
+
                     <Field id="phone" label="Phone" icon={Smartphone}>
                       <input
                         id="phone"
