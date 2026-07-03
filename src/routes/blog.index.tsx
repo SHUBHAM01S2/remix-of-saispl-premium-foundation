@@ -17,7 +17,7 @@ export type BlogPost = {
 };
 
 // Fallback seed content used when the Supabase table is empty.
-const SEED: BlogPost[] = [
+export const SEED: BlogPost[] = [
   {
     id: "s1",
     title: "How Much Does a Website Cost in Himachal Pradesh in 2026?",
@@ -109,7 +109,7 @@ async function fetchBlogPosts(): Promise<BlogPost[]> {
   return data as unknown as BlogPost[];
 }
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title: "Blog & Insights — Local SEO, Web Design & Automation | Shivaryan Infotech" },
