@@ -318,12 +318,12 @@ function OurWorks() {
                     Start a Project
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                   </Link>
-                  <Link
-                    to="/contact"
+                  <a
+                    href="mailto:help@saispl.com?subject=Project%20Inquiry"
                     className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.02] px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur-sm transition-all hover:border-brand/40 hover:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
                   >
                     Email Us
-                  </Link>
+                  </a>
                 </div>
 
                 {/* Trust strip */}
