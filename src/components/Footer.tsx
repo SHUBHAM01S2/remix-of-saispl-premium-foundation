@@ -107,7 +107,7 @@ export function Footer() {
           <FooterColumn title="Contact Us">
             <li className="flex items-start gap-2 text-sm text-foreground/70">
               <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
-              <span>Bilaspur, Himachal Pradesh, 174001</span>
+              <span>Bilaspur, Himachal Pradesh 174001, India</span>
             </li>
             <li>
               <a
