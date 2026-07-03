@@ -314,43 +314,56 @@ function Services() {
       </section>
 
       {/* CTA band */}
-      <section className="px-4 py-24 sm:px-6 md:py-32 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-white p-12 text-center text-black md:p-24">
-            <div
-              className="pointer-events-none absolute inset-0 opacity-5"
-              style={{
-                backgroundImage:
-                  "radial-gradient(circle at 50% 50%,#000 1px,transparent 1px)",
-                backgroundSize: "24px 24px",
-              }}
-            />
-            <div className="relative z-10">
-              <h2
-                className="mb-8 text-4xl font-black tracking-tighter md:text-6xl lg:text-7xl"
-                style={displayFont}
-              >
-                READY TO
-                <br className="hidden md:block" /> ELEVATE YOUR STACK?
-              </h2>
-              <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-6">
-                <Link
-                  to="/contact"
-                  className="rounded-full bg-black px-8 py-4 text-base font-bold text-white transition-transform hover:scale-105 md:px-10 md:py-5 md:text-lg"
-                >
-                  Start a Project
-                </Link>
-                <Link
-                  to="/our-works"
-                  className="rounded-full border-2 border-black px-8 py-4 text-base font-bold text-black transition-all hover:bg-black hover:text-white md:px-10 md:py-5 md:text-lg"
-                >
-                  View Portfolio
-                </Link>
-              </div>
-            </div>
+      <section className="relative overflow-hidden border-y border-white/10 bg-[#070707] px-6 py-24 md:py-32">
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full blur-[120px]"
+          style={{ background: "color-mix(in oklab, var(--color-brand) 8%, transparent)" }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 80%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-4xl text-center">
+          <span className="mb-6 inline-block text-[11px] font-bold uppercase tracking-[0.28em] text-brand">
+            Ready when you are
+          </span>
+          <h2
+            className="text-5xl font-extrabold leading-[0.95] tracking-tight text-foreground md:text-7xl"
+            style={displayFont}
+          >
+            Ready to elevate{" "}
+            <span className="bg-gradient-to-b from-brand to-brand/60 bg-clip-text italic text-transparent">
+              your stack
+            </span>
+            ?
+          </h2>
+          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Book a scoping call and get a tailored plan within 24 hours — no
+            pressure, no templates.
+          </p>
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              to="/contact"
+              className="inline-flex w-full items-center justify-center rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-105 sm:w-auto"
+            >
+              Start a Project
+            </Link>
+            <Link
+              to="/our-works"
+              className="inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-white/20 hover:bg-white/[0.06] sm:w-auto"
+            >
+              View Portfolio
+            </Link>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
