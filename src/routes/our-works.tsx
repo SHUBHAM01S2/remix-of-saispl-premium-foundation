@@ -138,7 +138,6 @@ function OurWorks() {
             ))}
           </ScrollReveal>
 
-          <StaggerContainer staggerDelay={0.08} className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <StaggerContainer staggerDelay={0.08} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((project, idx) => {
               const CardTag: any = project.caseStudySlug ? Link : "div";
