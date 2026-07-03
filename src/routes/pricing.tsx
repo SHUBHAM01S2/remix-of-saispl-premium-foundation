@@ -286,6 +286,7 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 
 function Pricing() {
   const [tab, setTab] = useState<"web" | "care">("web");
+  const [currency, setCurrency] = useState<Currency>("INR");
   const plans = tab === "web" ? webPackages : carePlans;
 
   return (
