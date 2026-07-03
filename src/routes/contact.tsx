@@ -198,8 +198,14 @@ function Contact() {
                   </a>
                   <a
                     href={`mailto:${OFFICE.email}`}
+                    target="_self"
                     rel="noopener"
                     className="relative z-10 inline-block cursor-pointer text-zinc-300 transition-colors [pointer-events:auto] hover:text-blue-400"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      window.location.href = `mailto:${OFFICE.email}`;
+                    }}
                   >
                     {OFFICE.email}
                   </a>
