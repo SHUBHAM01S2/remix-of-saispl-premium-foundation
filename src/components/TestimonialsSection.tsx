@@ -121,7 +121,7 @@ export function TestimonialsSection() {
                   Client Feedback
                 </span>
               </div>
-              <h2 className="mt-5 max-w-2xl text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+              <h2 className="mt-5 max-w-2xl text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                 Trusted by teams building{" "}
                 <span className="text-brand">serious products.</span>
               </h2>
