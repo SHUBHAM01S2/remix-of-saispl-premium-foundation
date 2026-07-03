@@ -154,6 +154,7 @@ export type Database = {
       }
       contact_submissions: {
         Row: {
+          business_type: string | null
           company: string | null
           created_at: string
           email: string | null
@@ -164,6 +165,7 @@ export type Database = {
           status: string
         }
         Insert: {
+          business_type?: string | null
           company?: string | null
           created_at?: string
           email?: string | null
@@ -174,6 +176,7 @@ export type Database = {
           status?: string
         }
         Update: {
+          business_type?: string | null
           company?: string | null
           created_at?: string
           email?: string | null
