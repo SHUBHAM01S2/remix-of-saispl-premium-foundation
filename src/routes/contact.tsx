@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { toast } from "sonner";
 import {
   MapPin,
@@ -11,6 +13,12 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+
+const contactSearchSchema = z.object({
+  service: fallback(z.string().max(100), "").default(""),
+  subject: fallback(z.string().max(200), "").default(""),
+});
+
 
 const OFFICE = {
   address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001, India",
