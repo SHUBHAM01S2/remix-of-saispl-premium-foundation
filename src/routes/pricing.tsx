@@ -122,9 +122,10 @@ const faqs = [
     a: "No. Every engagement is a fixed-scope, fixed-price package. If scope changes, we send a small change order first.",
   },
   {
-    q: "Can I switch care plans later?",
-    a: "Yes — you can upgrade or downgrade any month. Nothing is locked in beyond the current month.",
+    q: "Do you offer discounts for long engagements?",
+    a: "Yes — multi-package or retainer engagements get preferential pricing. Ask us for a bundle quote.",
   },
+
   {
     q: "Do you work with international clients?",
     a: "Yes. We serve clients across India and globally. Payments in INR or USD.",
