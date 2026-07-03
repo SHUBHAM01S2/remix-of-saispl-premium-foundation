@@ -1,91 +1,162 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, Bot, Code2, Cpu, LayoutGrid, Boxes, Zap, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
+
+const orbitTiles = [
+  { icon: Bot,       x: "-42%", y: "-8%",  size: 92,  rot: -14, delay: 0.0 },
+  { icon: Code2,     x: "-30%", y: "38%",  size: 76,  rot: 10,  delay: 0.15 },
+  { icon: Cpu,       x: "-52%", y: "22%",  size: 64,  rot: -6,  delay: 0.25 },
+  { icon: LayoutGrid,x: "38%",  y: "-14%", size: 84,  rot: 12,  delay: 0.1 },
+  { icon: Boxes,     x: "48%",  y: "28%",  size: 96,  rot: -10, delay: 0.2 },
+  { icon: Workflow,  x: "32%",  y: "44%",  size: 68,  rot: 8,   delay: 0.3 },
+  { icon: Zap,       x: "-8%",  y: "-38%", size: 56,  rot: -18, delay: 0.35 },
+];
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-[calc(100dvh-4rem)] items-center overflow-hidden">
-      {/* Background gradient layers */}
-      <div className="absolute inset-0 bg-background" />
+    <section className="relative isolate overflow-hidden">
+      {/* deep vignette + spotlight, no theme change */}
       <div
-        className="absolute inset-0"
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,185,241,0.08), transparent)",
+            "radial-gradient(ellipse 70% 55% at 50% 0%, color-mix(in oklab, var(--color-brand) 14%, transparent), transparent 70%)",
         }}
       />
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 40% at 80% 60%, rgba(0,46,110,0.04), transparent)",
-        }}
-      />
-
-      {/* Subtle grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(0,46,110,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,46,110,0.08) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
+            "linear-gradient(rgba(255,255,255,0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+          maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 75%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 75%)",
+        }}
+      />
+      {/* soft floor glow */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%]"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 100% at 50% 100%, color-mix(in oklab, var(--color-brand) 22%, transparent), transparent 70%)",
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-        <div className="text-center">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4rem)] max-w-6xl flex-col items-center justify-center px-4 py-24 sm:px-6 md:py-32 lg:px-8">
+        {/* eyebrow pill */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur"
+        >
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
+          </span>
+          Now booking Q3 2026 — 3 slots left
+        </motion.div>
+
+        {/* orbit tiles + headline */}
+        <div className="relative w-full">
+          {orbitTiles.map((t, i) => {
+            const Icon = t.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.6, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.35 + t.delay, ease: [0.16, 1, 0.3, 1] }}
+                className="pointer-events-none absolute left-1/2 top-1/2 hidden md:block"
+                style={{ transform: `translate(-50%,-50%) translate(${t.x}, ${t.y})` }}
+              >
+                <motion.div
+                  animate={{ y: [0, -10, 0], rotate: [t.rot, t.rot + 4, t.rot] }}
+                  transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}
+                  className="flex items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] backdrop-blur-xl"
+                  style={{
+                    width: t.size,
+                    height: t.size,
+                    boxShadow:
+                      "inset 0 1px 0 rgba(255,255,255,0.08), 0 30px 80px -20px color-mix(in oklab, var(--color-brand) 35%, transparent)",
+                  }}
+                >
+                  <Icon className="text-foreground/80" style={{ width: t.size * 0.42, height: t.size * 0.42 }} />
+                </motion.div>
+              </motion.div>
+            );
+          })}
+
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]"
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="relative mx-auto max-w-4xl text-center text-5xl font-semibold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[0.98]"
           >
-            We innovate and push technological boundaries to create{" "}
-            <span className="bg-gradient-to-r from-brand to-cta bg-clip-text text-transparent">
-              exceptional digital experiences
+            Discover your path to{" "}
+            <span className="relative inline-block">
+              <span className="bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent italic">
+                intelligent software
+              </span>
+              <Sparkles className="absolute -right-8 -top-4 h-6 w-6 text-brand md:-right-10 md:-top-6 md:h-8 md:w-8" />
             </span>
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl leading-relaxed"
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative mx-auto mt-8 max-w-xl text-center text-base text-muted-foreground sm:text-lg"
           >
-            We build AI-powered software, intelligent automation, and transformative
-            digital products that help global businesses scale faster, operate smarter,
-            and lead their industries.
+            AI-powered software, automation and custom platforms — built by
+            Shivaryan Infotech to help global teams ship faster and operate smarter.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="relative mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <Button
-              size="lg"
-              className="bg-cta text-cta-foreground hover:bg-cta/90 rounded-full px-8 py-6 text-base font-semibold shadow-lg shadow-cta/20"
-              asChild
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-all hover:brightness-110"
             >
-              <Link to="/contact">
-                Get In Touch
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full px-8 py-6 text-base font-semibold border-2 border-primary bg-white text-primary hover:bg-primary hover:text-primary-foreground"
-              asChild
+              Start a project
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link
+              to="/our-works"
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3.5 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:bg-white/[0.06]"
             >
-              <Link to="/our-works">View Our Work</Link>
-            </Button>
+              View our work
+            </Link>
           </motion.div>
         </div>
+
+        {/* social proof strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.55 }}
+          className="relative mt-16 flex items-center gap-4 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 backdrop-blur"
+        >
+          <div className="flex -space-x-2">
+            {["#3b82f6", "#8b5cf6", "#22d3ee", "#f97316"].map((c, i) => (
+              <div
+                key={i}
+                className="h-7 w-7 rounded-full border-2 border-background"
+                style={{ background: `linear-gradient(135deg, ${c}, color-mix(in oklab, ${c} 40%, black))` }}
+              />
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            <span className="font-semibold text-foreground">120+ global teams</span>{" "}
+            already building with us
+          </p>
+        </motion.div>
       </div>
     </section>
   );
