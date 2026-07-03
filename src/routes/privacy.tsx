@@ -144,13 +144,14 @@ function Privacy() {
             >
               Contact Us
             </Link>
-            <a
-              href="mailto:Help@saispl.com"
+            <Link
+              to="/contact"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
             >
               <Mail className="h-4 w-4" />
               Email Us
-            </a>
+            </Link>
+
           </div>
         </div>
       </section>
