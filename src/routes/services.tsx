@@ -1,63 +1,63 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Code,
+  Globe,
+  Search,
   Bot,
   LayoutDashboard,
-  PenTool,
-  Cloud,
-  Headset,
+  Palette,
+  LifeBuoy,
   ArrowUpRight,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
 const services = [
   {
-    icon: Code,
-    tag: "Engineering",
-    title: "Web & Software Development",
+    icon: Globe,
+    tag: "Websites",
+    title: "Website Design & Development",
     description:
-      "Scalable web apps and custom software engineered for performance, security, and long-term growth.",
-    meta: "React · Node · TS",
+      "Custom business websites built for speed, trust, SEO readiness, and lead generation.",
+    meta: "WEBSITES · SEO · CMS",
+  },
+  {
+    icon: Search,
+    tag: "Marketing",
+    title: "SEO & Local Digital Marketing",
+    description:
+      "Improve visibility, rankings, and local discovery to generate more qualified enquiries.",
+    meta: "SEO · LOCAL · CONTENT",
   },
   {
     icon: Bot,
-    tag: "AI · Automation",
-    title: "AI Agents & Automation",
+    tag: "Automation",
+    title: "WhatsApp & AI Automation",
     description:
-      "Intelligent AI agents and automated workflows that cut costs, remove bottlenecks, and accelerate outcomes.",
-    meta: "LLMs · RAG · Agents",
+      "Automate lead capture, responses, follow-ups, and customer workflows with smart systems.",
+    meta: "WHATSAPP · AI · WORKFLOWS",
   },
   {
     icon: LayoutDashboard,
-    tag: "Platforms",
-    title: "Custom Portals & Dashboards",
+    tag: "Software",
+    title: "Custom Portals & Software",
     description:
-      "Tailored dashboards and portals that unify data and give teams real-time operational visibility.",
-    meta: "Dashboards · APIs",
+      "Tailored portals, dashboards, and workflow tools built around your business operations.",
+    meta: "PORTALS · DASHBOARDS · APIS",
   },
   {
-    icon: PenTool,
+    icon: Palette,
     tag: "Design",
-    title: "UI/UX & Product Design",
+    title: "Branding & Graphic Design",
     description:
-      "User-centered design and prototyping that transforms complex ideas into intuitive, high-converting products.",
-    meta: "UX · UI · Motion",
+      "Professional brand identity, creatives, and design assets that strengthen credibility.",
+    meta: "LOGO · BRANDING · CREATIVES",
   },
   {
-    icon: Cloud,
-    tag: "Cloud · DevOps",
-    title: "Cloud & DevOps",
-    description:
-      "Reliable cloud infrastructure, CI/CD pipelines, and DevOps practices for seamless, zero-downtime delivery.",
-    meta: "AWS · GCP · K8s",
-  },
-  {
-    icon: Headset,
+    icon: LifeBuoy,
     tag: "Support",
-    title: "Ongoing Support & Maintenance",
+    title: "Website Maintenance & Support",
     description:
-      "Proactive monitoring, updates, and dedicated support to keep your systems running smoothly around the clock.",
-    meta: "24/7 · SLAs",
+      "Ongoing updates, security, monitoring, and improvements to keep your website performing reliably.",
+    meta: "SUPPORT · UPDATES · SECURITY",
   },
 ];
 
