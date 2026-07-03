@@ -7,6 +7,8 @@ import {
   Palette,
   LifeBuoy,
   ArrowUpRight,
+  Check,
+  Sparkles,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
