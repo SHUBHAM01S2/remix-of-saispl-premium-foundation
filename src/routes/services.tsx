@@ -135,15 +135,12 @@ export const Route = createFileRoute("/services")({
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
 function Services() {
-  const [feature, vertical, ...rest] = services;
-  const FeatureIcon = feature.icon;
-  const VerticalIcon = vertical.icon;
-
   return (
     <div className="bg-background text-zinc-400 selection:bg-brand/30 selection:text-white">
       {/* Hero */}
       <section className="relative overflow-hidden pt-24 pb-20 md:pt-32 md:pb-24">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,color-mix(in_oklab,var(--color-brand)_10%,transparent),transparent_55%)]" />
+
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
           style={{
