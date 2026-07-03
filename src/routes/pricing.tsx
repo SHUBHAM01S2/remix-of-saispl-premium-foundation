@@ -146,7 +146,7 @@ export const Route = createFileRoute("/pricing")({
       {
         property: "og:description",
         content:
-          "Fixed pricing for web design, custom portals, monthly care, and add-ons. No hourly billing surprises.",
+          "Fixed pricing for web design, custom portals, and add-ons. No hourly billing surprises.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/pricing" },
