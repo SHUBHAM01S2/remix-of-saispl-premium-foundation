@@ -348,7 +348,7 @@ function Pricing() {
           >
             {plans.map((plan) => (
               <StaggerItem key={plan.name} className="h-full">
-                <PlanCard plan={plan} />
+                <PlanCard plan={plan} currency={currency} />
               </StaggerItem>
             ))}
           </StaggerContainer>
