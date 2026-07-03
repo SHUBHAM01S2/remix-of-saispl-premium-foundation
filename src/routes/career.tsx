@@ -136,17 +136,34 @@ function Career() {
               We are building a workplace where great people do their best work.
             </p>
           </ScrollReveal>
-          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {benefits.map((b) => {
+          <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {benefits.map((b, idx) => {
               const Icon = b.icon;
+              const num = String(idx + 1).padStart(2, "0");
               return (
                 <StaggerItem key={b.title}>
-                  <div className="group rounded-2xl border border-border/50 bg-surface p-6 transition-all hover:border-brand/30 hover:-translate-y-1">
-                    <div className="mb-4 inline-flex items-center justify-center rounded-xl bg-brand/10 p-3">
-                      <Icon className="h-6 w-6 text-brand" />
+                  <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                    <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }} />
+                    <div className="pointer-events-none absolute inset-0 opacity-[0.05] transition-opacity duration-500 group-hover:opacity-[0.12]" style={{ backgroundImage: "linear-gradient(to right, rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.5) 1px, transparent 1px)", backgroundSize: "24px 24px", maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)", WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)" }} />
+                    <div className="pointer-events-none absolute -right-2 -bottom-6 select-none text-[8rem] font-black leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-brand/10" style={displayFont}>{num}</div>
+
+                    <div className="relative flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <span className="h-1 w-1 rounded-full bg-brand" />
+                        Culture
+                      </span>
+                      <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
                     </div>
-                    <h3 className="text-lg font-semibold text-foreground">{b.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
+
+                    <div className="relative mt-8 flex items-center gap-4">
+                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                        <Icon className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
+                        <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
+                      </div>
+                    </div>
+
+                    <h3 className="relative mt-6 text-xl font-bold leading-tight text-foreground" style={displayFont}>{b.title}</h3>
+                    <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">{b.description}</p>
                   </div>
                 </StaggerItem>
               );
