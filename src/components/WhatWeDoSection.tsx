@@ -1,49 +1,60 @@
-import { useState } from "react";
-import { Globe, Cpu, LayoutDashboard, PenTool, ArrowUpRight } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowUpRight } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
+import { iconForCapability } from "@/lib/capability-icons";
 
+type CapabilityRow = {
+  id: string;
+  tag: string;
+  title: string;
+  description: string;
+  meta: string | null;
+  icon: string | null;
+  sort_order: number;
+  is_active: boolean;
+};
 
-const capabilities = [
-  {
-    icon: Globe,
-    tag: "Engineering",
-    title: "Web & Software Development",
-    description:
-      "Scalable web apps and custom software built with modern stacks to power your business growth.",
-    meta: "React · Node · TS",
-  },
-  {
-    icon: Cpu,
-    tag: "AI · Automation",
-    title: "AI & Automation Solutions",
-    description:
-      "Intelligent automation and AI-driven workflows that cut cost, eliminate bottlenecks, and accelerate outcomes.",
-    meta: "LLMs · RAG · Agents",
-  },
-  {
-    icon: LayoutDashboard,
-    tag: "Platforms",
-    title: "Custom Business Portals",
-    description:
-      "Tailored dashboards and portals that unify data, streamline operations, and give teams real-time visibility.",
-    meta: "Dashboards · APIs",
-  },
-  {
-    icon: PenTool,
-    tag: "Design",
-    title: "Digital Product Design",
-    description:
-      "User-centered design and prototyping that turns complex ideas into intuitive, high-converting products.",
-    meta: "UX · UI · Motion",
-  },
+const fallback: CapabilityRow[] = [
+  { id: "f1", tag: "Engineering", title: "Web & Software Development",
+    description: "Scalable web apps and custom software built with modern stacks to power your business growth.",
+    meta: "React · Node · TS", icon: "Globe", sort_order: 10, is_active: true },
+  { id: "f2", tag: "AI · Automation", title: "AI & Automation Solutions",
+    description: "Intelligent automation and AI-driven workflows that cut cost, eliminate bottlenecks, and accelerate outcomes.",
+    meta: "LLMs · RAG · Agents", icon: "Cpu", sort_order: 20, is_active: true },
+  { id: "f3", tag: "Platforms", title: "Custom Business Portals",
+    description: "Tailored dashboards and portals that unify data, streamline operations, and give teams real-time visibility.",
+    meta: "Dashboards · APIs", icon: "LayoutDashboard", sort_order: 30, is_active: true },
+  { id: "f4", tag: "Design", title: "Digital Product Design",
+    description: "User-centered design and prototyping that turns complex ideas into intuitive, high-converting products.",
+    meta: "UX · UI · Motion", icon: "PenTool", sort_order: 40, is_active: true },
 ];
 
-const filters = ["All", "Engineering", "AI · Automation", "Platforms", "Design"];
-
 export function WhatWeDoSection() {
+  const { data } = useQuery({
+    queryKey: ["public", "capabilities"],
+    queryFn: async (): Promise<CapabilityRow[]> => {
+      const { data, error } = await (supabase as any)
+        .from("capabilities")
+        .select("*")
+        .eq("is_active", true)
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: true });
+      if (error || !data || data.length === 0) return fallback;
+      return data as CapabilityRow[];
+    },
+  });
+
+  const capabilities = data ?? fallback;
+
+  const filters = useMemo(() => {
+    const tags = Array.from(new Set(capabilities.map((c) => c.tag)));
+    return ["All", ...tags];
+  }, [capabilities]);
+
   const [active, setActive] = useState<string>("All");
-  const visible =
-    active === "All" ? capabilities : capabilities.filter((c) => c.tag === active);
+  const visible = active === "All" ? capabilities : capabilities.filter((c) => c.tag === active);
 
   return (
     <section className="relative py-16 md:py-20">
@@ -58,7 +69,6 @@ export function WhatWeDoSection() {
             </h2>
           </div>
 
-          {/* pill filter */}
           <div className="flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur">
             {filters.map((f) => (
               <button
@@ -79,12 +89,10 @@ export function WhatWeDoSection() {
 
         <StaggerContainer key={active} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {visible.map((cap) => {
-            const Icon = cap.icon;
+            const Icon = iconForCapability(cap.icon);
             return (
-
-              <StaggerItem key={cap.title} className="h-full">
+              <StaggerItem key={cap.id} className="h-full">
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1">
-                  {/* glow */}
                   <div
                     className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                     style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
@@ -107,10 +115,12 @@ export function WhatWeDoSection() {
                     {cap.description}
                   </p>
 
-                  <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
-                    <span>{cap.meta}</span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-                  </div>
+                  {cap.meta && (
+                    <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4 text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+                      <span>{cap.meta}</span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                    </div>
+                  )}
                 </div>
               </StaggerItem>
             );

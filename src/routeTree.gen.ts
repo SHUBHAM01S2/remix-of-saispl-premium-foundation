@@ -42,6 +42,7 @@ import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin.jobs'
 import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authenticated/admin.contacts'
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
+import { Route as AuthenticatedAdminCapabilitiesRouteImport } from './routes/_authenticated/admin.capabilities'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
 import { Route as AuthenticatedAdminAdminsRouteImport } from './routes/_authenticated/admin.admins'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
@@ -55,11 +56,13 @@ import { Route as AuthenticatedAdminPortfolioNewRouteImport } from './routes/_au
 import { Route as AuthenticatedAdminJobsNewRouteImport } from './routes/_authenticated/admin.jobs.new'
 import { Route as AuthenticatedAdminContactIdRouteImport } from './routes/_authenticated/admin.contact.$id'
 import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authenticated/admin.career.$id'
+import { Route as AuthenticatedAdminCapabilitiesNewRouteImport } from './routes/_authenticated/admin.capabilities.new'
 import { Route as AuthenticatedAdminBlogNewRouteImport } from './routes/_authenticated/admin.blog.new'
 import { Route as AuthenticatedAdminTestimonialsIdEditRouteImport } from './routes/_authenticated/admin.testimonials.$id.edit'
 import { Route as AuthenticatedAdminReportsIdEditRouteImport } from './routes/_authenticated/admin.reports.$id.edit'
 import { Route as AuthenticatedAdminPortfolioIdEditRouteImport } from './routes/_authenticated/admin.portfolio.$id.edit'
 import { Route as AuthenticatedAdminJobsIdEditRouteImport } from './routes/_authenticated/admin.jobs.$id.edit'
+import { Route as AuthenticatedAdminCapabilitiesIdEditRouteImport } from './routes/_authenticated/admin.capabilities.$id.edit'
 import { Route as AuthenticatedAdminBlogIdEditRouteImport } from './routes/_authenticated/admin.blog.$id.edit'
 
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
@@ -231,6 +234,12 @@ const AuthenticatedAdminCareersRoute =
     path: '/careers',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminCapabilitiesRoute =
+  AuthenticatedAdminCapabilitiesRouteImport.update({
+    id: '/capabilities',
+    path: '/capabilities',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -308,6 +317,12 @@ const AuthenticatedAdminCareerIdRoute =
     path: '/career/$id',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminCapabilitiesNewRoute =
+  AuthenticatedAdminCapabilitiesNewRouteImport.update({
+    id: '/new',
+    path: '/new',
+    getParentRoute: () => AuthenticatedAdminCapabilitiesRoute,
+  } as any)
 const AuthenticatedAdminBlogNewRoute =
   AuthenticatedAdminBlogNewRouteImport.update({
     id: '/new',
@@ -337,6 +352,12 @@ const AuthenticatedAdminJobsIdEditRoute =
     id: '/$id/edit',
     path: '/$id/edit',
     getParentRoute: () => AuthenticatedAdminJobsRoute,
+  } as any)
+const AuthenticatedAdminCapabilitiesIdEditRoute =
+  AuthenticatedAdminCapabilitiesIdEditRouteImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => AuthenticatedAdminCapabilitiesRoute,
   } as any)
 const AuthenticatedAdminBlogIdEditRoute =
   AuthenticatedAdminBlogIdEditRouteImport.update({
@@ -374,6 +395,7 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
@@ -381,6 +403,7 @@ export interface FileRoutesByFullPath {
   '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
+  '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
@@ -393,6 +416,7 @@ export interface FileRoutesByFullPath {
   '/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
   '/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
+  '/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
   '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
@@ -426,9 +450,11 @@ export interface FileRoutesByTo {
   '/reports/$id': typeof ReportsIdRoute
   '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
+  '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
@@ -441,6 +467,7 @@ export interface FileRoutesByTo {
   '/admin/reports': typeof AuthenticatedAdminReportsIndexRoute
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
+  '/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
   '/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
@@ -477,6 +504,7 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
+  '/_authenticated/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/_authenticated/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
@@ -484,6 +512,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
   '/_authenticated/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
+  '/_authenticated/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/_authenticated/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
   '/_authenticated/admin/contact/$id': typeof AuthenticatedAdminContactIdRoute
   '/_authenticated/admin/jobs/new': typeof AuthenticatedAdminJobsNewRoute
@@ -496,6 +525,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
   '/_authenticated/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
   '/_authenticated/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
+  '/_authenticated/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/_authenticated/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
   '/_authenticated/admin/portfolio/$id/edit': typeof AuthenticatedAdminPortfolioIdEditRoute
   '/_authenticated/admin/reports/$id/edit': typeof AuthenticatedAdminReportsIdEditRoute
@@ -532,6 +562,7 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/admin/admins'
     | '/admin/blog'
+    | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
     | '/admin/jobs'
@@ -539,6 +570,7 @@ export interface FileRouteTypes {
     | '/admin/reports'
     | '/admin/testimonials'
     | '/admin/blog/new'
+    | '/admin/capabilities/new'
     | '/admin/career/$id'
     | '/admin/contact/$id'
     | '/admin/jobs/new'
@@ -551,6 +583,7 @@ export interface FileRouteTypes {
     | '/admin/reports/'
     | '/admin/testimonials/'
     | '/admin/blog/$id/edit'
+    | '/admin/capabilities/$id/edit'
     | '/admin/jobs/$id/edit'
     | '/admin/portfolio/$id/edit'
     | '/admin/reports/$id/edit'
@@ -584,9 +617,11 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog'
     | '/admin/admins'
+    | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
     | '/admin/blog/new'
+    | '/admin/capabilities/new'
     | '/admin/career/$id'
     | '/admin/contact/$id'
     | '/admin/jobs/new'
@@ -599,6 +634,7 @@ export interface FileRouteTypes {
     | '/admin/reports'
     | '/admin/testimonials'
     | '/admin/blog/$id/edit'
+    | '/admin/capabilities/$id/edit'
     | '/admin/jobs/$id/edit'
     | '/admin/portfolio/$id/edit'
     | '/admin/reports/$id/edit'
@@ -634,6 +670,7 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/_authenticated/admin/admins'
     | '/_authenticated/admin/blog'
+    | '/_authenticated/admin/capabilities'
     | '/_authenticated/admin/careers'
     | '/_authenticated/admin/contacts'
     | '/_authenticated/admin/jobs'
@@ -641,6 +678,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/reports'
     | '/_authenticated/admin/testimonials'
     | '/_authenticated/admin/blog/new'
+    | '/_authenticated/admin/capabilities/new'
     | '/_authenticated/admin/career/$id'
     | '/_authenticated/admin/contact/$id'
     | '/_authenticated/admin/jobs/new'
@@ -653,6 +691,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/reports/'
     | '/_authenticated/admin/testimonials/'
     | '/_authenticated/admin/blog/$id/edit'
+    | '/_authenticated/admin/capabilities/$id/edit'
     | '/_authenticated/admin/jobs/$id/edit'
     | '/_authenticated/admin/portfolio/$id/edit'
     | '/_authenticated/admin/reports/$id/edit'
@@ -920,6 +959,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCareersRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/capabilities': {
+      id: '/_authenticated/admin/capabilities'
+      path: '/capabilities'
+      fullPath: '/admin/capabilities'
+      preLoaderRoute: typeof AuthenticatedAdminCapabilitiesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/blog': {
       id: '/_authenticated/admin/blog'
       path: '/blog'
@@ -1011,6 +1057,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCareerIdRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/capabilities/new': {
+      id: '/_authenticated/admin/capabilities/new'
+      path: '/new'
+      fullPath: '/admin/capabilities/new'
+      preLoaderRoute: typeof AuthenticatedAdminCapabilitiesNewRouteImport
+      parentRoute: typeof AuthenticatedAdminCapabilitiesRoute
+    }
     '/_authenticated/admin/blog/new': {
       id: '/_authenticated/admin/blog/new'
       path: '/new'
@@ -1046,6 +1099,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminJobsIdEditRouteImport
       parentRoute: typeof AuthenticatedAdminJobsRoute
     }
+    '/_authenticated/admin/capabilities/$id/edit': {
+      id: '/_authenticated/admin/capabilities/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/admin/capabilities/$id/edit'
+      preLoaderRoute: typeof AuthenticatedAdminCapabilitiesIdEditRouteImport
+      parentRoute: typeof AuthenticatedAdminCapabilitiesRoute
+    }
     '/_authenticated/admin/blog/$id/edit': {
       id: '/_authenticated/admin/blog/$id/edit'
       path: '/$id/edit'
@@ -1072,6 +1132,24 @@ const AuthenticatedAdminBlogRouteChildren: AuthenticatedAdminBlogRouteChildren =
 const AuthenticatedAdminBlogRouteWithChildren =
   AuthenticatedAdminBlogRoute._addFileChildren(
     AuthenticatedAdminBlogRouteChildren,
+  )
+
+interface AuthenticatedAdminCapabilitiesRouteChildren {
+  AuthenticatedAdminCapabilitiesNewRoute: typeof AuthenticatedAdminCapabilitiesNewRoute
+  AuthenticatedAdminCapabilitiesIdEditRoute: typeof AuthenticatedAdminCapabilitiesIdEditRoute
+}
+
+const AuthenticatedAdminCapabilitiesRouteChildren: AuthenticatedAdminCapabilitiesRouteChildren =
+  {
+    AuthenticatedAdminCapabilitiesNewRoute:
+      AuthenticatedAdminCapabilitiesNewRoute,
+    AuthenticatedAdminCapabilitiesIdEditRoute:
+      AuthenticatedAdminCapabilitiesIdEditRoute,
+  }
+
+const AuthenticatedAdminCapabilitiesRouteWithChildren =
+  AuthenticatedAdminCapabilitiesRoute._addFileChildren(
+    AuthenticatedAdminCapabilitiesRouteChildren,
   )
 
 interface AuthenticatedAdminJobsRouteChildren {
@@ -1154,6 +1232,7 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAdminsRoute: typeof AuthenticatedAdminAdminsRoute
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
+  AuthenticatedAdminCapabilitiesRoute: typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
   AuthenticatedAdminContactsRoute: typeof AuthenticatedAdminContactsRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRouteWithChildren
@@ -1167,6 +1246,8 @@ interface AuthenticatedAdminRouteChildren {
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAdminsRoute: AuthenticatedAdminAdminsRoute,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
+  AuthenticatedAdminCapabilitiesRoute:
+    AuthenticatedAdminCapabilitiesRouteWithChildren,
   AuthenticatedAdminCareersRoute: AuthenticatedAdminCareersRoute,
   AuthenticatedAdminContactsRoute: AuthenticatedAdminContactsRoute,
   AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRouteWithChildren,
