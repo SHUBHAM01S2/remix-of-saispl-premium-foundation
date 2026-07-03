@@ -74,6 +74,42 @@ export type Database = {
         }
         Relationships: []
       }
+      capabilities: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          is_active: boolean
+          meta: string
+          sort_order: number
+          tag: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          meta?: string
+          sort_order?: number
+          tag: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          is_active?: boolean
+          meta?: string
+          sort_order?: number
+          tag?: string
+          title?: string
+        }
+        Relationships: []
+      }
       career_applications: {
         Row: {
           cover_message: string | null
