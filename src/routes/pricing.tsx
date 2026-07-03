@@ -314,27 +314,53 @@ function Pricing() {
           </p>
 
           {/* Toggle */}
-          <div className="mt-10 inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
-            <button
-              onClick={() => setTab("web")}
-              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                tab === "web"
-                  ? "bg-cta text-cta-foreground shadow-md"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Web Design Packages
-            </button>
-            <button
-              onClick={() => setTab("care")}
-              className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
-                tab === "care"
-                  ? "bg-cta text-cta-foreground shadow-md"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              Monthly Care Plans
-            </button>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
+              <button
+                onClick={() => setTab("web")}
+                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                  tab === "web"
+                    ? "bg-cta text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Web Design Packages
+              </button>
+              <button
+                onClick={() => setTab("care")}
+                className={`relative rounded-full px-5 py-2 text-sm font-semibold transition-all ${
+                  tab === "care"
+                    ? "bg-cta text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Monthly Care Plans
+              </button>
+            </div>
+            <div className="inline-flex rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
+              <button
+                onClick={() => setCurrency("INR")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  currency === "INR"
+                    ? "bg-brand text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-pressed={currency === "INR"}
+              >
+                ₹ INR
+              </button>
+              <button
+                onClick={() => setCurrency("USD")}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+                  currency === "USD"
+                    ? "bg-brand text-cta-foreground shadow-md"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-pressed={currency === "USD"}
+              >
+                $ USD
+              </button>
+            </div>
           </div>
         </ScrollReveal>
       </section>
