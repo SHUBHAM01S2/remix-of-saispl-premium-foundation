@@ -329,7 +329,7 @@ function Pricing() {
               Add-Ons & Extras
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Bolt these onto any package or care plan whenever you're ready.
+              Bolt these onto any package whenever you're ready.
             </p>
           </ScrollReveal>
 
