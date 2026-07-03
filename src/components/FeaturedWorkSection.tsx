@@ -62,6 +62,7 @@ export function FeaturedWorkSection() {
           {projects.map((project) => {
             const Icon = iconFor(project.client_industry);
             const loc = (project as any).location ?? project.client_industry;
+            const slug = resolveCaseStudySlug(project.title);
             return (
               <StaggerItem key={project.id}>
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] transition-all duration-500 hover:border-white/25">
