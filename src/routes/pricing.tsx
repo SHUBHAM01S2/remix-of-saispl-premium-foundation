@@ -398,7 +398,7 @@ function Pricing() {
                       </h3>
                       <div className="mt-1 flex items-baseline gap-1.5">
                         <span className="text-sm font-bold text-brand">
-                          {item.price}
+                          {item.price[currency]}
                         </span>
                         <span className="text-xs text-muted-foreground">
                           {item.note}
