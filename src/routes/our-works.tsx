@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Monitor, ArrowRight, MapPin } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveCaseStudySlug } from "@/lib/case-study-slugs";
 
 type Category = "All" | "Website" | "Portal" | "Automation" | "SEO";
 
