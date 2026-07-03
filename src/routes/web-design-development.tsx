@@ -31,7 +31,7 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
-export const Route = createFileRoute("/services_/website-design-development")({
+export const Route = createFileRoute("/web-design-development")({
   head: () => ({
     meta: [
       { title: "Website Design & Development — SAISPL" },
