@@ -159,7 +159,7 @@ export function TestimonialsSection() {
             {/* Soft glow behind card */}
             <div className="pointer-events-none absolute -inset-x-6 -inset-y-6 rounded-[2rem] bg-gradient-to-br from-brand/10 via-transparent to-transparent blur-2xl" />
 
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-xl md:p-14">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl sm:rounded-3xl sm:p-8 md:p-14">
               {/* Corner ornament */}
               <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/15 blur-3xl" />
               <Quote
