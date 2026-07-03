@@ -249,6 +249,70 @@ function About() {
           </StaggerContainer>
         </section>
 
+        {/* Why choose SAISPL */}
+        <section className="mb-24 lg:mb-28">
+          <ScrollReveal>
+            <div className="mb-14 flex flex-col justify-between gap-8 md:flex-row md:items-end">
+              <div className="max-w-2xl">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-brand">
+                  Why SAISPL
+                </p>
+                <h2 className="text-4xl font-semibold tracking-tight md:text-5xl leading-[1.05]">
+                  Why businesses{" "}
+                  <span className="italic text-muted-foreground">choose SAISPL.</span>
+                </h2>
+              </div>
+              <p className="max-w-md text-sm leading-relaxed text-muted-foreground md:text-base">
+                We combine strategy, design, development, and automation to help
+                businesses build stronger digital systems—not just better-looking
+                websites. Every project is planned around performance, scalability,
+                and measurable business impact.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {[
+              { n: "01", title: "Strategy-First Thinking", desc: "Every build starts with clear goals, user research, and a roadmap tied to business outcomes." },
+              { n: "02", title: "Full-Service Digital Execution", desc: "Strategy, design, engineering, and automation delivered under one accountable team." },
+              { n: "03", title: "Conversion-Focused Delivery", desc: "We design for measurable impact—leads, sign-ups, and revenue, not vanity metrics." },
+              { n: "04", title: "Transparent Communication", desc: "Clear timelines, honest updates, and direct access to the people building your product." },
+              { n: "05", title: "Custom, Not Template-Based", desc: "Every interface and system is engineered around your brand, workflow, and audience." },
+              { n: "06", title: "Fast & Scalable Builds", desc: "Modern stacks and clean architecture that ship quickly and grow with your business." },
+              { n: "07", title: "Automation-Ready Systems", desc: "AI workflows and integrations baked in from day one to reduce cost and manual work." },
+              { n: "08", title: "Reliable Ongoing Support", desc: "Care plans, monitoring, and a team that stays with you long after launch day." },
+              { n: "09", title: "Global Quality Standards", desc: "Built to serve clients across India, the UK, Europe, and the US with world-class polish." },
+              { n: "10", title: "Long-Term Growth Partnership", desc: "We invest in your roadmap—iterating, optimising, and scaling as your business evolves." },
+            ].map((item) => (
+              <StaggerItem key={item.n}>
+                <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_10px_40px_-15px_color-mix(in_oklab,var(--color-brand)_60%,transparent)]">
+                  <div
+                    className="pointer-events-none absolute -top-20 left-1/2 h-40 w-40 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 35%, transparent)" }}
+                  />
+                  <p className="relative mb-5 font-mono text-[11px] font-semibold tracking-[0.2em] text-brand">
+                    {item.n}
+                  </p>
+                  <h3 className="relative mb-3 text-base font-semibold leading-snug text-foreground md:text-lg">
+                    {item.title}
+                  </h3>
+                  <p className="relative text-sm leading-relaxed text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <ScrollReveal className="mt-12 flex flex-col items-center gap-4 text-center md:mt-14">
+            <div className="h-px w-16 bg-gradient-to-r from-transparent via-brand/60 to-transparent" />
+            <p className="text-base font-medium tracking-tight text-foreground md:text-lg">
+              Let's build something that{" "}
+              <span className="italic text-muted-foreground">moves your business forward.</span>
+            </p>
+          </ScrollReveal>
+        </section>
+
         {/* Team */}
         <section>
           <ScrollReveal className="mb-16 text-center lg:mb-20">
