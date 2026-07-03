@@ -29,8 +29,8 @@ const resourceLinks = [
   { label: "Case Studies", to: "/our-works" },
   { label: "Services", to: "/services" },
   { label: "FAQ", to: "/contact" },
-  { label: "Support", to: "/contact" },
 ];
+
 
 const socials = [
   { label: "LinkedIn", href: "https://linkedin.com" },
