@@ -228,13 +228,6 @@ export function TestimonialsSection() {
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`font-mono text-[10px] tabular-nums tracking-widest ${
-                          active ? "text-brand" : "text-muted-foreground"
-                        }`}
-                      >
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
                       <span className="h-px flex-1 bg-white/10" />
                       <div className="flex gap-0.5">
                         {Array.from({ length: t.rating }).map((_, s) => (
