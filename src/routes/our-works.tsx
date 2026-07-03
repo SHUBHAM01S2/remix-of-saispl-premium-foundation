@@ -244,32 +244,111 @@ function OurWorks() {
       </section>
 
       <ScrollReveal>
-        <section className="relative overflow-hidden border-t border-border bg-surface px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Let&apos;s Build <span className="text-brand">Yours</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Have a project in mind? We turn ambitious ideas into award-winning digital products.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-cta px-8 py-3.5 text-sm font-semibold text-cta-foreground shadow-lg transition-all hover:brightness-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-cta focus:ring-offset-2 focus:ring-offset-surface"
-              >
-                Start a Project
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-border/50 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface"
-              >
-                Email Us
-              </Link>
+        <section className="relative overflow-hidden border-t border-border bg-background px-4 py-28 sm:px-6 lg:px-8">
+          {/* Grid overlay */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-60"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right,#121212 1px,transparent 1px),linear-gradient(to bottom,#121212 1px,transparent 1px)",
+              backgroundSize: "4rem 4rem",
+              maskImage:
+                "radial-gradient(ellipse 70% 55% at 50% 50%, #000 55%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 70% 55% at 50% 50%, #000 55%, transparent 100%)",
+            }}
+          />
+          {/* Halo glow */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, hsl(var(--brand) / 0.35), transparent 70%)",
+            }}
+          />
+          {/* Giant ghost word */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none text-center text-[18vw] font-black leading-none tracking-tighter text-white/[0.03] sm:text-[14vw]"
+          >
+            BUILD
+          </div>
+
+          <div className="relative mx-auto max-w-5xl">
+            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-10 backdrop-blur-sm sm:p-14 md:p-20">
+              {/* Card halo */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[80%] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, hsl(var(--brand) / 0.25), transparent 70%)",
+                }}
+              />
+              {/* Corner accents */}
+              <div className="pointer-events-none absolute left-6 top-6 h-6 w-6 border-l border-t border-brand/60" />
+              <div className="pointer-events-none absolute right-6 top-6 h-6 w-6 border-r border-t border-brand/60" />
+              <div className="pointer-events-none absolute bottom-6 left-6 h-6 w-6 border-b border-l border-brand/60" />
+              <div className="pointer-events-none absolute bottom-6 right-6 h-6 w-6 border-b border-r border-brand/60" />
+
+              <div className="relative text-center">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-brand">
+                  <Sparkles className="h-3 w-3" />
+                  Ready when you are
+                </span>
+
+                <h2 className="mt-6 text-4xl font-black leading-[0.95] tracking-tighter text-foreground sm:text-5xl md:text-6xl">
+                  Let&apos;s Build{" "}
+                  <span className="bg-gradient-to-r from-brand via-indigo-400 to-brand bg-clip-text text-transparent">
+                    Yours
+                  </span>
+                </h2>
+
+                <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  Have a project in mind? We turn ambitious ideas into award-winning
+                  digital products—crafted with speed, precision, and taste.
+                </p>
+
+                <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center gap-2 rounded-full bg-cta px-8 py-3.5 text-sm font-semibold text-cta-foreground shadow-[0_10px_40px_-10px_hsl(var(--brand)/0.6)] transition-all hover:brightness-110 hover:shadow-[0_15px_50px_-10px_hsl(var(--brand)/0.8)] focus:outline-none focus:ring-2 focus:ring-cta focus:ring-offset-2 focus:ring-offset-background"
+                  >
+                    Start a Project
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.02] px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur-sm transition-all hover:border-brand/40 hover:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
+                  >
+                    Email Us
+                  </Link>
+                </div>
+
+                {/* Trust strip */}
+                <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 gap-6 border-t border-white/5 pt-8">
+                  {[
+                    { k: "12+", v: "Countries served" },
+                    { k: "72h", v: "Avg. first response" },
+                    { k: "100%", v: "Client satisfaction" },
+                  ].map((s) => (
+                    <div key={s.v} className="text-center">
+                      <div className="text-2xl font-black tracking-tight text-foreground sm:text-3xl">
+                        {s.k}
+                      </div>
+                      <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.15em] text-zinc-500 sm:text-[11px]">
+                        {s.v}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </section>
       </ScrollReveal>
+
     </div>
   );
 }
