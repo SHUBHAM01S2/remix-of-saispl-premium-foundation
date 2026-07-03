@@ -202,6 +202,7 @@ function RootComponent() {
       <TechPartners />
       <Footer />
       {!isAdmin && <WhatsAppChatButton />}
+      <BackToTopButton />
     </QueryClientProvider>
   );
 }
