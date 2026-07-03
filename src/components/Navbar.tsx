@@ -10,7 +10,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+
 
 type NavLink =
   | { label: string; to: string; children?: undefined }
@@ -145,7 +145,7 @@ export function Navbar() {
 
         {/* Desktop CTA + Language */}
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <LanguageSwitcher />
+          
           <Link
             to="/contact"
             className="inline-flex items-center justify-center rounded-lg bg-cta px-5 py-2.5 text-sm font-semibold text-cta-foreground transition-all hover:bg-cta/90 hover:shadow-lg hover:shadow-cta/25"
@@ -156,7 +156,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-2 lg:hidden">
-          <LanguageSwitcher compact />
+          
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <button
