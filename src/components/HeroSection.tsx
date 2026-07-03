@@ -2,15 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Sparkles, Bot, Code2, Cpu, LayoutGrid, Boxes, Zap, Workflow } from "lucide-react";
 import { motion } from "framer-motion";
 
-// px offsets from horizontal center of the hero container
+// px offsets from horizontal center of the hero container.
+// Pushed well beyond headline (~800px wide) so tiles never sit on top of text.
 const orbitTiles = [
-  { icon: Bot,        x: -420, y: -40,  size: 92, rot: -14, delay: 0.0 },
-  { icon: Code2,      x: -320, y: 220,  size: 76, rot: 10,  delay: 0.15 },
-  { icon: Cpu,        x: -500, y: 120,  size: 64, rot: -6,  delay: 0.25 },
-  { icon: LayoutGrid, x: 380,  y: -60,  size: 84, rot: 12,  delay: 0.1 },
-  { icon: Boxes,      x: 470,  y: 180,  size: 96, rot: -10, delay: 0.2 },
-  { icon: Workflow,   x: 320,  y: 260,  size: 68, rot: 8,   delay: 0.3 },
-  { icon: Zap,        x: -80,  y: -220, size: 56, rot: -18, delay: 0.35 },
+  { icon: Bot,        x: -620, y: -120, size: 84, rot: -14, delay: 0.0 },
+  { icon: Cpu,        x: -700, y: 80,   size: 64, rot: -6,  delay: 0.25 },
+  { icon: Code2,      x: -560, y: 300,  size: 72, rot: 10,  delay: 0.15 },
+  { icon: LayoutGrid, x: 600,  y: -120, size: 84, rot: 12,  delay: 0.1 },
+  { icon: Boxes,      x: 700,  y: 100,  size: 88, rot: -10, delay: 0.2 },
+  { icon: Workflow,   x: 560,  y: 300,  size: 68, rot: 8,   delay: 0.3 },
 ];
 
 export function HeroSection() {
