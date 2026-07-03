@@ -103,27 +103,27 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "End-to-end services from Shivaryan Infotech: AI agents & automation, custom web and software development, portals, UI/UX design, cloud & DevOps for startups and enterprises in Himachal Pradesh, India, and worldwide.",
+          "SAISPL services: website design & development, SEO & local digital marketing, WhatsApp & AI automation, custom portals & software, branding & graphic design, and website maintenance & support.",
       },
       {
         name: "keywords",
         content:
-          "AI automation services, software development company Himachal Pradesh, custom web development, AI agents, cloud DevOps, UI UX design, business automation India, Shivaryan Infotech services",
+          "website design and development, SEO services, local digital marketing, WhatsApp automation, AI automation, custom portals, business software, branding, graphic design, website maintenance, Shivaryan Infotech services, SAISPL",
       },
-      { property: "og:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { property: "og:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "AI automation, custom software, portals, design, and cloud services for global clients — from Himachal Pradesh to the world.",
+          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and website maintenance — built by SAISPL for growing businesses.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/services" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { name: "twitter:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         name: "twitter:description",
         content:
-          "AI automation, custom software, portals, design, and cloud services for global clients.",
+          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and maintenance — by SAISPL.",
       },
     ],
     links: [{ rel: "canonical", href: "/services" }],
