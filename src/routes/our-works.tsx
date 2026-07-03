@@ -221,12 +221,12 @@ function OurWorks() {
                 Start a Project
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <a
-                href="mailto:Help@saispl.com"
+              <Link
+                to="/contact"
                 className="inline-flex items-center gap-2 rounded-full border border-border/50 px-6 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-elevated focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-surface"
               >
                 Email Us
-              </a>
+              </Link>
             </div>
           </div>
         </section>
