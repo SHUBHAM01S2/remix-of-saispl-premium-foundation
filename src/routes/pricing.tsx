@@ -18,12 +18,14 @@ import {
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { GlobalReachNote } from "@/components/GlobalReachNote";
 
-type Currency = "INR" | "USD";
+type Currency = "INR" | "USD" | "GBP" | "EUR";
+
+type Price = { INR: string; USD: string; GBP: string; EUR: string };
 
 type Plan = {
   name: string;
   tagline: string;
-  price: { INR: string; USD: string };
+  price: Price;
   suffix?: string;
   icon: typeof Zap;
   features: string[];
