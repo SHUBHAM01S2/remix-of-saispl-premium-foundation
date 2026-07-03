@@ -137,14 +137,15 @@ export function CTASection() {
 
           <p className="mt-8 text-sm text-muted-foreground">
             Or drop us a line at{" "}
-            <Link
-              to="/contact"
+            <EmailContactLink
+              source="cta-section"
+              subject="Project enquiry from CTA"
               className="font-medium text-foreground underline underline-offset-4 transition hover:text-brand"
             >
               Help@saispl.com
-            </Link>
-
+            </EmailContactLink>
           </p>
+
 
           {/* Stats strip */}
           <div className="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl sm:grid-cols-4">
