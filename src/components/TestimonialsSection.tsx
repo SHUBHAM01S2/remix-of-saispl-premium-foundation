@@ -186,7 +186,7 @@ export function TestimonialsSection() {
                     ))}
                   </div>
 
-                  <blockquote className="mt-6 max-w-4xl text-2xl font-medium leading-relaxed tracking-tight text-foreground md:text-3xl md:leading-[1.35]">
+                  <blockquote className="mt-6 max-w-4xl text-lg font-medium leading-relaxed tracking-tight text-foreground sm:text-2xl md:text-3xl md:leading-[1.35]">
                     <span className="text-brand">“</span>
                     {current.quote}
                     <span className="text-brand">”</span>
