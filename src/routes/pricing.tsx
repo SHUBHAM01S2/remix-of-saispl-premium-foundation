@@ -209,7 +209,7 @@ export const Route = createFileRoute("/pricing")({
   component: Pricing,
 });
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
   const Icon = plan.icon;
   return (
     <div
