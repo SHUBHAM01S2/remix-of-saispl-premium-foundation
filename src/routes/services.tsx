@@ -351,22 +351,54 @@ function Services() {
             </div>
           </ScrollReveal>
 
-          <StaggerContainer className="relative grid grid-cols-1 gap-12 md:grid-cols-4">
-            {processSteps.map((s) => (
-              <StaggerItem key={s.step} className="group relative">
-                <div
-                  className="absolute -left-4 -top-8 text-7xl font-black text-white/5 transition-all duration-500 group-hover:text-brand/20"
-                  style={displayFont}
-                >
-                  {s.step}
-                </div>
-                <div className="relative z-10">
-                  <h4 className="mb-4 text-xl font-bold text-foreground transition-colors group-hover:text-brand">
+          <StaggerContainer className="relative grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((s, i) => (
+              <StaggerItem key={s.step} className="h-full">
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                  {/* hover glow */}
+                  <div
+                    className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                  />
+                  {/* giant background number */}
+                  <div
+                    className="pointer-events-none absolute -right-2 -bottom-8 select-none text-[9rem] font-black leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-brand/10"
+                    style={displayFont}
+                  >
+                    {s.step}
+                  </div>
+
+                  <div className="relative flex items-center justify-between">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      <span className="h-1 w-1 rounded-full bg-brand" />
+                      Step {s.step}
+                    </span>
+                    <span className="font-mono text-[10px] tracking-widest text-zinc-600">
+                      0{i + 1}/0{processSteps.length}
+                    </span>
+                  </div>
+
+                  <div className="relative mt-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                    <span className="font-mono text-lg font-bold text-foreground/90 transition-colors group-hover:text-brand" style={displayFont}>
+                      {s.step}
+                    </span>
+                  </div>
+
+                  <h4 className="relative mt-6 text-xl font-bold leading-tight text-foreground" style={displayFont}>
                     {s.title}
                   </h4>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
                     {s.description}
                   </p>
+
+                  <div className="relative mt-6 flex-1" />
+
+                  <div className="relative mt-6 flex items-center justify-between border-t border-white/5 pt-4">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-zinc-600">
+                      Phase {s.step}
+                    </span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand transition-all duration-500 group-hover:shadow-[0_0_12px_2px_color-mix(in_oklab,var(--color-brand)_60%,transparent)]" />
+                  </div>
                 </div>
               </StaggerItem>
             ))}
@@ -374,53 +406,106 @@ function Services() {
         </div>
       </section>
 
-      {/* CTA band */}
-      <section className="relative overflow-hidden border-y border-white/10 bg-[#070707] px-6 py-24 md:py-32">
+      {/* CTA band — premium */}
+      <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-24 md:py-32">
+        {/* aurora glow */}
         <div
-          className="pointer-events-none absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full blur-[120px]"
-          style={{ background: "color-mix(in oklab, var(--color-brand) 8%, transparent)" }}
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[1000px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px]"
+          style={{ background: "color-mix(in oklab, var(--color-brand) 14%, transparent)" }}
         />
         <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          className="pointer-events-none absolute left-[20%] top-0 h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ background: "color-mix(in oklab, var(--color-brand) 20%, transparent)" }}
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 right-[15%] h-[300px] w-[300px] rounded-full blur-[100px]"
+          style={{ background: "color-mix(in oklab, #6366f1 18%, transparent)" }}
+        />
+        {/* grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.05]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
             backgroundSize: "56px 56px",
             maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 80%)",
             WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, black 40%, transparent 80%)",
           }}
         />
-        <div className="relative mx-auto max-w-4xl text-center">
-          <span className="mb-6 inline-block text-[11px] font-bold uppercase tracking-[0.28em] text-brand">
-            Ready when you are
-          </span>
-          <h2
-            className="text-5xl font-extrabold leading-[0.95] tracking-tight text-foreground md:text-7xl"
-            style={displayFont}
-          >
-            Ready to elevate{" "}
-            <span className="bg-gradient-to-b from-brand to-brand/60 bg-clip-text italic text-transparent">
-              your stack
-            </span>
-            ?
-          </h2>
-          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
-            Book a scoping call and get a tailored plan within 24 hours — no
-            pressure, no templates.
-          </p>
-          <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              to="/contact"
-              className="inline-flex w-full items-center justify-center rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-105 sm:w-auto"
-            >
-              Start a Project
-            </Link>
-            <Link
-              to="/our-works"
-              className="inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.03] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-white/20 hover:bg-white/[0.06] sm:w-auto"
-            >
-              View Portfolio
-            </Link>
+
+        <div className="relative mx-auto max-w-5xl">
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.01] p-8 backdrop-blur-sm md:p-16">
+            {/* corner accents */}
+            <div className="pointer-events-none absolute left-6 top-6 h-6 w-6 border-l-2 border-t-2 border-brand/50" />
+            <div className="pointer-events-none absolute right-6 top-6 h-6 w-6 border-r-2 border-t-2 border-brand/50" />
+            <div className="pointer-events-none absolute bottom-6 left-6 h-6 w-6 border-b-2 border-l-2 border-brand/50" />
+            <div className="pointer-events-none absolute bottom-6 right-6 h-6 w-6 border-b-2 border-r-2 border-brand/50" />
+
+            <div className="relative text-center">
+              {/* live pill */}
+              <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
+                </span>
+                Now booking — Q3 slots open
+              </span>
+
+              <h2
+                className="text-5xl font-extrabold leading-[0.95] tracking-tight text-foreground md:text-7xl"
+                style={displayFont}
+              >
+                Ready to elevate{" "}
+                <span className="relative inline-block">
+                  <span className="bg-gradient-to-b from-brand via-brand to-indigo-400 bg-clip-text italic text-transparent">
+                    your stack
+                  </span>
+                  <span className="pointer-events-none absolute inset-0 -z-10 blur-2xl" style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }} />
+                </span>
+                ?
+              </h2>
+
+              <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+                Book a scoping call and get a tailored plan within 24 hours — no
+                pressure, no templates.
+              </p>
+
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03] sm:w-auto"
+                >
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                  <span className="relative">Start a Project</span>
+                  <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+                <Link
+                  to="/our-works"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-brand/40 hover:bg-white/[0.08] sm:w-auto"
+                >
+                  View Portfolio
+                </Link>
+              </div>
+
+              {/* trust strip */}
+              <div className="mt-12 grid grid-cols-2 gap-6 border-t border-white/10 pt-8 md:grid-cols-4">
+                {[
+                  { v: "24h", l: "Response time" },
+                  { v: "120+", l: "Projects shipped" },
+                  { v: "12+", l: "Countries served" },
+                  { v: "98%", l: "Client retention" },
+                ].map((t) => (
+                  <div key={t.l} className="text-center">
+                    <div className="text-2xl font-bold text-foreground md:text-3xl" style={displayFont}>
+                      {t.v}
+                    </div>
+                    <div className="mt-1 text-[10px] uppercase tracking-widest text-zinc-500">
+                      {t.l}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
