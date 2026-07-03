@@ -137,12 +137,13 @@ export function CTASection() {
 
           <p className="mt-8 text-sm text-muted-foreground">
             Or drop us a line at{" "}
-            <a
-              href="mailto:Help@saispl.com"
+            <Link
+              to="/contact"
               className="font-medium text-foreground underline underline-offset-4 transition hover:text-brand"
             >
               Help@saispl.com
-            </a>
+            </Link>
+
           </p>
 
           {/* Stats strip */}

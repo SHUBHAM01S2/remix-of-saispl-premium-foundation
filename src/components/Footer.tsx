@@ -119,13 +119,14 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a
-                href="mailto:Help@saispl.com"
+              <Link
+                to="/contact"
                 className="flex items-start gap-2 text-sm text-foreground/70 transition-colors hover:text-foreground"
               >
                 <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
                 Help@saispl.com
-              </a>
+              </Link>
+
             </li>
           </FooterColumn>
 
