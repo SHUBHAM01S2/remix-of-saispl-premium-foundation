@@ -283,7 +283,7 @@ function Contact() {
                 <div className="overflow-hidden rounded-2xl border border-border/50 bg-surface">
                   <iframe
                     title="Shivaryan Infotech Office — Nahan, HP"
-                    src="https://maps.google.com/maps?q=Nahan,Himachal+Pradesh,173001&hl=en&t=m&z=14&ie=UTF8&iwloc=B&output=embed"
+                    src="https://maps.google.com/maps?q=Bilaspur,Himachal+Pradesh,174001&hl=en&t=m&z=14&ie=UTF8&iwloc=B&output=embed"
                     width="100%"
                     height="360"
                     style={{ border: 0 }}
