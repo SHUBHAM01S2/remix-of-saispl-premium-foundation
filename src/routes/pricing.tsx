@@ -96,62 +96,8 @@ const webPackages: Plan[] = [
   },
 ];
 
-const carePlans: Plan[] = [
-  {
-    name: "Care Basic",
-    tagline: "Keep the lights on",
-    price: { INR: "₹3K – 6K", USD: "$80 – $120", GBP: "£60 – £90", EUR: "€70 – €105" },
-    suffix: "/month",
-    icon: ShieldCheck,
-    features: [
-      "Security & core updates",
-      "Uptime monitoring",
-      "1 content change / month",
-      "Weekly backups",
-    ],
-  },
-  {
-    name: "Care Plus",
-    tagline: "Steady improvements",
-    price: { INR: "₹7K – 12K", USD: "$150 – $250", GBP: "£110 – £190", EUR: "€130 – €220" },
-    suffix: "/month",
-    icon: Layers,
-    highlighted: true,
-    badge: "Recommended",
-    features: [
-      "Everything in Care Basic",
-      "2–4 changes / month",
-      "Speed & health check",
-      "Quarterly performance report",
-    ],
-  },
-  {
-    name: "Growth Plan",
-    tagline: "Websites that keep growing",
-    price: { INR: "₹15K – 25K", USD: "$300 – $600", GBP: "£225 – £450", EUR: "€260 – €520" },
-    suffix: "/month",
-    icon: Rocket,
-    features: [
-      "Landing page every month",
-      "SEO hygiene & content tweaks",
-      "Monthly review call",
-      "Priority turnaround",
-    ],
-  },
-  {
-    name: "Growth + Automation",
-    tagline: "Full-stack growth partner",
-    price: { INR: "₹25K – 45K", USD: "$600 – $1,200", GBP: "£450 – £900", EUR: "€520 – €1,050" },
-    suffix: "/month",
-    icon: Sparkles,
-    features: [
-      "Everything in Growth Plan",
-      "Automation tweaks & flows",
-      "WhatsApp / CRM support",
-      "KPI dashboard access",
-    ],
-  },
-];
+
+
 
 const addOns: {
   name: string;
