@@ -211,59 +211,67 @@ export function TestimonialsSection() {
             </div>
           </div>
 
-          {/* Thumbnail selector */}
-          {total > 1 && (
-            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {visible.map((t, i) => {
-                const active = i === index;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setIndex(i)}
-                    className={`group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-300 ${
-                      active
-                        ? "border-brand/50 bg-brand/[0.06] shadow-[0_0_0_1px_hsl(var(--brand)/0.3),0_20px_60px_-20px_hsl(var(--brand)/0.4)]"
-                        : "border-white/10 bg-white/[0.02] hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.04]"
-                    }`}
+        </div>
+
+        {/* Marquee row - right to left */}
+        {total > 1 && (
+          <div
+            className="relative mt-14 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+            aria-hidden="true"
+          >
+            <style>{`
+              @keyframes testimonials-marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .testimonials-marquee-track {
+                animation: testimonials-marquee 40s linear infinite;
+              }
+              .testimonials-marquee-wrap:hover .testimonials-marquee-track {
+                animation-play-state: paused;
+              }
+              @media (prefers-reduced-motion: reduce) {
+                .testimonials-marquee-track { animation: none; }
+              }
+            `}</style>
+            <div className="testimonials-marquee-wrap">
+              <div className="testimonials-marquee-track flex w-max gap-4 sm:gap-6">
+                {[...visible, ...visible].map((t, i) => (
+                  <div
+                    key={`${t.id}-${i}`}
+                    className="w-[280px] shrink-0 rounded-2xl border border-white/10 bg-white/[0.02] p-5 backdrop-blur-xl sm:w-[340px] md:w-[380px]"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="h-px flex-1 bg-white/10" />
-                      <div className="flex gap-0.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/10 bg-gradient-to-br from-brand/30 to-brand/5 font-mono text-[10px] font-semibold text-foreground">
+                          {initials(t.client_name)}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="truncate text-xs font-semibold text-foreground">
+                            {t.client_name}
+                          </div>
+                          {t.company && (
+                            <div className="truncate font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                              {t.company}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 gap-0.5">
                         {Array.from({ length: t.rating }).map((_, s) => (
-                          <Star
-                            key={s}
-                            className={`h-3 w-3 ${
-                              active ? "fill-brand text-brand" : "fill-muted-foreground/50 text-muted-foreground/50"
-                            }`}
-                          />
+                          <Star key={s} className="h-3 w-3 fill-brand text-brand" />
                         ))}
                       </div>
                     </div>
-                    <p className="mt-3 line-clamp-2 text-sm text-foreground/80">
+                    <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-foreground/80">
                       “{t.quote}”
                     </p>
-                    <div className="mt-4 flex items-center gap-2">
-                      <div
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          active ? "bg-brand shadow-[0_0_8px_hsl(var(--brand))]" : "bg-muted-foreground/40"
-                        }`}
-                      />
-                      <span className="text-xs font-semibold text-foreground">
-                        {t.client_name}
-                      </span>
-                      {t.company && (
-                        <span className="truncate text-xs text-muted-foreground">
-                          · {t.company}
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </section>
     </ScrollReveal>
   );
