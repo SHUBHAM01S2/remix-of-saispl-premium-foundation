@@ -135,13 +135,14 @@ const faqs = [
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Websites, Portals, Care Plans & Add-Ons | Shivaryan Infotech" },
+      { title: "Pricing — Websites, Portals & Add-Ons | Shivaryan Infotech" },
       {
         name: "description",
         content:
-          "Clear, honest pricing from Shivaryan Infotech: web design packages, monthly care plans, and add-ons like WhatsApp automation, AI chat agent, and SEO articles. Fixed pricing, no scope-creep charges.",
+          "Clear, honest pricing from Shivaryan Infotech: web design packages and add-ons like WhatsApp automation, AI chat agent, and SEO articles. Fixed pricing, no scope-creep charges.",
       },
-      { property: "og:title", content: "Pricing — Websites, Portals & Care Plans | Shivaryan Infotech" },
+      { property: "og:title", content: "Pricing — Websites, Portals & Add-Ons | Shivaryan Infotech" },
+
       {
         property: "og:description",
         content:
