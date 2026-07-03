@@ -18,10 +18,12 @@ import {
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { GlobalReachNote } from "@/components/GlobalReachNote";
 
+type Currency = "INR" | "USD";
+
 type Plan = {
   name: string;
   tagline: string;
-  price: string;
+  price: { INR: string; USD: string };
   suffix?: string;
   icon: typeof Zap;
   features: string[];
@@ -33,7 +35,7 @@ const webPackages: Plan[] = [
   {
     name: "Starter Site",
     tagline: "For new brands getting online",
-    price: "₹35K – 60K",
+    price: { INR: "₹35K – 60K", USD: "$800 – $1,500" },
     suffix: "one-time",
     icon: Zap,
     features: [
@@ -47,7 +49,7 @@ const webPackages: Plan[] = [
   {
     name: "Growth Business Site",
     tagline: "Most chosen by SMBs",
-    price: "₹75K – 1.5L",
+    price: { INR: "₹75K – 1.5L", USD: "$1,800 – $3,500" },
     suffix: "one-time",
     icon: Rocket,
     highlighted: true,
@@ -64,7 +66,7 @@ const webPackages: Plan[] = [
   {
     name: "Premium Conversion",
     tagline: "For serious growth",
-    price: "₹1.75L – 3.5L",
+    price: { INR: "₹1.75L – 3.5L", USD: "$3,800 – $7,000" },
     suffix: "one-time",
     icon: Sparkles,
     features: [
@@ -79,7 +81,7 @@ const webPackages: Plan[] = [
   {
     name: "Portal / Web App",
     tagline: "Custom software builds",
-    price: "₹2.5L+",
+    price: { INR: "₹2.5L+", USD: "$6,000+" },
     suffix: "starting",
     icon: Building2,
     features: [
@@ -96,7 +98,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Basic",
     tagline: "Keep the lights on",
-    price: "₹3K – 6K",
+    price: { INR: "₹3K – 6K", USD: "$80 – $120" },
     suffix: "/month",
     icon: ShieldCheck,
     features: [
@@ -109,7 +111,7 @@ const carePlans: Plan[] = [
   {
     name: "Care Plus",
     tagline: "Steady improvements",
-    price: "₹7K – 12K",
+    price: { INR: "₹7K – 12K", USD: "$150 – $250" },
     suffix: "/month",
     icon: Layers,
     highlighted: true,
@@ -124,7 +126,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth Plan",
     tagline: "Websites that keep growing",
-    price: "₹15K – 25K",
+    price: { INR: "₹15K – 25K", USD: "$300 – $600" },
     suffix: "/month",
     icon: Rocket,
     features: [
@@ -137,7 +139,7 @@ const carePlans: Plan[] = [
   {
     name: "Growth + Automation",
     tagline: "Full-stack growth partner",
-    price: "₹25K – 45K",
+    price: { INR: "₹25K – 45K", USD: "$600 – $1,200" },
     suffix: "/month",
     icon: Sparkles,
     features: [
@@ -149,12 +151,17 @@ const carePlans: Plan[] = [
   },
 ];
 
-const addOns = [
-  { name: "WhatsApp Automation", price: "₹15K – 35K", note: "one-time", icon: MessageSquare },
-  { name: "AI Website Chat Agent", price: "₹20K – 40K", note: "one-time", icon: Bot },
-  { name: "Logo + Branding Kit", price: "₹8K – 20K", note: "one-time", icon: Palette },
-  { name: "Extra Landing Page", price: "₹5K – 12K", note: "per page", icon: PenTool },
-  { name: "SEO Article", price: "₹2K – 4K", note: "per piece", icon: FileText },
+const addOns: {
+  name: string;
+  price: { INR: string; USD: string };
+  note: string;
+  icon: typeof MessageSquare;
+}[] = [
+  { name: "WhatsApp Automation", price: { INR: "₹15K – 35K", USD: "$300 – $700" }, note: "one-time", icon: MessageSquare },
+  { name: "AI Website Chat Agent", price: { INR: "₹20K – 40K", USD: "$400 – $800" }, note: "one-time", icon: Bot },
+  { name: "Logo + Branding Kit", price: { INR: "₹8K – 20K", USD: "$200 – $500" }, note: "one-time", icon: Palette },
+  { name: "Extra Landing Page", price: { INR: "₹5K – 12K", USD: "$150 – $350" }, note: "per page", icon: PenTool },
+  { name: "SEO Article", price: { INR: "₹2K – 4K", USD: "$60 – $120" }, note: "per piece", icon: FileText },
 ];
 
 const faqs = [
