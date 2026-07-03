@@ -16,7 +16,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 
 const OFFICE = {
-  address: "Shivaryan Infotech, Nahan, Himachal Pradesh 173001",
+  address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001",
   phone: "+91 94180-31050",
   phoneHref: "+919418031050",
   email: "Help@saispl.com",
@@ -27,25 +27,25 @@ const OFFICE = {
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact Shivaryan Infotech — Nahan, Himachal Pradesh" },
+      { title: "Contact Shivaryan Infotech — Bilaspur, Himachal Pradesh" },
       {
         name: "description",
         content:
-          "Contact Shivaryan Infotech in Nahan, Himachal Pradesh for web design, custom software, SEO and WhatsApp automation. We respond within 4 business hours.",
+          "Contact Shivaryan Infotech in Bilaspur, Himachal Pradesh for web design, custom software, SEO and WhatsApp automation. We respond within 4 business hours.",
       },
-      { property: "og:title", content: "Contact Shivaryan Infotech — Nahan, HP" },
+      { property: "og:title", content: "Contact Shivaryan Infotech — Bilaspur, HP" },
       {
         property: "og:description",
         content:
-          "Talk to our team in Nahan, HP about your website, portal or automation project. We respond within 4 business hours.",
+          "Talk to our team in Bilaspur, HP about your website, portal or automation project. We respond within 4 business hours.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/contact" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Contact Shivaryan Infotech — Nahan, HP" },
+      { name: "twitter:title", content: "Contact Shivaryan Infotech — Bilaspur, HP" },
       {
         name: "twitter:description",
-        content: "Reach our team in Nahan, Himachal Pradesh. We respond within 4 business hours.",
+        content: "Reach our team in Bilaspur, Himachal Pradesh. We respond within 4 business hours.",
       },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -283,7 +283,7 @@ function Contact() {
                 <div className="overflow-hidden rounded-2xl border border-border/50 bg-surface">
                   <iframe
                     title="Shivaryan Infotech Office — Nahan, HP"
-                    src="https://maps.google.com/maps?q=Nahan,Himachal+Pradesh,173001&hl=en&t=m&z=14&ie=UTF8&iwloc=B&output=embed"
+                    src="https://maps.google.com/maps?q=Bilaspur,Himachal+Pradesh,174001&hl=en&t=m&z=14&ie=UTF8&iwloc=B&output=embed"
                     width="100%"
                     height="360"
                     style={{ border: 0 }}
