@@ -1,63 +1,63 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
-  Code,
+  Globe,
+  Search,
   Bot,
   LayoutDashboard,
-  PenTool,
-  Cloud,
-  Headset,
+  Palette,
+  LifeBuoy,
   ArrowUpRight,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 
 const services = [
   {
-    icon: Code,
-    tag: "Engineering",
-    title: "Web & Software Development",
+    icon: Globe,
+    tag: "Websites",
+    title: "Website Design & Development",
     description:
-      "Scalable web apps and custom software engineered for performance, security, and long-term growth.",
-    meta: "React · Node · TS",
+      "Custom business websites built for speed, trust, SEO readiness, and lead generation.",
+    meta: "WEBSITES · SEO · CMS",
+  },
+  {
+    icon: Search,
+    tag: "Marketing",
+    title: "SEO & Local Digital Marketing",
+    description:
+      "Improve visibility, rankings, and local discovery to generate more qualified enquiries.",
+    meta: "SEO · LOCAL · CONTENT",
   },
   {
     icon: Bot,
-    tag: "AI · Automation",
-    title: "AI Agents & Automation",
+    tag: "Automation",
+    title: "WhatsApp & AI Automation",
     description:
-      "Intelligent AI agents and automated workflows that cut costs, remove bottlenecks, and accelerate outcomes.",
-    meta: "LLMs · RAG · Agents",
+      "Automate lead capture, responses, follow-ups, and customer workflows with smart systems.",
+    meta: "WHATSAPP · AI · WORKFLOWS",
   },
   {
     icon: LayoutDashboard,
-    tag: "Platforms",
-    title: "Custom Portals & Dashboards",
+    tag: "Software",
+    title: "Custom Portals & Software",
     description:
-      "Tailored dashboards and portals that unify data and give teams real-time operational visibility.",
-    meta: "Dashboards · APIs",
+      "Tailored portals, dashboards, and workflow tools built around your business operations.",
+    meta: "PORTALS · DASHBOARDS · APIS",
   },
   {
-    icon: PenTool,
+    icon: Palette,
     tag: "Design",
-    title: "UI/UX & Product Design",
+    title: "Branding & Graphic Design",
     description:
-      "User-centered design and prototyping that transforms complex ideas into intuitive, high-converting products.",
-    meta: "UX · UI · Motion",
+      "Professional brand identity, creatives, and design assets that strengthen credibility.",
+    meta: "LOGO · BRANDING · CREATIVES",
   },
   {
-    icon: Cloud,
-    tag: "Cloud · DevOps",
-    title: "Cloud & DevOps",
-    description:
-      "Reliable cloud infrastructure, CI/CD pipelines, and DevOps practices for seamless, zero-downtime delivery.",
-    meta: "AWS · GCP · K8s",
-  },
-  {
-    icon: Headset,
+    icon: LifeBuoy,
     tag: "Support",
-    title: "Ongoing Support & Maintenance",
+    title: "Website Maintenance & Support",
     description:
-      "Proactive monitoring, updates, and dedicated support to keep your systems running smoothly around the clock.",
-    meta: "24/7 · SLAs",
+      "Ongoing updates, security, monitoring, and improvements to keep your website performing reliably.",
+    meta: "SUPPORT · UPDATES · SECURITY",
   },
 ];
 
@@ -99,31 +99,31 @@ const stats = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { title: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         name: "description",
         content:
-          "End-to-end services from Shivaryan Infotech: AI agents & automation, custom web and software development, portals, UI/UX design, cloud & DevOps for startups and enterprises in Himachal Pradesh, India, and worldwide.",
+          "SAISPL services: website design & development, SEO & local digital marketing, WhatsApp & AI automation, custom portals & software, branding & graphic design, and website maintenance & support.",
       },
       {
         name: "keywords",
         content:
-          "AI automation services, software development company Himachal Pradesh, custom web development, AI agents, cloud DevOps, UI UX design, business automation India, Shivaryan Infotech services",
+          "website design and development, SEO services, local digital marketing, WhatsApp automation, AI automation, custom portals, business software, branding, graphic design, website maintenance, Shivaryan Infotech services, SAISPL",
       },
-      { property: "og:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { property: "og:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         property: "og:description",
         content:
-          "AI automation, custom software, portals, design, and cloud services for global clients — from Himachal Pradesh to the world.",
+          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and website maintenance — built by SAISPL for growing businesses.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/services" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Services — AI Automation & Software Development | Shivaryan Infotech" },
+      { name: "twitter:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
       {
         name: "twitter:description",
         content:
-          "AI automation, custom software, portals, design, and cloud services for global clients.",
+          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and maintenance — by SAISPL.",
       },
     ],
     links: [{ rel: "canonical", href: "/services" }],
