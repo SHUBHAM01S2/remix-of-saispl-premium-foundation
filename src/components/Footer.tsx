@@ -106,6 +106,18 @@ export function Footer() {
             {resourceLinks.map((l) => (
               <FooterLink key={l.label} to={l.to}>{l.label}</FooterLink>
             ))}
+            <li>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-foreground/70 transition-colors hover:text-foreground"
+              >
+                <MessageCircle className="h-3.5 w-3.5 text-brand" />
+                Support on WhatsApp
+                <ArrowUpRight className="h-3 w-3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </li>
           </FooterColumn>
 
           <FooterColumn title="Contact Us">
@@ -123,16 +135,17 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <Link
-                to="/contact"
+              <EmailContactLink
+                source="footer"
+                subject="Enquiry from footer"
                 className="flex items-start gap-2 text-sm text-foreground/70 transition-colors hover:text-foreground"
               >
                 <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
                 Help@saispl.com
-              </Link>
-
+              </EmailContactLink>
             </li>
           </FooterColumn>
+
 
           <FooterColumn title="Social">
             {socials.map((s) => (
