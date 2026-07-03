@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { toast } from "sonner";
 import {
   MapPin,
@@ -12,6 +14,12 @@ import {
 
 import { supabase } from "@/integrations/supabase/client";
 
+const contactSearchSchema = z.object({
+  service: fallback(z.string().max(100), "").default(""),
+  subject: fallback(z.string().max(200), "").default(""),
+});
+
+
 const OFFICE = {
   address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001, India",
   phone: "+91 94180-31050",
@@ -22,6 +30,7 @@ const OFFICE = {
 };
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: zodValidator(contactSearchSchema),
   head: () => ({
     meta: [
       { title: "Contact Shivaryan Infotech — Bilaspur, Himachal Pradesh" },
@@ -51,13 +60,15 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const { service, subject } = Route.useSearch();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    businessType: "",
-    message: "",
+    businessType: service ?? "",
+    message: subject ? `Regarding: ${subject}\n\n` : "",
   });
+
 
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
