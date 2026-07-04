@@ -146,8 +146,52 @@ export function BlogForm({ existing }: Props) {
     if (url) exec("createLink", url);
   };
 
+  // Strip inline styles / font tags / class attributes from pasted HTML so
+  // Word / Google Docs paste doesn't leak black-on-black styles into the site.
+  const sanitizePastedHtml = (html: string): string => {
+    if (typeof window === "undefined") return html;
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT);
+    const forbidTags = new Set(["SCRIPT", "STYLE", "META", "LINK", "FONT"]);
+    const toUnwrap: Element[] = [];
+    const toRemove: Element[] = [];
+    let node = walker.nextNode() as Element | null;
+    while (node) {
+      if (forbidTags.has(node.tagName)) {
+        toRemove.push(node);
+      } else {
+        for (const attr of Array.from(node.attributes)) {
+          if (attr.name === "href") continue;
+          node.removeAttribute(attr.name);
+        }
+        if (node.tagName === "SPAN" || node.tagName === "DIV") {
+          toUnwrap.push(node);
+        }
+      }
+      node = walker.nextNode() as Element | null;
+    }
+    toRemove.forEach((n) => n.remove());
+    toUnwrap.forEach((n) => {
+      const parent = n.parentNode;
+      if (!parent) return;
+      while (n.firstChild) parent.insertBefore(n.firstChild, n);
+      parent.removeChild(n);
+    });
+    return doc.body.innerHTML;
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const html = e.clipboardData.getData("text/html");
+    const text = e.clipboardData.getData("text/plain");
+    e.preventDefault();
+    const cleaned = html ? sanitizePastedHtml(html) : text.replace(/</g, "&lt;").replace(/\n/g, "<br>");
+    document.execCommand("insertHTML", false, cleaned);
+    if (editorRef.current) setContent(editorRef.current.innerHTML);
+  };
+
   const toolBtn =
     "inline-flex h-8 w-8 items-center justify-center rounded border border-input bg-background text-foreground hover:bg-accent";
+
 
   return (
     <form
