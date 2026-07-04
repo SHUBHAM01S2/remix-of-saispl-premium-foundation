@@ -71,7 +71,9 @@ export function BlogForm({ existing }: Props) {
 
   useEffect(() => {
     if (editorRef.current && !editorRef.current.innerHTML && content) {
-      editorRef.current.innerHTML = content;
+      const clean = sanitizePastedHtml(content);
+      editorRef.current.innerHTML = clean;
+      if (clean !== content) setContent(clean);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
