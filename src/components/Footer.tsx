@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { MapPin, Mail, Phone, ArrowUpRight, Sparkles, MessageCircle } from "lucide-react";
+
 
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
 import { EmailContactLink } from "@/components/EmailContactLink";
@@ -41,7 +42,10 @@ const socials = [
 ];
 
 export function Footer() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hideCta = pathname === "/contact";
   return (
+
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#050505]">
       {/* ambient glow */}
       <div
@@ -64,8 +68,10 @@ export function Footer() {
 
       <div className="relative mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
         {/* centered logo tile */}
+        {!hideCta && (
         <div className="flex flex-col items-center text-center">
           <div className="relative">
+
             <div
               className="absolute inset-0 -z-10 blur-2xl"
               style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
@@ -88,6 +94,8 @@ export function Footer() {
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
+        )}
+
 
         {/* Link columns */}
         <div className="mt-24 grid grid-cols-2 gap-y-10 gap-x-6 border-t border-white/10 pt-14 md:grid-cols-5">
