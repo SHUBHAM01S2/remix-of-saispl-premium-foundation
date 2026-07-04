@@ -355,6 +355,52 @@ function BlogIndex() {
               No posts match that filter yet.
             </p>
           )}
+
+          {filtered.length > 0 && (
+            <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
+              <div className="text-xs text-muted-foreground">
+                Showing <span className="font-medium text-foreground">{pageStart + 1}</span>–
+                <span className="font-medium text-foreground">{Math.min(pageStart + pageSize, filtered.length)}</span>{" "}
+                of <span className="font-medium text-foreground">{filtered.length}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-muted-foreground">Per page</label>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="rounded-md border border-border bg-surface px-2 py-1 text-xs text-foreground outline-none focus:border-brand"
+                >
+                  {[6, 9, 12, 24].map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage <= 1}
+                  className="rounded-md border border-border bg-surface px-3 py-1 text-xs font-medium text-foreground disabled:opacity-40 hover:border-brand/40"
+                >
+                  Prev
+                </button>
+                <span className="px-2 text-xs text-muted-foreground">
+                  Page <span className="font-medium text-foreground">{currentPage}</span> / {totalPages}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage >= totalPages}
+                  className="rounded-md border border-border bg-surface px-3 py-1 text-xs font-medium text-foreground disabled:opacity-40 hover:border-brand/40"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+
         </div>
       </section>
     </div>
