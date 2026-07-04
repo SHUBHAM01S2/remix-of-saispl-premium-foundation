@@ -42,7 +42,10 @@ const socials = [
 ];
 
 export function Footer() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const hideCta = pathname === "/contact";
   return (
+
     <footer className="relative overflow-hidden border-t border-white/10 bg-[#050505]">
       {/* ambient glow */}
       <div
