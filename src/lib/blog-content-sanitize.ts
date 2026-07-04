@@ -37,6 +37,16 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;");
 }
 
+function removeEmptyListItems(root: ParentNode) {
+  for (const item of Array.from(root.querySelectorAll("li"))) {
+    if (!htmlToVisibleText(item.innerHTML)) item.remove();
+  }
+
+  for (const list of Array.from(root.querySelectorAll("ul, ol"))) {
+    if (!list.querySelector("li")) list.remove();
+  }
+}
+
 export function plainTextToHtml(text: string): string {
   return text
     .replace(/\r\n?/g, "\n")
@@ -106,7 +116,9 @@ export function sanitizeBlogContentHtml(html: string): string {
 
   let output = doc.body.innerHTML.trim();
   output = output.replace(/<p>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>/gi, "");
-  output = output.replace(/<li>\s*<p>((?:\s|&nbsp;|<br\s*\/?\s*>)*?)<\/p>\s*<\/li>/gi, "");
+  removeEmptyListItems(doc.body);
+  output = doc.body.innerHTML.trim();
+  output = output.replace(/<p>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>/gi, "");
   output = output.replace(/\n{3,}/g, "\n\n");
 
   return output;
