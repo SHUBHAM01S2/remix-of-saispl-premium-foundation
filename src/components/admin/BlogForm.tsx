@@ -446,15 +446,12 @@ export function BlogForm({ existing }: Props) {
           {existing ? "Save Changes" : "Create Post"}
         </button>
         {(() => {
-          const canPublish =
-            !!title.trim() && !contentIsEmpty(content) && !!publishedAt;
+          const canPublish = !!title.trim() && !contentIsEmpty(content);
           const reason = !title.trim()
             ? "Add a title before publishing"
             : contentIsEmpty(content)
               ? "Add some content before publishing"
-              : !publishedAt
-                ? "Set a Published at date/time before publishing"
-                : "";
+              : "";
           return (
             <button
               type="button"
@@ -463,6 +460,7 @@ export function BlogForm({ existing }: Props) {
               title={reason || undefined}
               className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
+
               {publishedAt ? "Save & Publish" : "Publish Now"}
             </button>
           );
