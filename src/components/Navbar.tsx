@@ -38,15 +38,17 @@ const navLinks: NavLink[] = [
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2.5">
-      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand">
-        <span className="text-base font-bold text-brand-foreground">S</span>
-      </div>
+    <Link to="/" className="flex items-center gap-2 sm:gap-2.5">
+      <img
+        src={shivaryanLogo.url}
+        alt="Shivaryan Infotech logo"
+        className="h-8 w-auto shrink-0 sm:h-9 md:h-10 lg:h-11"
+      />
       <div className="flex flex-col">
-        <span className="text-lg font-bold leading-tight tracking-tight text-foreground">
+        <span className="text-base font-bold leading-tight tracking-tight text-foreground sm:text-lg">
           SAISPL
         </span>
-        <span className="text-[10px] leading-tight tracking-wide text-muted-foreground uppercase">
+        <span className="hidden text-[10px] leading-tight tracking-wide text-muted-foreground uppercase sm:block">
           Shivaryan Infotech
         </span>
       </div>
