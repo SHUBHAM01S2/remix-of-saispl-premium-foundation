@@ -19,8 +19,8 @@ const LOGOS = [
   { name: "Button Craft", src: buttonCraft.url },
   { name: "Dogra Ji Tours & Travels", src: dogra.url },
   { name: "AvtTours", src: avttours.url },
-  { name: "Jevar by Shagun", src: jevar.url },
-  { name: "Sumit Enterprises", src: sumit.url },
+  { name: "Jevar by Shagun", src: jevar.url, bg: "#1b1b1b" },
+  { name: "Sumit Enterprises", src: sumit.url, bg: "#1b1b1b" },
 ];
 
 
