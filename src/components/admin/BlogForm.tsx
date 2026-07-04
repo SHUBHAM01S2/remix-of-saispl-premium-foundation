@@ -335,15 +335,23 @@ export function BlogForm({ existing }: Props) {
       <Field label="Content">
         <div className="rounded-md border border-input bg-background">
           <div className="flex flex-wrap items-center gap-1 border-b border-input px-2 py-1.5">
-            <button type="button" title="Heading" className={toolBtn} onClick={() => exec("formatBlock", "H2")}>
+            <button type="button" title="Paragraph" className={toolBtn} onClick={() => exec("formatBlock", "P")}>
+              <Pilcrow className="h-4 w-4" />
+            </button>
+            <button type="button" title="Heading 2" className={toolBtn} onClick={() => exec("formatBlock", "H2")}>
               <Heading2 className="h-4 w-4" />
             </button>
-            <button type="button" title="Bold" className={toolBtn} onClick={() => exec("bold")}>
+            <button type="button" title="Heading 3" className={toolBtn} onClick={() => exec("formatBlock", "H3")}>
+              <Heading3 className="h-4 w-4" />
+            </button>
+            <span className="mx-1 h-5 w-px bg-border" />
+            <button type="button" title="Bold (Ctrl+B)" className={toolBtn} onClick={() => exec("bold")}>
               <Bold className="h-4 w-4" />
             </button>
-            <button type="button" title="Italic" className={toolBtn} onClick={() => exec("italic")}>
+            <button type="button" title="Italic (Ctrl+I)" className={toolBtn} onClick={() => exec("italic")}>
               <Italic className="h-4 w-4" />
             </button>
+            <span className="mx-1 h-5 w-px bg-border" />
             <button type="button" title="Bulleted list" className={toolBtn} onClick={() => exec("insertUnorderedList")}>
               <List className="h-4 w-4" />
             </button>
@@ -353,20 +361,60 @@ export function BlogForm({ existing }: Props) {
             <button type="button" title="Quote" className={toolBtn} onClick={() => exec("formatBlock", "BLOCKQUOTE")}>
               <Quote className="h-4 w-4" />
             </button>
-            <button type="button" title="Link" className={toolBtn} onClick={insertLink}>
+            <button type="button" title="Insert link" className={toolBtn} onClick={insertLink}>
               <LinkIcon className="h-4 w-4" />
             </button>
+            <div className="ml-auto flex items-center gap-1 rounded-md border border-input p-0.5">
+              <button
+                type="button"
+                title="Edit"
+                onClick={() => setShowPreview(false)}
+                className={
+                  "inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium " +
+                  (!showPreview ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                <Pencil className="h-3.5 w-3.5" /> Write
+              </button>
+              <button
+                type="button"
+                title="Preview"
+                onClick={() => setShowPreview(true)}
+                className={
+                  "inline-flex items-center gap-1 rounded px-2 py-1 text-xs font-medium " +
+                  (showPreview ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground")
+                }
+              >
+                <Eye className="h-3.5 w-3.5" /> Preview
+              </button>
+            </div>
           </div>
-          <div
-            ref={editorRef}
-            contentEditable
-            onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
-            onPaste={handlePaste}
-            className="min-h-[280px] max-w-none break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_div]:my-1 [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
-            suppressContentEditableWarning
-          />
 
+          {showPreview ? (
+            content && content.replace(/<[^>]*>/g, "").trim().length > 0 ? (
+              <div
+                className={`min-h-[280px] px-4 py-4 ${BLOG_PROSE_CLASSES}`}
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
+            ) : (
+              <div className="min-h-[280px] px-4 py-4 text-sm italic text-muted-foreground">
+                Nothing to preview yet.
+              </div>
+            )
+          ) : (
+            <div
+              ref={editorRef}
+              contentEditable
+              onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
+              onPaste={handlePaste}
+              className={`min-h-[280px] px-4 py-4 outline-none ${BLOG_PROSE_CLASSES}`}
+              suppressContentEditableWarning
+            />
+          )}
         </div>
+        <p className="mt-1 text-xs text-muted-foreground">
+          The preview uses the same styling as the public blog post page.
+        </p>
       </Field>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
