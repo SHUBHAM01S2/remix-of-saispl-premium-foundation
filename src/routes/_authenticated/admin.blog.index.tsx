@@ -90,15 +90,43 @@ function BlogListPage() {
           </Link>
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+        <div className="mt-6 inline-flex rounded-lg border border-border/60 bg-muted/40 p-1 text-sm">
+          {(
+            [
+              { key: "all", label: "All" },
+              { key: "published", label: "Published" },
+              { key: "draft", label: "Drafts" },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setStatus(t.key)}
+              className={
+                "rounded-md px-3 py-1.5 font-medium transition-colors " +
+                (status === t.key
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground")
+              }
+            >
+              {t.label}
+              <span className="ml-1.5 text-xs text-muted-foreground">({counts[t.key]})</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
           {isLoading ? (
             <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
           ) : error ? (
             <p className="px-6 py-8 text-sm text-red-600">
               {error instanceof Error ? error.message : "Failed to load"}
             </p>
-          ) : !data || data.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-muted-foreground">No posts yet.</p>
+          ) : filtered.length === 0 ? (
+            <p className="px-6 py-8 text-sm text-muted-foreground">
+              {status === "all" ? "No posts yet." : `No ${status === "published" ? "published posts" : "drafts"} yet.`}
+            </p>
+
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
