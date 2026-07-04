@@ -1,20 +1,29 @@
 import { ScrollReveal } from "@/components/ScrollReveal";
+import rukoo from "@/assets/logos/rukoo.png.asset.json";
+import acupressure from "@/assets/logos/acupressure.png.asset.json";
+import bandla from "@/assets/logos/bandla.png.asset.json";
+import manaliMiles from "@/assets/logos/manali-miles.png.asset.json";
+import derma from "@/assets/logos/derma.png.asset.json";
+import buttonCraft from "@/assets/logos/button-craft.png.asset.json";
+import dogra from "@/assets/logos/dogra.png.asset.json";
+import avttours from "@/assets/logos/avttours.png.asset.json";
+import jevar from "@/assets/logos/jevar.png.asset.json";
+import sumit from "@/assets/logos/sumit.png.asset.json";
 
 const LOGOS = [
-  "Rukoo Services",
-  "Accupressure E-learning",
-  "Hotel Bandla Heights",
-  "Manali Miles",
-  "Derma Epsilon",
-  "Button Craft",
-  "Dogra Ji Tours & Travels",
-  "AvtTours",
-  "Jevar by Shagun",
-  "Sumit Enterprises",
+  { name: "Rukoo Services", src: rukoo.url },
+  { name: "Accupressure E-learning", src: acupressure.url },
+  { name: "Hotel Bandla Heights", src: bandla.url },
+  { name: "Manali Miles", src: manaliMiles.url },
+  { name: "Derma Epsilon", src: derma.url },
+  { name: "Button Craft", src: buttonCraft.url },
+  { name: "Dogra Ji Tours & Travels", src: dogra.url },
+  { name: "AvtTours", src: avttours.url },
+  { name: "Jevar by Shagun", src: jevar.url },
+  { name: "Sumit Enterprises", src: sumit.url },
 ];
 
 export function TrustedByStrip() {
-  // Duplicate list for seamless marquee loop
   const loop = [...LOGOS, ...LOGOS];
 
   return (
@@ -37,14 +46,19 @@ export function TrustedByStrip() {
                 "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <ul className="flex w-max animate-marquee-rtl items-center gap-6 group-hover:[animation-play-state:paused]">
-              {loop.map((name, i) => (
-                <li key={`${name}-${i}`} className="shrink-0">
+            <ul className="flex w-max animate-marquee-rtl items-center gap-10 group-hover:[animation-play-state:paused]">
+              {loop.map((logo, i) => (
+                <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-12 w-[160px] items-center justify-center rounded-md border border-dashed border-border/40 px-4 text-sm font-semibold tracking-wide text-muted-foreground opacity-70 transition-all duration-300 hover:border-brand/30 hover:text-brand hover:opacity-100"
-                    title={`${name} logo (placeholder)`}
+                    className="flex h-16 w-[180px] items-center justify-center px-4"
+                    title={logo.name}
                   >
-                    {name}
+                    <img
+                      src={logo.src}
+                      alt={`${logo.name} logo`}
+                      loading="lazy"
+                      className="max-h-14 max-w-full object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
+                    />
                   </div>
                 </li>
               ))}
