@@ -28,6 +28,7 @@ import {
   Layers,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
