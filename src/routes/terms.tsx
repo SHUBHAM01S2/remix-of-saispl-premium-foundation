@@ -3,51 +3,166 @@ import { FileText, Mail } from "lucide-react";
 import { EmailContactLink } from "@/components/EmailContactLink";
 
 
-const sections = [
+type Block =
+  | { type: "p"; text: string }
+  | { type: "ul"; items: string[] };
+
+type Section = { title: string; blocks: Block[] };
+
+const sections: Section[] = [
   {
     title: "Introduction",
-    content: [
-      "Welcome to Shivaryan Infotech (SAISPL). These Terms and Conditions govern your use of our website, services, and any related digital products or platforms operated by us. By accessing or using any part of our services, you agree to be bound by these terms in full.",
-      "If you do not agree with any part of these terms, you must not use our website or services. We reserve the right to update or modify these terms at any time without prior notice, and it is your responsibility to review them periodically.",
+    blocks: [
+      { type: "p", text: 'These Terms and Conditions ("Terms") govern your access to and use of the ShivAryan Infotech Services ("SAISPL," "we," "us," "our") website and services. By accessing our website, submitting an enquiry, or engaging our services, you agree to these Terms in full.' },
+      { type: "p", text: "If you do not agree with any part of these Terms, please discontinue use of our website and services." },
     ],
   },
   {
-    title: "Use of Services",
-    content: [
-      "You agree to use our services only for lawful purposes and in a manner that does not infringe the rights of, restrict, or inhibit anyone else's use and enjoyment of the services. Prohibited behaviour includes harassing or causing distress or inconvenience to any other user, transmitting obscene or offensive content, or disrupting the normal flow of dialogue within our services.",
-      "We may suspend or terminate your access to our services immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the terms.",
-      "All services are provided on an 'as is' and 'as available' basis unless otherwise expressly stated. We make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the services.",
+    title: "1. About SAISPL",
+    blocks: [
+      { type: "p", text: "SAISPL is a website design, development, automation, and digital growth company based in Himachal Pradesh, India. We offer:" },
+      { type: "ul", items: [
+        "Website design and development",
+        "Website maintenance and support plans",
+        "SEO and local digital marketing",
+        "AI voice agents, WhatsApp automation, and workflow automation",
+        "Custom web applications and portals",
+      ] },
+      { type: "p", text: "Specific deliverables, pricing, and timelines for each engagement are outlined in a separate proposal or service agreement, which becomes part of these Terms once accepted." },
     ],
   },
   {
-    title: "Intellectual Property",
-    content: [
-      "Unless otherwise stated, Shivaryan Infotech and/or its licensors own the intellectual property rights for all material on this website and in our deliverables. All intellectual property rights are reserved. You may view and/or print pages from our website for your own personal use subject to restrictions set in these terms.",
-      "You must not republish material from our website or deliverables, sell, rent, or sub-license material, reproduce, duplicate, copy, or otherwise exploit material for a commercial purpose, or redistribute content from Shivaryan Infotech unless content is specifically made for redistribution.",
-      "Any custom software, designs, or other deliverables created specifically for you as part of a service agreement shall be subject to the intellectual property terms outlined in your individual contract or statement of work.",
+    title: "2. Eligibility",
+    blocks: [
+      { type: "p", text: "By using our services, you confirm that you are at least 18 years old, or that you represent a business entity with proper authority to enter into agreements on its behalf." },
     ],
   },
   {
-    title: "Limitation of Liability",
-    content: [
-      "In no event shall Shivaryan Infotech, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of, or inability to access or use, our services.",
-      "Shivaryan Infotech's total liability to you for all claims arising from or relating to these terms or your use of the services shall not exceed the total amount paid by you to Shivaryan Infotech, if any, in the twelve (12) months immediately preceding the event giving rise to the liability.",
+    title: "3. Client Responsibilities",
+    blocks: [
+      { type: "p", text: "To ensure smooth, timely project delivery, clients agree to:" },
+      { type: "ul", items: [
+        "Provide accurate and complete project information",
+        "Share content, assets, and feedback within agreed timelines",
+        "Review and approve deliverables promptly",
+        "Ensure they hold proper rights to any content, images, or branding materials provided to us",
+      ] },
+      { type: "p", text: "Delays caused by incomplete information, late approvals, or unresponsiveness may extend project timelines without penalty to SAISPL." },
     ],
   },
   {
-    title: "Governing Law",
-    content: [
-      "These Terms and Conditions shall be governed by and construed in accordance with the laws of India, without regard to its conflict of law provisions. Any dispute arising under these terms shall be subject to the exclusive jurisdiction of the courts located in Himachal Pradesh, India.",
-      "If any provision of these terms is found to be invalid or unenforceable by a court of competent jurisdiction, the remaining provisions shall continue in full force and effect.",
+    title: "4. Payment Terms",
+    blocks: [
+      { type: "ul", items: [
+        "Projects typically require an advance payment before work begins, with the balance due at agreed milestones or upon completion.",
+        "Monthly maintenance, SEO, and automation retainer plans are billed in advance on a recurring basis.",
+        "Invoices are due within the timeframe specified on the invoice unless otherwise agreed.",
+        "Late payments may result in paused work, suspended access, or additional late fees.",
+        "All fees are exclusive of applicable taxes unless explicitly stated.",
+      ] },
     ],
   },
   {
-    title: "Contact Information",
-    content: [
-      "If you have any questions about these Terms and Conditions, please contact us. We are happy to clarify any concerns and welcome your feedback.",
+    title: "5. Intellectual Property Rights",
+    blocks: [
+      { type: "p", text: "Upon full and final payment, clients receive ownership of the final website design and custom code created specifically for their project, unless otherwise agreed in writing." },
+      { type: "p", text: "SAISPL retains ownership of any proprietary frameworks, reusable code libraries, automation templates, or internal tools used to build the client's project." },
+      { type: "p", text: "Until payment is completed in full, all deliverables remain the intellectual property of SAISPL." },
+      { type: "p", text: "Clients are solely responsible for ensuring they have proper rights to use any third-party content, images, logos, or trademarks provided to us." },
+    ],
+  },
+  {
+    title: "6. Revisions and Scope of Work",
+    blocks: [
+      { type: "p", text: "Each project package includes a defined number of revision rounds, as specified in the proposal. Any requests beyond the agreed scope — including new pages, additional features, or major design changes after approval — will be treated as separate work and quoted accordingly." },
+    ],
+  },
+  {
+    title: "7. Website Maintenance & Retainer Plans",
+    blocks: [
+      { type: "p", text: "Ongoing plans (such as Care Basic, Care Plus, Growth, or Growth + Automation) include only the services explicitly listed under that plan. Requests outside plan scope will be quoted as additional work. Clients may upgrade, downgrade, or cancel plans with prior written notice, as detailed in their service agreement." },
+    ],
+  },
+  {
+    title: "8. Third-Party Tools and Services",
+    blocks: [
+      { type: "p", text: "Our services may involve third-party platforms such as hosting providers, domain registrars, payment gateways, WhatsApp Business API, Cal.com, CRM systems, or AI service providers (e.g., Vapi, ElevenLabs, Sarvam AI). SAISPL is not responsible for outages, price changes, feature removals, or policy changes made by these third-party providers, though we will make reasonable efforts to help clients adapt when such changes occur." },
+    ],
+  },
+  {
+    title: "9. Confidentiality",
+    blocks: [
+      { type: "p", text: "Both SAISPL and the client agree to keep confidential any sensitive business information, credentials, source code, or proprietary data exchanged during the engagement, and to use such information solely for delivering the agreed services." },
+    ],
+  },
+  {
+    title: "10. Limitation of Liability",
+    blocks: [
+      { type: "p", text: "SAISPL is committed to delivering high-quality, reliable work. However:" },
+      { type: "ul", items: [
+        "We are not liable for indirect, incidental, or consequential damages, including loss of profits, data, or business opportunities.",
+        "We do not guarantee specific business outcomes (such as search rankings, lead volume, or conversion rates), as these depend on factors outside our direct control, including market conditions and third-party platform algorithms.",
+        "Our total liability for any claim shall not exceed the amount paid by the client for the specific service in question during the three (3) months preceding the claim.",
+      ] },
+    ],
+  },
+  {
+    title: "11. Termination of Services",
+    blocks: [
+      { type: "p", text: "Either party may terminate an active service agreement with written notice, as specified in the individual project or retainer contract. Upon termination:" },
+      { type: "ul", items: [
+        "All outstanding payments for completed work become immediately due.",
+        "Access to hosting, maintenance, or support services will end as per the agreed notice period.",
+        "SAISPL may offer handover assistance (source files, documentation, credentials) for an additional fee, if requested.",
+      ] },
+      { type: "p", text: "SAISPL reserves the right to suspend or terminate services immediately in cases of non-payment, misuse, or breach of these Terms." },
+    ],
+  },
+  {
+    title: "12. Disclaimer",
+    blocks: [
+      { type: "p", text: 'Our website and services are provided on an "as is" and "as available" basis. While we take every reasonable measure to ensure quality, accuracy, and uptime, we do not guarantee that our website or services will be completely uninterrupted, error-free, or immune to all security risks.' },
+    ],
+  },
+  {
+    title: "13. Governing Law and Dispute Resolution",
+    blocks: [
+      { type: "p", text: "These Terms are governed by the laws of Himachal Pradesh, India. In the event of a dispute, both parties agree to first attempt resolution through good-faith discussion. If unresolved within thirty (30) days, the dispute will be subject to the exclusive jurisdiction of courts located in Himachal Pradesh." },
+    ],
+  },
+  {
+    title: "14. Changes to These Terms",
+    blocks: [
+      { type: "p", text: "We may update these Terms periodically to reflect changes in our services, business practices, or legal requirements. Material changes will be communicated with reasonable advance notice. Continued use of our services after such updates constitutes acceptance of the revised Terms." },
+    ],
+  },
+  {
+    title: "15. Contact Us",
+    blocks: [
+      { type: "p", text: "For questions regarding these Terms and Conditions, please contact:" },
+      { type: "ul", items: [
+        "Email: Help@saispl.com",
+        "Location: Himachal Pradesh, India",
+      ] },
     ],
   },
 ];
+
+function renderBlocks(blocks: Block[]) {
+  return blocks.map((block, idx) => {
+    if (block.type === "ul") {
+      return (
+        <ul key={idx} className="ml-5 list-disc space-y-2">
+          {block.items.map((item, i) => (
+            <li key={i}>{item}</li>
+          ))}
+        </ul>
+      );
+    }
+    return <p key={idx}>{block.text}</p>;
+  });
+}
+
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
