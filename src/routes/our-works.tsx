@@ -19,7 +19,9 @@ type Project = {
   result: string;
   thumbnail_url: string | null;
   caseStudySlug?: string;
+  is_featured?: boolean;
 };
+
 
 const fallbackProjects: Project[] = [
   { id: "1", name: "Global Trade Platform", category: "Portal", city: "Mumbai", result: "Reduced order processing time by 68% with AI automation.\nUnified 12 international exchanges into one trading portal.", thumbnail_url: null, caseStudySlug: "global-trade-platform" },
@@ -76,12 +78,13 @@ function OurWorks() {
     (async () => {
       const { data, error } = await (supabase as any)
         .from("portfolio_projects")
-        .select("id, title, client_industry, category, thumbnail_url, results")
+        .select("id, title, client_industry, category, thumbnail_url, results, is_featured")
+        .order("is_featured", { ascending: false })
         .order("created_at", { ascending: false });
       if (!active) return;
       if (!error && data && data.length > 0) {
         setProjects(
-          (data as Array<{ id: string; title: string; client_industry: string; category: string; thumbnail_url: string | null; results: string | null }>).map((p) => ({
+          (data as Array<{ id: string; title: string; client_industry: string; category: string; thumbnail_url: string | null; results: string | null; is_featured: boolean }>).map((p) => ({
             id: p.id,
             name: p.title,
             category: p.category,
@@ -89,9 +92,11 @@ function OurWorks() {
             result: p.results ?? "",
             thumbnail_url: p.thumbnail_url,
             caseStudySlug: resolveCaseStudySlug(p.title) ?? undefined,
+            is_featured: p.is_featured,
           })),
         );
       }
+
     })();
     return () => {
       active = false;
@@ -180,12 +185,20 @@ function OurWorks() {
                     </div>
 
                     <div className="relative flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        <span className="h-1 w-1 rounded-full bg-brand" />
-                        {project.category}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          <span className="h-1 w-1 rounded-full bg-brand" />
+                          {project.category}
+                        </span>
+                        {project.is_featured && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                            <Sparkles className="h-2.5 w-2.5" /> Featured
+                          </span>
+                        )}
+                      </div>
                       <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
                     </div>
+
 
                     <div className="relative mt-8 flex items-center gap-4">
                       <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-2 shadow-md ring-1 ring-black/10 transition-all duration-500 group-hover:ring-brand/40">
