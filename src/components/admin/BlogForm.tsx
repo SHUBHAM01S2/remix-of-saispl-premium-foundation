@@ -9,6 +9,11 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { BLOG_PROSE_CLASSES } from "@/lib/blog-content-styles";
 import {
+  htmlToVisibleText,
+  plainTextToHtml,
+  sanitizeBlogContentHtml,
+} from "@/lib/blog-content-sanitize";
+import {
   upsertBlogPost,
   BLOG_CATEGORIES,
   type BlogPost,
@@ -80,7 +85,7 @@ export function BlogForm({ existing }: Props) {
     if (showPreview) return;
     if (!editorRef.current) return;
     if (editorRef.current.innerHTML === content) return;
-    const clean = sanitizePastedHtml(content ?? "");
+    const clean = sanitizeBlogContentHtml(content ?? "");
     editorRef.current.innerHTML = clean;
     if (clean !== content) setContent(clean);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +112,7 @@ export function BlogForm({ existing }: Props) {
         title,
         slug,
         excerpt: excerpt || null,
-        content: content || null,
+        content: sanitizeBlogContentHtml(content) || null,
         category: category || null,
         cover_image_url: coverUrl,
         author_name: authorName || null,
@@ -119,9 +124,7 @@ export function BlogForm({ existing }: Props) {
     });
 
   const contentIsEmpty = (html: string) => {
-    if (!html) return true;
-    const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
-    return text.length === 0;
+    return htmlToVisibleText(html).length === 0;
   };
 
   const mutation = useMutation({
@@ -178,74 +181,6 @@ export function BlogForm({ existing }: Props) {
     if (url) exec("createLink", url);
   };
 
-  // Convert plain text into safe paragraph HTML. Blank lines split paragraphs;
-  // single newlines become <br>. Escapes HTML.
-  const plainTextToHtml = (text: string): string => {
-    const esc = (s: string) =>
-      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const paras = text.replace(/\r\n?/g, "\n").split(/\n{2,}/);
-    return paras
-      .map((p) => `<p>${esc(p).replace(/\n/g, "<br>") || "<br>"}</p>`)
-      .join("");
-  };
-
-  // Whitelist-based sanitizer. Anything not in ALLOWED is unwrapped (its text
-  // survives, its formatting is dropped). All attributes are stripped except
-  // href on <a>. This kills black-on-black inline colors and zero line-height
-  // styles from Word / Google Docs pastes.
-  const ALLOWED = new Set([
-    "P", "BR", "H1", "H2", "H3", "H4", "STRONG", "B", "EM", "I", "U",
-    "A", "UL", "OL", "LI", "BLOCKQUOTE", "CODE", "PRE", "HR",
-  ]);
-  const FORBIDDEN = new Set(["SCRIPT", "STYLE", "META", "LINK", "IFRAME", "OBJECT", "EMBED"]);
-
-  const sanitizePastedHtml = (html: string): string => {
-    if (typeof window === "undefined") return html;
-    const doc = new DOMParser().parseFromString(html, "text/html");
-
-    const walk = (root: Element) => {
-      // Collect elements depth-first so unwrap of an outer element doesn't
-      // invalidate iteration.
-      const all: Element[] = [];
-      const stack: Element[] = [root];
-      while (stack.length) {
-        const el = stack.pop()!;
-        for (const child of Array.from(el.children)) {
-          all.push(child);
-          stack.push(child);
-        }
-      }
-      // Process deepest first so unwrapping works cleanly.
-      for (let i = all.length - 1; i >= 0; i--) {
-        const el = all[i];
-        const tag = el.tagName;
-        if (FORBIDDEN.has(tag)) {
-          el.remove();
-          continue;
-        }
-        // Strip every attribute except href on <a>.
-        for (const attr of Array.from(el.attributes)) {
-          if (tag === "A" && attr.name === "href") continue;
-          el.removeAttribute(attr.name);
-        }
-        if (!ALLOWED.has(tag)) {
-          // Unwrap: replace with children.
-          const parent = el.parentNode;
-          if (!parent) continue;
-          while (el.firstChild) parent.insertBefore(el.firstChild, el);
-          parent.removeChild(el);
-        }
-      }
-    };
-
-    walk(doc.body);
-
-    let out = doc.body.innerHTML.trim();
-    // Collapse runs of empty paragraphs.
-    out = out.replace(/(<p>\s*<\/p>\s*){2,}/g, "<p></p>");
-    return out;
-  };
-
   const insertHtmlAtCaret = (html: string) => {
     const editor = editorRef.current;
     if (!editor) return;
@@ -275,17 +210,28 @@ export function BlogForm({ existing }: Props) {
 
     let cleaned = "";
     if (html) {
-      cleaned = sanitizePastedHtml(html);
-      // If HTML sanitization stripped everything meaningful, fall back to text.
-      const textOnly = cleaned.replace(/<[^>]*>/g, "").trim();
-      if (!textOnly && text) cleaned = plainTextToHtml(text);
+      const sanitizedHtml = sanitizeBlogContentHtml(html);
+      const htmlText = htmlToVisibleText(sanitizedHtml);
+      const plainText = text.replace(/\s+/g, " ").trim();
+      cleaned = sanitizedHtml;
+
+      // Word/Docs sometimes provide HTML where the visible words are hidden,
+      // replaced by empty styled tags, or otherwise stripped. Prefer the plain
+      // text payload whenever it clearly contains more real content.
+      if (plainText && plainText.length > htmlText.length + 10) {
+        cleaned = plainTextToHtml(text);
+      }
     } else if (text) {
       cleaned = plainTextToHtml(text);
     }
 
     if (!cleaned) return;
     insertHtmlAtCaret(cleaned);
-    if (editorRef.current) setContent(editorRef.current.innerHTML);
+    if (editorRef.current) {
+      const cleanCurrent = sanitizeBlogContentHtml(editorRef.current.innerHTML);
+      editorRef.current.innerHTML = cleanCurrent;
+      setContent(cleanCurrent);
+    }
   };
 
   const toolBtn =
@@ -464,10 +410,10 @@ export function BlogForm({ existing }: Props) {
           </div>
 
           {showPreview ? (
-            content && content.replace(/<[^>]*>/g, "").trim().length > 0 ? (
+            !contentIsEmpty(content) ? (
               <div
                 className={`min-h-[280px] px-4 py-4 ${BLOG_PROSE_CLASSES}`}
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeBlogContentHtml(content) }}
               />
             ) : (
               <div className="min-h-[280px] px-4 py-4 text-sm italic text-muted-foreground">
