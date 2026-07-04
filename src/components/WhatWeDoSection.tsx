@@ -47,8 +47,19 @@ export function WhatWeDoSection() {
       return data as CapabilityRow[];
     },
   });
-
   const capabilities = data ?? fallback;
+
+  const routeForCapability = (cap: CapabilityRow): string => {
+    const key = `${cap.tag} ${cap.title}`.toLowerCase();
+    if (/website|web design|web develop/.test(key)) return "/web-design-development";
+    if (/seo|marketing/.test(key)) return "/seo-digital-marketing";
+    if (/automation|whatsapp|ai\b|agent|bot/.test(key)) return "/automation-ai-services";
+    if (/portal|software|dashboard|platform/.test(key)) return "/custom-portals-software";
+    if (/brand|design|graphic|logo/.test(key)) return "/branding-graphic-design";
+    if (/support|maintenance|care/.test(key)) return "/care-maintenance";
+    return "/services";
+  };
+
 
   const filters = useMemo(() => {
     const tags = Array.from(new Set(capabilities.map((c) => c.tag)));
