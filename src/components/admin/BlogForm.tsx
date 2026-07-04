@@ -153,7 +153,7 @@ export function BlogForm({ existing }: Props) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        mutation.mutate();
+        mutation.mutate("save");
       }}
       className="space-y-6"
     >
