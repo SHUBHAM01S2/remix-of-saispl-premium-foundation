@@ -132,12 +132,9 @@ export function BlogForm({ existing }: Props) {
       if (variant === "publish") {
         if (!title.trim()) throw new Error("Title is required to publish.");
         if (contentIsEmpty(content)) throw new Error("Content is required to publish.");
-        if (!publishedAt) {
-          throw new Error(
-            "Set a Published at date/time before publishing (or click Publish Now after choosing one).",
-          );
-        }
-        const iso = fromDateTimeInput(publishedAt)!;
+        // If no publish date is set, use "now" so Publish Now just works.
+        const iso = publishedAt ? fromDateTimeInput(publishedAt)! : new Date().toISOString();
+        if (!publishedAt) setPublishedAt(toDateTimeInput(iso));
         return buildMutation(iso);
       }
       if (variant === "draft") {
@@ -146,6 +143,7 @@ export function BlogForm({ existing }: Props) {
       }
       return buildMutation();
     },
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "blog"] });
       navigate({ to: "/admin/blog" });
