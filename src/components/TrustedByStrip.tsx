@@ -10,18 +10,21 @@ import avttours from "@/assets/logos/avttours.png.asset.json";
 import jevar from "@/assets/logos/jevar.png.asset.json";
 import sumit from "@/assets/logos/sumit.png.asset.json";
 
+const LIGHT_GREY = "#e5e7eb";
+
 const LOGOS = [
   { name: "Rukoo Services", src: rukoo.url },
   { name: "Accupressure E-learning", src: acupressure.url },
   { name: "Hotel Bandla Heights", src: bandla.url },
   { name: "Manali Miles", src: manaliMiles.url },
-  { name: "Derma Epsilon", src: derma.url, bg: "#1b1b1b" },
+  { name: "Derma Epsilon", src: derma.url, bg: LIGHT_GREY },
   { name: "Button Craft", src: buttonCraft.url },
   { name: "Dogra Ji Tours & Travels", src: dogra.url },
   { name: "AvtTours", src: avttours.url },
-  { name: "Jevar by Shagun", src: jevar.url, bg: "#1b1b1b" },
-  { name: "Sumit Enterprises", src: sumit.url, bg: "#1b1b1b" },
+  { name: "Jevar by Shagun", src: jevar.url, bg: LIGHT_GREY },
+  { name: "Sumit Enterprises", src: sumit.url, bg: LIGHT_GREY },
 ];
+
 
 
 export function TrustedByStrip() {
@@ -51,16 +54,18 @@ export function TrustedByStrip() {
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-20 w-[150px] items-center justify-center rounded-xl bg-white px-4 py-3 shadow-md ring-1 ring-black/10 transition-transform hover:-translate-y-0.5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
+                    className="flex h-24 w-[180px] items-center justify-center rounded-xl px-4 py-3 shadow-md ring-1 ring-black/10 transition-transform hover:-translate-y-0.5 sm:h-40 sm:w-[320px] sm:px-6 sm:py-5"
+                    style={{ background: logo.bg ?? "#ffffff" }}
                     title={logo.name}
                   >
                     <img
                       src={logo.src}
                       alt={`${logo.name} logo`}
                       loading="lazy"
-                      className="max-h-16 max-w-full object-contain sm:max-h-28"
+                      className="max-h-20 max-w-full object-contain sm:max-h-36"
                     />
                   </div>
+
                 </li>
               ))}
             </ul>
