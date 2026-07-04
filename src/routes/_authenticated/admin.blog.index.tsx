@@ -128,8 +128,8 @@ function BlogListPage() {
             </p>
 
           ) : (
-            <div className="overflow-hidden">
-              <table className="w-full table-fixed text-sm">
+            <div className="overflow-x-auto scrollbar-hide">
+              <table className="w-full min-w-[720px] table-fixed text-sm">
 
                 <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
