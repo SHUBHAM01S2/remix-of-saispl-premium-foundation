@@ -270,8 +270,9 @@ function BlogIndex() {
       <section className="bg-background pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((post, idx) => {
-              const num = String(idx + 1).padStart(2, "0");
+            {paged.map((post, idx) => {
+              const num = String(pageStart + idx + 1).padStart(2, "0");
+
               const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
               return (
                 <StaggerItem key={post.id}>
