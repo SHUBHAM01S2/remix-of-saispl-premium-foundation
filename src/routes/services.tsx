@@ -256,7 +256,7 @@ function Services() {
             return (
               <StaggerItem key={svc.title} className="h-full">
                 <Link
-                  to="/contact"
+                  to={svc.to}
                   className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]"
                 >
                   {/* hover glow */}
