@@ -3,6 +3,9 @@
 // /blog/$slug body so what you type matches what visitors see.
 export const BLOG_PROSE_CLASSES = [
   "text-base leading-relaxed text-foreground break-words",
+  // Force old pasted Word/Google Docs inline styles (black text, tiny line-height)
+  // to render visibly on the dark blog background.
+  "[&_*]:!leading-relaxed [&_p]:!text-foreground [&_li]:!text-foreground [&_span]:!text-foreground",
   // Paragraphs
   "[&_p]:my-4 [&_p]:leading-relaxed",
   // Line breaks inside a paragraph
@@ -16,9 +19,9 @@ export const BLOG_PROSE_CLASSES = [
   "[&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-1",
   "[&_li]:leading-relaxed",
   // Blockquote
-  "[&_blockquote]:my-5 [&_blockquote]:border-l-4 [&_blockquote]:border-brand/40 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted-foreground",
+  "[&_blockquote]:my-5 [&_blockquote]:border-l-4 [&_blockquote]:border-brand/40 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:!text-muted-foreground",
   // Links
-  "[&_a]:text-brand [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:opacity-80",
+  "[&_a]:!text-brand [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:opacity-80",
   // Inline formatting
   "[&_strong]:font-semibold [&_em]:italic",
   // Code
