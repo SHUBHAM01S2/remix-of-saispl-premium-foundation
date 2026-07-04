@@ -140,7 +140,7 @@ function BlogListPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {data.map((p) => {
+                  {filtered.map((p) => {
                     const isPublished = !!p.published_at;
                     return (
                       <tr key={p.id}>
