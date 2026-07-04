@@ -131,7 +131,10 @@ function BlogPostPage() {
     );
   }
 
-  const paragraphs = (post.content ?? "").split(/\n{2,}/).filter(Boolean);
+  const rawContent = post.content ?? "";
+  const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawContent);
+  const paragraphs = looksLikeHtml ? [] : rawContent.split(/\n{2,}/).filter(Boolean);
+
 
   return (
     <article>
