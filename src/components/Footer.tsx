@@ -174,7 +174,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 sm:flex-row">
+        <div className="relative z-10 mt-16 flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 sm:flex-row">
           <p className="text-xs text-muted-foreground">
             Copyright Shivaryan Infotech {new Date().getFullYear()}. All rights reserved.
           </p>
