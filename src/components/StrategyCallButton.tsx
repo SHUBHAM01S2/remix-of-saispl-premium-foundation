@@ -1,6 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { getCalApi } from "@calcom/embed-react";
-import Cal from "@calcom/embed-react";
+import Cal, { getCalApi } from "@calcom/embed-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CalendarClock } from "lucide-react";
 import { cn } from "@/lib/utils";
