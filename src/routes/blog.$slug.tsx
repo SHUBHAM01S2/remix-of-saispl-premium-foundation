@@ -5,6 +5,7 @@ import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/Scroll
 import { supabase } from "@/integrations/supabase/client";
 import { getPublicBlogPostMeta } from "@/lib/blog-public.functions";
 import { BLOG_PROSE_CLASSES } from "@/lib/blog-content-styles";
+import { htmlToVisibleText, sanitizeBlogContentHtml } from "@/lib/blog-content-sanitize";
 import { SEED, type BlogPost } from "./blog.index";
 
 const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
@@ -216,6 +217,8 @@ function BlogPostPage() {
 
   const rawContent = post.content ?? "";
   const looksLikeHtml = /<\/?[a-z][\s\S]*>/i.test(rawContent);
+  const sanitizedContent = looksLikeHtml ? sanitizeBlogContentHtml(rawContent) : "";
+  const hasVisibleHtmlContent = htmlToVisibleText(sanitizedContent).length > 0;
   const paragraphs = looksLikeHtml ? [] : rawContent.split(/\n{2,}/).filter(Boolean);
 
 
@@ -281,8 +284,8 @@ function BlogPostPage() {
             </p>
           )}
           <div className={`space-y-1 ${BLOG_PROSE_CLASSES}`}>
-            {looksLikeHtml ? (
-              <div dangerouslySetInnerHTML={{ __html: rawContent }} />
+            {looksLikeHtml && hasVisibleHtmlContent ? (
+              <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
             ) : paragraphs.length > 0 ? (
               paragraphs.map((p, i) => (
                 <p key={i} className="whitespace-pre-line">
