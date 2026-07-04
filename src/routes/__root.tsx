@@ -144,7 +144,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "Shivaryan Infotech",
               legalName: "Shivaryan Infotech (SAISPL)",
               url: "/",
-              email: "Help@saispl.com",
+              email: "shivaryan@gmail.com",
               telephone: "+91-94180-31050",
               address: {
                 "@type": "PostalAddress",
@@ -158,7 +158,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
                 {
                   "@type": "ContactPoint",
                   telephone: "+91-94180-31050",
-                  email: "Help@saispl.com",
+                  email: "shivaryan@gmail.com",
                   contactType: "customer support",
                   areaServed: "Worldwide",
                   availableLanguage: ["English", "Hindi"],
@@ -172,7 +172,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               image: "/favicon.png",
               url: "/",
               telephone: "+91-94180-31050",
-              email: "Help@saispl.com",
+              email: "shivaryan@gmail.com",
               priceRange: "₹₹",
               address: {
                 "@type": "PostalAddress",
