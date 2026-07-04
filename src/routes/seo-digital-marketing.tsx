@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 import { useState } from "react";
 import {
   Search,
@@ -233,12 +234,11 @@ function SeoDigitalMarketingPage() {
               <span className="relative">Get SEO Audit</span>
               <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              to="/contact"
+            <StrategyCallButton
               className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-brand/40 hover:bg-white/[0.08] sm:w-auto"
             >
               Book a Strategy Call
-            </Link>
+            </StrategyCallButton>
           </div>
         </ScrollReveal>
       </section>
