@@ -326,6 +326,7 @@ export function BlogForm({ existing }: Props) {
             ref={editorRef}
             contentEditable
             onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
+            onPaste={handlePaste}
             className="min-h-[280px] max-w-none whitespace-pre-wrap break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
             suppressContentEditableWarning
           />
@@ -335,7 +336,7 @@ export function BlogForm({ existing }: Props) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
           disabled={mutation.isPending}
@@ -346,12 +347,31 @@ export function BlogForm({ existing }: Props) {
         </button>
         <button
           type="button"
+          disabled={mutation.isPending}
+          onClick={() => mutation.mutate("publish")}
+          className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {publishedAt ? "Save & Publish" : "Publish Now"}
+        </button>
+        {publishedAt && (
+          <button
+            type="button"
+            disabled={mutation.isPending}
+            onClick={() => mutation.mutate("draft")}
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-60"
+          >
+            Move to Draft
+          </button>
+        )}
+        <button
+          type="button"
           onClick={() => navigate({ to: "/admin/blog" })}
-          className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
+          className="ml-auto rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel
         </button>
       </div>
+
     </form>
   );
 }
