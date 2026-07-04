@@ -232,10 +232,9 @@ function Terms() {
                 {section.title}
               </h2>
               <div className="mt-5 space-y-4 text-muted-foreground leading-relaxed">
-                {section.content.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
+                {renderBlocks(section.blocks)}
               </div>
+
             </div>
           ))}
         </div>
