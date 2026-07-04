@@ -366,14 +366,28 @@ export function BlogForm({ existing }: Props) {
           {mutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
           {existing ? "Save Changes" : "Create Post"}
         </button>
-        <button
-          type="button"
-          disabled={mutation.isPending}
-          onClick={() => mutation.mutate("publish")}
-          className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-        >
-          {publishedAt ? "Save & Publish" : "Publish Now"}
-        </button>
+        {(() => {
+          const canPublish =
+            !!title.trim() && !contentIsEmpty(content) && !!publishedAt;
+          const reason = !title.trim()
+            ? "Add a title before publishing"
+            : contentIsEmpty(content)
+              ? "Add some content before publishing"
+              : !publishedAt
+                ? "Set a Published at date/time before publishing"
+                : "";
+          return (
+            <button
+              type="button"
+              disabled={mutation.isPending || !canPublish}
+              onClick={() => mutation.mutate("publish")}
+              title={reason || undefined}
+              className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {publishedAt ? "Save & Publish" : "Publish Now"}
+            </button>
+          );
+        })()}
         {publishedAt && (
           <button
             type="button"
