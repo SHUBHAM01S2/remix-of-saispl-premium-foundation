@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Upload } from "lucide-react";
+import { CheckCircle2, Loader2, Upload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,11 +29,18 @@ const ALLOWED_TYPES = [
 export function ApplyForm({ open, onOpenChange, position }: ApplyFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [resume, setResume] = useState<File | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const reset = () => {
     setResume(null);
     setSubmitting(false);
   };
+
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(false), 4500);
+    return () => clearTimeout(t);
+  }, [success]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -88,10 +95,10 @@ export function ApplyForm({ open, onOpenChange, position }: ApplyFormProps) {
         });
       if (error) throw error;
 
-      toast.success("Application submitted! We'll be in touch soon.");
       form.reset();
       reset();
       onOpenChange(false);
+      setSuccess(true);
     } catch (err: any) {
       console.error(err);
       toast.error(err?.message || "Something went wrong. Please try again.");
@@ -100,6 +107,7 @@ export function ApplyForm({ open, onOpenChange, position }: ApplyFormProps) {
   };
 
   return (
+    <>
     <Dialog open={open} onOpenChange={(v) => { if (!submitting) { onOpenChange(v); if (!v) reset(); } }}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
@@ -169,5 +177,36 @@ export function ApplyForm({ open, onOpenChange, position }: ApplyFormProps) {
         </form>
       </DialogContent>
     </Dialog>
+
+    <Dialog open={success} onOpenChange={setSuccess}>
+      <DialogContent className="sm:max-w-md border-emerald-500/20 bg-background/95 backdrop-blur">
+        <div className="flex flex-col items-center text-center py-4">
+          <div className="relative mb-5">
+            <span className="absolute inset-0 rounded-full bg-emerald-500/20 blur-xl" />
+            <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
+              <CheckCircle2 className="h-9 w-9 text-emerald-400" />
+            </div>
+          </div>
+          <DialogHeader>
+            <DialogTitle className="text-xl">Thank you for applying</DialogTitle>
+            <DialogDescription className="mt-2 text-sm leading-relaxed">
+              We've received your application and our team will review it shortly.
+              <br />
+              <span className="mt-2 block text-muted-foreground">
+                If your profile matches the role, we'll contact you with the next steps.
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+          <button
+            type="button"
+            onClick={() => setSuccess(false)}
+            className="mt-6 inline-flex items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-8 py-2.5 text-sm font-semibold text-emerald-300 transition-all hover:bg-emerald-500/20"
+          >
+            Close
+          </button>
+        </div>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
