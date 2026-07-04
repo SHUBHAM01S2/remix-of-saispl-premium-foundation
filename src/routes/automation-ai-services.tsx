@@ -39,30 +39,50 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/automation-ai-services")({
   head: () => ({
     meta: [
-      { title: "WhatsApp & AI Automation — SAISPL" },
+      { title: "WhatsApp & AI Automation Services in India | SAISPL" },
       {
         name: "description",
         content:
-          "Automate responses, capture leads, and close faster. WhatsApp routing, AI chat assistants, booking flows, CRM sync, and n8n workflows built by SAISPL.",
+          "WhatsApp automation, AI chat agents, and workflow automation that capture leads 24/7. Book a free automation consultation with SAISPL today.",
       },
       {
         name: "keywords",
         content:
-          "WhatsApp automation, AI chatbot, n8n workflows, lead automation, CRM automation, booking automation, business automation, Shivaryan Infotech, SAISPL",
+          "WhatsApp automation India, AI chatbot, n8n workflows, lead automation, CRM automation, booking automation, business automation, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "WhatsApp & AI Automation — SAISPL" },
+      { property: "og:title", content: "WhatsApp & AI Automation Services in India | SAISPL" },
       {
         property: "og:description",
         content:
-          "Connect your website with WhatsApp, AI chat, and automated workflows so no lead gets missed.",
+          "Automate lead capture, replies, and follow-ups with WhatsApp + AI. Book a free consultation today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/automation-ai-services" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "WhatsApp & AI Automation — SAISPL" },
+      { name: "twitter:title", content: "WhatsApp & AI Automation Services in India | SAISPL" },
     ],
     links: [{ rel: "canonical", href: "/automation-ai-services" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "WhatsApp & AI Automation",
+          serviceType: "Business Process Automation",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/automation-ai-services",
+          description:
+            "WhatsApp routing, AI chat assistants, booking flows, CRM sync, and n8n workflows for growing businesses.",
+        }),
+      },
+    ],
   }),
+
   component: AutomationAiServicesPage,
 });
 
