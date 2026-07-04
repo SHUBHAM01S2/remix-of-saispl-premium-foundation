@@ -157,12 +157,17 @@ function formatDate(iso: string | null) {
 
 function BlogIndex() {
   const [posts, setPosts] = useState<BlogPost[]>(SEED);
+  const [source, setSource] = useState<"db" | "fallback">("fallback");
   const [active, setActive] = useState<string>("All");
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(9);
 
   useEffect(() => {
     let cancelled = false;
-    fetchBlogPosts().then((rows) => {
-      if (!cancelled) setPosts(rows);
+    fetchBlogPosts().then((res) => {
+      if (cancelled) return;
+      setPosts(res.posts);
+      setSource(res.source);
     });
     return () => {
       cancelled = true;
@@ -180,6 +185,17 @@ function BlogIndex() {
   const filtered = posts.filter(
     (p) => active === "All" || p.category === active,
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pageStart = (currentPage - 1) * pageSize;
+  const paged = filtered.slice(pageStart, pageStart + pageSize);
+
+  // Reset page when filter / page size change.
+  useEffect(() => {
+    setPage(1);
+  }, [active, pageSize]);
+
 
   return (
     <div>
