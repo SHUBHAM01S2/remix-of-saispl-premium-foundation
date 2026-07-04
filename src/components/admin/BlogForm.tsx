@@ -80,27 +80,44 @@ export function BlogForm({ existing }: Props) {
     if (!slugTouched) setSlug(slugify(title));
   }, [title, slugTouched]);
 
+  const buildMutation = (overridePublishedAt?: string | null) =>
+    upsertFn({
+      data: {
+        id: existing?.id,
+        title,
+        slug,
+        excerpt: excerpt || null,
+        content: content || null,
+        category: category || null,
+        cover_image_url: coverUrl,
+        author_name: authorName || null,
+        published_at:
+          overridePublishedAt === undefined
+            ? fromDateTimeInput(publishedAt)
+            : overridePublishedAt,
+      },
+    });
+
   const mutation = useMutation({
-    mutationFn: () =>
-      upsertFn({
-        data: {
-          id: existing?.id,
-          title,
-          slug,
-          excerpt: excerpt || null,
-          content: content || null,
-          category: category || null,
-          cover_image_url: coverUrl,
-          author_name: authorName || null,
-          published_at: fromDateTimeInput(publishedAt),
-        },
-      }),
+    mutationFn: (variant: "save" | "publish" | "draft") => {
+      if (variant === "publish") {
+        const iso = fromDateTimeInput(publishedAt) ?? new Date().toISOString();
+        setPublishedAt(toDateTimeInput(iso));
+        return buildMutation(iso);
+      }
+      if (variant === "draft") {
+        setPublishedAt("");
+        return buildMutation(null);
+      }
+      return buildMutation();
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "blog"] });
       navigate({ to: "/admin/blog" });
     },
     onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
+
 
   const handleCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
