@@ -247,17 +247,19 @@ function Privacy() {
         <div className="rounded-2xl border border-border/50 bg-surface p-8 md:p-10">
           <div className="space-y-4 leading-relaxed text-muted-foreground">
             <p>
-              This Privacy Policy describes Our policies and procedures on the
-              collection, use and disclosure of Your information when You use
-              the Service and tells You about Your privacy rights and how the
-              law protects You.
+              ShivAryan Infotech Services ("SAISPL," "we," "our," or "us") is
+              committed to protecting the privacy of everyone who visits our
+              website, enquires about our services, or works with us as a
+              client. This Privacy Policy explains what information we collect,
+              why we collect it, how we use it, and the rights you have over
+              your data.
             </p>
             <p>
-              We use Your Personal data to provide and improve the Service. By
-              using the Service, You agree to the collection and use of
-              information in accordance with this Privacy Policy.
+              By using our website or services, you agree to the practices
+              described in this policy.
             </p>
           </div>
+
         </div>
 
         <div className="mt-10 space-y-10">
