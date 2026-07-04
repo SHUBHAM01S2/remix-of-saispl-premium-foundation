@@ -34,10 +34,26 @@ function BlogListPage() {
   const toggleFn = useServerFn(toggleBlogPublish);
 
 
+  const [status, setStatus] = useState<"all" | "published" | "draft">("all");
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "blog"],
     queryFn: () => listFn(),
   });
+
+  const counts = {
+    all: data?.length ?? 0,
+    published: data?.filter((p) => !!p.published_at).length ?? 0,
+    draft: data?.filter((p) => !p.published_at).length ?? 0,
+  };
+
+  const filtered =
+    data?.filter((p) => {
+      if (status === "all") return true;
+      if (status === "published") return !!p.published_at;
+      return !p.published_at;
+    }) ?? [];
+
 
   const del = useMutation({
     mutationFn: (id: string) => deleteFn({ data: { id } }),
