@@ -51,12 +51,7 @@ export function TrustedByStrip() {
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-20 w-[150px] items-center justify-center rounded-xl px-4 py-3 shadow-md ring-1 ring-black/10 transition-transform hover:-translate-y-0.5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
-                    style={{
-                      background: logo.bg
-                        ? `linear-gradient(135deg, ${logo.bg}, #0b0b0b)`
-                        : "linear-gradient(135deg, #ffffff, #f1f5f9)",
-                    }}
+                    className="flex h-20 w-[150px] items-center justify-center rounded-xl bg-white px-4 py-3 shadow-md ring-1 ring-black/10 transition-transform hover:-translate-y-0.5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
                     title={logo.name}
                   >
                     <img
