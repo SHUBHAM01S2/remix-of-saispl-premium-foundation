@@ -144,7 +144,7 @@ export function CTASection() {
               subject="Project enquiry from CTA"
               className="font-medium text-foreground underline underline-offset-4 transition hover:text-brand"
             >
-              shivaryan@gmail.com
+              shivaryaninfotech@gmail.com
             </EmailContactLink>
           </p>
 
