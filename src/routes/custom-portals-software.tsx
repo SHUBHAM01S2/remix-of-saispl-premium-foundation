@@ -39,30 +39,50 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/custom-portals-software")({
   head: () => ({
     meta: [
-      { title: "Custom Portals & Software — SAISPL" },
+      { title: "Custom Portals & Business Software Development | SAISPL" },
       {
         name: "description",
         content:
-          "Secure portals, admin dashboards, and internal systems built around your exact workflow. Custom software development by SAISPL for schools, clinics, real estate, and growing businesses.",
+          "Custom portals, admin dashboards, and business software built around your workflow. Book a free discovery call with SAISPL today.",
       },
       {
         name: "keywords",
         content:
-          "custom software, business portals, admin dashboards, internal systems, role-based portals, custom development, Shivaryan Infotech, SAISPL",
+          "custom software India, business portals, admin dashboards, internal systems, role-based portals, custom development, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Custom Portals & Software — SAISPL" },
+      { property: "og:title", content: "Custom Portals & Business Software Development | SAISPL" },
       {
         property: "og:description",
         content:
-          "Secure, role-based portals and dashboards built to match your business process — not force your team to adjust.",
+          "Secure, role-based portals and dashboards built around your process. Book a free discovery call today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/custom-portals-software" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Custom Portals & Software — SAISPL" },
+      { name: "twitter:title", content: "Custom Portals & Business Software Development | SAISPL" },
     ],
     links: [{ rel: "canonical", href: "/custom-portals-software" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Custom Portals & Software Development",
+          serviceType: "Custom Software Development",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/custom-portals-software",
+          description:
+            "Admin dashboards, role-based portals, database-driven systems, reporting, and API integrations.",
+        }),
+      },
+    ],
   }),
+
   component: CustomPortalsSoftwarePage,
 });
 
