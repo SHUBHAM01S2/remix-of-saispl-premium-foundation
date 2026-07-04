@@ -24,7 +24,7 @@ const OFFICE = {
   address: "Shivaryan Infotech, Bilaspur, Himachal Pradesh 174001, India",
   phone: "+91 94180-31050",
   phoneHref: "+919418031050",
-  email: "shubhamshar98050@gmail.com",
+  email: "shivaryaninfotech@gmail.com",
   whatsapp:
     "https://web.whatsapp.com/send?phone=919418031050&text=Hi%20Shivaryan%20Infotech,%20I%20would%20like%20to%20discuss%20a%20project.",
 };
