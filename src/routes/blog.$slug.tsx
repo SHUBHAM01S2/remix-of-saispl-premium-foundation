@@ -136,7 +136,7 @@ function BlogPostPage() {
   return (
     <article>
       {/* Cover */}
-      <div className="relative aspect-[16/7] w-full overflow-hidden bg-background">
+      <div className="relative aspect-[16/6] max-h-[420px] w-full overflow-hidden bg-background sm:aspect-[16/5]">
         {post.cover_image_url ? (
           <img
             src={post.cover_image_url}
@@ -148,12 +148,13 @@ function BlogPostPage() {
             <BookOpen className="h-16 w-16 text-brand/50" />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
       </div>
 
       {/* Header */}
       <ScrollReveal>
-        <header className="mx-auto -mt-16 max-w-3xl px-4 sm:px-6 lg:px-8">
+        <header className="mx-auto mt-8 max-w-3xl px-4 sm:px-6 lg:px-8">
+
           <Link
             to="/blog"
             className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
