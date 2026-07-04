@@ -10,18 +10,21 @@ import avttours from "@/assets/logos/avttours.png.asset.json";
 import jevar from "@/assets/logos/jevar.png.asset.json";
 import sumit from "@/assets/logos/sumit.png.asset.json";
 
+const LIGHT_GREY = "#e5e7eb";
+
 const LOGOS = [
   { name: "Rukoo Services", src: rukoo.url },
   { name: "Accupressure E-learning", src: acupressure.url },
   { name: "Hotel Bandla Heights", src: bandla.url },
   { name: "Manali Miles", src: manaliMiles.url },
-  { name: "Derma Epsilon", src: derma.url, bg: "#1b1b1b" },
+  { name: "Derma Epsilon", src: derma.url, bg: LIGHT_GREY },
   { name: "Button Craft", src: buttonCraft.url },
   { name: "Dogra Ji Tours & Travels", src: dogra.url },
   { name: "AvtTours", src: avttours.url },
-  { name: "Jevar by Shagun", src: jevar.url, bg: "#1b1b1b" },
-  { name: "Sumit Enterprises", src: sumit.url, bg: "#1b1b1b" },
+  { name: "Jevar by Shagun", src: jevar.url, bg: LIGHT_GREY },
+  { name: "Sumit Enterprises", src: sumit.url, bg: LIGHT_GREY },
 ];
+
 
 
 export function TrustedByStrip() {
