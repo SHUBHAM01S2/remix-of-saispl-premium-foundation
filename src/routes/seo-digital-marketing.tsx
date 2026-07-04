@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 import { useState } from "react";
 import {
   Search,
