@@ -1,5 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { MapPin, Mail, Phone, ArrowUpRight, Sparkles, MessageCircle } from "lucide-react";
+
 
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
 import { EmailContactLink } from "@/components/EmailContactLink";
