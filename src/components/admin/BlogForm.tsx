@@ -265,14 +265,23 @@ export function BlogForm({ existing }: Props) {
       </div>
 
       <Field label="Published at">
-        <input
-          type="datetime-local"
-          value={publishedAt}
-          onChange={(e) => setPublishedAt(e.target.value)}
-          className={inputCls}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="datetime-local"
+            value={publishedAt}
+            onChange={(e) => setPublishedAt(e.target.value)}
+            className={inputCls}
+          />
+          <button
+            type="button"
+            onClick={() => setPublishedAt(toDateTimeInput(new Date().toISOString()))}
+            className="whitespace-nowrap rounded-md border border-input bg-background px-3 py-2 text-xs font-medium text-foreground hover:bg-accent"
+          >
+            Set to now
+          </button>
+        </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Leave empty to save as draft. Set a date/time to publish publicly.
+          Leave empty to save as draft. A date/time is required to publish.
         </p>
       </Field>
 
