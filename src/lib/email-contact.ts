@@ -1,6 +1,6 @@
 // Shared helpers for email-CTA → /contact routing, analytics + mailto fallback.
 
-export const SUPPORT_EMAIL = "shivaryan@gmail.com";
+export const SUPPORT_EMAIL = "shivaryaninfotech@gmail.com";
 
 export type EmailContactSource =
   | "footer"
