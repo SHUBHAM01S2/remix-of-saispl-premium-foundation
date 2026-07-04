@@ -147,7 +147,7 @@ function Privacy() {
               Contact Us
             </Link>
             <EmailContactLink
-              source="privacy_page"
+              source="privacy"
               subject="Question about Privacy Policy"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
             >
