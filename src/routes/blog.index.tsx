@@ -306,17 +306,10 @@ function BlogIndex() {
                       <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
                     </div>
 
-                    <div className="relative mt-8 flex items-center gap-4">
-                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
-                        {post.cover_image_url ? (
-                          <img src={post.cover_image_url} alt={post.title} loading="lazy" className="h-full w-full rounded-2xl object-cover" />
-                        ) : (
-                          <BookOpen className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
-                        )}
-                        <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
-                      </div>
-                      <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
+                    <div className="relative mt-6 flex items-center justify-end">
+                      <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
                     </div>
+
 
                     <h2 className="relative mt-6 text-xl font-bold leading-tight text-foreground group-hover:text-brand" style={displayFont}>
                       {post.title}
