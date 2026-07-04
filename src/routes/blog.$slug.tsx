@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Calendar, User, BookOpen } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
 import { getPublicBlogPostMeta } from "@/lib/blog-public.functions";
+import { BLOG_PROSE_CLASSES } from "@/lib/blog-content-styles";
 import { SEED, type BlogPost } from "./blog.index";
 
 const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
