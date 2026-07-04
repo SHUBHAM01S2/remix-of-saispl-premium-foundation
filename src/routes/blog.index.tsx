@@ -159,7 +159,6 @@ function formatDate(iso: string | null) {
 
 function BlogIndex() {
   const [posts, setPosts] = useState<BlogPost[]>(SEED);
-  const [source, setSource] = useState<"db" | "fallback">("fallback");
   const [active, setActive] = useState<string>("All");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
@@ -169,7 +168,6 @@ function BlogIndex() {
     fetchBlogPosts().then((res) => {
       if (cancelled) return;
       setPosts(res.posts);
-      setSource(res.source);
     });
     return () => {
       cancelled = true;
