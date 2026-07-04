@@ -201,13 +201,22 @@ function OurWorks() {
 
 
                     <div className="relative mt-8 flex items-center gap-4">
-                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-2 shadow-md ring-1 ring-black/10 transition-all duration-500 group-hover:ring-brand/40">
-                        {project.thumbnail_url ? (
-                          <img src={project.thumbnail_url} alt={project.name} className="max-h-full max-w-full object-contain" loading="lazy" />
-                        ) : (
-                          <Monitor className="h-6 w-6 text-zinc-700" />
-                        )}
-                      </div>
+                      {(() => {
+                        const darkBgNames = ["sumit enterprises", "jevar by shagun", "derma epsilon"];
+                        const useDark = darkBgNames.includes(project.name.trim().toLowerCase());
+                        return (
+                          <div
+                            className="relative flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl p-3 shadow-md ring-1 ring-black/10 transition-all duration-500 group-hover:ring-brand/40 sm:h-28 sm:w-28"
+                            style={{ background: useDark ? "#1b1b1b" : "#ffffff" }}
+                          >
+                            {project.thumbnail_url ? (
+                              <img src={project.thumbnail_url} alt={project.name} className="max-h-full max-w-full object-contain" loading="lazy" />
+                            ) : (
+                              <Monitor className="h-10 w-10 text-zinc-700" />
+                            )}
+                          </div>
+                        );
+                      })()}
                       <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
                     </div>
 
