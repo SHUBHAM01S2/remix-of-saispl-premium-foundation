@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@calcom/embed-react": "^1.5.3",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/outfit": "^5.2.8",
     "@hookform/resolvers": "^5.2.2",
