@@ -227,11 +227,11 @@ function BlogPostPage() {
       {/* Cover */}
       <div className="relative w-full overflow-hidden bg-background">
         {post.cover_image_url ? (
-          <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8">
+          <div className="mx-auto w-[80%] max-w-none px-4 pt-8 sm:px-6 lg:px-8">
             <img
               src={post.cover_image_url}
               alt={post.title}
-              className="mx-auto max-h-[520px] w-full rounded-2xl object-contain"
+              className="mx-auto max-h-[640px] w-full rounded-2xl object-contain"
             />
           </div>
         ) : (
