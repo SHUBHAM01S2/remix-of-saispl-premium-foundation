@@ -78,12 +78,13 @@ function OurWorks() {
     (async () => {
       const { data, error } = await (supabase as any)
         .from("portfolio_projects")
-        .select("id, title, client_industry, category, thumbnail_url, results")
+        .select("id, title, client_industry, category, thumbnail_url, results, is_featured")
+        .order("is_featured", { ascending: false })
         .order("created_at", { ascending: false });
       if (!active) return;
       if (!error && data && data.length > 0) {
         setProjects(
-          (data as Array<{ id: string; title: string; client_industry: string; category: string; thumbnail_url: string | null; results: string | null }>).map((p) => ({
+          (data as Array<{ id: string; title: string; client_industry: string; category: string; thumbnail_url: string | null; results: string | null; is_featured: boolean }>).map((p) => ({
             id: p.id,
             name: p.title,
             category: p.category,
@@ -91,9 +92,11 @@ function OurWorks() {
             result: p.results ?? "",
             thumbnail_url: p.thumbnail_url,
             caseStudySlug: resolveCaseStudySlug(p.title) ?? undefined,
+            is_featured: p.is_featured,
           })),
         );
       }
+
     })();
     return () => {
       active = false;
