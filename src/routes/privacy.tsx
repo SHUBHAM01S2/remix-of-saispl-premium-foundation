@@ -146,13 +146,14 @@ function Privacy() {
             >
               Contact Us
             </Link>
-            <Link
-              to="/contact"
+            <EmailContactLink
+              source="privacy_page"
+              subject="Question about Privacy Policy"
               className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-background px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
             >
               <Mail className="h-4 w-4" />
               Email Us
-            </Link>
+            </EmailContactLink>
 
           </div>
         </div>
