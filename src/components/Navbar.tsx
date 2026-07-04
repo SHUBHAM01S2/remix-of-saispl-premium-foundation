@@ -10,7 +10,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import shivaryanLogo from "@/assets/shivaryan-logo.png.asset.json";
+import saisplLogo from "@/assets/saispl-logo.png.asset.json";
 
 
 type NavLink =
