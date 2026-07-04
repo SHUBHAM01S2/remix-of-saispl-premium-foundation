@@ -72,12 +72,20 @@ export function BlogForm({ existing }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   const editorRef = useRef<HTMLDivElement>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     if (editorRef.current && !editorRef.current.innerHTML && content) {
       const clean = sanitizePastedHtml(content);
       editorRef.current.innerHTML = clean;
       if (clean !== content) setContent(clean);
+    }
+    // Force Enter to insert <p> (Chrome defaults to <div>) so spacing is
+    // consistent with the public post rendering.
+    try {
+      document.execCommand("defaultParagraphSeparator", false, "p");
+    } catch {
+      /* older browsers — no-op */
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
