@@ -279,7 +279,7 @@ function BlogPostPage() {
 
       {/* Body */}
       <ScrollReveal>
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mx-auto w-[80%] max-w-none px-4 py-12 sm:px-6 lg:px-8">
           {post.excerpt && (
             <p className="mb-8 border-l-4 border-brand/60 pl-4 text-lg italic text-muted-foreground">
               {post.excerpt}
