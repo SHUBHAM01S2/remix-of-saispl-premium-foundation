@@ -15,13 +15,14 @@ const LOGOS = [
   { name: "Accupressure E-learning", src: acupressure.url },
   { name: "Hotel Bandla Heights", src: bandla.url },
   { name: "Manali Miles", src: manaliMiles.url },
-  { name: "Derma Epsilon", src: derma.url },
+  { name: "Derma Epsilon", src: derma.url, bg: "#1b1b1b" },
   { name: "Button Craft", src: buttonCraft.url },
   { name: "Dogra Ji Tours & Travels", src: dogra.url },
   { name: "AvtTours", src: avttours.url },
   { name: "Jevar by Shagun", src: jevar.url },
   { name: "Sumit Enterprises", src: sumit.url },
 ];
+
 
 export function TrustedByStrip() {
   const loop = [...LOGOS, ...LOGOS];
