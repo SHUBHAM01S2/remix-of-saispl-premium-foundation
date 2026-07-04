@@ -178,46 +178,113 @@ export function BlogForm({ existing }: Props) {
     if (url) exec("createLink", url);
   };
 
-  // Strip inline styles / font tags / class attributes from pasted HTML so
-  // Word / Google Docs paste doesn't leak black-on-black styles into the site.
+  // Convert plain text into safe paragraph HTML. Blank lines split paragraphs;
+  // single newlines become <br>. Escapes HTML.
+  const plainTextToHtml = (text: string): string => {
+    const esc = (s: string) =>
+      s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const paras = text.replace(/\r\n?/g, "\n").split(/\n{2,}/);
+    return paras
+      .map((p) => `<p>${esc(p).replace(/\n/g, "<br>") || "<br>"}</p>`)
+      .join("");
+  };
+
+  // Whitelist-based sanitizer. Anything not in ALLOWED is unwrapped (its text
+  // survives, its formatting is dropped). All attributes are stripped except
+  // href on <a>. This kills black-on-black inline colors and zero line-height
+  // styles from Word / Google Docs pastes.
+  const ALLOWED = new Set([
+    "P", "BR", "H1", "H2", "H3", "H4", "STRONG", "B", "EM", "I", "U",
+    "A", "UL", "OL", "LI", "BLOCKQUOTE", "CODE", "PRE", "HR",
+  ]);
+  const FORBIDDEN = new Set(["SCRIPT", "STYLE", "META", "LINK", "IFRAME", "OBJECT", "EMBED"]);
+
   const sanitizePastedHtml = (html: string): string => {
     if (typeof window === "undefined") return html;
     const doc = new DOMParser().parseFromString(html, "text/html");
-    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT);
-    const forbidTags = new Set(["SCRIPT", "STYLE", "META", "LINK", "FONT"]);
-    const toUnwrap: Element[] = [];
-    const toRemove: Element[] = [];
-    let node = walker.nextNode() as Element | null;
-    while (node) {
-      if (forbidTags.has(node.tagName)) {
-        toRemove.push(node);
-      } else {
-        for (const attr of Array.from(node.attributes)) {
-          if (attr.name === "href") continue;
-          node.removeAttribute(attr.name);
-        }
-        if (node.tagName === "SPAN" || node.tagName === "DIV") {
-          toUnwrap.push(node);
+
+    const walk = (root: Element) => {
+      // Collect elements depth-first so unwrap of an outer element doesn't
+      // invalidate iteration.
+      const all: Element[] = [];
+      const stack: Element[] = [root];
+      while (stack.length) {
+        const el = stack.pop()!;
+        for (const child of Array.from(el.children)) {
+          all.push(child);
+          stack.push(child);
         }
       }
-      node = walker.nextNode() as Element | null;
+      // Process deepest first so unwrapping works cleanly.
+      for (let i = all.length - 1; i >= 0; i--) {
+        const el = all[i];
+        const tag = el.tagName;
+        if (FORBIDDEN.has(tag)) {
+          el.remove();
+          continue;
+        }
+        // Strip every attribute except href on <a>.
+        for (const attr of Array.from(el.attributes)) {
+          if (tag === "A" && attr.name === "href") continue;
+          el.removeAttribute(attr.name);
+        }
+        if (!ALLOWED.has(tag)) {
+          // Unwrap: replace with children.
+          const parent = el.parentNode;
+          if (!parent) continue;
+          while (el.firstChild) parent.insertBefore(el.firstChild, el);
+          parent.removeChild(el);
+        }
+      }
+    };
+
+    walk(doc.body);
+
+    let out = doc.body.innerHTML.trim();
+    // Collapse runs of empty paragraphs.
+    out = out.replace(/(<p>\s*<\/p>\s*){2,}/g, "<p></p>");
+    return out;
+  };
+
+  const insertHtmlAtCaret = (html: string) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+    editor.focus();
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) {
+      editor.insertAdjacentHTML("beforeend", html);
+      return;
     }
-    toRemove.forEach((n) => n.remove());
-    toUnwrap.forEach((n) => {
-      const parent = n.parentNode;
-      if (!parent) return;
-      while (n.firstChild) parent.insertBefore(n.firstChild, n);
-      parent.removeChild(n);
-    });
-    return doc.body.innerHTML;
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    const frag = range.createContextualFragment(html);
+    const lastNode = frag.lastChild;
+    range.insertNode(frag);
+    if (lastNode) {
+      range.setStartAfter(lastNode);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    e.preventDefault();
     const html = e.clipboardData.getData("text/html");
     const text = e.clipboardData.getData("text/plain");
-    e.preventDefault();
-    const cleaned = html ? sanitizePastedHtml(html) : text.replace(/</g, "&lt;").replace(/\n/g, "<br>");
-    document.execCommand("insertHTML", false, cleaned);
+
+    let cleaned = "";
+    if (html) {
+      cleaned = sanitizePastedHtml(html);
+      // If HTML sanitization stripped everything meaningful, fall back to text.
+      const textOnly = cleaned.replace(/<[^>]*>/g, "").trim();
+      if (!textOnly && text) cleaned = plainTextToHtml(text);
+    } else if (text) {
+      cleaned = plainTextToHtml(text);
+    }
+
+    if (!cleaned) return;
+    insertHtmlAtCaret(cleaned);
     if (editorRef.current) setContent(editorRef.current.innerHTML);
   };
 
