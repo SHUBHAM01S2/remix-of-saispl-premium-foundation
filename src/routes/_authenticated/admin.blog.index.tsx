@@ -128,17 +128,19 @@ function BlogListPage() {
             </p>
 
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div>
+              <table className="w-full table-fixed text-sm">
+
                 <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
-                    <th className="px-4 py-3 text-left">Post</th>
-                    <th className="px-4 py-3 text-left">Category</th>
-                    <th className="px-4 py-3 text-left">Status</th>
-                    <th className="px-4 py-3 text-left">Created</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="w-[40%] px-4 py-3 text-left">Post</th>
+                    <th className="w-[14%] px-4 py-3 text-left">Category</th>
+                    <th className="w-[10%] px-4 py-3 text-left">Status</th>
+                    <th className="w-[12%] px-4 py-3 text-left">Created</th>
+                    <th className="w-[24%] px-4 py-3 text-right">Actions</th>
                   </tr>
                 </thead>
+
                 <tbody className="divide-y divide-border/60">
                   {filtered.map((p) => {
                     const isPublished = !!p.published_at;
