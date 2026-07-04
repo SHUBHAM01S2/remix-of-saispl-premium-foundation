@@ -36,30 +36,50 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/branding-graphic-design")({
   head: () => ({
     meta: [
-      { title: "Branding & Graphic Design — SAISPL" },
+      { title: "Branding & Graphic Design Services in India | SAISPL" },
       {
         name: "description",
         content:
-          "Logos, brand identity systems, and social/print creatives that make your business look credible, consistent, and memorable. Branding & graphic design by SAISPL.",
+          "Logos, brand identity systems, and social/print creatives that make your business look premium. Book a free branding consultation with SAISPL today.",
       },
       {
         name: "keywords",
         content:
-          "branding, logo design, brand identity, graphic design, social media kit, brand guidelines, Shivaryan Infotech, SAISPL",
+          "branding India, logo design, brand identity, graphic design, social media kit, brand guidelines, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Branding & Graphic Design — SAISPL" },
+      { property: "og:title", content: "Branding & Graphic Design Services in India | SAISPL" },
       {
         property: "og:description",
         content:
-          "From logos to full brand systems and social creatives — visuals that make your business look premium everywhere.",
+          "Logos, identity systems, and social creatives that make your brand look premium. Book a free consultation today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/branding-graphic-design" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Branding & Graphic Design — SAISPL" },
+      { name: "twitter:title", content: "Branding & Graphic Design Services in India | SAISPL" },
     ],
     links: [{ rel: "canonical", href: "/branding-graphic-design" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Branding & Graphic Design",
+          serviceType: "Graphic Design",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/branding-graphic-design",
+          description:
+            "Logo design, brand identity, social media kits, and print-ready creatives.",
+        }),
+      },
+    ],
   }),
+
   component: BrandingGraphicDesignPage,
 });
 

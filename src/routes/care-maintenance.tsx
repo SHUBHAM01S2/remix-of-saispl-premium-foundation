@@ -36,29 +36,60 @@ const plans: Plan[] = [
 export const Route = createFileRoute("/care-maintenance")({
   head: () => ({
     meta: [
-      { title: "Monthly Care & Maintenance Plans | Shivaryan Infotech" },
+      { title: "Monthly Website Care & Maintenance Plans India | SAISPL" },
       {
         name: "description",
         content:
-          "Monthly website care and maintenance plans from Shivaryan Infotech — security updates, uptime monitoring, content changes, SEO hygiene, and automation support starting at Rs.3,000/month.",
+          "Monthly website care & maintenance plans from Rs.3,000 — security updates, uptime, SEO hygiene, and content changes. Start your care plan today.",
       },
-      { property: "og:title", content: "Monthly Care & Maintenance Plans | Shivaryan Infotech" },
+      {
+        name: "keywords",
+        content:
+          "website maintenance India, website care plans, uptime monitoring, security updates, SEO maintenance, Shivaryan Infotech, SAISPL",
+      },
+      { property: "og:title", content: "Monthly Website Care & Maintenance Plans India | SAISPL" },
       {
         property: "og:description",
         content:
-          "Reliable monthly plans to keep your website secure, fast, and growing — from basic care to full growth + automation.",
+          "Monthly plans from Rs.3,000 to keep your website secure, fast, and growing. Start your care plan today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/care-maintenance" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Monthly Care & Maintenance Plans | Shivaryan Infotech" },
+      { name: "twitter:title", content: "Monthly Website Care & Maintenance Plans India | SAISPL" },
       {
         name: "twitter:description",
         content: "Monthly website care plans starting at Rs.3,000 — security, updates, and growth support.",
       },
     ],
     links: [{ rel: "canonical", href: "/care-maintenance" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Website Care & Maintenance",
+          serviceType: "Website Maintenance",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/care-maintenance",
+          description:
+            "Security updates, uptime monitoring, content changes, SEO hygiene, and automation support.",
+          offers: {
+            "@type": "Offer",
+            price: "3000",
+            priceCurrency: "INR",
+            url: "/care-maintenance",
+          },
+        }),
+      },
+    ],
   }),
+
   component: CareMaintenance,
 });
 

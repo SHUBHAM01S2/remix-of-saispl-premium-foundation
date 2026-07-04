@@ -36,30 +36,50 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/seo-digital-marketing")({
   head: () => ({
     meta: [
-      { title: "SEO & Local Digital Marketing — SAISPL" },
+      { title: "SEO & Local Digital Marketing in Himachal Pradesh | SAISPL" },
       {
         name: "description",
         content:
-          "Rank on Google, get found locally, and turn organic search into real enquiries. SEO audits, Google Business Profile optimization, on-page SEO, content, and monthly reports by SAISPL.",
+          "Local SEO & digital marketing in Himachal Pradesh — rank on Google, win real enquiries, and grow revenue. Get a free SEO audit from SAISPL today.",
       },
       {
         name: "keywords",
         content:
-          "SEO services, local SEO, Google Business Profile, on-page SEO, technical SEO, SEO content, ranking reports, Shivaryan Infotech, SAISPL",
+          "SEO services Himachal Pradesh, local SEO India, Google Business Profile, on-page SEO, technical SEO, SEO content, ranking reports, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "SEO & Local Digital Marketing — SAISPL" },
+      { property: "og:title", content: "SEO & Local Digital Marketing in Himachal Pradesh | SAISPL" },
       {
         property: "og:description",
         content:
-          "Get found by the right customers on Google. Strategy-led SEO for local and international businesses.",
+          "Rank on Google and win real enquiries with strategy-led local SEO. Get a free SEO audit today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/seo-digital-marketing" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "SEO & Local Digital Marketing — SAISPL" },
+      { name: "twitter:title", content: "SEO & Local Digital Marketing in Himachal Pradesh | SAISPL" },
     ],
     links: [{ rel: "canonical", href: "/seo-digital-marketing" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "SEO & Local Digital Marketing",
+          serviceType: "Search Engine Optimization",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/seo-digital-marketing",
+          description:
+            "Local SEO, Google Business Profile optimization, on-page SEO, content, and monthly ranking reports.",
+        }),
+      },
+    ],
   }),
+
   component: SeoDigitalMarketingPage,
 });
 
