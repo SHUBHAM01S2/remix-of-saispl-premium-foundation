@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Shield, Mail } from "lucide-react";
+import { EmailContactLink } from "@/components/EmailContactLink";
+
 
 const sections = [
   {
