@@ -225,20 +225,22 @@ function BlogPostPage() {
   return (
     <article>
       {/* Cover */}
-      <div className="relative aspect-[16/6] max-h-[420px] w-full overflow-hidden bg-background sm:aspect-[16/5]">
+      <div className="relative w-full overflow-hidden bg-background">
         {post.cover_image_url ? (
-          <img
-            src={post.cover_image_url}
-            alt={post.title}
-            className="h-full w-full object-cover"
-          />
+          <div className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 lg:px-8">
+            <img
+              src={post.cover_image_url}
+              alt={post.title}
+              className="mx-auto max-h-[520px] w-full rounded-2xl object-contain"
+            />
+          </div>
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand/20 to-brand/5">
+          <div className="flex aspect-[16/6] max-h-[320px] w-full items-center justify-center bg-gradient-to-br from-brand/20 to-brand/5">
             <BookOpen className="h-16 w-16 text-brand/50" />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
       </div>
+
 
       {/* Header */}
       <ScrollReveal>
