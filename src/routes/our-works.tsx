@@ -19,7 +19,9 @@ type Project = {
   result: string;
   thumbnail_url: string | null;
   caseStudySlug?: string;
+  is_featured?: boolean;
 };
+
 
 const fallbackProjects: Project[] = [
   { id: "1", name: "Global Trade Platform", category: "Portal", city: "Mumbai", result: "Reduced order processing time by 68% with AI automation.\nUnified 12 international exchanges into one trading portal.", thumbnail_url: null, caseStudySlug: "global-trade-platform" },
