@@ -18,6 +18,7 @@ const services = [
     icon: Globe,
     tag: "Websites",
     title: "Website Design & Development",
+    to: "/web-design-development",
     description:
       "Custom business websites built for speed, trust, SEO readiness, and lead generation.",
     features: [
@@ -34,6 +35,7 @@ const services = [
     icon: Search,
     tag: "Marketing",
     title: "SEO & Local Digital Marketing",
+    to: "/seo-digital-marketing",
     description:
       "Improve visibility, rankings, and local discovery to generate more qualified enquiries.",
     features: [
@@ -50,6 +52,7 @@ const services = [
     icon: Bot,
     tag: "Automation",
     title: "WhatsApp & AI Automation",
+    to: "/automation-ai-services",
     description:
       "Automate lead capture, responses, follow-ups, and customer workflows with smart systems.",
     features: [
@@ -66,6 +69,7 @@ const services = [
     icon: LayoutDashboard,
     tag: "Software",
     title: "Custom Portals & Software",
+    to: "/custom-portals-software",
     description:
       "Tailored portals, dashboards, and workflow tools built around your business operations.",
     features: [
@@ -82,6 +86,7 @@ const services = [
     icon: Palette,
     tag: "Design",
     title: "Branding & Graphic Design",
+    to: "/branding-graphic-design",
     description:
       "Professional brand identity, creatives, and design assets that strengthen credibility.",
     features: [
@@ -98,6 +103,7 @@ const services = [
     icon: LifeBuoy,
     tag: "Support",
     title: "Website Maintenance & Support",
+    to: "/care-maintenance",
     description:
       "Ongoing updates, security, monitoring, and improvements to keep your website performing reliably.",
     features: [
@@ -110,6 +116,7 @@ const services = [
     meta: "SUPPORT · UPDATES · SECURITY",
   },
 ];
+
 
 
 const processSteps = [
@@ -249,7 +256,7 @@ function Services() {
             return (
               <StaggerItem key={svc.title} className="h-full">
                 <Link
-                  to="/contact"
+                  to={svc.to}
                   className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]"
                 >
                   {/* hover glow */}
