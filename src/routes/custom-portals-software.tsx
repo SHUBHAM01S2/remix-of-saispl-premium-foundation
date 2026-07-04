@@ -32,6 +32,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
@@ -237,12 +238,12 @@ function CustomPortalsSoftwarePage() {
               <span className="relative">Discuss Your Project</span>
               <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              to="/contact"
+            <StrategyCallButton
+              ariaLabel="Get scope estimate"
               className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-brand/40 hover:bg-white/[0.08] sm:w-auto"
             >
               Get Scope Estimate
-            </Link>
+            </StrategyCallButton>
           </div>
         </ScrollReveal>
       </section>

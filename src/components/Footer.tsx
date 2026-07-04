@@ -4,6 +4,7 @@ import { MapPin, Mail, Phone, ArrowUpRight, Sparkles, MessageCircle } from "luci
 
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
 import { EmailContactLink } from "@/components/EmailContactLink";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const PHONE_RAW = "+919418031050";
 const WHATSAPP_URL =
@@ -86,13 +87,13 @@ export function Footer() {
             <span className="italic text-muted-foreground">Shivaryan</span>
           </h2>
 
-          <Link
-            to="/contact"
+          <StrategyCallButton
+            ariaLabel="Book a demo"
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-[0_10px_40px_-10px_var(--color-brand)] transition-all hover:brightness-110"
           >
             Book a Demo
             <ArrowUpRight className="h-4 w-4" />
-          </Link>
+          </StrategyCallButton>
         </div>
         )}
 
