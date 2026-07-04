@@ -84,27 +84,19 @@ export function FeaturedWorkSection() {
             return (
               <StaggerItem key={project.id}>
                 <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white/[0.04] hover:shadow-[0_0_30px_-10px_color-mix(in_oklab,var(--color-brand)_50%,transparent)]">
-                  <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-white/[0.02]">
+                  <div className="relative flex aspect-video items-center justify-center overflow-hidden bg-white p-6">
                     {project.thumbnail_url ? (
                       <img
                         src={project.thumbnail_url}
                         alt={project.title}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="max-h-full max-w-full object-contain transition-transform duration-700 group-hover:scale-105"
                         loading="lazy"
                       />
                     ) : (
-                      <>
-                        <div
-                          className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                          style={{
-                            background:
-                              "linear-gradient(to top right, color-mix(in oklab, var(--color-brand) 10%, transparent), transparent)",
-                          }}
-                        />
-                        <Icon className="h-14 w-14 text-brand/30 transition-all duration-500 group-hover:scale-110 group-hover:text-brand" />
-                      </>
+                      <Icon className="h-14 w-14 text-brand/40 transition-all duration-500 group-hover:scale-110 group-hover:text-brand" />
                     )}
                   </div>
+
                   <div className="flex flex-1 flex-col p-6 md:p-8">
                     <div className="mb-6 flex items-center gap-2">
                       <span className="h-1.5 w-1.5 rounded-full bg-brand shadow-[0_0_8px_color-mix(in_oklab,var(--color-brand)_80%,transparent)]" />
