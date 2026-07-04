@@ -188,16 +188,16 @@ function OurWorks() {
                     </div>
 
                     <div className="relative mt-8 flex items-center gap-4">
-                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all duration-500 group-hover:border-brand/40 group-hover:from-brand/20">
+                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-2 shadow-md ring-1 ring-black/10 transition-all duration-500 group-hover:ring-brand/40">
                         {project.thumbnail_url ? (
-                          <img src={project.thumbnail_url} alt={project.name} className="h-full w-full rounded-2xl object-cover" loading="lazy" />
+                          <img src={project.thumbnail_url} alt={project.name} className="max-h-full max-w-full object-contain" loading="lazy" />
                         ) : (
-                          <Monitor className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
+                          <Monitor className="h-6 w-6 text-zinc-700" />
                         )}
-                        <span className="absolute inset-0 rounded-2xl opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" style={{ background: "color-mix(in oklab, var(--color-brand) 30%, transparent)" }} />
                       </div>
                       <ArrowUpRight className="ml-auto h-5 w-5 text-muted-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-brand" />
                     </div>
+
 
                     <h3 className="relative mt-6 text-xl font-bold leading-tight text-foreground" style={displayFont}>
                       {project.name}

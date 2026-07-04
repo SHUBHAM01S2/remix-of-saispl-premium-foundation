@@ -132,12 +132,9 @@ export function BlogForm({ existing }: Props) {
       if (variant === "publish") {
         if (!title.trim()) throw new Error("Title is required to publish.");
         if (contentIsEmpty(content)) throw new Error("Content is required to publish.");
-        if (!publishedAt) {
-          throw new Error(
-            "Set a Published at date/time before publishing (or click Publish Now after choosing one).",
-          );
-        }
-        const iso = fromDateTimeInput(publishedAt)!;
+        // If no publish date is set, use "now" so Publish Now just works.
+        const iso = publishedAt ? fromDateTimeInput(publishedAt)! : new Date().toISOString();
+        if (!publishedAt) setPublishedAt(toDateTimeInput(iso));
         return buildMutation(iso);
       }
       if (variant === "draft") {
@@ -146,6 +143,7 @@ export function BlogForm({ existing }: Props) {
       }
       return buildMutation();
     },
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "blog"] });
       navigate({ to: "/admin/blog" });
@@ -448,15 +446,12 @@ export function BlogForm({ existing }: Props) {
           {existing ? "Save Changes" : "Create Post"}
         </button>
         {(() => {
-          const canPublish =
-            !!title.trim() && !contentIsEmpty(content) && !!publishedAt;
+          const canPublish = !!title.trim() && !contentIsEmpty(content);
           const reason = !title.trim()
             ? "Add a title before publishing"
             : contentIsEmpty(content)
               ? "Add some content before publishing"
-              : !publishedAt
-                ? "Set a Published at date/time before publishing"
-                : "";
+              : "";
           return (
             <button
               type="button"
@@ -465,6 +460,7 @@ export function BlogForm({ existing }: Props) {
               title={reason || undefined}
               className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
+
               {publishedAt ? "Save & Publish" : "Publish Now"}
             </button>
           );
