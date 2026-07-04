@@ -185,12 +185,20 @@ function OurWorks() {
                     </div>
 
                     <div className="relative flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        <span className="h-1 w-1 rounded-full bg-brand" />
-                        {project.category}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                          <span className="h-1 w-1 rounded-full bg-brand" />
+                          {project.category}
+                        </span>
+                        {project.is_featured && (
+                          <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+                            <Sparkles className="h-2.5 w-2.5" /> Featured
+                          </span>
+                        )}
+                      </div>
                       <span className="font-mono text-[10px] tracking-widest text-zinc-600">{num}</span>
                     </div>
+
 
                     <div className="relative mt-8 flex items-center gap-4">
                       <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-2 shadow-md ring-1 ring-black/10 transition-all duration-500 group-hover:ring-brand/40">
