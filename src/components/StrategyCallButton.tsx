@@ -60,7 +60,7 @@ export function StrategyCallButton({ children, className, ariaLabel }: Props) {
                 namespace={NAMESPACE}
                 calLink={CAL_LINK}
                 style={{ width: "100%", height: "100%", overflow: "scroll" }}
-                config={{ layout: "month_view", theme: "dark" }}
+                config={{ layout: "month_view", theme: "dark", useSlotsViewOnSmallScreen: true } as never}
               />
             )}
           </div>

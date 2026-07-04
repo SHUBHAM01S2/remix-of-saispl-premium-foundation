@@ -28,6 +28,7 @@ import {
   Layers,
 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
@@ -551,14 +552,14 @@ function WebsiteDesignDevelopmentPage() {
               </h2>
 
               <div className="mt-10 flex justify-center">
-                <Link
-                  to="/contact"
+                <StrategyCallButton
+                  ariaLabel="Book a free discovery call"
                   className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03]"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
                   <span className="relative">Book a Free Discovery Call</span>
                   <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </Link>
+                </StrategyCallButton>
               </div>
             </div>
           </div>
