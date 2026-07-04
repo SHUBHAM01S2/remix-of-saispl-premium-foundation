@@ -302,6 +302,18 @@ function BlogIndex() {
                       {num}
                     </div>
 
+                    {post.cover_image_url && (
+                      <div className="relative -mx-6 -mt-6 mb-6 aspect-[16/9] overflow-hidden rounded-t-3xl bg-background">
+                        <img
+                          src={post.cover_image_url}
+                          alt={post.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-background/0 to-background/0" />
+                      </div>
+                    )}
+
                     <div className="relative flex items-center justify-between">
                       {post.category ? (
                         <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
