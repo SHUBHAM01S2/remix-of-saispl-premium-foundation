@@ -4,6 +4,7 @@ import { MapPin, Mail, Phone, ArrowUpRight, Sparkles, MessageCircle } from "luci
 
 import { formatPhoneDisplay, toTelHref } from "@/lib/format";
 import { EmailContactLink } from "@/components/EmailContactLink";
+import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const PHONE_RAW = "+919418031050";
 const WHATSAPP_URL =
