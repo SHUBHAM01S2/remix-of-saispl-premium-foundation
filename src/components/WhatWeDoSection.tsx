@@ -61,15 +61,16 @@ export function WhatWeDoSection() {
   return (
     <section className="relative py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ScrollReveal className="mb-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
-          <div className="max-w-2xl">
+        <ScrollReveal className="mb-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
+          <div className="max-w-2xl min-w-0">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-brand">
               What we do
             </p>
-            <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl leading-[1.05]">
+            <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl leading-[1.1]">
               End-to-end capabilities to <span className="italic text-muted-foreground">modernize, automate & scale.</span>
             </h2>
           </div>
+
 
           <div className="flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] p-1 backdrop-blur">
             {filters.map((f) => (
