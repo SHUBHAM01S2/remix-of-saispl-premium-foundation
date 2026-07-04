@@ -50,14 +50,14 @@ export function TrustedByStrip() {
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-16 w-[180px] items-center justify-center px-4"
+                    className="flex h-16 w-[180px] items-center justify-center rounded-lg bg-white px-4 shadow-sm ring-1 ring-black/5"
                     title={logo.name}
                   >
                     <img
                       src={logo.src}
                       alt={`${logo.name} logo`}
                       loading="lazy"
-                      className="max-h-14 max-w-full object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
+                      className="max-h-12 max-w-full object-contain"
                     />
                   </div>
                 </li>
