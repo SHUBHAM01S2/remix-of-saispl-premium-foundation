@@ -98,11 +98,23 @@ export function BlogForm({ existing }: Props) {
       },
     });
 
+  const contentIsEmpty = (html: string) => {
+    if (!html) return true;
+    const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+    return text.length === 0;
+  };
+
   const mutation = useMutation({
     mutationFn: (variant: "save" | "publish" | "draft") => {
       if (variant === "publish") {
-        const iso = fromDateTimeInput(publishedAt) ?? new Date().toISOString();
-        setPublishedAt(toDateTimeInput(iso));
+        if (!title.trim()) throw new Error("Title is required to publish.");
+        if (contentIsEmpty(content)) throw new Error("Content is required to publish.");
+        if (!publishedAt) {
+          throw new Error(
+            "Set a Published at date/time before publishing (or click Publish Now after choosing one).",
+          );
+        }
+        const iso = fromDateTimeInput(publishedAt)!;
         return buildMutation(iso);
       }
       if (variant === "draft") {
