@@ -350,7 +350,7 @@ export function BlogForm({ existing }: Props) {
             contentEditable
             onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
             onPaste={handlePaste}
-            className="min-h-[280px] max-w-none whitespace-pre-wrap break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
+            className="min-h-[280px] max-w-none break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_div]:my-1 [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
             suppressContentEditableWarning
           />
 
