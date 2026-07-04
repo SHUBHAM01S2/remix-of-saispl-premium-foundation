@@ -11,16 +11,16 @@ import jevar from "@/assets/logos/jevar.png.asset.json";
 import sumit from "@/assets/logos/sumit.png.asset.json";
 
 const LOGOS = [
-  { name: "Rukoo Services", src: rukoo.url, bg: "#eeeeee" },
-  { name: "Accupressure E-learning", src: acupressure.url, bg: "#fae9e8" },
-  { name: "Hotel Bandla Heights", src: bandla.url, bg: "#ede9e7" },
-  { name: "Manali Miles", src: manaliMiles.url, bg: "#e9ede9" },
-  { name: "Derma Epsilon", src: derma.url, bg: "#fefbf8" },
-  { name: "Button Craft", src: buttonCraft.url, bg: "#ececec" },
-  { name: "Dogra Ji Tours & Travels", src: dogra.url, bg: "#eeedeb" },
-  { name: "AvtTours", src: avttours.url, bg: "#e9eef5" },
-  { name: "Jevar by Shagun", src: jevar.url, bg: "#f7f4ec" },
-  { name: "Sumit Enterprises", src: sumit.url, bg: "#e9f8fa" },
+  { name: "Rukoo Services", src: rukoo.url },
+  { name: "Accupressure E-learning", src: acupressure.url },
+  { name: "Hotel Bandla Heights", src: bandla.url },
+  { name: "Manali Miles", src: manaliMiles.url },
+  { name: "Derma Epsilon", src: derma.url },
+  { name: "Button Craft", src: buttonCraft.url },
+  { name: "Dogra Ji Tours & Travels", src: dogra.url },
+  { name: "AvtTours", src: avttours.url },
+  { name: "Jevar by Shagun", src: jevar.url },
+  { name: "Sumit Enterprises", src: sumit.url },
 ];
 
 export function TrustedByStrip() {
@@ -50,8 +50,7 @@ export function TrustedByStrip() {
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-28 w-[240px] items-center justify-center rounded-xl px-6 py-4 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px]"
-                    style={{ backgroundColor: logo.bg }}
+                    className="flex h-28 w-[240px] items-center justify-center rounded-xl bg-white px-6 py-4 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px]"
                     title={logo.name}
                   >
                     <img
