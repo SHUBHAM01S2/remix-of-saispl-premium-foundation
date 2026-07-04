@@ -1,12 +1,16 @@
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 const LOGOS = [
-  "Nexora",
-  "Himalayan Retreats",
-  "Northline",
-  "Shivalik Clinic",
-  "Solan Realty",
-  "Paonta Motors",
+  "Rukoo Services",
+  "Accupressure E-learning",
+  "Hotel Bandla Heights",
+  "Manali Miles",
+  "Derma Epsilon",
+  "Button Craft",
+  "Dogra Ji Tours & Travels",
+  "AvtTours",
+  "Jevar by Shagun",
+  "Sumit Enterprises",
 ];
 
 export function TrustedByStrip() {
