@@ -74,12 +74,19 @@ export function BlogForm({ existing }: Props) {
   const editorRef = useRef<HTMLDivElement>(null);
   const [showPreview, setShowPreview] = useState(false);
 
+  // Sync content into the contentEditable div whenever we (re)mount it —
+  // e.g. on initial load, or when switching back from Preview to Write.
   useEffect(() => {
-    if (editorRef.current && !editorRef.current.innerHTML && content) {
-      const clean = sanitizePastedHtml(content);
-      editorRef.current.innerHTML = clean;
-      if (clean !== content) setContent(clean);
-    }
+    if (showPreview) return;
+    if (!editorRef.current) return;
+    if (editorRef.current.innerHTML === content) return;
+    const clean = sanitizePastedHtml(content ?? "");
+    editorRef.current.innerHTML = clean;
+    if (clean !== content) setContent(clean);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPreview]);
+
+  useEffect(() => {
     // Force Enter to insert <p> (Chrome defaults to <div>) so spacing is
     // consistent with the public post rendering.
     try {
@@ -87,7 +94,6 @@ export function BlogForm({ existing }: Props) {
     } catch {
       /* older browsers — no-op */
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
