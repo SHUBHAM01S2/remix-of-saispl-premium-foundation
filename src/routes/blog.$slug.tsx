@@ -3,6 +3,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, Calendar, User, BookOpen } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
 import { supabase } from "@/integrations/supabase/client";
+import { getPublicBlogPostMeta } from "@/lib/blog-public.functions";
 import { SEED, type BlogPost } from "./blog.index";
 
 const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
@@ -39,21 +40,102 @@ async function fetchRelated(
   return data as unknown as BlogPost[];
 }
 
+const SITE = "Shivaryan Infotech";
+
+function truncate(s: string, n: number) {
+  const clean = s.replace(/\s+/g, " ").trim();
+  if (clean.length <= n) return clean;
+  return clean.slice(0, n - 1).trimEnd() + "…";
+}
+
+function stripHtml(s: string) {
+  return s.replace(/<[^>]+>/g, " ");
+}
+
 export const Route = createFileRoute("/blog/$slug")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.slug} — Shivaryan Infotech Blog` },
-      {
-        name: "description",
-        content: "Read the full article on the Shivaryan Infotech blog.",
-      },
-      { property: "og:title", content: `${params.slug} — Shivaryan Infotech Blog` },
+  loader: async ({ params }) => {
+    try {
+      const meta = await getPublicBlogPostMeta({ data: { slug: params.slug } });
+      if (meta) return { meta };
+    } catch {
+      // Ignore — fall through to seed lookup.
+    }
+    const seed = SEED_INDEX[params.slug];
+    if (seed) {
+      return {
+        meta: {
+          title: seed.title,
+          slug: seed.slug,
+          excerpt: seed.excerpt,
+          cover_image_url: seed.cover_image_url,
+          category: seed.category,
+          author_name: seed.author_name,
+          published_at: seed.published_at,
+        },
+      };
+    }
+    return { meta: null };
+  },
+  head: ({ params, loaderData }) => {
+    const m = loaderData?.meta;
+    const url = `/blog/${params.slug}`;
+    const rawTitle = m?.title?.trim() || params.slug.replace(/-/g, " ");
+    const title = truncate(`${rawTitle} — ${SITE} Blog`, 65);
+    const description = truncate(
+      stripHtml(m?.excerpt || `${rawTitle} — insights from the ${SITE} team.`),
+      160,
+    );
+    const meta: Array<Record<string, string>> = [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
       { property: "og:type", content: "article" },
-      { property: "og:url", content: `/blog/${params.slug}` },
+      { property: "og:url", content: url },
+      { property: "og:site_name", content: SITE },
       { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [{ rel: "canonical", href: `/blog/${params.slug}` }],
-  }),
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+    ];
+    if (m?.cover_image_url) {
+      meta.push(
+        { property: "og:image", content: m.cover_image_url },
+        { name: "twitter:image", content: m.cover_image_url },
+      );
+    }
+    if (m?.author_name) meta.push({ name: "author", content: m.author_name });
+    if (m?.category) meta.push({ property: "article:section", content: m.category });
+    if (m?.published_at)
+      meta.push({ property: "article:published_time", content: m.published_at });
+
+    const scripts = m
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: rawTitle,
+              description,
+              image: m.cover_image_url || undefined,
+              datePublished: m.published_at || undefined,
+              author: m.author_name
+                ? { "@type": "Person", name: m.author_name }
+                : { "@type": "Organization", name: SITE },
+              publisher: { "@type": "Organization", name: SITE },
+              mainEntityOfPage: url,
+              articleSection: m.category || undefined,
+            }),
+          },
+        ]
+      : undefined;
+
+    return {
+      meta,
+      links: [{ rel: "canonical", href: url }],
+      scripts,
+    };
+  },
   component: BlogPostPage,
   errorComponent: ({ error }) => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">

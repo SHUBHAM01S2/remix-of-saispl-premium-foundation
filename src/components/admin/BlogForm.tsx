@@ -98,11 +98,23 @@ export function BlogForm({ existing }: Props) {
       },
     });
 
+  const contentIsEmpty = (html: string) => {
+    if (!html) return true;
+    const text = html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+    return text.length === 0;
+  };
+
   const mutation = useMutation({
     mutationFn: (variant: "save" | "publish" | "draft") => {
       if (variant === "publish") {
-        const iso = fromDateTimeInput(publishedAt) ?? new Date().toISOString();
-        setPublishedAt(toDateTimeInput(iso));
+        if (!title.trim()) throw new Error("Title is required to publish.");
+        if (contentIsEmpty(content)) throw new Error("Content is required to publish.");
+        if (!publishedAt) {
+          throw new Error(
+            "Set a Published at date/time before publishing (or click Publish Now after choosing one).",
+          );
+        }
+        const iso = fromDateTimeInput(publishedAt)!;
         return buildMutation(iso);
       }
       if (variant === "draft") {
@@ -253,14 +265,23 @@ export function BlogForm({ existing }: Props) {
       </div>
 
       <Field label="Published at">
-        <input
-          type="datetime-local"
-          value={publishedAt}
-          onChange={(e) => setPublishedAt(e.target.value)}
-          className={inputCls}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="datetime-local"
+            value={publishedAt}
+            onChange={(e) => setPublishedAt(e.target.value)}
+            className={inputCls}
+          />
+          <button
+            type="button"
+            onClick={() => setPublishedAt(toDateTimeInput(new Date().toISOString()))}
+            className="whitespace-nowrap rounded-md border border-input bg-background px-3 py-2 text-xs font-medium text-foreground hover:bg-accent"
+          >
+            Set to now
+          </button>
+        </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Leave empty to save as draft. Set a date/time to publish publicly.
+          Leave empty to save as draft. A date/time is required to publish.
         </p>
       </Field>
 
@@ -345,14 +366,28 @@ export function BlogForm({ existing }: Props) {
           {mutation.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
           {existing ? "Save Changes" : "Create Post"}
         </button>
-        <button
-          type="button"
-          disabled={mutation.isPending}
-          onClick={() => mutation.mutate("publish")}
-          className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
-        >
-          {publishedAt ? "Save & Publish" : "Publish Now"}
-        </button>
+        {(() => {
+          const canPublish =
+            !!title.trim() && !contentIsEmpty(content) && !!publishedAt;
+          const reason = !title.trim()
+            ? "Add a title before publishing"
+            : contentIsEmpty(content)
+              ? "Add some content before publishing"
+              : !publishedAt
+                ? "Set a Published at date/time before publishing"
+                : "";
+          return (
+            <button
+              type="button"
+              disabled={mutation.isPending || !canPublish}
+              onClick={() => mutation.mutate("publish")}
+              title={reason || undefined}
+              className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {publishedAt ? "Save & Publish" : "Publish Now"}
+            </button>
+          );
+        })()}
         {publishedAt && (
           <button
             type="button"
