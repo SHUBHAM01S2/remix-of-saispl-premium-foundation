@@ -125,7 +125,7 @@ const sections: Section[] = [
         "Opt out of marketing communication anytime",
         "Ask questions about how your data is used",
       ],
-      "To exercise these rights, email us at Help@saispl.com.",
+      "To exercise these rights, email us at shivaryan@gmail.com.",
     ],
   },
   {
@@ -163,7 +163,7 @@ const sections: Section[] = [
     content: [
       "For any questions about this Privacy Policy, reach out to:",
       [
-        "Email: Help@saispl.com",
+        "Email: shivaryan@gmail.com",
         "Location: Himachal Pradesh, India",
       ],
     ],

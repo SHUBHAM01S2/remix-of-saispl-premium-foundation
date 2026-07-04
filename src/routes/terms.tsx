@@ -141,7 +141,7 @@ const sections: Section[] = [
     blocks: [
       { type: "p", text: "For questions regarding these Terms and Conditions, please contact:" },
       { type: "ul", items: [
-        "Email: Help@saispl.com",
+        "Email: shivaryan@gmail.com",
         "Location: Himachal Pradesh, India",
       ] },
     ],
