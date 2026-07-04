@@ -241,14 +241,16 @@ function BlogPostPage() {
       <ScrollReveal>
         <header className="mx-auto mt-8 max-w-3xl px-4 sm:px-6 lg:px-8">
 
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to blog
-          </Link>
+          <div className="mb-6 border-b border-border/60 pb-4">
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-brand"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to blog
+            </Link>
+          </div>
           {post.category && (
-            <span className="mt-4 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
+            <span className="inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-2.5 py-0.5 text-xs font-medium text-brand">
               {post.category}
             </span>
           )}
