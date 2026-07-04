@@ -244,7 +244,7 @@ function BlogPostPage() {
 
       {/* Header */}
       <ScrollReveal>
-        <header className="mx-auto mt-8 max-w-3xl px-4 sm:px-6 lg:px-8">
+        <header className="mx-auto mt-8 w-[80%] max-w-none px-4 sm:px-6 lg:px-8">
 
           <div className="mb-6 border-b border-border/60 pb-4">
             <Link
