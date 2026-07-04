@@ -35,30 +35,50 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/web-design-development")({
   head: () => ({
     meta: [
-      { title: "Website Design & Development — SAISPL" },
+      { title: "Website Design & Development in Himachal Pradesh | SAISPL" },
       {
         name: "description",
         content:
-          "Custom website design and development by SAISPL. Fast, SEO-ready websites that convert visitors into customers — for clinics, hotels, schools, real estate, SaaS, and local businesses.",
+          "Custom, fast, SEO-ready website design & development in Himachal Pradesh. Built to convert visitors into customers — book a free strategy call today.",
       },
       {
         name: "keywords",
         content:
-          "website design, website development, custom websites, business website, SEO website, responsive website, CMS website, Shivaryan Infotech, SAISPL",
+          "website design Himachal Pradesh, website development India, custom business website, SEO website, responsive website, CMS website, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Website Design & Development — SAISPL" },
+      { property: "og:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
       {
         property: "og:description",
         content:
-          "Websites built to convert & grow. Custom, fast, SEO-ready websites for growing businesses.",
+          "Custom, fast, SEO-ready websites built to convert. Book a free strategy call with SAISPL today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/web-design-development" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Website Design & Development — SAISPL" },
+      { name: "twitter:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
     ],
     links: [{ rel: "canonical", href: "/web-design-development" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Website Design & Development",
+          serviceType: "Website Design & Development",
+          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          areaServed: [
+            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
+            { "@type": "Country", name: "India" },
+          ],
+          url: "/web-design-development",
+          description:
+            "Custom, fast, SEO-ready website design and development for clinics, hotels, schools, real estate, SaaS, and local businesses.",
+        }),
+      },
+    ],
   }),
+
   component: WebsiteDesignDevelopmentPage,
 });
 
