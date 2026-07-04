@@ -68,11 +68,10 @@ export function Footer() {
 
       <div className="relative mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
         {/* centered logo tile */}
-        <div className="flex flex-col items-center text-center">
-          <div className="relative">
         {!hideCta && (
         <div className="flex flex-col items-center text-center">
           <div className="relative">
+
             <div
               className="absolute inset-0 -z-10 blur-2xl"
               style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
