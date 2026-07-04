@@ -99,7 +99,7 @@ export function Footer() {
 
 
         {/* Link columns */}
-        <div className={`grid grid-cols-2 gap-y-10 gap-x-6 border-t border-white/10 pt-14 md:grid-cols-5 ${hideCta ? "mt-0" : "mt-24"}`}>
+        <div className={`grid grid-cols-2 gap-y-10 gap-x-6 border-t border-white/10 pt-14 sm:grid-cols-3 lg:grid-cols-5 ${hideCta ? "mt-0" : "mt-24"}`}>
           <FooterColumn title="Company">
             {companyLinks.map((l) => (
               <FooterLink key={l.label} to={l.to}>{l.label}</FooterLink>
