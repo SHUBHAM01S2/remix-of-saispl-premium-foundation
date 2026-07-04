@@ -46,23 +46,24 @@ export function TrustedByStrip() {
                 "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
             }}
           >
-            <ul className="flex w-max animate-marquee-rtl items-center gap-10 group-hover:[animation-play-state:paused]">
+            <ul className="flex w-max animate-marquee-rtl items-center gap-4 sm:gap-10 group-hover:[animation-play-state:paused]">
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-28 w-[240px] items-center justify-center rounded-xl bg-white px-6 py-4 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px]"
+                    className="flex h-20 w-[150px] items-center justify-center rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
                     title={logo.name}
                   >
                     <img
                       src={logo.src}
                       alt={`${logo.name} logo`}
                       loading="lazy"
-                      className="max-h-24 max-w-full object-contain sm:max-h-28"
+                      className="max-h-16 max-w-full object-contain sm:max-h-28"
                     />
                   </div>
                 </li>
               ))}
             </ul>
+
           </div>
         </div>
       </section>
