@@ -128,98 +128,149 @@ function BlogListPage() {
             </p>
 
           ) : (
-            <div className="overflow-x-auto scrollbar-hide">
-              <table className="w-full min-w-[720px] table-fixed text-sm">
-
-                <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th className="w-[40%] px-4 py-3 text-left">Post</th>
-                    <th className="w-[14%] px-4 py-3 text-left">Category</th>
-                    <th className="w-[10%] px-4 py-3 text-left">Status</th>
-                    <th className="w-[12%] px-4 py-3 text-left">Created</th>
-                    <th className="w-[24%] px-4 py-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody className="divide-y divide-border/60">
-                  {filtered.map((p) => {
-                    const isPublished = !!p.published_at;
-                    return (
-                      <tr key={p.id}>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-3">
-                            {p.cover_image_url ? (
-                              <img src={p.cover_image_url} alt="" className="h-10 w-14 rounded object-cover" />
-                            ) : (
-                              <div className="h-10 w-14 rounded bg-muted" />
-                            )}
-                            <div className="min-w-0">
-                              <div className="truncate font-medium text-foreground">{p.title}</div>
-                              <div className="truncate text-xs text-muted-foreground">/{p.slug}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">{p.category ?? "—"}</td>
-                        <td className="px-4 py-3">
-                          <span
-                            className={
-                              isPublished
-                                ? "inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700"
-                                : "inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
-                            }
-                          >
-                            {isPublished ? "Published" : "Draft"}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {new Date(p.created_at).toLocaleDateString()}
-                        </td>
-                        <td className="px-4 py-3 text-right">
-                          <div className="inline-flex items-center gap-2">
-                            <button
-                              onClick={() => toggle.mutate({ id: p.id, publish: !isPublished })}
-                              disabled={toggle.isPending}
-                              className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent disabled:opacity-60"
-                            >
-                              {isPublished ? (
-                                <>
-                                  <EyeOff className="h-3.5 w-3.5" /> Unpublish
-                                </>
+            <>
+              {/* Desktop / tablet table */}
+              <div className="hidden md:block">
+                <table className="w-full table-fixed text-sm">
+                  <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="w-[42%] px-4 py-3 text-left">Post</th>
+                      <th className="w-[14%] px-4 py-3 text-left">Category</th>
+                      <th className="w-[10%] px-4 py-3 text-left">Status</th>
+                      <th className="w-[12%] px-4 py-3 text-left">Created</th>
+                      <th className="w-[22%] px-4 py-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    {filtered.map((p) => {
+                      const isPublished = !!p.published_at;
+                      return (
+                        <tr key={p.id}>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center gap-3">
+                              {p.cover_image_url ? (
+                                <img src={p.cover_image_url} alt="" className="h-10 w-14 shrink-0 rounded object-cover" />
                               ) : (
-                                <>
-                                  <Eye className="h-3.5 w-3.5" /> Publish
-                                </>
+                                <div className="h-10 w-14 shrink-0 rounded bg-muted" />
                               )}
-                            </button>
-                            <Link
-                              to="/admin/blog/$id/edit"
-                              params={{ id: p.id }}
-                              className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
+                              <div className="min-w-0">
+                                <div className="truncate font-medium text-foreground" title={p.title}>{p.title}</div>
+                                <div className="truncate text-xs text-muted-foreground" title={`/${p.slug}`}>/{p.slug}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="truncate px-4 py-3 text-muted-foreground" title={p.category ?? undefined}>{p.category ?? "—"}</td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={
+                                isPublished
+                                  ? "inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700"
+                                  : "inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground"
+                              }
                             >
-                              <Pencil className="h-3.5 w-3.5" /> Edit
-                            </Link>
-                            {isSuperAdmin && (
+                              {isPublished ? "Published" : "Draft"}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-muted-foreground">
+                            {new Date(p.created_at).toLocaleDateString()}
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="inline-flex flex-wrap items-center justify-end gap-1.5">
                               <button
-                                onClick={() => handleDelete(p.id, p.title)}
-                                disabled={del.isPending}
-                                className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+                                onClick={() => toggle.mutate({ id: p.id, publish: !isPublished })}
+                                disabled={toggle.isPending}
+                                title={isPublished ? "Unpublish" : "Publish"}
+                                className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2 py-1.5 text-xs font-medium hover:bg-accent disabled:opacity-60"
                               >
-                                {del.isPending ? (
-                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                ) : (
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                )}
-                                Delete
+                                {isPublished ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                               </button>
-                            )}
+                              <Link
+                                to="/admin/blog/$id/edit"
+                                params={{ id: p.id }}
+                                title="Edit"
+                                className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2 py-1.5 text-xs font-medium hover:bg-accent"
+                              >
+                                <Pencil className="h-3.5 w-3.5" />
+                              </Link>
+                              {isSuperAdmin && (
+                                <button
+                                  onClick={() => handleDelete(p.id, p.title)}
+                                  disabled={del.isPending}
+                                  title="Delete"
+                                  className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+                                >
+                                  {del.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                                </button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile stacked cards */}
+              <ul className="divide-y divide-border/60 md:hidden">
+                {filtered.map((p) => {
+                  const isPublished = !!p.published_at;
+                  return (
+                    <li key={p.id} className="p-4">
+                      <div className="flex items-start gap-3">
+                        {p.cover_image_url ? (
+                          <img src={p.cover_image_url} alt="" className="h-12 w-16 shrink-0 rounded object-cover" />
+                        ) : (
+                          <div className="h-12 w-16 shrink-0 rounded bg-muted" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <div className="truncate font-medium text-foreground" title={p.title}>{p.title}</div>
+                          <div className="truncate text-xs text-muted-foreground" title={`/${p.slug}`}>/{p.slug}</div>
+                          <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                            <span
+                              className={
+                                isPublished
+                                  ? "inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 font-medium text-emerald-700"
+                                  : "inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground"
+                              }
+                            >
+                              {isPublished ? "Published" : "Draft"}
+                            </span>
+                            {p.category && <span>{p.category}</span>}
+                            <span>{new Date(p.created_at).toLocaleDateString()}</span>
                           </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+                        </div>
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <button
+                          onClick={() => toggle.mutate({ id: p.id, publish: !isPublished })}
+                          disabled={toggle.isPending}
+                          className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent disabled:opacity-60"
+                        >
+                          {isPublished ? <><EyeOff className="h-3.5 w-3.5" /> Unpublish</> : <><Eye className="h-3.5 w-3.5" /> Publish</>}
+                        </button>
+                        <Link
+                          to="/admin/blog/$id/edit"
+                          params={{ id: p.id }}
+                          className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-input bg-background px-2.5 py-1.5 text-xs font-medium hover:bg-accent"
+                        >
+                          <Pencil className="h-3.5 w-3.5" /> Edit
+                        </Link>
+                        {isSuperAdmin && (
+                          <button
+                            onClick={() => handleDelete(p.id, p.title)}
+                            disabled={del.isPending}
+                            className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-60"
+                          >
+                            {del.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />} Delete
+                          </button>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
           )}
         </div>
       </div>
