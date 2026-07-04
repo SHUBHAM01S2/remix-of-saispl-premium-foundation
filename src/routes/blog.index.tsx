@@ -159,7 +159,6 @@ function formatDate(iso: string | null) {
 
 function BlogIndex() {
   const [posts, setPosts] = useState<BlogPost[]>(SEED);
-  const [source, setSource] = useState<"db" | "fallback">("fallback");
   const [active, setActive] = useState<string>("All");
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
@@ -169,7 +168,6 @@ function BlogIndex() {
     fetchBlogPosts().then((res) => {
       if (cancelled) return;
       setPosts(res.posts);
-      setSource(res.source);
     });
     return () => {
       cancelled = true;
@@ -221,24 +219,8 @@ function BlogIndex() {
         </ScrollReveal>
       </section>
 
-      {/* Source notice */}
-      <section className="bg-background pb-4">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div
-            className={
-              "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium " +
-              (source === "db"
-                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
-                : "border-amber-500/30 bg-amber-500/10 text-amber-600")
-            }
-          >
-            <span className={"h-1.5 w-1.5 rounded-full " + (source === "db" ? "bg-emerald-500" : "bg-amber-500")} />
-            {source === "db"
-              ? "Live posts from the database"
-              : "Showing demo content — no published posts yet"}
-          </div>
-        </div>
-      </section>
+
+
 
       {/* Filters */}
       <section className="bg-background pb-6">
