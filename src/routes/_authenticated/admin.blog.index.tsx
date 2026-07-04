@@ -128,8 +128,9 @@ function BlogListPage() {
             </p>
 
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div>
+              <table className="w-full table-fixed text-sm">
+
                 <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-3 text-left">Post</th>
