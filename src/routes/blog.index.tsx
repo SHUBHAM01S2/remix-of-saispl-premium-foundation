@@ -359,7 +359,7 @@ function BlogIndex() {
                   className="rounded-md border border-border bg-surface px-2 py-1 text-xs text-foreground outline-none focus:border-brand"
                 >
                   {[6, 9, 12, 24].map((n) => (
-                    <option key={n} value={n}>{n}</option>
+                    <option key={n} value={n} className="bg-background text-foreground">{n}</option>
                   ))}
                 </select>
               </div>
