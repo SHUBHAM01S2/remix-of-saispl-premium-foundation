@@ -66,7 +66,7 @@ export function Footer() {
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+      <div className={`relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ${hideCta ? "pt-12" : "pt-24"}`}>
         {/* centered logo tile */}
         {!hideCta && (
         <div className="flex flex-col items-center text-center">
