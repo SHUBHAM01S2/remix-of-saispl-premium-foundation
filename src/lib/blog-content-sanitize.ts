@@ -114,6 +114,53 @@ export function sanitizeBlogContentHtml(html: string): string {
     }
   }
 
+  // Split runs of 2+ <br> into separate paragraphs inside any block wrapper.
+  for (const p of Array.from(doc.body.querySelectorAll("p, div"))) {
+    const inner = p.innerHTML;
+    if (/(<br\s*\/?\s*>\s*){2,}/i.test(inner)) {
+      const parts = inner.split(/(?:<br\s*\/?\s*>\s*){2,}/i);
+      const frag = doc.createDocumentFragment();
+      for (const part of parts) {
+        const np = doc.createElement("p");
+        np.innerHTML = part.trim();
+        if (np.textContent?.trim()) frag.appendChild(np);
+      }
+      p.replaceWith(frag);
+    }
+  }
+
+  // Wrap loose top-level text / inline nodes into <p> so paragraph spacing applies.
+  const inlineTags = new Set(["A", "STRONG", "B", "EM", "I", "U", "CODE", "SPAN", "BR"]);
+  let buffer: Node[] = [];
+  const flush = () => {
+    if (!buffer.length) return;
+    const p = doc.createElement("p");
+    for (const n of buffer) p.appendChild(n);
+    doc.body.insertBefore(p, buffer[0].nextSibling ?? null);
+    buffer = [];
+  };
+  for (const node of Array.from(doc.body.childNodes)) {
+    if (node.nodeType === 3 && node.textContent?.trim()) {
+      buffer.push(node);
+    } else if (node.nodeType === 1 && inlineTags.has((node as Element).tagName)) {
+      buffer.push(node);
+    } else {
+      if (buffer.length) {
+        const p = doc.createElement("p");
+        const first = buffer[0];
+        first.parentNode?.insertBefore(p, first);
+        for (const n of buffer) p.appendChild(n);
+        buffer = [];
+      }
+    }
+  }
+  if (buffer.length) {
+    const p = doc.createElement("p");
+    const first = buffer[0];
+    first.parentNode?.insertBefore(p, first);
+    for (const n of buffer) p.appendChild(n);
+  }
+
   let output = doc.body.innerHTML.trim();
   output = output.replace(/<p>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>/gi, "");
   removeEmptyListItems(doc.body);
@@ -122,4 +169,5 @@ export function sanitizeBlogContentHtml(html: string): string {
   output = output.replace(/\n{3,}/g, "\n\n");
 
   return output;
+
 }

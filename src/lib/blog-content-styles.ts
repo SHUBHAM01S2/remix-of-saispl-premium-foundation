@@ -27,7 +27,7 @@ export const BLOG_PROSE_CLASSES = [
   // Code
   "[&_code]:rounded [&_code]:bg-surface [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.9em]",
   // Contenteditable Chrome quirk: wrap loose text in a div — give it paragraph spacing
-  "[&>div]:my-4 [&>div]:leading-relaxed",
+  "[&_div]:my-4 [&_div]:leading-relaxed",
   // Images
   "[&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-lg",
 ].join(" ");
