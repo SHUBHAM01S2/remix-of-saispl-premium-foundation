@@ -98,16 +98,22 @@ export const SEED: BlogPost[] = [
   },
 ];
 
-async function fetchBlogPosts(): Promise<BlogPost[]> {
-  const { data, error } = await supabase
-    .from("blog_posts" as never)
+async function fetchBlogPosts(): Promise<{ posts: BlogPost[]; source: "db" | "fallback" }> {
+  const res = await (supabase as any)
+    .from("blog_posts")
     .select(
       "id, title, slug, excerpt, content, cover_image_url, category, author_name, published_at",
     )
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false });
-  if (error || !Array.isArray(data) || data.length === 0) return SEED;
-  return data as unknown as BlogPost[];
+  const rows = res.data as BlogPost[] | null;
+  if (res.error || !Array.isArray(rows) || rows.length === 0) {
+    return { posts: SEED, source: "fallback" };
+  }
+  return { posts: rows, source: "db" };
 }
+
+
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -153,12 +159,17 @@ function formatDate(iso: string | null) {
 
 function BlogIndex() {
   const [posts, setPosts] = useState<BlogPost[]>(SEED);
+  const [source, setSource] = useState<"db" | "fallback">("fallback");
   const [active, setActive] = useState<string>("All");
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(9);
 
   useEffect(() => {
     let cancelled = false;
-    fetchBlogPosts().then((rows) => {
-      if (!cancelled) setPosts(rows);
+    fetchBlogPosts().then((res) => {
+      if (cancelled) return;
+      setPosts(res.posts);
+      setSource(res.source);
     });
     return () => {
       cancelled = true;
@@ -176,6 +187,17 @@ function BlogIndex() {
   const filtered = posts.filter(
     (p) => active === "All" || p.category === active,
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pageStart = (currentPage - 1) * pageSize;
+  const paged = filtered.slice(pageStart, pageStart + pageSize);
+
+  // Reset page when filter / page size change.
+  useEffect(() => {
+    setPage(1);
+  }, [active, pageSize]);
+
 
   return (
     <div>
@@ -197,6 +219,25 @@ function BlogIndex() {
             for businesses across Himachal Pradesh and beyond.
           </p>
         </ScrollReveal>
+      </section>
+
+      {/* Source notice */}
+      <section className="bg-background pb-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            className={
+              "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium " +
+              (source === "db"
+                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600"
+                : "border-amber-500/30 bg-amber-500/10 text-amber-600")
+            }
+          >
+            <span className={"h-1.5 w-1.5 rounded-full " + (source === "db" ? "bg-emerald-500" : "bg-amber-500")} />
+            {source === "db"
+              ? "Live posts from the database"
+              : "Showing demo content — no published posts yet"}
+          </div>
+        </div>
       </section>
 
       {/* Filters */}
@@ -224,12 +265,14 @@ function BlogIndex() {
         </div>
       </section>
 
+
       {/* Posts */}
       <section className="bg-background pb-20 md:pb-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((post, idx) => {
-              const num = String(idx + 1).padStart(2, "0");
+            {paged.map((post, idx) => {
+              const num = String(pageStart + idx + 1).padStart(2, "0");
+
               const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
               return (
                 <StaggerItem key={post.id}>
@@ -312,6 +355,52 @@ function BlogIndex() {
               No posts match that filter yet.
             </p>
           )}
+
+          {filtered.length > 0 && (
+            <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-6 sm:flex-row">
+              <div className="text-xs text-muted-foreground">
+                Showing <span className="font-medium text-foreground">{pageStart + 1}</span>–
+                <span className="font-medium text-foreground">{Math.min(pageStart + pageSize, filtered.length)}</span>{" "}
+                of <span className="font-medium text-foreground">{filtered.length}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-muted-foreground">Per page</label>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="rounded-md border border-border bg-surface px-2 py-1 text-xs text-foreground outline-none focus:border-brand"
+                >
+                  {[6, 9, 12, 24].map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage <= 1}
+                  className="rounded-md border border-border bg-surface px-3 py-1 text-xs font-medium text-foreground disabled:opacity-40 hover:border-brand/40"
+                >
+                  Prev
+                </button>
+                <span className="px-2 text-xs text-muted-foreground">
+                  Page <span className="font-medium text-foreground">{currentPage}</span> / {totalPages}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage >= totalPages}
+                  className="rounded-md border border-border bg-surface px-3 py-1 text-xs font-medium text-foreground disabled:opacity-40 hover:border-brand/40"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+
         </div>
       </section>
     </div>

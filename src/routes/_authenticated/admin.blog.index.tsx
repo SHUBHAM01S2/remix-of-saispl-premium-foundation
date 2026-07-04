@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Plus, Pencil, Trash2, Loader2, Eye, EyeOff } from "lucide-react";
+
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listBlogPosts,
@@ -32,10 +34,26 @@ function BlogListPage() {
   const toggleFn = useServerFn(toggleBlogPublish);
 
 
+  const [status, setStatus] = useState<"all" | "published" | "draft">("all");
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "blog"],
     queryFn: () => listFn(),
   });
+
+  const counts = {
+    all: data?.length ?? 0,
+    published: data?.filter((p) => !!p.published_at).length ?? 0,
+    draft: data?.filter((p) => !p.published_at).length ?? 0,
+  };
+
+  const filtered =
+    data?.filter((p) => {
+      if (status === "all") return true;
+      if (status === "published") return !!p.published_at;
+      return !p.published_at;
+    }) ?? [];
+
 
   const del = useMutation({
     mutationFn: (id: string) => deleteFn({ data: { id } }),
@@ -72,15 +90,43 @@ function BlogListPage() {
           </Link>
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+        <div className="mt-6 inline-flex rounded-lg border border-border/60 bg-muted/40 p-1 text-sm">
+          {(
+            [
+              { key: "all", label: "All" },
+              { key: "published", label: "Published" },
+              { key: "draft", label: "Drafts" },
+            ] as const
+          ).map((t) => (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setStatus(t.key)}
+              className={
+                "rounded-md px-3 py-1.5 font-medium transition-colors " +
+                (status === t.key
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground")
+              }
+            >
+              {t.label}
+              <span className="ml-1.5 text-xs text-muted-foreground">({counts[t.key]})</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
           {isLoading ? (
             <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
           ) : error ? (
             <p className="px-6 py-8 text-sm text-red-600">
               {error instanceof Error ? error.message : "Failed to load"}
             </p>
-          ) : !data || data.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-muted-foreground">No posts yet.</p>
+          ) : filtered.length === 0 ? (
+            <p className="px-6 py-8 text-sm text-muted-foreground">
+              {status === "all" ? "No posts yet." : `No ${status === "published" ? "published posts" : "drafts"} yet.`}
+            </p>
+
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -94,7 +140,7 @@ function BlogListPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
-                  {data.map((p) => {
+                  {filtered.map((p) => {
                     const isPublished = !!p.published_at;
                     return (
                       <tr key={p.id}>

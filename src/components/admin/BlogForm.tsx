@@ -80,27 +80,44 @@ export function BlogForm({ existing }: Props) {
     if (!slugTouched) setSlug(slugify(title));
   }, [title, slugTouched]);
 
+  const buildMutation = (overridePublishedAt?: string | null) =>
+    upsertFn({
+      data: {
+        id: existing?.id,
+        title,
+        slug,
+        excerpt: excerpt || null,
+        content: content || null,
+        category: category || null,
+        cover_image_url: coverUrl,
+        author_name: authorName || null,
+        published_at:
+          overridePublishedAt === undefined
+            ? fromDateTimeInput(publishedAt)
+            : overridePublishedAt,
+      },
+    });
+
   const mutation = useMutation({
-    mutationFn: () =>
-      upsertFn({
-        data: {
-          id: existing?.id,
-          title,
-          slug,
-          excerpt: excerpt || null,
-          content: content || null,
-          category: category || null,
-          cover_image_url: coverUrl,
-          author_name: authorName || null,
-          published_at: fromDateTimeInput(publishedAt),
-        },
-      }),
+    mutationFn: (variant: "save" | "publish" | "draft") => {
+      if (variant === "publish") {
+        const iso = fromDateTimeInput(publishedAt) ?? new Date().toISOString();
+        setPublishedAt(toDateTimeInput(iso));
+        return buildMutation(iso);
+      }
+      if (variant === "draft") {
+        setPublishedAt("");
+        return buildMutation(null);
+      }
+      return buildMutation();
+    },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "blog"] });
       navigate({ to: "/admin/blog" });
     },
     onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
   });
+
 
   const handleCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -129,14 +146,58 @@ export function BlogForm({ existing }: Props) {
     if (url) exec("createLink", url);
   };
 
+  // Strip inline styles / font tags / class attributes from pasted HTML so
+  // Word / Google Docs paste doesn't leak black-on-black styles into the site.
+  const sanitizePastedHtml = (html: string): string => {
+    if (typeof window === "undefined") return html;
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT);
+    const forbidTags = new Set(["SCRIPT", "STYLE", "META", "LINK", "FONT"]);
+    const toUnwrap: Element[] = [];
+    const toRemove: Element[] = [];
+    let node = walker.nextNode() as Element | null;
+    while (node) {
+      if (forbidTags.has(node.tagName)) {
+        toRemove.push(node);
+      } else {
+        for (const attr of Array.from(node.attributes)) {
+          if (attr.name === "href") continue;
+          node.removeAttribute(attr.name);
+        }
+        if (node.tagName === "SPAN" || node.tagName === "DIV") {
+          toUnwrap.push(node);
+        }
+      }
+      node = walker.nextNode() as Element | null;
+    }
+    toRemove.forEach((n) => n.remove());
+    toUnwrap.forEach((n) => {
+      const parent = n.parentNode;
+      if (!parent) return;
+      while (n.firstChild) parent.insertBefore(n.firstChild, n);
+      parent.removeChild(n);
+    });
+    return doc.body.innerHTML;
+  };
+
+  const handlePaste = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    const html = e.clipboardData.getData("text/html");
+    const text = e.clipboardData.getData("text/plain");
+    e.preventDefault();
+    const cleaned = html ? sanitizePastedHtml(html) : text.replace(/</g, "&lt;").replace(/\n/g, "<br>");
+    document.execCommand("insertHTML", false, cleaned);
+    if (editorRef.current) setContent(editorRef.current.innerHTML);
+  };
+
   const toolBtn =
     "inline-flex h-8 w-8 items-center justify-center rounded border border-input bg-background text-foreground hover:bg-accent";
+
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        mutation.mutate();
+        mutation.mutate("save");
       }}
       className="space-y-6"
     >
@@ -265,6 +326,7 @@ export function BlogForm({ existing }: Props) {
             ref={editorRef}
             contentEditable
             onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
+            onPaste={handlePaste}
             className="min-h-[280px] max-w-none whitespace-pre-wrap break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
             suppressContentEditableWarning
           />
@@ -274,7 +336,7 @@ export function BlogForm({ existing }: Props) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <button
           type="submit"
           disabled={mutation.isPending}
@@ -285,12 +347,31 @@ export function BlogForm({ existing }: Props) {
         </button>
         <button
           type="button"
+          disabled={mutation.isPending}
+          onClick={() => mutation.mutate("publish")}
+          className="inline-flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {publishedAt ? "Save & Publish" : "Publish Now"}
+        </button>
+        {publishedAt && (
+          <button
+            type="button"
+            disabled={mutation.isPending}
+            onClick={() => mutation.mutate("draft")}
+            className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent disabled:opacity-60"
+          >
+            Move to Draft
+          </button>
+        )}
+        <button
+          type="button"
           onClick={() => navigate({ to: "/admin/blog" })}
-          className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
+          className="ml-auto rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent"
         >
           Cancel
         </button>
       </div>
+
     </form>
   );
 }
