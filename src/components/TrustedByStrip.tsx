@@ -15,13 +15,14 @@ const LOGOS = [
   { name: "Accupressure E-learning", src: acupressure.url },
   { name: "Hotel Bandla Heights", src: bandla.url },
   { name: "Manali Miles", src: manaliMiles.url },
-  { name: "Derma Epsilon", src: derma.url },
+  { name: "Derma Epsilon", src: derma.url, bg: "#1b1b1b" },
   { name: "Button Craft", src: buttonCraft.url },
   { name: "Dogra Ji Tours & Travels", src: dogra.url },
   { name: "AvtTours", src: avttours.url },
   { name: "Jevar by Shagun", src: jevar.url },
   { name: "Sumit Enterprises", src: sumit.url },
 ];
+
 
 export function TrustedByStrip() {
   const loop = [...LOGOS, ...LOGOS];
@@ -50,7 +51,8 @@ export function TrustedByStrip() {
               {loop.map((logo, i) => (
                 <li key={`${logo.name}-${i}`} className="shrink-0">
                   <div
-                    className="flex h-20 w-[150px] items-center justify-center rounded-xl bg-white px-4 py-3 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
+                    className="flex h-20 w-[150px] items-center justify-center rounded-xl px-4 py-3 shadow-sm ring-1 ring-black/5 sm:h-32 sm:w-[280px] sm:px-6 sm:py-4"
+                    style={{ backgroundColor: logo.bg ?? "#ffffff" }}
                     title={logo.name}
                   >
                     <img
