@@ -265,9 +265,10 @@ export function BlogForm({ existing }: Props) {
             ref={editorRef}
             contentEditable
             onInput={(e) => setContent((e.target as HTMLDivElement).innerHTML)}
-            className="prose prose-sm min-h-[280px] max-w-none px-3 py-3 text-sm text-foreground outline-none dark:prose-invert"
+            className="min-h-[280px] max-w-none whitespace-pre-wrap break-words px-3 py-3 text-sm leading-relaxed text-foreground outline-none [&_blockquote]:my-3 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-3 [&_blockquote]:italic [&_h2]:mb-2 [&_h2]:mt-4 [&_h2]:text-lg [&_h2]:font-semibold [&_ol]:my-2 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:my-2 [&_ul]:my-2 [&_ul]:list-disc [&_ul]:pl-6"
             suppressContentEditableWarning
           />
+
         </div>
       </Field>
 
