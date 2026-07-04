@@ -128,7 +128,7 @@ function BlogListPage() {
             </p>
 
           ) : (
-            <div>
+            <div className="overflow-hidden">
               <table className="w-full table-fixed text-sm">
 
                 <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
