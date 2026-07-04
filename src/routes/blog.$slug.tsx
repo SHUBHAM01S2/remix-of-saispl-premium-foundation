@@ -277,7 +277,7 @@ function BlogPostPage() {
               {post.excerpt}
             </p>
           )}
-          <div className="space-y-6 text-base leading-relaxed text-foreground [&_a]:text-brand [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-brand/40 [&_blockquote]:pl-4 [&_blockquote]:italic [&_h2]:mt-8 [&_h2]:text-2xl [&_h2]:font-bold [&_h3]:mt-6 [&_h3]:text-xl [&_h3]:font-semibold [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:leading-relaxed [&_ul]:list-disc [&_ul]:pl-6">
+          <div className={`space-y-1 ${BLOG_PROSE_CLASSES}`}>
             {looksLikeHtml ? (
               <div dangerouslySetInnerHTML={{ __html: rawContent }} />
             ) : paragraphs.length > 0 ? (
