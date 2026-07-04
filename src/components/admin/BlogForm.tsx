@@ -2,8 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Upload, X, Bold, Italic, List, ListOrdered, Heading2, Link as LinkIcon, Quote } from "lucide-react";
+import {
+  Loader2, Upload, X, Bold, Italic, List, ListOrdered,
+  Heading2, Heading3, Link as LinkIcon, Quote, Pilcrow, Eye, Pencil,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { BLOG_PROSE_CLASSES } from "@/lib/blog-content-styles";
 import {
   upsertBlogPost,
   BLOG_CATEGORIES,
