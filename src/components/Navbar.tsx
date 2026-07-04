@@ -10,7 +10,7 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
-import shivaryanLogo from "@/assets/shivaryan-logo.png.asset.json";
+import saisplLogo from "@/assets/saispl-logo.png.asset.json";
 
 
 type NavLink =
@@ -39,20 +39,12 @@ const navLinks: NavLink[] = [
 
 function Logo() {
   return (
-    <Link to="/" className="flex items-center gap-2 sm:gap-2.5">
+    <Link to="/" className="flex items-center">
       <img
-        src={shivaryanLogo.url}
-        alt="Shivaryan Infotech logo"
-        className="h-8 w-auto shrink-0 sm:h-9 md:h-10 lg:h-11"
+        src={saisplLogo.url}
+        alt="SAISPL Infotech Services"
+        className="h-9 w-auto shrink-0 sm:h-10 md:h-12 lg:h-14"
       />
-      <div className="flex flex-col">
-        <span className="text-base font-bold leading-tight tracking-tight text-foreground sm:text-lg">
-          SAISPL
-        </span>
-        <span className="hidden text-[10px] leading-tight tracking-wide text-muted-foreground uppercase sm:block">
-          Shivaryan Infotech
-        </span>
-      </div>
     </Link>
   );
 }
