@@ -47,8 +47,19 @@ export function WhatWeDoSection() {
       return data as CapabilityRow[];
     },
   });
-
   const capabilities = data ?? fallback;
+
+  const routeForCapability = (cap: CapabilityRow): string => {
+    const key = `${cap.tag} ${cap.title}`.toLowerCase();
+    if (/website|web design|web develop/.test(key)) return "/web-design-development";
+    if (/seo|marketing/.test(key)) return "/seo-digital-marketing";
+    if (/automation|whatsapp|ai\b|agent|bot/.test(key)) return "/automation-ai-services";
+    if (/portal|software|dashboard|platform/.test(key)) return "/custom-portals-software";
+    if (/brand|design|graphic|logo/.test(key)) return "/branding-graphic-design";
+    if (/support|maintenance|care/.test(key)) return "/care-maintenance";
+    return "/services";
+  };
+
 
   const filters = useMemo(() => {
     const tags = Array.from(new Set(capabilities.map((c) => c.tag)));
@@ -96,9 +107,10 @@ export function WhatWeDoSection() {
             return (
               <StaggerItem key={cap.id} className="h-full">
                 <Link
-                  to="/contact"
+                  to={routeForCapability(cap)}
                   className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-all duration-300 hover:border-white/20 hover:-translate-y-1"
                 >
+
                   <div
                     className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                     style={{ background: "color-mix(in oklab, var(--color-brand) 40%, transparent)" }}
