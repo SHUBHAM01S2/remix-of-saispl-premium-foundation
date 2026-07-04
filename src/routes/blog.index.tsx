@@ -98,16 +98,20 @@ export const SEED: BlogPost[] = [
   },
 ];
 
-async function fetchBlogPosts(): Promise<BlogPost[]> {
+async function fetchBlogPosts(): Promise<{ posts: BlogPost[]; source: "db" | "fallback" }> {
   const { data, error } = await supabase
     .from("blog_posts" as never)
     .select(
       "id, title, slug, excerpt, content, cover_image_url, category, author_name, published_at",
     )
+    .not("published_at", "is", null)
     .order("published_at", { ascending: false });
-  if (error || !Array.isArray(data) || data.length === 0) return SEED;
-  return data as unknown as BlogPost[];
+  if (error || !Array.isArray(data) || data.length === 0) {
+    return { posts: SEED, source: "fallback" };
+  }
+  return { posts: data as unknown as BlogPost[], source: "db" };
 }
+
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
