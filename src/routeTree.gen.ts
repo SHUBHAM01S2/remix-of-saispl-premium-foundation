@@ -25,6 +25,7 @@ import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
+import { Route as AffiliateRouteImport } from './routes/affiliate'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -143,6 +144,11 @@ const BrandingGraphicDesignRoute = BrandingGraphicDesignRouteImport.update({
 const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   id: '/automation-ai-services',
   path: '/automation-ai-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateRoute = AffiliateRouteImport.update({
+  id: '/affiliate',
+  path: '/affiliate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -369,6 +375,7 @@ const AuthenticatedAdminBlogIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -425,6 +432,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -478,6 +486,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/affiliate': typeof AffiliateRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -536,6 +545,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/affiliate'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -592,6 +602,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/affiliate'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -644,6 +655,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/affiliate'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -702,6 +714,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AffiliateRoute: typeof AffiliateRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
@@ -838,6 +851,13 @@ declare module '@tanstack/react-router' {
       path: '/automation-ai-services'
       fullPath: '/automation-ai-services'
       preLoaderRoute: typeof AutomationAiServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate': {
+      id: '/affiliate'
+      path: '/affiliate'
+      fullPath: '/affiliate'
+      preLoaderRoute: typeof AffiliateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -1290,6 +1310,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  AffiliateRoute: AffiliateRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
