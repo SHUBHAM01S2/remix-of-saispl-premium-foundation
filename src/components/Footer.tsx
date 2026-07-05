@@ -15,6 +15,7 @@ const companyLinks = [
   { label: "About Us", to: "/about" },
   { label: "Our Works", to: "/our-works" },
   { label: "Careers", to: "/career" },
+  { label: "Affiliate Program", to: "/affiliate" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ];
