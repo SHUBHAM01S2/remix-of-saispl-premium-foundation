@@ -153,6 +153,17 @@ export function Footer() {
                 <span className="break-all">shivaryaninfotech@gmail.com</span>
               </EmailContactLink>
             </li>
+            <li>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2 text-sm text-foreground/70 transition-colors hover:text-foreground"
+              >
+                <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+                <span>WhatsApp us</span>
+              </a>
+            </li>
           </FooterColumn>
 
 
