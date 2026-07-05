@@ -192,10 +192,10 @@ export function Footer() {
         {/* Giant wordmark */}
         <div className="pointer-events-none relative -mb-6 select-none overflow-hidden sm:-mb-10 md:-mb-16">
           <h3
-            className="bg-gradient-to-b from-white/10 to-white/[0.02] bg-clip-text text-center text-[22vw] font-black leading-none tracking-tighter text-transparent"
+            className="bg-gradient-to-b from-white/10 to-white/[0.02] bg-clip-text text-center text-[14vw] font-black leading-none tracking-tighter text-transparent whitespace-nowrap"
             style={{ fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" }}
           >
-            SAISPL
+            Shivaryan Infotech
           </h3>
         </div>
       </div>
