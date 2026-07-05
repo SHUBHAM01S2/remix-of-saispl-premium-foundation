@@ -195,7 +195,7 @@ export function Footer() {
             className="bg-gradient-to-b from-white/10 to-white/[0.02] bg-clip-text text-center text-[22vw] font-black leading-none tracking-tighter text-transparent"
             style={{ fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" }}
           >
-            SAISPL
+            Shivaryan Infotech
           </h3>
         </div>
       </div>
