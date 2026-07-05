@@ -127,7 +127,7 @@ export function CTASection() {
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-brand/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </Link>
             <a
-              href="https://web.whatsapp.com/send?phone=919418031050"
+              href="https://wa.me/919418031050"
               target="_blank"
               rel="noopener noreferrer"
               className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-10 py-5 text-sm font-bold text-foreground backdrop-blur-xl transition-all hover:border-brand/40 hover:bg-brand/[0.08] sm:w-auto"
