@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, BadgeDollarSign, Handshake, TrendingUp, Users } from "lucide-react";
 
