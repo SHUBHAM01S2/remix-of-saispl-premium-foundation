@@ -235,7 +235,7 @@ export function Navbar() {
                 <div className="flex flex-col gap-2 border-t border-border px-4 py-6">
                   <SheetClose asChild>
                     <Link
-                      to="/shivi"
+                      to="/client-portal"
                       className="flex w-full items-center justify-center rounded-lg border border-border bg-transparent px-5 py-3 text-base font-medium text-foreground transition-colors hover:bg-surface"
                     >
                       Sign In
