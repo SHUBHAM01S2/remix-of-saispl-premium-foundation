@@ -21,6 +21,7 @@ import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as OurWorksRouteImport } from './routes/our-works'
 import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-portals-software'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ClientPortalRouteImport } from './routes/client-portal'
 import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
@@ -128,6 +129,11 @@ const CustomPortalsSoftwareRoute = CustomPortalsSoftwareRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientPortalRoute = ClientPortalRouteImport.update({
+  id: '/client-portal',
+  path: '/client-portal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareerRoute = CareerRouteImport.update({
@@ -408,6 +414,7 @@ export interface FileRoutesByFullPath {
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
+  '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
@@ -469,6 +476,7 @@ export interface FileRoutesByTo {
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
+  '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
@@ -527,6 +535,7 @@ export interface FileRoutesById {
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
   '/career': typeof CareerRoute
+  '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
@@ -590,6 +599,7 @@ export interface FileRouteTypes {
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
+    | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
@@ -651,6 +661,7 @@ export interface FileRouteTypes {
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
+    | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
@@ -708,6 +719,7 @@ export interface FileRouteTypes {
     | '/branding-graphic-design'
     | '/care-maintenance'
     | '/career'
+    | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
@@ -771,6 +783,7 @@ export interface RootRouteChildren {
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
   CareerRoute: typeof CareerRoute
+  ClientPortalRoute: typeof ClientPortalRoute
   ContactRoute: typeof ContactRoute
   CustomPortalsSoftwareRoute: typeof CustomPortalsSoftwareRoute
   OurWorksRoute: typeof OurWorksRouteWithChildren
@@ -875,6 +888,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/client-portal': {
+      id: '/client-portal'
+      path: '/client-portal'
+      fullPath: '/client-portal'
+      preLoaderRoute: typeof ClientPortalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/career': {
@@ -1416,6 +1436,7 @@ const rootRouteChildren: RootRouteChildren = {
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
   CareerRoute: CareerRoute,
+  ClientPortalRoute: ClientPortalRoute,
   ContactRoute: ContactRoute,
   CustomPortalsSoftwareRoute: CustomPortalsSoftwareRoute,
   OurWorksRoute: OurWorksRouteWithChildren,
