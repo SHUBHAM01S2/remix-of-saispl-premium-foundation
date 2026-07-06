@@ -4,10 +4,13 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
+  ArrowRight,
   Check,
   CheckCircle2,
   Circle,
   Loader2,
+  Pencil,
+  Plus,
   Save,
   Trash2,
   User,
@@ -18,6 +21,8 @@ import {
   StickyNote,
   Clock,
   Building2,
+  X,
+  AlertTriangle,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
@@ -29,6 +34,7 @@ import {
   deleteOnboarding,
   getOnboarding,
   updateOnboarding,
+  type CustomChecklistItem,
   type OnboardingRow,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
@@ -105,6 +111,10 @@ function OnboardingDetailPage() {
     if (data) setRow(data);
   }, [data]);
 
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [newItemLabel, setNewItemLabel] = useState("");
+
   const updateMut = useMutation({
     mutationFn: (patch: Partial<OnboardingRow>) => updateFn({ data: { id, patch } }),
     onSuccess: (next) => {
@@ -128,9 +138,11 @@ function OnboardingDetailPage() {
       ...ASSET_KEYS.map((k) => !!row.assets?.[k]),
       ...ACCESS_KEYS.map((k) => !!row.access?.[k]),
       ...CHECKLIST_KEYS.map((k) => !!row.checklist?.[k]),
+      ...row.custom_checklist.map((i) => i.done),
     ];
     const done = all.filter(Boolean).length;
-    return { done, total: all.length, pct: Math.round((done / all.length) * 100) };
+    const total = all.length || 1;
+    return { done, total: all.length, pct: Math.round((done / total) * 100) };
   }, [row]);
 
   if (isLoading) return <PageShell><p className="text-sm text-muted-foreground">Loading…</p></PageShell>;
@@ -139,36 +151,74 @@ function OnboardingDetailPage() {
 
   const patch = (p: Partial<OnboardingRow>) => setRow({ ...row, ...p });
   const patchGroup = (
-    group: "assets" | "access" | "checklist",
+    group: "assets" | "access",
     key: string,
     value: boolean,
   ) => setRow({ ...row, [group]: { ...row[group], [key]: value } });
 
-  const save = () => {
-    if (!row) return;
+  // Toggling checklist items writes through the server immediately so the
+  // timeline captures the change chronologically.
+  const toggleStandardChecklist = (key: string, value: boolean) => {
+    updateMut.mutate({ checklist: { ...row.checklist, [key]: value } });
+  };
+
+  const toggleCustomItem = (itemId: string, value: boolean) => {
+    const next = row.custom_checklist.map((i) => (i.id === itemId ? { ...i, done: value } : i));
+    updateMut.mutate({ custom_checklist: next });
+  };
+
+  const addCustomItem = () => {
+    const label = newItemLabel.trim();
+    if (!label) return;
+    const next: CustomChecklistItem[] = [
+      ...row.custom_checklist,
+      { id: crypto.randomUUID(), label, done: false },
+    ];
+    setNewItemLabel("");
+    updateMut.mutate({ custom_checklist: next });
+  };
+
+  const removeCustomItem = (itemId: string) => {
+    const next = row.custom_checklist.filter((i) => i.id !== itemId);
+    updateMut.mutate({ custom_checklist: next });
+  };
+
+  const changeStatus = (status: OnboardingStatus) => {
+    if (status === row.status) return;
+    updateMut.mutate({ status });
+  };
+
+  const saveAll = (overrides?: Partial<OnboardingRow>) => {
+    const base = { ...row, ...(overrides ?? {}) };
     updateMut.mutate({
-      company_name: row.company_name,
-      contact_person: row.contact_person,
-      email: row.email,
-      phone: row.phone,
-      project_type: row.project_type,
-      project_manager: row.project_manager,
-      status: row.status,
-      project_goals: row.project_goals,
-      package_selected: row.package_selected,
-      target_launch_date: row.target_launch_date,
-      pages_needed: row.pages_needed,
-      features_needed: row.features_needed,
-      integrations_needed: row.integrations_needed,
-      assets: row.assets,
-      access: row.access,
-      checklist: row.checklist,
-      notes: row.notes,
+      company_name: base.company_name,
+      contact_person: base.contact_person,
+      email: base.email,
+      phone: base.phone,
+      project_type: base.project_type,
+      project_manager: base.project_manager,
+      status: base.status,
+      project_goals: base.project_goals,
+      package_selected: base.package_selected,
+      target_launch_date: base.target_launch_date,
+      pages_needed: base.pages_needed,
+      features_needed: base.features_needed,
+      integrations_needed: base.integrations_needed,
+      assets: base.assets,
+      access: base.access,
+      notes: base.notes,
     });
   };
 
   const kickoffReady =
     row.status === "kickoff_ready" || row.status === "active_project" || progress.pct >= 90;
+
+  const currentIdx = ONBOARDING_STATUSES.findIndex((s) => s.value === row.status);
+  const prevStatus = currentIdx > 0 ? ONBOARDING_STATUSES[currentIdx - 1] : null;
+  const nextStatus =
+    currentIdx >= 0 && currentIdx < ONBOARDING_STATUSES.length - 1
+      ? ONBOARDING_STATUSES[currentIdx + 1]
+      : null;
 
   return (
     <PageShell>
@@ -190,16 +240,19 @@ function OnboardingDetailPage() {
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => {
-              if (window.confirm("Delete this onboarding record?")) deleteMut.mutate();
-            }}
-            disabled={deleteMut.isPending}
+            onClick={() => setEditOpen(true)}
+            className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 text-sm text-foreground hover:bg-surface"
+          >
+            <Pencil className="h-4 w-4" /> Edit
+          </button>
+          <button
+            onClick={() => setDeleteOpen(true)}
             className="inline-flex items-center gap-2 rounded-lg border border-input bg-background px-3 py-2 text-sm text-red-400 hover:bg-red-500/10"
           >
             <Trash2 className="h-4 w-4" /> Delete
           </button>
           <button
-            onClick={save}
+            onClick={() => saveAll()}
             disabled={updateMut.isPending}
             className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-60"
           >
@@ -241,7 +294,7 @@ function OnboardingDetailPage() {
               style={{ width: `${progress.pct}%` }}
             />
           </div>
-          <div className="mt-6 grid grid-cols-3 gap-3 text-center text-xs">
+          <div className="mt-6 grid grid-cols-4 gap-3 text-center text-xs">
             <MiniStat
               label="Assets"
               done={ASSET_KEYS.filter((k) => row.assets?.[k]).length}
@@ -257,29 +310,68 @@ function OnboardingDetailPage() {
               done={CHECKLIST_KEYS.filter((k) => row.checklist?.[k]).length}
               total={CHECKLIST_KEYS.length}
             />
+            <MiniStat
+              label="Custom"
+              done={row.custom_checklist.filter((i) => i.done).length}
+              total={row.custom_checklist.length}
+            />
           </div>
         </div>
 
         <div className="rounded-2xl border border-border/60 bg-card p-6">
           <p className="text-xs uppercase tracking-wider text-muted-foreground">Current status</p>
-          <select
-            value={row.status}
-            onChange={(e) => patch({ status: e.target.value as OnboardingStatus })}
-            className="mt-3 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
-          >
-            {ONBOARDING_STATUSES.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
-              </option>
-            ))}
-          </select>
           <div className="mt-3">
             <span
-              className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[row.status]}`}
+              className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[row.status]}`}
             >
               {ONBOARDING_STATUSES.find((s) => s.value === row.status)?.label}
             </span>
           </div>
+          <div className="mt-4 flex flex-col gap-2">
+            <button
+              onClick={() => prevStatus && changeStatus(prevStatus.value)}
+              disabled={!prevStatus || updateMut.isPending}
+              className="inline-flex items-center justify-center gap-2 rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-surface disabled:opacity-40"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              {prevStatus ? `Back to ${prevStatus.label}` : "Start"}
+            </button>
+            <button
+              onClick={() => nextStatus && changeStatus(nextStatus.value)}
+              disabled={!nextStatus || updateMut.isPending}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-3 py-2 text-xs font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-40"
+            >
+              {nextStatus ? `Advance to ${nextStatus.label}` : "At final stage"}
+              <ArrowRight className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Status transition rail */}
+      <section className="mt-6 rounded-2xl border border-border/60 bg-card p-4">
+        <div className="flex flex-wrap items-center gap-2">
+          {ONBOARDING_STATUSES.map((s, i) => {
+            const isCurrent = s.value === row.status;
+            const isReached = i <= currentIdx;
+            return (
+              <button
+                key={s.value}
+                onClick={() => changeStatus(s.value)}
+                disabled={updateMut.isPending || isCurrent}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  isCurrent
+                    ? STATUS_STYLES[s.value] + " ring-2 ring-brand/40"
+                    : isReached
+                    ? "border-emerald-500/30 bg-emerald-500/5 text-emerald-300 hover:bg-emerald-500/10"
+                    : "border-border/60 bg-background text-muted-foreground hover:text-foreground hover:border-border"
+                } disabled:cursor-not-allowed`}
+              >
+                {isReached ? <Check className="h-3 w-3" /> : <Circle className="h-3 w-3" />}
+                {s.label}
+              </button>
+            );
+          })}
         </div>
       </section>
 
@@ -415,18 +507,112 @@ function OnboardingDetailPage() {
         />
       </SectionCard>
 
-      {/* 5. Onboarding checklist */}
+      {/* 5. Onboarding checklist (standard, writes-through) */}
       <SectionCard
         icon={ClipboardCheck}
         title="Onboarding Checklist"
-        subtitle="Is the project kickoff-ready?"
+        subtitle="Toggles save immediately and update the timeline"
       >
-        <ChecklistGrid
-          items={CHECKLIST_KEYS}
-          labels={CHECKLIST_LABELS}
-          state={row.checklist}
-          onToggle={(k, v) => patchGroup("checklist", k, v)}
-        />
+        <div className="grid gap-2 sm:grid-cols-2">
+          {CHECKLIST_KEYS.map((k) => {
+            const done = !!row.checklist?.[k];
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => toggleStandardChecklist(k, !done)}
+                disabled={updateMut.isPending}
+                className={`group flex items-center gap-3 rounded-lg border px-3 py-2.5 text-left text-sm transition-colors disabled:opacity-70 ${
+                  done
+                    ? "border-emerald-500/40 bg-emerald-500/10 text-foreground"
+                    : "border-border/60 bg-background hover:border-border"
+                }`}
+              >
+                {done ? (
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+                ) : (
+                  <Circle className="h-4 w-4 shrink-0 text-muted-foreground" />
+                )}
+                <span className={done ? "" : "text-muted-foreground group-hover:text-foreground"}>
+                  {CHECKLIST_LABELS[k]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Custom checklist */}
+        <div className="mt-6">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Custom checklist ({row.custom_checklist.filter((i) => i.done).length}/{row.custom_checklist.length})
+            </p>
+          </div>
+          <div className="space-y-2">
+            {row.custom_checklist.length === 0 && (
+              <p className="text-xs text-muted-foreground">
+                No custom items yet. Add project-specific tasks below.
+              </p>
+            )}
+            {row.custom_checklist.map((item) => (
+              <div
+                key={item.id}
+                className={`flex items-center gap-3 rounded-lg border px-3 py-2 text-sm ${
+                  item.done
+                    ? "border-emerald-500/40 bg-emerald-500/10"
+                    : "border-border/60 bg-background"
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() => toggleCustomItem(item.id, !item.done)}
+                  disabled={updateMut.isPending}
+                  className="flex items-center gap-2 flex-1 text-left"
+                >
+                  {item.done ? (
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+                  ) : (
+                    <Circle className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  )}
+                  <span className={item.done ? "text-foreground" : "text-muted-foreground"}>
+                    {item.label}
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeCustomItem(item.id)}
+                  disabled={updateMut.isPending}
+                  className="text-muted-foreground hover:text-red-400"
+                  aria-label="Remove item"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 flex items-center gap-2">
+            <input
+              value={newItemLabel}
+              onChange={(e) => setNewItemLabel(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addCustomItem();
+                }
+              }}
+              placeholder="Add a custom checklist item…"
+              className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+            <button
+              type="button"
+              onClick={addCustomItem}
+              disabled={updateMut.isPending || !newItemLabel.trim()}
+              className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-40"
+            >
+              <Plus className="h-4 w-4" /> Add
+            </button>
+          </div>
+        </div>
       </SectionCard>
 
       {/* Notes */}
@@ -441,34 +627,42 @@ function OnboardingDetailPage() {
       </SectionCard>
 
       {/* Status Timeline */}
-      <SectionCard icon={Clock} title="Status Timeline">
-        <ol className="relative border-l border-border/60 pl-6">
-          {ONBOARDING_STATUSES.map((s, i) => {
-            const currentIdx = ONBOARDING_STATUSES.findIndex((x) => x.value === row.status);
-            const reached = i <= currentIdx;
-            return (
-              <li key={s.value} className="mb-6 last:mb-0">
+      <SectionCard icon={Clock} title="Status Timeline" subtitle="Auto-updated when status or checklist items change">
+        {row.timeline.length === 0 ? (
+          <p className="text-xs text-muted-foreground">No activity yet.</p>
+        ) : (
+          <ol className="relative border-l border-border/60 pl-6">
+            {[...row.timeline].reverse().map((entry, i) => (
+              <li key={i} className="mb-5 last:mb-0">
                 <span
                   className={`absolute -left-[9px] flex h-4 w-4 items-center justify-center rounded-full border ${
-                    reached
+                    entry.kind === "status"
                       ? "bg-brand border-brand"
+                      : entry.kind === "created"
+                      ? "bg-emerald-500 border-emerald-500"
                       : "bg-background border-border"
                   }`}
                 >
-                  {reached && <Check className="h-3 w-3 text-brand-foreground" />}
+                  {(entry.kind === "status" || entry.kind === "created") && (
+                    <Check className="h-3 w-3 text-brand-foreground" />
+                  )}
                 </span>
-                <p className={`text-sm font-medium ${reached ? "text-foreground" : "text-muted-foreground"}`}>
-                  {s.label}
+                <p className="text-sm font-medium text-foreground">{entry.message}</p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(entry.ts).toLocaleString()}
+                  <span className="ml-2 inline-flex items-center rounded-full border border-border/60 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                    {entry.kind}
+                  </span>
                 </p>
               </li>
-            );
-          })}
-        </ol>
+            ))}
+          </ol>
+        )}
       </SectionCard>
 
       <div className="mt-8 flex justify-end">
         <button
-          onClick={save}
+          onClick={() => saveAll()}
           disabled={updateMut.isPending}
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-60"
         >
@@ -480,6 +674,30 @@ function OnboardingDetailPage() {
         <p className="mt-3 text-right text-xs text-red-500">
           {(updateMut.error as Error).message}
         </p>
+      )}
+
+      {editOpen && (
+        <EditModal
+          row={row}
+          isSaving={updateMut.isPending}
+          error={updateMut.error as Error | null}
+          onClose={() => setEditOpen(false)}
+          onSave={(overrides) => {
+            saveAll(overrides);
+            setEditOpen(false);
+          }}
+        />
+      )}
+
+      {deleteOpen && (
+        <DeleteDialog
+          row={row}
+          isDeleting={deleteMut.isPending}
+          error={deleteMut.error as Error | null}
+          progressPct={progress.pct}
+          onCancel={() => setDeleteOpen(false)}
+          onConfirm={() => deleteMut.mutate()}
+        />
       )}
     </PageShell>
   );
@@ -591,6 +809,283 @@ function MiniStat({ label, done, total }: { label: string; done: number; total: 
         {done}/{total}
       </p>
       <p className="text-[10px] text-muted-foreground">{pct}%</p>
+    </div>
+  );
+}
+
+function EditModal({
+  row,
+  isSaving,
+  error,
+  onClose,
+  onSave,
+}: {
+  row: OnboardingRow;
+  isSaving: boolean;
+  error: Error | null;
+  onClose: () => void;
+  onSave: (overrides: Partial<OnboardingRow>) => void;
+}) {
+  const [draft, setDraft] = useState<OnboardingRow>(row);
+  const set = <K extends keyof OnboardingRow>(k: K, v: OnboardingRow[K]) =>
+    setDraft((d) => ({ ...d, [k]: v }));
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-8"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-border/60 bg-card p-6 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Edit Client Onboarding</h2>
+            <p className="text-xs text-muted-foreground">
+              Update details — changes reflect instantly across the workspace.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md p-1 text-muted-foreground hover:bg-surface hover:text-foreground"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Company name *">
+            <input
+              value={draft.company_name}
+              onChange={(e) => set("company_name", e.target.value)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Contact person">
+            <input
+              value={draft.contact_person ?? ""}
+              onChange={(e) => set("contact_person", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Email">
+            <input
+              type="email"
+              value={draft.email ?? ""}
+              onChange={(e) => set("email", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Phone">
+            <input
+              value={draft.phone ?? ""}
+              onChange={(e) => set("phone", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Project type">
+            <input
+              value={draft.project_type ?? ""}
+              onChange={(e) => set("project_type", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Project manager">
+            <input
+              value={draft.project_manager ?? ""}
+              onChange={(e) => set("project_manager", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Package selected">
+            <input
+              value={draft.package_selected ?? ""}
+              onChange={(e) => set("package_selected", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Target launch date">
+            <input
+              type="date"
+              value={draft.target_launch_date ?? ""}
+              onChange={(e) => set("target_launch_date", (e.target.value || null) as any)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Status">
+            <select
+              value={draft.status}
+              onChange={(e) => set("status", e.target.value as OnboardingStatus)}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            >
+              {ONBOARDING_STATUSES.map((s) => (
+                <option key={s.value} value={s.value}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Project goals" full>
+            <textarea
+              value={draft.project_goals ?? ""}
+              onChange={(e) => set("project_goals", (e.target.value || null) as any)}
+              rows={3}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Pages needed">
+            <textarea
+              value={draft.pages_needed ?? ""}
+              onChange={(e) => set("pages_needed", (e.target.value || null) as any)}
+              rows={2}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Features needed">
+            <textarea
+              value={draft.features_needed ?? ""}
+              onChange={(e) => set("features_needed", (e.target.value || null) as any)}
+              rows={2}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Integrations needed" full>
+            <textarea
+              value={draft.integrations_needed ?? ""}
+              onChange={(e) => set("integrations_needed", (e.target.value || null) as any)}
+              rows={2}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Notes" full>
+            <textarea
+              value={draft.notes ?? ""}
+              onChange={(e) => set("notes", (e.target.value || null) as any)}
+              rows={3}
+              className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+            />
+          </Field>
+        </div>
+
+        {error && <p className="mt-3 text-xs text-red-500">{error.message}</p>}
+
+        <div className="mt-6 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground hover:bg-surface"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={isSaving || !draft.company_name.trim()}
+            onClick={() => onSave(draft)}
+            className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground hover:bg-brand/90 disabled:opacity-60"
+          >
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DeleteDialog({
+  row,
+  isDeleting,
+  error,
+  progressPct,
+  onCancel,
+  onConfirm,
+}: {
+  row: OnboardingRow;
+  isDeleting: boolean;
+  error: Error | null;
+  progressPct: number;
+  onCancel: () => void;
+  onConfirm: () => void;
+}) {
+  const [typed, setTyped] = useState("");
+  const confirmMatch = typed.trim() === row.company_name.trim();
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+      onClick={onCancel}
+    >
+      <div
+        className="relative w-full max-w-md rounded-2xl border border-red-500/30 bg-card p-6 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="mb-4 flex items-start gap-3">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/15 text-red-400">
+            <AlertTriangle className="h-4 w-4" />
+          </span>
+          <div>
+            <h2 className="text-base font-semibold text-foreground">Delete onboarding record?</h2>
+            <p className="text-xs text-muted-foreground">
+              This permanently removes the client onboarding workspace. This action cannot be undone.
+            </p>
+          </div>
+        </div>
+
+        <div className="mb-4 rounded-lg border border-border/60 bg-background p-3 text-sm">
+          <p className="font-semibold text-foreground">{row.company_name}</p>
+          <dl className="mt-2 grid grid-cols-2 gap-y-1 text-xs text-muted-foreground">
+            <dt>Contact</dt>
+            <dd className="text-foreground">{row.contact_person || "—"}</dd>
+            <dt>Status</dt>
+            <dd className="text-foreground">
+              {ONBOARDING_STATUSES.find((s) => s.value === row.status)?.label}
+            </dd>
+            <dt>Package</dt>
+            <dd className="text-foreground">{row.package_selected || "—"}</dd>
+            <dt>Progress</dt>
+            <dd className="text-foreground">{progressPct}%</dd>
+            <dt>Created</dt>
+            <dd className="text-foreground">{new Date(row.created_at).toLocaleDateString()}</dd>
+          </dl>
+        </div>
+
+        <label className="block text-xs text-muted-foreground">
+          Type <span className="font-mono text-foreground">{row.company_name}</span> to confirm
+        </label>
+        <input
+          value={typed}
+          onChange={(e) => setTyped(e.target.value)}
+          className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm"
+          autoFocus
+        />
+
+        {error && <p className="mt-3 text-xs text-red-500">{error.message}</p>}
+
+        <div className="mt-5 flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-lg border border-input bg-background px-4 py-2 text-sm text-foreground hover:bg-surface"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={isDeleting || !confirmMatch}
+            onClick={onConfirm}
+            className="inline-flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-500/90 disabled:opacity-40"
+          >
+            {isDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+            Delete record
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
