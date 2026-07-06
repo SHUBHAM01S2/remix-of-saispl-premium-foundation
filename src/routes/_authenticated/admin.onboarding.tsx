@@ -565,10 +565,34 @@ type CreatePayload = {
   phone?: string;
   project_type?: string;
   package_selected?: string;
+  maintenance_plan?: string;
   project_manager?: string;
   target_launch_date?: string;
   project_goals?: string;
 };
+
+const PROJECT_TYPE_OPTIONS = [
+  "Website",
+  "SEO",
+  "Automation",
+  "Web App / Portal",
+  "WhatsApp / AI Integration",
+  "Other",
+] as const;
+
+const PACKAGE_OPTIONS = [
+  "Starter Presence Site",
+  "Growth Business Site",
+  "Premium Conversion Site",
+  "Portal / Web App",
+] as const;
+
+const MAINTENANCE_OPTIONS = [
+  "Care Basic",
+  "Care Plus",
+  "Growth Plan",
+  "Growth + Automation",
+] as const;
 
 function CreateModal({
   onClose,
@@ -588,6 +612,7 @@ function CreateModal({
     phone: "",
     project_type: "",
     package_selected: "",
+    maintenance_plan: "Care Basic",
     project_manager: "",
     target_launch_date: "",
     project_goals: "",
@@ -595,6 +620,7 @@ function CreateModal({
 
   const set = <K extends keyof CreatePayload>(k: K, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
+
 
   return (
     <div
