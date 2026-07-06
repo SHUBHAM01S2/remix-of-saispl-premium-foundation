@@ -359,12 +359,13 @@ export const getThreadForAdmin = createServerFn({ method: "POST" })
 
 export const sendAdminMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { onboarding_id: string; body: string }) => {
+  .inputValidator((data: { onboarding_id: string; body?: string; attachments?: unknown }) => {
     if (!data?.onboarding_id) throw new Error("onboarding_id required");
     const body = (data?.body ?? "").toString().trim();
-    if (!body) throw new Error("Message cannot be empty");
+    const attachments = validateAttachments(data?.attachments);
+    if (!body && attachments.length === 0) throw new Error("Message cannot be empty");
     if (body.length > 4000) throw new Error("Message too long (4000 char max)");
-    return { onboarding_id: data.onboarding_id, body };
+    return { onboarding_id: data.onboarding_id, body, attachments };
   })
   .handler(async ({ context, data }): Promise<ChatMessage> => {
     const admin = await assertAnyAdmin(context as any);
@@ -378,6 +379,7 @@ export const sendAdminMessage = createServerFn({ method: "POST" })
         sender_id: admin.id,
         sender_name: senderName,
         body: data.body,
+        attachments: data.attachments,
         read_by_admin_at: new Date().toISOString(),
       })
       .select(MSG_COLS)
