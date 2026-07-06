@@ -1198,7 +1198,9 @@ function MessagesTab() {
     <ChatThread
       messages={messages}
       isSending={mut.isPending}
-      onSend={(body) => mut.mutateAsync(body)}
+      onSend={async (body) => {
+        await mut.mutateAsync(body);
+      }}
       placeholder="Message your project manager…"
       emptyHint="No messages yet. Send a note and your project manager will reply here."
       headerLeft={
