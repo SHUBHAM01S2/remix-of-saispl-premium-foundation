@@ -175,7 +175,12 @@ function AdminInboxPage() {
     };
   }, [threads]);
 
+  if (!isAdmin) {
+    return <WrongRoleNotice mode="client-on-admin" email={parentCtx?.currentUserEmail ?? null} />;
+  }
+
   return (
+
     <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6">
       <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
