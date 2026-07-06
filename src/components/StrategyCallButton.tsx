@@ -4,17 +4,37 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { CalendarClock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const CAL_LINK = "shivaryan-infotech-ozoylu/consultation";
-const NAMESPACE = "consultation";
+const DEFAULT_CAL_LINK = "shivaryan-infotech-ozoylu/consultation";
+const DEFAULT_NAMESPACE = "consultation";
 
 type Props = {
   children?: ReactNode;
   className?: string;
   ariaLabel?: string;
+  calLink?: string;
+  namespace?: string;
+  title?: string;
 };
 
-export function StrategyCallButton({ children, className, ariaLabel }: Props) {
+export function StrategyCallButton({ children, className, ariaLabel, calLink, namespace, title }: Props) {
+  const CAL_LINK = calLink ?? DEFAULT_CAL_LINK;
+  const NAMESPACE = namespace ?? DEFAULT_NAMESPACE;
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const cal = await getCalApi({ namespace: NAMESPACE });
+      cal("ui", {
+        hideEventTypeDetails: false,
+        layout: "month_view",
+        cssVarsPerTheme: {
+          dark: { "cal-brand": "#3b82f6" },
+          light: { "cal-brand": "#3b82f6" },
+        },
+      });
+    })();
+  }, [NAMESPACE]);
+
 
   useEffect(() => {
     (async () => {
