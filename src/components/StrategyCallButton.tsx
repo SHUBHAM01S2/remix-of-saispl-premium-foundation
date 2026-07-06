@@ -4,16 +4,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { CalendarClock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const CAL_LINK = "shivaryan-infotech-ozoylu/consultation";
-const NAMESPACE = "consultation";
+const DEFAULT_CAL_LINK = "shivaryan-infotech-ozoylu/consultation";
+const DEFAULT_NAMESPACE = "consultation";
 
 type Props = {
   children?: ReactNode;
   className?: string;
   ariaLabel?: string;
+  calLink?: string;
+  namespace?: string;
+  title?: string;
 };
 
-export function StrategyCallButton({ children, className, ariaLabel }: Props) {
+export function StrategyCallButton({ children, className, ariaLabel, calLink, namespace, title }: Props) {
+  const CAL_LINK = calLink ?? DEFAULT_CAL_LINK;
+  const NAMESPACE = namespace ?? DEFAULT_NAMESPACE;
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -28,7 +33,7 @@ export function StrategyCallButton({ children, className, ariaLabel }: Props) {
         },
       });
     })();
-  }, []);
+  }, [NAMESPACE]);
 
   return (
     <>
@@ -51,9 +56,10 @@ export function StrategyCallButton({ children, className, ariaLabel }: Props) {
           <DialogHeader className="border-b border-white/10 px-6 py-4">
             <DialogTitle className="flex items-center gap-2 text-base text-foreground">
               <CalendarClock className="h-4 w-4 text-brand" />
-              Book a strategy call
+              {title ?? "Book a strategy call"}
             </DialogTitle>
           </DialogHeader>
+
           <div className="h-[75vh] w-full bg-background">
             {open && (
               <Cal
