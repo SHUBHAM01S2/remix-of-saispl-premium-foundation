@@ -235,7 +235,7 @@ function AdminInboxPage() {
                   key={t.onboarding_id}
                   thread={t}
                   active={t.onboarding_id === currentId}
-                  onSelect={() => setSelected(t.onboarding_id)}
+                  onSelect={() => setActive(t.onboarding_id)}
                 />
               ))}
             </ul>
