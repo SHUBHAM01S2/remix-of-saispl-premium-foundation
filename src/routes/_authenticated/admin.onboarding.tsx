@@ -12,6 +12,7 @@ import {
   Clock3,
   UserCheck,
   Eye,
+  EyeOff,
   Rocket,
   PlayCircle,
   Building2,
@@ -23,8 +24,14 @@ import {
   Layers,
   ShieldCheck,
   UserCog,
+  KeyRound,
+  RefreshCw,
   X,
 } from "lucide-react";
+import { format } from "date-fns";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
