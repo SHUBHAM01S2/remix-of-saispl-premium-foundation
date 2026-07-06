@@ -19,6 +19,10 @@ import {
   Phone,
   CalendarClock,
   Sparkles,
+  Package,
+  Layers,
+  ShieldCheck,
+  UserCog,
   X,
 } from "lucide-react";
 
@@ -561,10 +565,34 @@ type CreatePayload = {
   phone?: string;
   project_type?: string;
   package_selected?: string;
+  maintenance_plan?: string;
   project_manager?: string;
   target_launch_date?: string;
   project_goals?: string;
 };
+
+const PROJECT_TYPE_OPTIONS = [
+  "Website",
+  "SEO",
+  "Automation",
+  "Web App / Portal",
+  "WhatsApp / AI Integration",
+  "Other",
+] as const;
+
+const PACKAGE_OPTIONS = [
+  "Starter Presence Site",
+  "Growth Business Site",
+  "Premium Conversion Site",
+  "Portal / Web App",
+] as const;
+
+const MAINTENANCE_OPTIONS = [
+  "Care Basic",
+  "Care Plus",
+  "Growth Plan",
+  "Growth + Automation",
+] as const;
 
 function CreateModal({
   onClose,
@@ -584,6 +612,7 @@ function CreateModal({
     phone: "",
     project_type: "",
     package_selected: "",
+    maintenance_plan: "Care Basic",
     project_manager: "",
     target_launch_date: "",
     project_goals: "",
@@ -591,6 +620,7 @@ function CreateModal({
 
   const set = <K extends keyof CreatePayload>(k: K, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
+
 
   return (
     <div
@@ -670,23 +700,48 @@ function CreateModal({
                 className={inputCls}
               />
             </Field>
-            <Field label="Project type">
-              <input
+            <Field label="Project type" icon={Layers}>
+              <select
                 value={form.project_type}
                 onChange={(e) => set("project_type", e.target.value)}
-                placeholder="Website · SEO · Automation…"
                 className={inputCls}
-              />
+              >
+                <option value="">Select project type…</option>
+                {PROJECT_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
             </Field>
-            <Field label="Package selected">
-              <input
+            <Field label="Package selected" icon={Package}>
+              <select
                 value={form.package_selected}
                 onChange={(e) => set("package_selected", e.target.value)}
-                placeholder="Growth · Pro · Custom…"
                 className={inputCls}
-              />
+              >
+                <option value="">Select package…</option>
+                {PACKAGE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
             </Field>
-            <Field label="Assigned project manager">
+            <Field label="Maintenance plan" icon={ShieldCheck}>
+              <select
+                value={form.maintenance_plan}
+                onChange={(e) => set("maintenance_plan", e.target.value)}
+                className={inputCls}
+              >
+                {MAINTENANCE_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Assigned project manager" icon={UserCog}>
               <input
                 value={form.project_manager}
                 onChange={(e) => set("project_manager", e.target.value)}
@@ -702,6 +757,7 @@ function CreateModal({
                 className={inputCls}
               />
             </Field>
+
             <div className="sm:col-span-2">
               <Field label="Project goals / notes">
                 <textarea

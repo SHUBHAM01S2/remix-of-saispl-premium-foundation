@@ -75,6 +75,7 @@ export type OnboardingRow = {
   checklist: Record<string, any>;
   custom_checklist: CustomChecklistItem[];
   timeline: TimelineEntry[];
+  maintenance_plan: string | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -90,20 +91,23 @@ function splitChecklist(raw: any): {
   standard: Record<string, boolean>;
   custom: CustomChecklistItem[];
   timeline: TimelineEntry[];
+  maintenance_plan: string | null;
 } {
   const src = raw && typeof raw === "object" ? raw : {};
   const custom = Array.isArray(src.__custom) ? (src.__custom as CustomChecklistItem[]) : [];
   const timeline = Array.isArray(src.__timeline) ? (src.__timeline as TimelineEntry[]) : [];
+  const maintenance_plan =
+    typeof src.__maintenance_plan === "string" ? src.__maintenance_plan : null;
   const standard: Record<string, boolean> = {};
   for (const k of Object.keys(src)) {
-    if (k === "__custom" || k === "__timeline") continue;
+    if (k === "__custom" || k === "__timeline" || k === "__maintenance_plan") continue;
     standard[k] = !!src[k];
   }
-  return { standard, custom, timeline };
+  return { standard, custom, timeline, maintenance_plan };
 }
 
 function normalize(row: any): OnboardingRow {
-  const { standard, custom, timeline } = splitChecklist(row.checklist);
+  const { standard, custom, timeline, maintenance_plan } = splitChecklist(row.checklist);
   return {
     ...row,
     assets: row.assets ?? {},
@@ -111,8 +115,10 @@ function normalize(row: any): OnboardingRow {
     checklist: standard,
     custom_checklist: custom,
     timeline,
+    maintenance_plan,
   } as OnboardingRow;
 }
+
 
 
 export const listOnboarding = createServerFn({ method: "GET" })
@@ -158,6 +164,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
     project_manager?: string;
     target_launch_date?: string;
     project_goals?: string;
+    maintenance_plan?: string;
   }) => {
     if (!data?.company_name || !data.company_name.trim()) throw new Error("Company name required");
     return data;
@@ -169,6 +176,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
     const initialTimeline: TimelineEntry[] = [
       { ts: new Date().toISOString(), kind: "created", message: `Onboarding created for ${data.company_name.trim()}` },
     ];
+    const maintenance = clean(data.maintenance_plan) ?? "Care Basic";
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
       .insert({
@@ -181,7 +189,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
         project_manager: clean(data.project_manager),
         target_launch_date: clean(data.target_launch_date),
         project_goals: clean(data.project_goals),
-        checklist: { __timeline: initialTimeline, __custom: [] },
+        checklist: { __timeline: initialTimeline, __custom: [], __maintenance_plan: maintenance },
       })
       .select(COLS)
       .single();
@@ -219,6 +227,7 @@ export const updateOnboarding = createServerFn({ method: "POST" })
       timeline: _t,
       checklist: patchChecklist,
       status: patchStatus,
+      maintenance_plan: patchMaintenance,
       ...restPatch
     } = data.patch as any;
 
@@ -230,6 +239,8 @@ export const updateOnboarding = createServerFn({ method: "POST" })
       ? patchCustom
       : prev.custom_checklist;
     const nextStatus: OnboardingStatus = patchStatus ?? prev.status;
+    const nextMaintenance: string | null =
+      patchMaintenance !== undefined ? patchMaintenance : prev.maintenance_plan;
 
     // Diff → new timeline entries
     const newEntries: TimelineEntry[] = [];
@@ -295,8 +306,10 @@ export const updateOnboarding = createServerFn({ method: "POST" })
         ...nextStandardChecklist,
         __custom: nextCustom,
         __timeline: mergedTimeline,
+        __maintenance_plan: nextMaintenance,
       },
     };
+
 
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
