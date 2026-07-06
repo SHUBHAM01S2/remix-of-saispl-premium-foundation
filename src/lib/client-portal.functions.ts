@@ -18,8 +18,12 @@ export type AssetSubmission = {
   submitted_at: string;
 };
 
+// Access submissions are encrypted at rest. The client-facing view exposes
+// ONLY the timestamp — plaintext credentials are never returned to the
+// browser (not even to the client that submitted them). Admins fetch
+// decrypted values through `getOnboardingAccessSubmissions` in
+// `onboarding-admin.functions`.
 export type AccessSubmission = {
-  note: string;
   submitted_at: string;
 };
 
@@ -68,9 +72,21 @@ function splitChecklist(raw: any) {
   const maintenance_plan =
     typeof src.__maintenance_plan === "string" ? src.__maintenance_plan : null;
   const subs = (src.__submissions && typeof src.__submissions === "object" ? src.__submissions : {}) as any;
+  const rawAccess = (subs.access && typeof subs.access === "object" ? subs.access : {}) as Record<
+    string,
+    Array<{ submitted_at?: string }>
+  >;
+  // Strip encryption payloads / any plaintext leftovers before sending to
+  // the browser. Client-facing view only ever sees the timestamp.
+  const accessSanitized: Record<string, AccessSubmission[]> = {};
+  for (const [k, list] of Object.entries(rawAccess)) {
+    accessSanitized[k] = (Array.isArray(list) ? list : [])
+      .filter((e) => e && typeof e.submitted_at === "string")
+      .map((e) => ({ submitted_at: e.submitted_at as string }));
+  }
   const submissions = {
     assets: (subs.assets && typeof subs.assets === "object" ? subs.assets : {}) as Record<string, AssetSubmission[]>,
-    access: (subs.access && typeof subs.access === "object" ? subs.access : {}) as Record<string, AccessSubmission[]>,
+    access: accessSanitized,
   };
   const standard: Record<string, boolean> = {};
   for (const k of Object.keys(src)) {
@@ -250,24 +266,25 @@ export const submitClientAccess = createServerFn({ method: "POST" })
     const { row } = await loadForCurrentUser(context);
     if (!row) throw new Error("No onboarding record linked to your account. Contact your project manager.");
 
+    const { encryptCreds } = await import("@/lib/creds-crypto.server");
+    const enc = encryptCreds(data.value.trim());
+    const submittedAt = new Date().toISOString();
+
     return writeChecklistUpdate(row.id, (prev) => {
       const src = prev.checklist && typeof prev.checklist === "object" ? { ...prev.checklist } : {};
       const subs = { ...(src.__submissions ?? {}) };
-      const accessSubs = { ...(subs.access ?? {}) } as Record<string, AccessSubmission[]>;
+      // Stored shape: { enc, submitted_at }. Never store the plaintext.
+      const accessSubs = { ...(subs.access ?? {}) } as Record<string, Array<{ enc: unknown; submitted_at: string }>>;
       const existing = Array.isArray(accessSubs[data.key]) ? accessSubs[data.key] : [];
-      const entry: AccessSubmission = {
-        note: data.value.trim(),
-        submitted_at: new Date().toISOString(),
-      };
-      accessSubs[data.key] = [...existing, entry];
+      accessSubs[data.key] = [...existing, { enc, submitted_at: submittedAt }];
       subs.access = accessSubs;
       src.__submissions = subs;
 
       const nextAccess = { ...(prev.access ?? {}), [data.key]: true };
       const nextChecklist = appendTimeline(src, {
-        ts: entry.submitted_at,
+        ts: submittedAt,
         kind: "update",
-        message: `Client submitted access for "${data.key}"`,
+        message: `Client submitted access for "${data.key}" (encrypted at rest)`,
       });
       return { checklist: nextChecklist, access: nextAccess };
     });

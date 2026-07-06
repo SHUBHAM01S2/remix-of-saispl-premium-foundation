@@ -152,6 +152,75 @@ export const getOnboarding = createServerFn({ method: "POST" })
     return row ? normalize(row) : null;
   });
 
+export type AccessSubmissionDecrypted = {
+  key: string;
+  submitted_at: string;
+  plaintext: string | null; // null if legacy/unencrypted or decryption failed
+  encrypted: boolean;
+  error?: string;
+};
+
+// Admin-only: decrypt and return client-submitted access credentials for
+// this onboarding record. Plaintext credentials are ONLY ever returned by
+// this function — never by the client-facing view.
+export const getOnboardingAccessSubmissions = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string }) => {
+    if (!data?.id) throw new Error("id required");
+    return data;
+  })
+  .handler(async ({ context, data }): Promise<AccessSubmissionDecrypted[]> => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await (supabaseAdmin as any)
+      .from("client_onboarding")
+      .select("id, checklist")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw error;
+    if (!row) return [];
+    const subs = row.checklist?.__submissions?.access ?? {};
+    const { decryptCreds, isEncrypted } = await import("@/lib/creds-crypto.server");
+    const out: AccessSubmissionDecrypted[] = [];
+    for (const [key, list] of Object.entries(subs)) {
+      if (!Array.isArray(list)) continue;
+      for (const entry of list as any[]) {
+        if (!entry?.submitted_at) continue;
+        if (isEncrypted(entry.enc)) {
+          try {
+            out.push({
+              key,
+              submitted_at: entry.submitted_at,
+              plaintext: decryptCreds(entry.enc),
+              encrypted: true,
+            });
+          } catch (e: any) {
+            out.push({
+              key,
+              submitted_at: entry.submitted_at,
+              plaintext: null,
+              encrypted: true,
+              error: e?.message ?? "Failed to decrypt",
+            });
+          }
+        } else {
+          // Legacy plaintext (pre-encryption). Surface as-is so admins can
+          // still act on it, but flag it.
+          out.push({
+            key,
+            submitted_at: entry.submitted_at,
+            plaintext: typeof entry.note === "string" ? entry.note : null,
+            encrypted: false,
+          });
+        }
+      }
+    }
+    // Newest first.
+    return out.sort((a, b) => (a.submitted_at < b.submitted_at ? 1 : -1));
+  });
+
+
+
 export const createOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: {
