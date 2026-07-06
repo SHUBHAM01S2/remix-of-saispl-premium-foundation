@@ -197,6 +197,75 @@ export type Database = {
         }
         Relationships: []
       }
+      client_onboarding: {
+        Row: {
+          access: Json
+          assets: Json
+          checklist: Json
+          company_name: string
+          contact_person: string | null
+          created_at: string
+          email: string | null
+          features_needed: string | null
+          id: string
+          integrations_needed: string | null
+          notes: string | null
+          package_selected: string | null
+          pages_needed: string | null
+          phone: string | null
+          project_goals: string | null
+          project_manager: string | null
+          project_type: string | null
+          status: Database["public"]["Enums"]["onboarding_status"]
+          target_launch_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          access?: Json
+          assets?: Json
+          checklist?: Json
+          company_name: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          features_needed?: string | null
+          id?: string
+          integrations_needed?: string | null
+          notes?: string | null
+          package_selected?: string | null
+          pages_needed?: string | null
+          phone?: string | null
+          project_goals?: string | null
+          project_manager?: string | null
+          project_type?: string | null
+          status?: Database["public"]["Enums"]["onboarding_status"]
+          target_launch_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          access?: Json
+          assets?: Json
+          checklist?: Json
+          company_name?: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          features_needed?: string | null
+          id?: string
+          integrations_needed?: string | null
+          notes?: string | null
+          package_selected?: string | null
+          pages_needed?: string | null
+          phone?: string | null
+          project_goals?: string | null
+          project_manager?: string | null
+          project_type?: string | null
+          status?: Database["public"]["Enums"]["onboarding_status"]
+          target_launch_date?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       client_reports: {
         Row: {
           client_name: string
@@ -424,7 +493,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      onboarding_status:
+        | "pending"
+        | "waiting_on_client"
+        | "in_review"
+        | "kickoff_ready"
+        | "active_project"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -551,6 +625,14 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      onboarding_status: [
+        "pending",
+        "waiting_on_client",
+        "in_review",
+        "kickoff_ready",
+        "active_project",
+      ],
+    },
   },
 } as const
