@@ -1095,3 +1095,83 @@ function DeleteDialog({
     </div>
   );
 }
+
+function ClientAccessSubmissions({
+  id,
+  labels,
+}: {
+  id: string;
+  labels: Record<string, string>;
+}) {
+  const fetchSubs = useServerFn(getOnboardingAccessSubmissions);
+  const q = useQuery({
+    queryKey: ["onboarding-access-submissions", id],
+    queryFn: () => fetchSubs({ data: { id } }),
+  });
+  const [revealed, setRevealed] = useState<Record<number, boolean>>({});
+  const rows = q.data ?? [];
+
+  return (
+    <SectionCard
+      icon={KeyRound}
+      title="Client-submitted credentials"
+      subtitle="Encrypted at rest (AES-256-GCM). Only visible to admins."
+    >
+      {q.isLoading && (
+        <p className="text-xs text-muted-foreground">Loading submissions…</p>
+      )}
+      {q.error && (
+        <p className="text-xs text-red-400">
+          Failed to load: {(q.error as Error).message}
+        </p>
+      )}
+      {!q.isLoading && rows.length === 0 && (
+        <p className="text-xs text-muted-foreground">
+          No credentials submitted yet.
+        </p>
+      )}
+      {rows.length > 0 && (
+        <ul className="space-y-2">
+          {rows.map((r, i) => {
+            const show = !!revealed[i];
+            return (
+              <li
+                key={i}
+                className="rounded-lg border border-border/60 bg-background/40 p-3 text-sm"
+              >
+                <div className="mb-1 flex items-center justify-between gap-3">
+                  <span className="font-medium">{labels[r.key] ?? r.key}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(r.submitted_at).toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-start justify-between gap-3">
+                  <pre className="min-w-0 flex-1 whitespace-pre-wrap break-words font-mono text-xs text-muted-foreground">
+                    {show
+                      ? r.plaintext ?? "(unable to decrypt)"
+                      : "•••••••• hidden"}
+                  </pre>
+                  <button
+                    type="button"
+                    onClick={() => setRevealed((s) => ({ ...s, [i]: !s[i] }))}
+                    className="shrink-0 rounded-md border border-border/60 px-2 py-1 text-xs hover:bg-accent/40"
+                  >
+                    {show ? "Hide" : "Reveal"}
+                  </button>
+                </div>
+                {!r.encrypted && (
+                  <p className="mt-1 text-[10px] uppercase tracking-wider text-amber-400">
+                    Legacy plaintext entry — pre-encryption
+                  </p>
+                )}
+                {r.error && (
+                  <p className="mt-1 text-[10px] text-red-400">{r.error}</p>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </SectionCard>
+  );
+}
