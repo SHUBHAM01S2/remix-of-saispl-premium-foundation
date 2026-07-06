@@ -174,6 +174,7 @@ function ContactsPage() {
                     <th className="px-4 py-3 text-left">Message</th>
                     <Th onClick={() => toggleSort("created_at")}>Date <SortIcon k="created_at" /></Th>
                     <Th onClick={() => toggleSort("status")}>Status <SortIcon k="status" /></Th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
