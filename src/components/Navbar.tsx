@@ -141,7 +141,7 @@ export function Navbar() {
         {/* Desktop CTA + Language */}
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
           <Link
-            to="/shivi"
+            to="/client-portal"
             className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
           >
             Sign In
