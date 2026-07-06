@@ -23,6 +23,8 @@ import {
   Building2,
   X,
   AlertTriangle,
+  MessageSquare,
+  ArrowUpRight,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
