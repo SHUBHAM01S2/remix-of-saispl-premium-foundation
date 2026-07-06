@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { checkIsAdmin } from "@/lib/admin.functions";
+import { WrongRoleNotice } from "@/components/WrongRoleNotice";
 
 export const Route = createFileRoute("/shivi")({
   ssr: false,
@@ -25,17 +26,19 @@ function ShiviLogin() {
   const [resetOpen, setResetOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
+  // When a client account somehow lands on /shivi with an active session,
+  // we render the full-screen wrong-role notice instead of the login card.
+  const [wrongRoleEmail, setWrongRoleEmail] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
+      const r = await checkIsAdmin().catch(() => ({ isAdmin: false, email: null }));
       if (r.isAdmin) {
         navigate({ to: "/admin", replace: true });
         return;
       }
-      await supabase.auth.signOut();
-      setError("This private sign-in is for admin accounts only. Client access starts from the public Sign In button.");
+      setWrongRoleEmail(data.user.email ?? null);
     });
   }, [navigate]);
 
@@ -50,9 +53,9 @@ function ShiviLogin() {
       await router.invalidate();
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
       if (!r.isAdmin) {
-        await supabase.auth.signOut();
-        await router.invalidate();
-        setError("This private sign-in is for admin accounts only. Client access starts from the public Sign In button.");
+        // Keep them signed in so the wrong-role screen can show identity + a
+        // clean sign-out button. The WrongRoleNotice component handles logout.
+        setWrongRoleEmail(email);
         return;
       }
       navigate({ to: "/admin", replace: true });
@@ -62,6 +65,7 @@ function ShiviLogin() {
       setLoading(false);
     }
   };
+
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
