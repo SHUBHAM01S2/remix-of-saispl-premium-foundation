@@ -75,6 +75,7 @@ export type OnboardingRow = {
   checklist: Record<string, any>;
   custom_checklist: CustomChecklistItem[];
   timeline: TimelineEntry[];
+  maintenance_plan: string | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
