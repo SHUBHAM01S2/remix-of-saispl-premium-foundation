@@ -197,6 +197,53 @@ export type Database = {
         }
         Relationships: []
       }
+      client_messages: {
+        Row: {
+          attachments: Json
+          body: string
+          created_at: string
+          id: string
+          onboarding_id: string
+          read_by_admin_at: string | null
+          read_by_client_at: string | null
+          sender_id: string | null
+          sender_name: string | null
+          sender_role: string
+        }
+        Insert: {
+          attachments?: Json
+          body: string
+          created_at?: string
+          id?: string
+          onboarding_id: string
+          read_by_admin_at?: string | null
+          read_by_client_at?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+          sender_role: string
+        }
+        Update: {
+          attachments?: Json
+          body?: string
+          created_at?: string
+          id?: string
+          onboarding_id?: string
+          read_by_admin_at?: string | null
+          read_by_client_at?: string | null
+          sender_id?: string | null
+          sender_name?: string | null
+          sender_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_messages_onboarding_id_fkey"
+            columns: ["onboarding_id"]
+            isOneToOne: false
+            referencedRelation: "client_onboarding"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_onboarding: {
         Row: {
           access: Json
