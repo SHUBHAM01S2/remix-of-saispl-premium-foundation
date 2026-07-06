@@ -247,6 +247,7 @@ function RootComponent() {
       <Footer />
       {!isAdmin && <WhatsAppChatButton />}
       <BackToTopButton />
+      <Toaster theme="dark" position="top-right" richColors closeButton />
     </QueryClientProvider>
   );
 }
