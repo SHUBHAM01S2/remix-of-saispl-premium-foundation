@@ -461,6 +461,18 @@ function Dashboard() {
   const row = data;
   const unread = summaryQ.data?.unread_count ?? 0;
   const recent = summaryQ.data?.recent_admin ?? [];
+  const convStatus = summaryQ.data?.conversation_status ?? null;
+
+  const markAllReadFn = useServerFn(markMyMessagesRead);
+  const markAllRead = async () => {
+    try {
+      await markAllReadFn();
+      await qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+      await qc.invalidateQueries({ queryKey: ["client-portal", "thread"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Couldn't mark messages as read");
+    }
+  };
 
   return (
     <ShellFrame
@@ -471,6 +483,7 @@ function Dashboard() {
           unread={unread}
           recent={recent}
           onOpenMessages={() => setTab("messages")}
+          onMarkAllRead={markAllRead}
         />
       }
     >
@@ -511,7 +524,9 @@ function Dashboard() {
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
-          {tab === "messages" && <MessagesTab row={row} unread={unread} />}
+          {tab === "messages" && (
+            <MessagesTab row={row} unread={unread} convStatus={convStatus} />
+          )}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
