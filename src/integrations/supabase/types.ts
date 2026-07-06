@@ -35,6 +35,57 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_enquiries: {
+        Row: {
+          audience_type: string | null
+          company: string | null
+          created_at: string
+          email: string
+          expected_referrals: string | null
+          experience: string | null
+          full_name: string
+          hear_about: string | null
+          id: string
+          location: string | null
+          message: string
+          phone: string
+          status: string
+          website: string | null
+        }
+        Insert: {
+          audience_type?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          expected_referrals?: string | null
+          experience?: string | null
+          full_name: string
+          hear_about?: string | null
+          id?: string
+          location?: string | null
+          message: string
+          phone: string
+          status?: string
+          website?: string | null
+        }
+        Update: {
+          audience_type?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          expected_referrals?: string | null
+          experience?: string | null
+          full_name?: string
+          hear_about?: string | null
+          id?: string
+          location?: string | null
+          message?: string
+          phone?: string
+          status?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author_name: string | null
