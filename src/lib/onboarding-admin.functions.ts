@@ -116,19 +116,36 @@ export const getOnboarding = createServerFn({ method: "POST" })
 
 export const createOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { company_name: string; contact_person?: string; email?: string }) => {
+  .inputValidator((data: {
+    company_name: string;
+    contact_person?: string;
+    email?: string;
+    phone?: string;
+    project_type?: string;
+    package_selected?: string;
+    project_manager?: string;
+    target_launch_date?: string;
+    project_goals?: string;
+  }) => {
     if (!data?.company_name || !data.company_name.trim()) throw new Error("Company name required");
     return data;
   })
   .handler(async ({ context, data }): Promise<OnboardingRow> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const clean = (v?: string) => (v && v.trim() ? v.trim() : null);
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
       .insert({
         company_name: data.company_name.trim(),
-        contact_person: data.contact_person?.trim() || null,
-        email: data.email?.trim() || null,
+        contact_person: clean(data.contact_person),
+        email: clean(data.email),
+        phone: clean(data.phone),
+        project_type: clean(data.project_type),
+        package_selected: clean(data.package_selected),
+        project_manager: clean(data.project_manager),
+        target_launch_date: clean(data.target_launch_date),
+        project_goals: clean(data.project_goals),
       })
       .select(COLS)
       .single();
