@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ShieldAlert, LogOut, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { logAdminAccessDenied } from "@/lib/admin-access-log.functions";
 
 export type WrongRoleMode = "client-on-admin" | "admin-on-client";
 
@@ -20,6 +21,14 @@ export function WrongRoleNotice({
 }) {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
+
+  // Fire a deny-audit row once per mount so admins can see who attempted
+  // to reach the wrong role's surface and from where.
+  useEffect(() => {
+    const route = typeof window !== "undefined" ? window.location.pathname : "unknown";
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent : undefined;
+    logAdminAccessDenied({ data: { route, reason: mode, userAgent: ua } }).catch(() => {});
+  }, [mode]);
 
   const copy =
     mode === "client-on-admin"

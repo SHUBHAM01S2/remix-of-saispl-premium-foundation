@@ -301,16 +301,24 @@ export const adminGetPartner = createServerFn({ method: "GET" })
 
 export const adminListReferrals = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    await assertAnyAdmin(context as any);
+  .inputValidator((d?: { partner_id?: string; status?: string; q?: string }) => d ?? {})
+  .handler(async ({ context, data }) => {
+    await assertAnyAdmin(context as any, "adminListReferrals");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
-    const { data, error } = await admin
+    let q = admin
       .from("referrals")
       .select(`${REFERRAL_COLS}, partner:sales_partners(id,full_name,company,email)`)
       .order("created_at", { ascending: false });
+    if (data.partner_id) q = q.eq("partner_id", data.partner_id);
+    if (data.status) q = q.eq("status", data.status);
+    if (data.q && data.q.trim()) {
+      const n = `%${data.q.trim()}%`;
+      q = q.or(`client_name.ilike.${n},company.ilike.${n},email.ilike.${n}`);
+    }
+    const { data: rows, error } = await q;
     if (error) throw error;
-    return (data ?? []) as (ReferralRow & { partner: { id: string; full_name: string; company: string | null; email: string } | null })[];
+    return (rows ?? []) as (ReferralRow & { partner: { id: string; full_name: string; company: string | null; email: string } | null })[];
   });
 
 export const adminGetReferral = createServerFn({ method: "GET" })
