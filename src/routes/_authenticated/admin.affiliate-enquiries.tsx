@@ -158,6 +158,15 @@ function AffiliateEnquiriesPage() {
           <p className="text-xs text-muted-foreground">
             {rows.length} {rows.length === 1 ? "result" : "results"}
           </p>
+          <button
+            type="button"
+            onClick={() => downloadEnquiriesCsv(rows)}
+            disabled={rows.length === 0}
+            className="ml-auto inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Download className="h-4 w-4" />
+            Download CSV
+          </button>
         </div>
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
