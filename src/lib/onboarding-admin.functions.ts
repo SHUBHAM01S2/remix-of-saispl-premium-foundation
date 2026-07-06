@@ -306,8 +306,10 @@ export const updateOnboarding = createServerFn({ method: "POST" })
         ...nextStandardChecklist,
         __custom: nextCustom,
         __timeline: mergedTimeline,
+        __maintenance_plan: nextMaintenance,
       },
     };
+
 
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
