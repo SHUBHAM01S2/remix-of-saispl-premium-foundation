@@ -773,6 +773,7 @@ function MessagesCard({ onboardingId }: { onboardingId: string }) {
         </div>
         <Link
           to="/admin/inbox"
+          search={{ thread: onboardingId }}
           className="inline-flex items-center gap-1 rounded-lg border border-border/60 bg-background/70 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
         >
           Open conversation <ArrowUpRight className="h-3.5 w-3.5" />

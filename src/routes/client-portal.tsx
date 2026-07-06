@@ -46,7 +46,9 @@ import {
 import {
   getMyThread,
   getMyThreadSummary,
+  markMyMessagesRead,
   sendMyMessage,
+  signMessageAttachmentDownload,
   type ClientNotification,
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
@@ -326,10 +328,48 @@ function Dashboard() {
   const summaryQ = useQuery({
     queryKey: ["client-portal", "notif-summary"],
     queryFn: () => summaryFn(),
-    refetchInterval: 8000,
+    // Realtime pushes updates instantly; poll acts as a safety net.
+    refetchInterval: 60_000,
     refetchOnWindowFocus: true,
     enabled: !!data,
   });
+
+  // Supabase Realtime: new admin messages / status changes → instant refresh.
+  const onboardingId = summaryQ.data?.onboarding_id ?? null;
+  useEffect(() => {
+    if (!onboardingId) return;
+    const ch = supabase
+      .channel(`client-thread-${onboardingId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "client_messages",
+          filter: `onboarding_id=eq.${onboardingId}`,
+        },
+        () => {
+          qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+          qc.invalidateQueries({ queryKey: ["client-portal", "thread"] });
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "client_onboarding",
+          filter: `id=eq.${onboardingId}`,
+        },
+        () => {
+          qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [onboardingId, qc]);
 
   // Toast when new admin messages arrive (compare against last seen id).
   const lastSeenIdRef = useRef<string | null>(null);
@@ -344,7 +384,6 @@ function Dashboard() {
       return;
     }
     if (topId && topId !== lastSeenIdRef.current && s.unread_count > 0) {
-      // find messages newer than the previously seen id
       const newOnes: ClientNotification[] = [];
       for (const m of s.recent_admin) {
         if (m.id === lastSeenIdRef.current) break;
@@ -352,12 +391,13 @@ function Dashboard() {
       }
       const first = newOnes[0];
       if (first && tab !== "messages") {
+        const attNote =
+          first.attachment_count > 0
+            ? ` · 📎 ${first.attachment_count} attachment${first.attachment_count > 1 ? "s" : ""}`
+            : "";
         toast.message(`New message from ${first.sender_name ?? "SAISPL Team"}`, {
-          description: first.body
-            ? first.body.slice(0, 140)
-            : first.has_attachments
-            ? "Sent you an attachment"
-            : "New update on your project",
+          description:
+            (first.body ? first.body.slice(0, 140) : "New update on your project") + attNote,
           action: {
             label: "Open",
             onClick: () => setTab("messages"),
@@ -421,6 +461,18 @@ function Dashboard() {
   const row = data;
   const unread = summaryQ.data?.unread_count ?? 0;
   const recent = summaryQ.data?.recent_admin ?? [];
+  const convStatus = summaryQ.data?.conversation_status ?? null;
+
+  const markAllReadFn = useServerFn(markMyMessagesRead);
+  const markAllRead = async () => {
+    try {
+      await markAllReadFn();
+      await qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+      await qc.invalidateQueries({ queryKey: ["client-portal", "thread"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Couldn't mark messages as read");
+    }
+  };
 
   return (
     <ShellFrame
@@ -431,6 +483,7 @@ function Dashboard() {
           unread={unread}
           recent={recent}
           onOpenMessages={() => setTab("messages")}
+          onMarkAllRead={markAllRead}
         />
       }
     >
@@ -471,7 +524,9 @@ function Dashboard() {
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
-          {tab === "messages" && <MessagesTab row={row} unread={unread} />}
+          {tab === "messages" && (
+            <MessagesTab row={row} unread={unread} convStatus={convStatus} />
+          )}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
@@ -527,12 +582,16 @@ function NotificationBell({
   unread,
   recent,
   onOpenMessages,
+  onMarkAllRead,
 }: {
   unread: number;
   recent: ClientNotification[];
   onOpenMessages: () => void;
+  onMarkAllRead: () => void | Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const downloadFn = useServerFn(signMessageAttachmentDownload);
   useEffect(() => {
     if (!open) return;
     const onDoc = (e: MouseEvent) => {
@@ -542,6 +601,25 @@ function NotificationBell({
     document.addEventListener("mousedown", onDoc);
     return () => document.removeEventListener("mousedown", onDoc);
   }, [open]);
+
+  const openAttachment = async (path: string) => {
+    try {
+      const { url } = await downloadFn({ data: { path } });
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Couldn't open attachment");
+    }
+  };
+
+  const handleMarkAll = async () => {
+    setBusy(true);
+    try {
+      await onMarkAllRead();
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <div className="relative" data-notif-root>
       <button
@@ -560,12 +638,22 @@ function NotificationBell({
         )}
       </button>
       {open && (
-        <div className="absolute right-0 top-10 z-40 w-[320px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
+        <div className="absolute right-0 top-10 z-40 w-[340px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
           <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
-            <p className="text-sm font-semibold">Notifications</p>
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-              {unread > 0 ? `${unread} new` : "All caught up"}
-            </span>
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold">Notifications</p>
+              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                {unread > 0 ? `${unread} new` : "All caught up"}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleMarkAll}
+              disabled={busy || unread === 0}
+              className="text-[11px] font-medium text-brand transition hover:text-brand/80 disabled:cursor-not-allowed disabled:text-muted-foreground/60"
+            >
+              {busy ? "Marking…" : "Mark all as read"}
+            </button>
           </div>
           <div className="max-h-80 overflow-y-auto">
             {recent.length === 0 ? (
@@ -578,12 +666,8 @@ function NotificationBell({
                   const isUnread = i < unread;
                   return (
                     <li key={m.id}>
-                      <button
-                        onClick={() => {
-                          setOpen(false);
-                          onOpenMessages();
-                        }}
-                        className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface/60 ${
+                      <div
+                        className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${
                           isUnread ? "bg-brand/[0.06]" : ""
                         }`}
                       >
@@ -593,25 +677,49 @@ function NotificationBell({
                           }`}
                         />
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between gap-2">
-                            <p className="truncate text-xs font-medium">
-                              {m.sender_name ?? "SAISPL Team"}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setOpen(false);
+                              onOpenMessages();
+                            }}
+                            className="block w-full text-left hover:opacity-90"
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="truncate text-xs font-medium">
+                                {m.sender_name ?? "SAISPL Team"}
+                              </p>
+                              <span className="shrink-0 text-[10px] text-muted-foreground">
+                                {relTime(m.created_at)}
+                              </span>
+                            </div>
+                            <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                              {m.body ||
+                                (m.has_attachments ? "Sent you an attachment" : "New update")}
                             </p>
-                            <span className="shrink-0 text-[10px] text-muted-foreground">
-                              {relTime(m.created_at)}
-                            </span>
-                          </div>
-                          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
-                            {m.body ||
-                              (m.has_attachments ? "Sent you an attachment" : "New update")}
-                          </p>
-                          {m.has_attachments && (
-                            <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-brand">
-                              <Paperclip className="h-3 w-3" /> Attachment included
-                            </p>
+                          </button>
+                          {m.attachments && m.attachments.length > 0 && (
+                            <ul className="mt-1.5 space-y-1">
+                              {m.attachments.map((a) => (
+                                <li key={a.path}>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      openAttachment(a.path);
+                                    }}
+                                    className="inline-flex max-w-full items-center gap-1 truncate rounded-md border border-border/60 bg-background/60 px-1.5 py-0.5 text-[10px] text-brand hover:bg-brand/10"
+                                    title={a.name}
+                                  >
+                                    <Paperclip className="h-3 w-3 shrink-0" />
+                                    <span className="truncate">{a.name}</span>
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
                           )}
                         </div>
-                      </button>
+                      </div>
                     </li>
                   );
                 })}
@@ -1372,7 +1480,15 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
 /* Messages                                                             */
 /* ------------------------------------------------------------------ */
 
-function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: number }) {
+function MessagesTab({
+  row,
+  unread,
+  convStatus,
+}: {
+  row: ClientOnboardingView;
+  unread: number;
+  convStatus: import("@/lib/messages.functions").ConversationStatus | null;
+}) {
   const qc = useQueryClient();
   const getThreadFn = useServerFn(getMyThread);
   const sendFn = useServerFn(sendMyMessage);
@@ -1434,7 +1550,22 @@ function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: numbe
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+          {convStatus === "waiting_on_client" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-sky-500/40 bg-sky-500/15 px-2 py-0.5 font-medium text-sky-300">
+              <Clock className="h-3 w-3" /> Waiting on you
+            </span>
+          )}
+          {convStatus === "waiting_on_team" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/40 bg-violet-500/15 px-2 py-0.5 font-medium text-violet-300">
+              <Loader2 className="h-3 w-3" /> Team is on it
+            </span>
+          )}
+          {convStatus === "resolved" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 font-medium text-emerald-300">
+              <CheckCircle2 className="h-3 w-3" /> Resolved
+            </span>
+          )}
           <span
             className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${STATUS_STYLES[row.status]}`}
           >
@@ -1445,6 +1576,7 @@ function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: numbe
           </span>
         </div>
       </div>
+
 
 
       <ChatThread

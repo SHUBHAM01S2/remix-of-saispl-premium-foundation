@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import {
   Inbox,
   Loader2,
@@ -35,7 +37,12 @@ import {
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
 
+const inboxSearchSchema = z.object({
+  thread: fallback(z.string().uuid().optional(), undefined),
+});
+
 export const Route = createFileRoute("/_authenticated/admin/inbox")({
+  validateSearch: zodValidator(inboxSearchSchema),
   beforeLoad: async () => {
     const r = await checkIsAdmin();
     if (!r.isAdmin) throw notFound();
@@ -77,11 +84,26 @@ function fmtRelative(iso: string | null): string {
 
 function AdminInboxPage() {
   const qc = useQueryClient();
+  const navigate = useNavigate({ from: "/admin/inbox" });
+  const search = Route.useSearch();
   const listFn = useServerFn(listInboxThreads);
   const adminsFn = useServerFn(listAssignableAdmins);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(search.thread ?? null);
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ConversationStatus>("all");
+
+  // Sync selection ← URL (deep-link from onboarding "Messages" card).
+  useEffect(() => {
+    if (search.thread && search.thread !== selected) {
+      setSelected(search.thread);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.thread]);
+
+  const setActive = (id: string) => {
+    setSelected(id);
+    navigate({ search: { thread: id }, replace: true });
+  };
 
   const threadsQ = useQuery({
     queryKey: ["admin-inbox", "list"],
@@ -213,7 +235,7 @@ function AdminInboxPage() {
                   key={t.onboarding_id}
                   thread={t}
                   active={t.onboarding_id === currentId}
-                  onSelect={() => setSelected(t.onboarding_id)}
+                  onSelect={() => setActive(t.onboarding_id)}
                 />
               ))}
             </ul>
