@@ -507,6 +507,11 @@ function OnboardingDetailPage() {
         />
       </SectionCard>
 
+      {/* 4b. Client-submitted credentials (decrypted admin-only) */}
+      <ClientAccessSubmissions id={row.id} labels={ACCESS_LABELS} />
+
+
+
       {/* 5. Onboarding checklist (standard, writes-through) */}
       <SectionCard
         icon={ClipboardCheck}
