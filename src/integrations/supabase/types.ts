@@ -517,6 +517,176 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_activity: {
+        Row: {
+          actor_id: string | null
+          actor_role: string | null
+          created_at: string
+          id: string
+          payload: Json | null
+          referral_id: string
+          type: string
+        }
+        Insert: {
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json | null
+          referral_id: string
+          type: string
+        }
+        Update: {
+          actor_id?: string | null
+          actor_role?: string | null
+          created_at?: string
+          id?: string
+          payload?: Json | null
+          referral_id?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_activity_referral_id_fkey"
+            columns: ["referral_id"]
+            isOneToOne: false
+            referencedRelation: "referrals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      referrals: {
+        Row: {
+          client_name: string
+          commission_amount: number | null
+          commission_pct: number | null
+          company: string | null
+          created_at: string
+          deal_stage: Database["public"]["Enums"]["referral_deal_stage"]
+          deal_value: number | null
+          email: string | null
+          id: string
+          notes: string | null
+          onboarding_id: string | null
+          package_selected: string | null
+          partner_id: string
+          payout_status: Database["public"]["Enums"]["referral_payout_status"]
+          phone: string | null
+          referral_date: string
+          service_interested: string | null
+          source: string | null
+          status: Database["public"]["Enums"]["referral_status"]
+          updated_at: string
+        }
+        Insert: {
+          client_name: string
+          commission_amount?: number | null
+          commission_pct?: number | null
+          company?: string | null
+          created_at?: string
+          deal_stage?: Database["public"]["Enums"]["referral_deal_stage"]
+          deal_value?: number | null
+          email?: string | null
+          id?: string
+          notes?: string | null
+          onboarding_id?: string | null
+          package_selected?: string | null
+          partner_id: string
+          payout_status?: Database["public"]["Enums"]["referral_payout_status"]
+          phone?: string | null
+          referral_date?: string
+          service_interested?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["referral_status"]
+          updated_at?: string
+        }
+        Update: {
+          client_name?: string
+          commission_amount?: number | null
+          commission_pct?: number | null
+          company?: string | null
+          created_at?: string
+          deal_stage?: Database["public"]["Enums"]["referral_deal_stage"]
+          deal_value?: number | null
+          email?: string | null
+          id?: string
+          notes?: string | null
+          onboarding_id?: string | null
+          package_selected?: string | null
+          partner_id?: string
+          payout_status?: Database["public"]["Enums"]["referral_payout_status"]
+          phone?: string | null
+          referral_date?: string
+          service_interested?: string | null
+          source?: string | null
+          status?: Database["public"]["Enums"]["referral_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_onboarding_id_fkey"
+            columns: ["onboarding_id"]
+            isOneToOne: false
+            referencedRelation: "client_onboarding"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referrals_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "sales_partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sales_partners: {
+        Row: {
+          company: string | null
+          created_at: string
+          default_commission_pct: number | null
+          email: string
+          full_name: string
+          id: string
+          notes: string | null
+          payout_details: Json | null
+          payout_method: string | null
+          phone: string | null
+          status: Database["public"]["Enums"]["partner_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          default_commission_pct?: number | null
+          email: string
+          full_name: string
+          id?: string
+          notes?: string | null
+          payout_details?: Json | null
+          payout_method?: string | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          default_commission_pct?: number | null
+          email?: string
+          full_name?: string
+          id?: string
+          notes?: string | null
+          payout_details?: Json | null
+          payout_method?: string | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["partner_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       testimonials: {
         Row: {
           client_name: string
@@ -569,6 +739,22 @@ export type Database = {
         | "in_review"
         | "kickoff_ready"
         | "active_project"
+      partner_status: "active" | "paused"
+      referral_deal_stage:
+        | "lead"
+        | "qualified"
+        | "proposal"
+        | "negotiation"
+        | "closed_won"
+        | "closed_lost"
+      referral_payout_status: "pending" | "approved" | "paid" | "on_hold"
+      referral_status:
+        | "new"
+        | "contacted"
+        | "in_discussion"
+        | "won"
+        | "lost"
+        | "onboarding"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -708,6 +894,24 @@ export const Constants = {
         "in_review",
         "kickoff_ready",
         "active_project",
+      ],
+      partner_status: ["active", "paused"],
+      referral_deal_stage: [
+        "lead",
+        "qualified",
+        "proposal",
+        "negotiation",
+        "closed_won",
+        "closed_lost",
+      ],
+      referral_payout_status: ["pending", "approved", "paid", "on_hold"],
+      referral_status: [
+        "new",
+        "contacted",
+        "in_discussion",
+        "won",
+        "lost",
+        "onboarding",
       ],
     },
   },

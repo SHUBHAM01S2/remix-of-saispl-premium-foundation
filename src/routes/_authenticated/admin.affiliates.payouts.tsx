@@ -3,13 +3,14 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, BadgeCheck, CheckCircle2, PauseCircle, Lock } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
-  adminListReferrals, adminUpdateReferral,
+  adminListReferrals, adminUpdateReferral, adminApprovePayout, adminMarkPayoutPaid,
   PAYOUT_STATUSES, type ReferralPayoutStatus,
 } from "@/lib/partners.functions";
 import { fmtMoney, PayoutChip } from "@/lib/partners-ui";
+
 
 export const Route = createFileRoute("/_authenticated/admin/affiliates/payouts")({
   beforeLoad: async () => { const r = await checkIsAdmin(); if (!r.isAdmin) throw notFound(); return {}; },
@@ -43,6 +44,19 @@ function PayoutsPage() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Updated"); },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
+  const approveFn = useServerFn(adminApprovePayout);
+  const markPaidFn = useServerFn(adminMarkPayoutPaid);
+  const approve = useMutation({
+    mutationFn: (id: string) => approveFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Payout approved"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+  const markPaid = useMutation({
+    mutationFn: (id: string) => markPaidFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Marked as paid"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+
 
   return (
     <div className="space-y-4">
@@ -76,7 +90,7 @@ function PayoutsPage() {
                   <th className="px-5 py-3 font-medium">Deal</th>
                   <th className="px-5 py-3 font-medium">Commission</th>
                   <th className="px-5 py-3 font-medium">Current status</th>
-                  <th className="px-5 py-3 font-medium">Change</th>
+                  <th className="px-5 py-3 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,12 +107,35 @@ function PayoutsPage() {
                     <td className="px-5 py-3 font-medium">{fmtMoney(r.commission_amount)}</td>
                     <td className="px-5 py-3"><PayoutChip status={r.payout_status} /></td>
                     <td className="px-5 py-3">
-                      <select value={r.payout_status}
-                        onChange={(e) => setPayout.mutate({ id: r.id, payout_status: e.target.value as ReferralPayoutStatus })}
-                        className="rounded-lg border border-border bg-background/60 px-2 py-1 text-xs">
-                        {PAYOUT_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                      </select>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {r.payout_status === "pending" && (
+                          <>
+                            <ActionBtn icon={BadgeCheck} label="Approve" tone="blue"
+                              onClick={() => approve.mutate(r.id)} />
+                            <ActionBtn icon={PauseCircle} label="Hold" tone="muted"
+                              onClick={() => setPayout.mutate({ id: r.id, payout_status: "on_hold" })} />
+                          </>
+                        )}
+                        {r.payout_status === "approved" && (
+                          <>
+                            <ActionBtn icon={CheckCircle2} label="Mark paid" tone="emerald"
+                              onClick={() => markPaid.mutate(r.id)} />
+                            <ActionBtn icon={PauseCircle} label="Hold" tone="muted"
+                              onClick={() => setPayout.mutate({ id: r.id, payout_status: "on_hold" })} />
+                          </>
+                        )}
+                        {r.payout_status === "on_hold" && (
+                          <ActionBtn icon={BadgeCheck} label="Resume → Pending" tone="muted"
+                            onClick={() => setPayout.mutate({ id: r.id, payout_status: "pending" })} />
+                        )}
+                        {r.payout_status === "paid" && (
+                          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                            <Lock className="h-3 w-3" /> Locked
+                          </span>
+                        )}
+                      </div>
                     </td>
+
                   </tr>
                 ))}
               </tbody>
@@ -118,3 +155,19 @@ function KPI({ label, value, accent }: { label: string; value: string; accent?: 
     </div>
   );
 }
+
+function ActionBtn({
+  icon: Icon, label, tone, onClick,
+}: { icon: any; label: string; tone: "blue" | "emerald" | "muted"; onClick: () => void }) {
+  const cls =
+    tone === "blue"    ? "border-blue-400/40 bg-blue-500/10 text-blue-200 hover:bg-blue-500/20"
+  : tone === "emerald" ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
+                       : "border-border bg-muted/30 text-muted-foreground hover:text-foreground";
+  return (
+    <button onClick={onClick}
+      className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-xs ${cls}`}>
+      <Icon className="h-3 w-3" /> {label}
+    </button>
+  );
+}
+
