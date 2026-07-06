@@ -141,7 +141,7 @@ export function Navbar() {
         {/* Desktop CTA + Language */}
         <div className="hidden shrink-0 items-center gap-2 lg:flex">
           <Link
-            to="/shivi"
+            to="/client-portal"
             className="inline-flex items-center justify-center rounded-lg border border-border/60 bg-transparent px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-surface"
           >
             Sign In
@@ -235,7 +235,7 @@ export function Navbar() {
                 <div className="flex flex-col gap-2 border-t border-border px-4 py-6">
                   <SheetClose asChild>
                     <Link
-                      to="/shivi"
+                      to="/client-portal"
                       className="flex w-full items-center justify-center rounded-lg border border-border bg-transparent px-5 py-3 text-base font-medium text-foreground transition-colors hover:bg-surface"
                     >
                       Sign In
