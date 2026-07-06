@@ -164,6 +164,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
     project_manager?: string;
     target_launch_date?: string;
     project_goals?: string;
+    maintenance_plan?: string;
   }) => {
     if (!data?.company_name || !data.company_name.trim()) throw new Error("Company name required");
     return data;
@@ -175,6 +176,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
     const initialTimeline: TimelineEntry[] = [
       { ts: new Date().toISOString(), kind: "created", message: `Onboarding created for ${data.company_name.trim()}` },
     ];
+    const maintenance = clean(data.maintenance_plan) ?? "Care Basic";
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
       .insert({
@@ -187,7 +189,7 @@ export const createOnboarding = createServerFn({ method: "POST" })
         project_manager: clean(data.project_manager),
         target_launch_date: clean(data.target_launch_date),
         project_goals: clean(data.project_goals),
-        checklist: { __timeline: initialTimeline, __custom: [] },
+        checklist: { __timeline: initialTimeline, __custom: [], __maintenance_plan: maintenance },
       })
       .select(COLS)
       .single();
