@@ -276,6 +276,57 @@ export const sendMyMessage = createServerFn({ method: "POST" })
     return toChatMessage(inserted, "client");
   });
 
+/**
+ * Non-mutating summary for the signed-in client. Powers the unread badge,
+ * bell menu and toast notifications inside the client portal without
+ * marking anything as read (only opening the Messages tab marks read).
+ */
+export type ClientNotification = {
+  id: string;
+  sender_name: string | null;
+  body: string;
+  created_at: string;
+  has_attachments: boolean;
+};
+
+export const getMyThreadSummary = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{
+    onboarding_id: string | null;
+    unread_count: number;
+    latest_admin_at: string | null;
+    recent_admin: ClientNotification[];
+  }> => {
+    const { row } = await loadClientOnboarding(context);
+    if (!row) {
+      return { onboarding_id: null, unread_count: 0, latest_admin_at: null, recent_admin: [] };
+    }
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: recent, error } = await (supabaseAdmin as any)
+      .from("client_messages")
+      .select("id, sender_name, body, created_at, attachments, read_by_client_at")
+      .eq("onboarding_id", row.id)
+      .eq("sender_role", "admin")
+      .eq("is_internal", false)
+      .order("created_at", { ascending: false })
+      .limit(10);
+    if (error) throw error;
+    const list = (recent ?? []) as any[];
+    const unread_count = list.filter((m) => !m.read_by_client_at).length;
+    return {
+      onboarding_id: row.id,
+      unread_count,
+      latest_admin_at: list[0]?.created_at ?? null,
+      recent_admin: list.map((m) => ({
+        id: m.id,
+        sender_name: m.sender_name ?? null,
+        body: m.body ?? "",
+        created_at: m.created_at,
+        has_attachments: Array.isArray(m.attachments) && m.attachments.length > 0,
+      })),
+    };
+  });
+
 /* ------------------------------------------------------------------ */
 /* Attachment upload / download signing                                 */
 /* ------------------------------------------------------------------ */
