@@ -33,7 +33,6 @@ function ReferralDetailAdmin() {
 
   const [status, setStatus] = useState<ReferralStatus>("new");
   const [stage, setStage] = useState<ReferralDealStage>("lead");
-  const [payout, setPayout] = useState<ReferralPayoutStatus>("pending");
   const [dealValue, setDealValue] = useState("");
   const [commissionPct, setCommissionPct] = useState("");
   const [notes, setNotes] = useState("");
@@ -42,7 +41,7 @@ function ReferralDetailAdmin() {
   useEffect(() => {
     const r = q.data?.referral;
     if (!r) return;
-    setStatus(r.status); setStage(r.deal_stage); setPayout(r.payout_status);
+    setStatus(r.status); setStage(r.deal_stage);
     setDealValue(r.deal_value != null ? String(r.deal_value) : "");
     setCommissionPct(r.commission_pct != null ? String(r.commission_pct) : "");
     setNotes(r.notes ?? "");
@@ -50,7 +49,7 @@ function ReferralDetailAdmin() {
 
   const save = useMutation({
     mutationFn: () => updateFn({ data: {
-      id, status, deal_stage: stage, payout_status: payout,
+      id, status, deal_stage: stage,
       deal_value: dealValue === "" ? null : Number(dealValue),
       commission_pct: commissionPct === "" ? null : Number(commissionPct),
       notes: notes || null,
@@ -58,6 +57,7 @@ function ReferralDetailAdmin() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referral", id] }); toast.success("Saved"); },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
+
 
   const addNote = useMutation({
     mutationFn: () => noteFn({ data: { id, note: newNote } }),
