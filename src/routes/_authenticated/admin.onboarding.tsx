@@ -617,6 +617,7 @@ function CreateModal({
     company_name: "",
     contact_person: "",
     email: "",
+    password: "",
     phone: "",
     project_type: "",
     package_selected: "",
@@ -625,9 +626,40 @@ function CreateModal({
     target_launch_date: "",
     project_goals: "",
   });
+  const [showPw, setShowPw] = useState(false);
+  const [pwTouched, setPwTouched] = useState(false);
+  const [dateOpen, setDateOpen] = useState(false);
 
   const set = <K extends keyof CreatePayload>(k: K, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
+
+  const pw = form.password ?? "";
+  const pwError =
+    pw.length === 0
+      ? null
+      : pw.length < 8
+        ? "Must be at least 8 characters."
+        : !/\d/.test(pw)
+          ? "Must include at least one number."
+          : null;
+  const pwValid = pw.length === 0 || !pwError;
+
+  const generatePassword = () => {
+    const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const lower = "abcdefghijkmnopqrstuvwxyz";
+    const digits = "23456789";
+    const symbols = "!@#$%^&*";
+    const all = upper + lower + digits + symbols;
+    const pick = (s: string) => s[Math.floor(Math.random() * s.length)];
+    const chars = [pick(upper), pick(lower), pick(digits), pick(digits), pick(symbols)];
+    for (let i = 0; i < 9; i++) chars.push(pick(all));
+    const shuffled = chars.sort(() => Math.random() - 0.5).join("");
+    set("password", shuffled);
+    setShowPw(true);
+    setPwTouched(true);
+  };
+
+  const launchDate = form.target_launch_date ? new Date(form.target_launch_date + "T00:00:00") : undefined;
 
 
   return (
