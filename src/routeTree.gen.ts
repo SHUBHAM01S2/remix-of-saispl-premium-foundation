@@ -46,6 +46,7 @@ import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
 import { Route as AuthenticatedAdminCapabilitiesRouteImport } from './routes/_authenticated/admin.capabilities'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
+import { Route as AuthenticatedAdminAffiliateEnquiriesRouteImport } from './routes/_authenticated/admin.affiliate-enquiries'
 import { Route as AuthenticatedAdminAdminsRouteImport } from './routes/_authenticated/admin.admins'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
 import { Route as AuthenticatedAdminReportsIndexRouteImport } from './routes/_authenticated/admin.reports.index'
@@ -257,6 +258,12 @@ const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAffiliateEnquiriesRoute =
+  AuthenticatedAdminAffiliateEnquiriesRouteImport.update({
+    id: '/affiliate-enquiries',
+    path: '/affiliate-enquiries',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAdminsRoute =
   AuthenticatedAdminAdminsRouteImport.update({
     id: '/admins',
@@ -408,6 +415,7 @@ export interface FileRoutesByFullPath {
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -466,6 +474,7 @@ export interface FileRoutesByTo {
   '/reports/$id': typeof ReportsIdRoute
   '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
@@ -521,6 +530,7 @@ export interface FileRoutesById {
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/_authenticated/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -581,6 +591,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog/'
     | '/admin/admins'
+    | '/admin/affiliate-enquiries'
     | '/admin/blog'
     | '/admin/capabilities'
     | '/admin/careers'
@@ -639,6 +650,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog'
     | '/admin/admins'
+    | '/admin/affiliate-enquiries'
     | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
@@ -693,6 +705,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog/'
     | '/_authenticated/admin/admins'
+    | '/_authenticated/admin/affiliate-enquiries'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/capabilities'
     | '/_authenticated/admin/careers'
@@ -1013,6 +1026,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/affiliate-enquiries': {
+      id: '/_authenticated/admin/affiliate-enquiries'
+      path: '/affiliate-enquiries'
+      fullPath: '/admin/affiliate-enquiries'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliateEnquiriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/admins': {
       id: '/_authenticated/admin/admins'
       path: '/admins'
@@ -1271,6 +1291,7 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAdminsRoute: typeof AuthenticatedAdminAdminsRoute
+  AuthenticatedAdminAffiliateEnquiriesRoute: typeof AuthenticatedAdminAffiliateEnquiriesRoute
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminCapabilitiesRoute: typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
@@ -1285,6 +1306,8 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAdminsRoute: AuthenticatedAdminAdminsRoute,
+  AuthenticatedAdminAffiliateEnquiriesRoute:
+    AuthenticatedAdminAffiliateEnquiriesRoute,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
   AuthenticatedAdminCapabilitiesRoute:
     AuthenticatedAdminCapabilitiesRouteWithChildren,
