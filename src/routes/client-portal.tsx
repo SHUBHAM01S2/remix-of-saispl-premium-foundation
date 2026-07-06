@@ -365,6 +365,7 @@ function Dashboard() {
             { key: "overview", label: "Overview" },
             { key: "assets", label: "Assets" },
             { key: "access", label: "Access" },
+            { key: "messages", label: "Messages" },
             { key: "timeline", label: "Timeline" },
           ].map((t) => (
             <button
@@ -385,6 +386,7 @@ function Dashboard() {
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
+          {tab === "messages" && <MessagesTab />}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
