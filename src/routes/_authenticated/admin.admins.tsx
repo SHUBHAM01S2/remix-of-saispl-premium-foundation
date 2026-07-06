@@ -263,6 +263,62 @@ function AdminsPage() {
             </div>
           )}
         </div>
+
+        {/* Audit log */}
+        <section className="mt-10">
+          <div className="mb-3 flex items-center gap-2">
+            <History className="h-4 w-4 text-muted-foreground" />
+            <h2 className="text-lg font-semibold text-foreground">Role change audit</h2>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Every admin grant, role change, and revoke is logged with the acting super admin.
+            Visible to super admins only.
+          </p>
+          <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+            {auditQ.isLoading ? (
+              <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
+            ) : !auditQ.data || auditQ.data.length === 0 ? (
+              <p className="px-6 py-8 text-sm text-muted-foreground">No changes recorded yet.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-3 text-left">When</th>
+                      <th className="px-4 py-3 text-left">Action</th>
+                      <th className="px-4 py-3 text-left">Target</th>
+                      <th className="px-4 py-3 text-left">Change</th>
+                      <th className="px-4 py-3 text-left">Actor</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    {auditQ.data.map((row) => (
+                      <tr key={row.id}>
+                        <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
+                          {new Date(row.created_at).toLocaleString()}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={
+                            row.action === "grant"  ? "rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-300"
+                          : row.action === "revoke" ? "rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-300"
+                                                    : "rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300"
+                          }>
+                            {row.action}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-foreground">{row.target_email}</td>
+                        <td className="px-4 py-3 text-muted-foreground">
+                          {row.from_role ?? "—"} → {row.to_role ?? "—"}
+                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{row.actor_email ?? "system"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -270,3 +326,4 @@ function AdminsPage() {
 
 const inputCls =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-brand focus:ring-1 focus:ring-brand";
+
