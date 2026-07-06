@@ -37,9 +37,9 @@ const resourceLinks = [
 
 
 const socials = [
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Twitter", href: "https://twitter.com" },
-  { label: "Instagram", href: "https://instagram.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/shivaryan-infotech-615847329" },
+  { label: "Twitter", href: "https://x.com/shivaryaninfo" },
+  { label: "Instagram", href: "https://www.instagram.com/shivaryaninfotech/" },
   { label: "GitHub", href: "https://github.com" },
 ];
 
