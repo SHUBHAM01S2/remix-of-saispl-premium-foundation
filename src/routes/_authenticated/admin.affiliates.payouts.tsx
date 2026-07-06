@@ -90,7 +90,7 @@ function PayoutsPage() {
                   <th className="px-5 py-3 font-medium">Deal</th>
                   <th className="px-5 py-3 font-medium">Commission</th>
                   <th className="px-5 py-3 font-medium">Current status</th>
-                  <th className="px-5 py-3 font-medium">Change</th>
+                  <th className="px-5 py-3 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,12 +107,35 @@ function PayoutsPage() {
                     <td className="px-5 py-3 font-medium">{fmtMoney(r.commission_amount)}</td>
                     <td className="px-5 py-3"><PayoutChip status={r.payout_status} /></td>
                     <td className="px-5 py-3">
-                      <select value={r.payout_status}
-                        onChange={(e) => setPayout.mutate({ id: r.id, payout_status: e.target.value as ReferralPayoutStatus })}
-                        className="rounded-lg border border-border bg-background/60 px-2 py-1 text-xs">
-                        {PAYOUT_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-                      </select>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {r.payout_status === "pending" && (
+                          <>
+                            <ActionBtn icon={BadgeCheck} label="Approve" tone="blue"
+                              onClick={() => approve.mutate(r.id)} />
+                            <ActionBtn icon={PauseCircle} label="Hold" tone="muted"
+                              onClick={() => setPayout.mutate({ id: r.id, payout_status: "on_hold" })} />
+                          </>
+                        )}
+                        {r.payout_status === "approved" && (
+                          <>
+                            <ActionBtn icon={CheckCircle2} label="Mark paid" tone="emerald"
+                              onClick={() => markPaid.mutate(r.id)} />
+                            <ActionBtn icon={PauseCircle} label="Hold" tone="muted"
+                              onClick={() => setPayout.mutate({ id: r.id, payout_status: "on_hold" })} />
+                          </>
+                        )}
+                        {r.payout_status === "on_hold" && (
+                          <ActionBtn icon={BadgeCheck} label="Resume → Pending" tone="muted"
+                            onClick={() => setPayout.mutate({ id: r.id, payout_status: "pending" })} />
+                        )}
+                        {r.payout_status === "paid" && (
+                          <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                            <Lock className="h-3 w-3" /> Locked
+                          </span>
+                        )}
+                      </div>
                     </td>
+
                   </tr>
                 ))}
               </tbody>
