@@ -1,9 +1,10 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, BadgeDollarSign, Handshake, TrendingUp, Users } from "lucide-react";
+import { ArrowUpRight, BadgeDollarSign, CheckCircle2, Handshake, TrendingUp, Users } from "lucide-react";
 
 import { StrategyCallButton } from "@/components/StrategyCallButton";
 import { EmailContactLink } from "@/components/EmailContactLink";
+
 
 export const Route = createFileRoute("/affiliate")({
   head: () => ({
