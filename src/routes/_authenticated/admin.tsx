@@ -332,12 +332,7 @@ function AdminDashboard() {
                 <Command className="h-3.5 w-3.5" /> Quick search
                 <kbd className="ml-2 rounded border border-border/60 bg-background px-1.5 text-[10px]">⌘K</kbd>
               </button>
-              <button
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
-                aria-label="Notifications"
-              >
-                <Bell className="h-4 w-4" />
-              </button>
+              <AdminBell unread={inboxUnread} recent={inboxRecent} />
               <button
                 onClick={handleSignOut}
                 className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium backdrop-blur transition-colors hover:bg-surface lg:hidden"
