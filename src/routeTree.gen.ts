@@ -73,6 +73,7 @@ import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminCapabilitiesNewRouteImport } from './routes/_authenticated/admin.capabilities.new'
 import { Route as AuthenticatedAdminBlogNewRouteImport } from './routes/_authenticated/admin.blog.new'
 import { Route as AuthenticatedAdminAffiliatesReferralsRouteImport } from './routes/_authenticated/admin.affiliates.referrals'
+import { Route as AuthenticatedAdminAffiliatesPayoutsRouteImport } from './routes/_authenticated/admin.affiliates.payouts'
 import { Route as AuthenticatedAdminAffiliatesPartnersRouteImport } from './routes/_authenticated/admin.affiliates.partners'
 import { Route as AuthenticatedAdminTestimonialsIdEditRouteImport } from './routes/_authenticated/admin.testimonials.$id.edit'
 import { Route as AuthenticatedAdminReportsIdEditRouteImport } from './routes/_authenticated/admin.reports.$id.edit'
@@ -427,6 +428,12 @@ const AuthenticatedAdminAffiliatesReferralsRoute =
     path: '/referrals',
     getParentRoute: () => AuthenticatedAdminAffiliatesRoute,
   } as any)
+const AuthenticatedAdminAffiliatesPayoutsRoute =
+  AuthenticatedAdminAffiliatesPayoutsRouteImport.update({
+    id: '/payouts',
+    path: '/payouts',
+    getParentRoute: () => AuthenticatedAdminAffiliatesRoute,
+  } as any)
 const AuthenticatedAdminAffiliatesPartnersRoute =
   AuthenticatedAdminAffiliatesPartnersRouteImport.update({
     id: '/partners',
@@ -532,6 +539,7 @@ export interface FileRoutesByFullPath {
   '/partner/referrals/$id': typeof PartnerReferralsIdRoute
   '/partner/referrals/new': typeof PartnerReferralsNewRoute
   '/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
   '/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
@@ -601,6 +609,7 @@ export interface FileRoutesByTo {
   '/partner/referrals/$id': typeof PartnerReferralsIdRoute
   '/partner/referrals/new': typeof PartnerReferralsNewRoute
   '/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
   '/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
@@ -677,6 +686,7 @@ export interface FileRoutesById {
   '/partner/referrals/$id': typeof PartnerReferralsIdRoute
   '/partner/referrals/new': typeof PartnerReferralsNewRoute
   '/_authenticated/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/_authenticated/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
   '/_authenticated/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/_authenticated/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/_authenticated/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
@@ -753,6 +763,7 @@ export interface FileRouteTypes {
     | '/partner/referrals/$id'
     | '/partner/referrals/new'
     | '/admin/affiliates/partners'
+    | '/admin/affiliates/payouts'
     | '/admin/affiliates/referrals'
     | '/admin/blog/new'
     | '/admin/capabilities/new'
@@ -822,6 +833,7 @@ export interface FileRouteTypes {
     | '/partner/referrals/$id'
     | '/partner/referrals/new'
     | '/admin/affiliates/partners'
+    | '/admin/affiliates/payouts'
     | '/admin/affiliates/referrals'
     | '/admin/blog/new'
     | '/admin/capabilities/new'
@@ -897,6 +909,7 @@ export interface FileRouteTypes {
     | '/partner/referrals/$id'
     | '/partner/referrals/new'
     | '/_authenticated/admin/affiliates/partners'
+    | '/_authenticated/admin/affiliates/payouts'
     | '/_authenticated/admin/affiliates/referrals'
     | '/_authenticated/admin/blog/new'
     | '/_authenticated/admin/capabilities/new'
@@ -1404,6 +1417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAffiliatesReferralsRouteImport
       parentRoute: typeof AuthenticatedAdminAffiliatesRoute
     }
+    '/_authenticated/admin/affiliates/payouts': {
+      id: '/_authenticated/admin/affiliates/payouts'
+      path: '/payouts'
+      fullPath: '/admin/affiliates/payouts'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesPayoutsRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesRoute
+    }
     '/_authenticated/admin/affiliates/partners': {
       id: '/_authenticated/admin/affiliates/partners'
       path: '/partners'
@@ -1502,6 +1522,7 @@ const AuthenticatedAdminAffiliatesReferralsRouteWithChildren =
 
 interface AuthenticatedAdminAffiliatesRouteChildren {
   AuthenticatedAdminAffiliatesPartnersRoute: typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  AuthenticatedAdminAffiliatesPayoutsRoute: typeof AuthenticatedAdminAffiliatesPayoutsRoute
   AuthenticatedAdminAffiliatesReferralsRoute: typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
 }
 
@@ -1509,6 +1530,8 @@ const AuthenticatedAdminAffiliatesRouteChildren: AuthenticatedAdminAffiliatesRou
   {
     AuthenticatedAdminAffiliatesPartnersRoute:
       AuthenticatedAdminAffiliatesPartnersRouteWithChildren,
+    AuthenticatedAdminAffiliatesPayoutsRoute:
+      AuthenticatedAdminAffiliatesPayoutsRoute,
     AuthenticatedAdminAffiliatesReferralsRoute:
       AuthenticatedAdminAffiliatesReferralsRouteWithChildren,
   }
