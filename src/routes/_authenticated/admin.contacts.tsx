@@ -43,6 +43,7 @@ function ContactsPage() {
   const qc = useQueryClient();
   const listFn = useServerFn(listContactSubmissions);
   const updateFn = useServerFn(updateContactStatus);
+  const deleteFn = useServerFn(deleteContactSubmission);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<ContactStatus | "">("");
@@ -58,6 +59,17 @@ function ContactsPage() {
     mutationFn: (v: { id: string; status: ContactStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "contacts"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "contacts"] }),
+  });
+
+  const confirmDelete = (r: ContactSubmission) => {
+    if (window.confirm(`Delete submission from ${r.name}? This cannot be undone.`)) {
+      remove.mutate(r.id);
+    }
+  };
 
   const rows = useMemo(() => {
     if (!data) return [] as ContactSubmission[];
