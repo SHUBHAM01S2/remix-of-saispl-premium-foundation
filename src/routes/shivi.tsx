@@ -86,6 +86,10 @@ function ShiviLogin() {
     }
   };
 
+  if (wrongRoleEmail) {
+    return <WrongRoleNotice mode="admin-on-client" email={wrongRoleEmail} />;
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0a0f] px-4">
       <div className="w-full max-w-sm rounded-xl border border-white/10 bg-[#111118] p-8 shadow-2xl">
