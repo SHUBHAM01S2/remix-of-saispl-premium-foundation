@@ -203,6 +203,7 @@ export type Database = {
           body: string
           created_at: string
           id: string
+          is_internal: boolean
           onboarding_id: string
           read_by_admin_at: string | null
           read_by_client_at: string | null
@@ -215,6 +216,7 @@ export type Database = {
           body: string
           created_at?: string
           id?: string
+          is_internal?: boolean
           onboarding_id: string
           read_by_admin_at?: string | null
           read_by_client_at?: string | null
@@ -227,6 +229,7 @@ export type Database = {
           body?: string
           created_at?: string
           id?: string
+          is_internal?: boolean
           onboarding_id?: string
           read_by_admin_at?: string | null
           read_by_client_at?: string | null
@@ -251,6 +254,11 @@ export type Database = {
           checklist: Json
           company_name: string
           contact_person: string | null
+          conversation_assignee_id: string | null
+          conversation_assignee_name: string | null
+          conversation_last_admin_at: string | null
+          conversation_last_client_at: string | null
+          conversation_status: Database["public"]["Enums"]["conversation_status"]
           created_at: string
           email: string | null
           features_needed: string | null
@@ -273,6 +281,11 @@ export type Database = {
           checklist?: Json
           company_name: string
           contact_person?: string | null
+          conversation_assignee_id?: string | null
+          conversation_assignee_name?: string | null
+          conversation_last_admin_at?: string | null
+          conversation_last_client_at?: string | null
+          conversation_status?: Database["public"]["Enums"]["conversation_status"]
           created_at?: string
           email?: string | null
           features_needed?: string | null
@@ -295,6 +308,11 @@ export type Database = {
           checklist?: Json
           company_name?: string
           contact_person?: string | null
+          conversation_assignee_id?: string | null
+          conversation_assignee_name?: string | null
+          conversation_last_admin_at?: string | null
+          conversation_last_client_at?: string | null
+          conversation_status?: Database["public"]["Enums"]["conversation_status"]
           created_at?: string
           email?: string | null
           features_needed?: string | null
@@ -540,6 +558,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      conversation_status:
+        | "unread"
+        | "waiting_on_team"
+        | "waiting_on_client"
+        | "resolved"
       onboarding_status:
         | "pending"
         | "waiting_on_client"
@@ -673,6 +696,12 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      conversation_status: [
+        "unread",
+        "waiting_on_team",
+        "waiting_on_client",
+        "resolved",
+      ],
       onboarding_status: [
         "pending",
         "waiting_on_client",
