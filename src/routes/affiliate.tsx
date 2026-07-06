@@ -160,6 +160,9 @@ function AffiliatePage() {
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <StrategyCallButton
               ariaLabel="Book an affiliate onboarding call"
+              calLink="shivaryan-infotech-ozoylu/affiliate-member"
+              namespace="affiliate-member"
+              title="Affiliate member booking"
               className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-[0_10px_40px_-10px_var(--color-brand)] transition-all hover:brightness-110"
             >
               Book onboarding call
