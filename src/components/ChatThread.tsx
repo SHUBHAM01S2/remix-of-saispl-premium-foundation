@@ -60,9 +60,12 @@ export function ChatThread({
   disabled,
   disabledHint,
   allowAttachments = true,
+  allowInternalNote = false,
+  uploadOnboardingId = null,
 }: Props) {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState<ChatAttachment[]>([]);
+  const [isInternal, setIsInternal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
