@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   ArrowUp,
   ArrowUpDown,
+  Download,
   ExternalLink,
   Loader2,
   Search,
