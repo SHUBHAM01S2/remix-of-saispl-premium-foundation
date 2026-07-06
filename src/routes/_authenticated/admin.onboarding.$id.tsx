@@ -635,7 +635,11 @@ function OnboardingDetailPage() {
         />
       </SectionCard>
 
+      {/* Messages preview — quick view of latest thread */}
+      <MessagesCard onboardingId={row.id} />
+
       {/* Status Timeline */}
+
       <SectionCard icon={Clock} title="Status Timeline" subtitle="Auto-updated when status or checklist items change">
         {row.timeline.length === 0 ? (
           <p className="text-xs text-muted-foreground">No activity yet.</p>
