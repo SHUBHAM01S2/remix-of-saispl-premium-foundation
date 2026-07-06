@@ -151,17 +151,15 @@ function ClientPortalPage() {
 /* ------------------------------------------------------------------ */
 
 function SignInView({
-  initialError,
   onSignedIn,
 }: {
-  initialError: string | null;
   onSignedIn: () => void;
 }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(initialError);
+  const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -175,11 +173,10 @@ function SignInView({
       await router.invalidate();
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
       if (r.isAdmin) {
+        // Silently route admin accounts to the admin sign-in flow.
         await supabase.auth.signOut();
         await router.invalidate();
-        setError(
-          "This sign-in is for client accounts only. Admin access uses the private admin sign-in route.",
-        );
+        window.location.replace("/shivi");
         return;
       }
       onSignedIn();
