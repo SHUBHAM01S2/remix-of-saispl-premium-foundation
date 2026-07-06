@@ -487,10 +487,12 @@ function ShellFrame({
   children,
   signedIn,
   onSignOut,
+  bell,
 }: {
   children: React.ReactNode;
   signedIn?: boolean;
   onSignOut?: () => void;
+  bell?: React.ReactNode;
 }) {
   return (
     <main className="relative min-h-screen bg-background text-foreground">
@@ -504,6 +506,7 @@ function ShellFrame({
             <Link to="/" className="text-muted-foreground hover:text-foreground">
               ← Back to site
             </Link>
+            {bell}
             {signedIn && onSignOut && (
               <button
                 onClick={onSignOut}
@@ -519,6 +522,130 @@ function ShellFrame({
     </main>
   );
 }
+
+function NotificationBell({
+  unread,
+  recent,
+  onOpenMessages,
+}: {
+  unread: number;
+  recent: ClientNotification[];
+  onOpenMessages: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest?.("[data-notif-root]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+  return (
+    <div className="relative" data-notif-root>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="relative inline-flex h-8 w-8 items-center justify-center rounded-lg border border-input bg-background text-muted-foreground transition hover:text-foreground"
+        aria-label={unread > 0 ? `${unread} new messages` : "Notifications"}
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 && (
+          <>
+            <span className="absolute -right-1 -top-1 inline-flex min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+              {unread > 9 ? "9+" : unread}
+            </span>
+            <span className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-brand/50" />
+          </>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-10 z-40 w-[320px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+            <p className="text-sm font-semibold">Notifications</p>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {unread > 0 ? `${unread} new` : "All caught up"}
+            </span>
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {recent.length === 0 ? (
+              <p className="px-4 py-8 text-center text-xs text-muted-foreground">
+                No messages from the SAISPL team yet.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border/60">
+                {recent.map((m, i) => {
+                  const isUnread = i < unread;
+                  return (
+                    <li key={m.id}>
+                      <button
+                        onClick={() => {
+                          setOpen(false);
+                          onOpenMessages();
+                        }}
+                        className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface/60 ${
+                          isUnread ? "bg-brand/[0.06]" : ""
+                        }`}
+                      >
+                        <span
+                          className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
+                            isUnread ? "bg-brand" : "bg-transparent"
+                          }`}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-xs font-medium">
+                              {m.sender_name ?? "SAISPL Team"}
+                            </p>
+                            <span className="shrink-0 text-[10px] text-muted-foreground">
+                              {relTime(m.created_at)}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                            {m.body ||
+                              (m.has_attachments ? "Sent you an attachment" : "New update")}
+                          </p>
+                          {m.has_attachments && (
+                            <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-brand">
+                              <Paperclip className="h-3 w-3" /> Attachment included
+                            </p>
+                          )}
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              setOpen(false);
+              onOpenMessages();
+            }}
+            className="flex w-full items-center justify-center gap-1 border-t border-border/60 bg-background/40 px-4 py-2.5 text-xs font-medium text-brand hover:bg-brand/10"
+          >
+            Open messages <ArrowRight className="h-3 w-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function relTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const s = Math.floor(diff / 1000);
+  if (s < 60) return "just now";
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 7) return `${d}d ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
 
 function ProjectHeader({ row }: { row: ClientOnboardingView }) {
   return (
