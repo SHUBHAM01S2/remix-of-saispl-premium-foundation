@@ -155,3 +155,19 @@ function KPI({ label, value, accent }: { label: string; value: string; accent?: 
     </div>
   );
 }
+
+function ActionBtn({
+  icon: Icon, label, tone, onClick,
+}: { icon: any; label: string; tone: "blue" | "emerald" | "muted"; onClick: () => void }) {
+  const cls =
+    tone === "blue"    ? "border-blue-400/40 bg-blue-500/10 text-blue-200 hover:bg-blue-500/20"
+  : tone === "emerald" ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20"
+                       : "border-border bg-muted/30 text-muted-foreground hover:text-foreground";
+  return (
+    <button onClick={onClick}
+      className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-xs ${cls}`}>
+      <Icon className="h-3 w-3" /> {label}
+    </button>
+  );
+}
+
