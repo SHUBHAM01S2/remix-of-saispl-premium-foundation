@@ -270,6 +270,25 @@ export function ChatThread({
                 {isInternal ? "Save note" : "Send"}
               </button>
             </div>
+            {allowInternalNote && (
+              <div className="mt-2 flex items-center justify-between px-1">
+                <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={isInternal}
+                    onChange={(e) => setIsInternal(e.target.checked)}
+                    className="h-3.5 w-3.5 rounded border-border/60 bg-background text-amber-500 focus:ring-amber-400/40"
+                  />
+                  <EyeOff className="h-3.5 w-3.5" />
+                  Internal note — team-only, not shown to client
+                </label>
+                {isInternal && (
+                  <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-amber-300">
+                    Internal
+                  </span>
+                )}
+              </div>
+            )}
           </>
         )}
       </form>
