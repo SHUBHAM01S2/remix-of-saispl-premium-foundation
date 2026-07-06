@@ -166,6 +166,9 @@ export const createOnboarding = createServerFn({ method: "POST" })
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const clean = (v?: string) => (v && v.trim() ? v.trim() : null);
+    const initialTimeline: TimelineEntry[] = [
+      { ts: new Date().toISOString(), kind: "created", message: `Onboarding created for ${data.company_name.trim()}` },
+    ];
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
       .insert({
@@ -178,12 +181,14 @@ export const createOnboarding = createServerFn({ method: "POST" })
         project_manager: clean(data.project_manager),
         target_launch_date: clean(data.target_launch_date),
         project_goals: clean(data.project_goals),
+        checklist: { __timeline: initialTimeline, __custom: [] },
       })
       .select(COLS)
       .single();
     if (error) throw error;
     return normalize(row);
   });
+
 
 export const updateOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
