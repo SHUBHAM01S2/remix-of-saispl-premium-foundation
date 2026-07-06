@@ -66,7 +66,15 @@ const steps = [
 ];
 
 function AffiliatePage() {
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const handleBooked = () => {
+    setBookingConfirmed(true);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
   return (
+
     <div className="relative min-h-screen w-full overflow-hidden bg-[#050505] text-zinc-200">
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute -left-[10%] -top-[10%] h-[50%] w-[50%] rounded-full bg-blue-600/10 blur-[120px]" />
