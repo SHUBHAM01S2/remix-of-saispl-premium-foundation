@@ -43,7 +43,8 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      navigate({ to: "/admin", replace: true });
+      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
+      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to sign in");
     } finally {
