@@ -569,6 +569,7 @@ type CreatePayload = {
   company_name: string;
   contact_person?: string;
   email?: string;
+  password?: string;
   phone?: string;
   project_type?: string;
   package_selected?: string;
