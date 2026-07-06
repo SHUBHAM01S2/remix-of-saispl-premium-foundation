@@ -312,11 +312,13 @@ function Dashboard() {
   const qc = useQueryClient();
   const getFn = useServerFn(getMyOnboarding);
   const summaryFn = useServerFn(getMyThreadSummary);
+  const markAllReadFn = useServerFn(markMyMessagesRead);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["client-portal", "me"],
     queryFn: () => getFn(),
   });
+
 
   const [tab, setTab] = useState<"overview" | "assets" | "access" | "messages" | "timeline">("overview");
 
