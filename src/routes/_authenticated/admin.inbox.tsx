@@ -84,11 +84,26 @@ function fmtRelative(iso: string | null): string {
 
 function AdminInboxPage() {
   const qc = useQueryClient();
+  const navigate = useNavigate({ from: "/admin/inbox" });
+  const search = Route.useSearch();
   const listFn = useServerFn(listInboxThreads);
   const adminsFn = useServerFn(listAssignableAdmins);
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(search.thread ?? null);
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ConversationStatus>("all");
+
+  // Sync selection ← URL (deep-link from onboarding "Messages" card).
+  useEffect(() => {
+    if (search.thread && search.thread !== selected) {
+      setSelected(search.thread);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search.thread]);
+
+  const setActive = (id: string) => {
+    setSelected(id);
+    navigate({ search: { thread: id }, replace: true });
+  };
 
   const threadsQ = useQuery({
     queryKey: ["admin-inbox", "list"],
