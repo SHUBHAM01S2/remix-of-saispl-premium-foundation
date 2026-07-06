@@ -25,6 +25,7 @@ import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
+import { Route as AffiliateEnquiryRouteImport } from './routes/affiliate-enquiry'
 import { Route as AffiliateRouteImport } from './routes/affiliate'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -144,6 +145,11 @@ const BrandingGraphicDesignRoute = BrandingGraphicDesignRouteImport.update({
 const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   id: '/automation-ai-services',
   path: '/automation-ai-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateEnquiryRoute = AffiliateEnquiryRouteImport.update({
+  id: '/affiliate-enquiry',
+  path: '/affiliate-enquiry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AffiliateRoute = AffiliateRouteImport.update({
@@ -376,6 +382,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -433,6 +440,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -487,6 +495,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -546,6 +555,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -603,6 +613,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -656,6 +667,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -715,6 +727,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AffiliateRoute: typeof AffiliateRoute
+  AffiliateEnquiryRoute: typeof AffiliateEnquiryRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
@@ -851,6 +864,13 @@ declare module '@tanstack/react-router' {
       path: '/automation-ai-services'
       fullPath: '/automation-ai-services'
       preLoaderRoute: typeof AutomationAiServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-enquiry': {
+      id: '/affiliate-enquiry'
+      path: '/affiliate-enquiry'
+      fullPath: '/affiliate-enquiry'
+      preLoaderRoute: typeof AffiliateEnquiryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/affiliate': {
@@ -1311,6 +1331,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AffiliateRoute: AffiliateRoute,
+  AffiliateEnquiryRoute: AffiliateEnquiryRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,
