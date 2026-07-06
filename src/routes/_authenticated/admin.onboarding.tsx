@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, Outlet, useLocation } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Plus, Trash2, ArrowRight, Search } from "lucide-react";
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/admin/onboarding")({
     if (!r.isAdmin) throw notFound();
     return { admin: r.admin };
   },
-  component: OnboardingListPage,
+  component: OnboardingRoute,
   head: () => ({
     meta: [
       { title: "Client Onboarding — Admin" },
