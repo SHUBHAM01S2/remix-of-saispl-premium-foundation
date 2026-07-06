@@ -44,6 +44,19 @@ function PayoutsPage() {
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Updated"); },
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
+  const approveFn = useServerFn(adminApprovePayout);
+  const markPaidFn = useServerFn(adminMarkPayoutPaid);
+  const approve = useMutation({
+    mutationFn: (id: string) => approveFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Payout approved"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+  const markPaid = useMutation({
+    mutationFn: (id: string) => markPaidFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referrals"] }); toast.success("Marked as paid"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+
 
   return (
     <div className="space-y-4">
