@@ -1372,7 +1372,7 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
 /* Messages                                                             */
 /* ------------------------------------------------------------------ */
 
-function MessagesTab({ row }: { row: ClientOnboardingView }) {
+function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: number }) {
   const qc = useQueryClient();
   const getThreadFn = useServerFn(getMyThread);
   const sendFn = useServerFn(sendMyMessage);
@@ -1411,6 +1411,15 @@ function MessagesTab({ row }: { row: ClientOnboardingView }) {
 
   return (
     <div className="space-y-4">
+      {unread > 0 && (
+        <div className="flex items-center gap-2 rounded-xl border border-brand/40 bg-brand/10 px-4 py-2.5 text-xs text-brand">
+          <Bell className="h-3.5 w-3.5" />
+          <span className="font-medium">
+            {unread} new message{unread > 1 ? "s" : ""} from the SAISPL team
+          </span>
+          <span className="text-brand/70">— they'll be marked as read as you scroll.</span>
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card/60 p-4 shadow-elegant backdrop-blur sm:p-5">
         <div className="flex min-w-0 items-center gap-3">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand/30 to-emerald-400/20 text-sm font-semibold text-foreground">
@@ -1436,6 +1445,7 @@ function MessagesTab({ row }: { row: ClientOnboardingView }) {
           </span>
         </div>
       </div>
+
 
       <ChatThread
         messages={messages}
