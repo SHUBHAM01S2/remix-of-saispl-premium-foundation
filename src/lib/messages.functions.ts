@@ -2,6 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertAnyAdmin } from "@/lib/admin-auth";
 
+export type ChatAttachment = {
+  path: string;
+  name: string;
+  size: number;
+  type: string;
+};
+
 export type ChatMessage = {
   id: string;
   onboarding_id: string;
@@ -10,6 +17,7 @@ export type ChatMessage = {
   body: string;
   created_at: string;
   is_mine: boolean;
+  attachments: ChatAttachment[];
 };
 
 export type InboxThread = {
@@ -25,7 +33,39 @@ export type InboxThread = {
 };
 
 const MSG_COLS =
-  "id, onboarding_id, sender_role, sender_id, sender_name, body, created_at, read_by_client_at, read_by_admin_at";
+  "id, onboarding_id, sender_role, sender_id, sender_name, body, created_at, read_by_client_at, read_by_admin_at, attachments";
+
+const CHAT_BUCKET = "client-onboarding-assets";
+const MAX_ATTACHMENTS = 6;
+const MAX_ATTACHMENT_BYTES = 15 * 1024 * 1024; // 15 MB per file
+
+function sanitizeFileName(name: string): string {
+  return (
+    name
+      .replace(/[^\w.\-]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 120) || "file"
+  );
+}
+
+function validateAttachments(input: unknown): ChatAttachment[] {
+  if (input == null) return [];
+  if (!Array.isArray(input)) throw new Error("attachments must be an array");
+  if (input.length > MAX_ATTACHMENTS)
+    throw new Error(`Too many attachments (max ${MAX_ATTACHMENTS})`);
+  return input.map((raw: any) => {
+    if (!raw || typeof raw !== "object") throw new Error("Invalid attachment");
+    const path = String(raw.path ?? "");
+    const name = String(raw.name ?? "").slice(0, 200);
+    const size = Number(raw.size ?? 0);
+    const type = String(raw.type ?? "").slice(0, 120);
+    if (!path.startsWith("messages/")) throw new Error("Invalid attachment path");
+    if (!name) throw new Error("Attachment name required");
+    if (!Number.isFinite(size) || size < 0 || size > MAX_ATTACHMENT_BYTES)
+      throw new Error("Attachment too large");
+    return { path, name, size, type };
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /* Shared helpers                                                       */
@@ -55,6 +95,13 @@ async function loadClientOnboarding(context: any) {
 }
 
 function toChatMessage(row: any, viewerRole: "client" | "admin"): ChatMessage {
+  const rawAtt = Array.isArray(row.attachments) ? row.attachments : [];
+  const attachments: ChatAttachment[] = rawAtt.map((a: any) => ({
+    path: String(a?.path ?? ""),
+    name: String(a?.name ?? "file"),
+    size: Number(a?.size ?? 0),
+    type: String(a?.type ?? ""),
+  }));
   return {
     id: row.id,
     onboarding_id: row.onboarding_id,
@@ -63,6 +110,7 @@ function toChatMessage(row: any, viewerRole: "client" | "admin"): ChatMessage {
     body: row.body,
     created_at: row.created_at,
     is_mine: row.sender_role === viewerRole,
+    attachments,
   };
 }
 
@@ -102,16 +150,23 @@ export const getMyThread = createServerFn({ method: "GET" })
 
 export const sendMyMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { body: string }) => {
+  .inputValidator((data: { body?: string; attachments?: unknown }) => {
     const body = (data?.body ?? "").toString().trim();
-    if (!body) throw new Error("Message cannot be empty");
+    const attachments = validateAttachments(data?.attachments);
+    if (!body && attachments.length === 0) throw new Error("Message cannot be empty");
     if (body.length > 4000) throw new Error("Message too long (4000 char max)");
-    return { body };
+    return { body, attachments };
   })
   .handler(async ({ context, data }): Promise<ChatMessage> => {
     const { row } = await loadClientOnboarding(context);
     if (!row) throw new Error("No onboarding record linked to your account.");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Enforce each attachment path is scoped to this onboarding thread.
+    for (const a of data.attachments) {
+      if (!a.path.startsWith(`messages/${row.id}/`)) {
+        throw new Error("Attachment does not belong to this conversation");
+      }
+    }
     const senderName = row.contact_person || row.company_name || null;
     const { data: inserted, error } = await (supabaseAdmin as any)
       .from("client_messages")
@@ -121,12 +176,71 @@ export const sendMyMessage = createServerFn({ method: "POST" })
         sender_id: context.userId,
         sender_name: senderName,
         body: data.body,
+        attachments: data.attachments,
         read_by_client_at: new Date().toISOString(),
       })
       .select(MSG_COLS)
       .single();
     if (error) throw error;
     return toChatMessage(inserted, "client");
+  });
+
+/* ------------------------------------------------------------------ */
+/* Attachment upload / download signing                                 */
+/* ------------------------------------------------------------------ */
+
+export const signMessageAttachmentUpload = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { file_name: string; content_type?: string }) => {
+    const file_name = sanitizeFileName(String(data?.file_name ?? ""));
+    if (!file_name) throw new Error("file_name required");
+    return { file_name, content_type: String(data?.content_type ?? "") };
+  })
+  .handler(async ({ context, data }): Promise<{
+    path: string;
+    token: string;
+    signedUrl: string;
+  }> => {
+    const { row } = await loadClientOnboarding(context);
+    if (!row) throw new Error("No onboarding record linked to your account.");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const path = `messages/${row.id}/${crypto.randomUUID()}-${data.file_name}`;
+    const { data: signed, error } = await (supabaseAdmin as any).storage
+      .from(CHAT_BUCKET)
+      .createSignedUploadUrl(path);
+    if (error) throw error;
+    return { path, token: signed.token, signedUrl: signed.signedUrl };
+  });
+
+export const signMessageAttachmentDownload = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { path: string }) => {
+    if (!data?.path || !data.path.startsWith("messages/")) {
+      throw new Error("Invalid attachment path");
+    }
+    return { path: data.path };
+  })
+  .handler(async ({ context, data }): Promise<{ url: string; name: string }> => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Authorize: admins can read all; clients only their own thread.
+    const { data: adminRow } = await (supabaseAdmin as any)
+      .from("admins")
+      .select("id")
+      .eq("id", context.userId)
+      .maybeSingle();
+    if (!adminRow) {
+      const { row } = await loadClientOnboarding(context);
+      if (!row) throw new Error("Not authorized");
+      if (!data.path.startsWith(`messages/${row.id}/`)) {
+        throw new Error("Not authorized for this file");
+      }
+    }
+    const { data: signed, error } = await (supabaseAdmin as any).storage
+      .from(CHAT_BUCKET)
+      .createSignedUrl(data.path, 300);
+    if (error) throw error;
+    const name = data.path.split("/").pop() ?? "file";
+    return { url: signed.signedUrl, name };
   });
 
 /* ------------------------------------------------------------------ */
@@ -245,12 +359,13 @@ export const getThreadForAdmin = createServerFn({ method: "POST" })
 
 export const sendAdminMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { onboarding_id: string; body: string }) => {
+  .inputValidator((data: { onboarding_id: string; body?: string; attachments?: unknown }) => {
     if (!data?.onboarding_id) throw new Error("onboarding_id required");
     const body = (data?.body ?? "").toString().trim();
-    if (!body) throw new Error("Message cannot be empty");
+    const attachments = validateAttachments(data?.attachments);
+    if (!body && attachments.length === 0) throw new Error("Message cannot be empty");
     if (body.length > 4000) throw new Error("Message too long (4000 char max)");
-    return { onboarding_id: data.onboarding_id, body };
+    return { onboarding_id: data.onboarding_id, body, attachments };
   })
   .handler(async ({ context, data }): Promise<ChatMessage> => {
     const admin = await assertAnyAdmin(context as any);
@@ -264,6 +379,7 @@ export const sendAdminMessage = createServerFn({ method: "POST" })
         sender_id: admin.id,
         sender_name: senderName,
         body: data.body,
+        attachments: data.attachments,
         read_by_admin_at: new Date().toISOString(),
       })
       .select(MSG_COLS)
