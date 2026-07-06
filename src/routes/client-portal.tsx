@@ -386,7 +386,7 @@ function Dashboard() {
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
-          {tab === "messages" && <MessagesTab />}
+          {tab === "messages" && <MessagesTab row={row} />}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
