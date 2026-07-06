@@ -46,7 +46,9 @@ import {
 import {
   getMyThread,
   getMyThreadSummary,
+  markMyMessagesRead,
   sendMyMessage,
+  signMessageAttachmentDownload,
   type ClientNotification,
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
