@@ -196,7 +196,7 @@ function AffiliateEnquiriesPage() {
                 </thead>
                 <tbody className="divide-y divide-border/60">
                   {rows.map((r) => (
-                    <>
+                    <Fragment key={r.id}>
                       <tr key={r.id} className="align-top">
                         <td className="px-4 py-3 font-medium text-foreground">{r.full_name}</td>
                         <td className="px-4 py-3 text-muted-foreground">
