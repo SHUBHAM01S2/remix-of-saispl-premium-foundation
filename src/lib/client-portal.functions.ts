@@ -72,9 +72,21 @@ function splitChecklist(raw: any) {
   const maintenance_plan =
     typeof src.__maintenance_plan === "string" ? src.__maintenance_plan : null;
   const subs = (src.__submissions && typeof src.__submissions === "object" ? src.__submissions : {}) as any;
+  const rawAccess = (subs.access && typeof subs.access === "object" ? subs.access : {}) as Record<
+    string,
+    Array<{ submitted_at?: string }>
+  >;
+  // Strip encryption payloads / any plaintext leftovers before sending to
+  // the browser. Client-facing view only ever sees the timestamp.
+  const accessSanitized: Record<string, AccessSubmission[]> = {};
+  for (const [k, list] of Object.entries(rawAccess)) {
+    accessSanitized[k] = (Array.isArray(list) ? list : [])
+      .filter((e) => e && typeof e.submitted_at === "string")
+      .map((e) => ({ submitted_at: e.submitted_at as string }));
+  }
   const submissions = {
     assets: (subs.assets && typeof subs.assets === "object" ? subs.assets : {}) as Record<string, AssetSubmission[]>,
-    access: (subs.access && typeof subs.access === "object" ? subs.access : {}) as Record<string, AccessSubmission[]>,
+    access: accessSanitized,
   };
   const standard: Record<string, boolean> = {};
   for (const k of Object.keys(src)) {
