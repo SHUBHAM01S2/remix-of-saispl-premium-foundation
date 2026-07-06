@@ -40,6 +40,8 @@ import {
   ONBOARDING_STATUSES,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
+import { getMyThread, sendMyMessage } from "@/lib/messages.functions";
+import { ChatThread } from "@/components/ChatThread";
 
 export const Route = createFileRoute("/client-portal")({
   ssr: false,
