@@ -28,8 +28,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
+import { getAdminInboxSummary, type AdminInboxNotification } from "@/lib/messages.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   // Do NOT throw here for non-admins. We want to render a premium
