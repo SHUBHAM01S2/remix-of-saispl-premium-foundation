@@ -200,16 +200,114 @@ export const updateOnboarding = createServerFn({ method: "POST" })
   .handler(async ({ context, data }): Promise<OnboardingRow> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { id, created_at, updated_at, ...allowed } = data.patch as any;
+
+    // Read previous state so we can diff and append to the timeline.
+    const { data: prevRaw, error: prevErr } = await (supabaseAdmin as any)
+      .from("client_onboarding")
+      .select(COLS)
+      .eq("id", data.id)
+      .maybeSingle();
+    if (prevErr) throw prevErr;
+    if (!prevRaw) throw new Error("Onboarding record not found");
+    const prev = normalize(prevRaw);
+
+    const {
+      id: _id,
+      created_at: _c,
+      updated_at: _u,
+      custom_checklist: patchCustom,
+      timeline: _t,
+      checklist: patchChecklist,
+      status: patchStatus,
+      ...restPatch
+    } = data.patch as any;
+
+    const nextStandardChecklist: Record<string, boolean> =
+      patchChecklist && typeof patchChecklist === "object"
+        ? { ...prev.checklist, ...patchChecklist }
+        : prev.checklist;
+    const nextCustom: CustomChecklistItem[] = Array.isArray(patchCustom)
+      ? patchCustom
+      : prev.custom_checklist;
+    const nextStatus: OnboardingStatus = patchStatus ?? prev.status;
+
+    // Diff → new timeline entries
+    const newEntries: TimelineEntry[] = [];
+    const now = () => new Date().toISOString();
+
+    if (patchStatus && patchStatus !== prev.status) {
+      const label = (v: string) => ONBOARDING_STATUSES.find((s) => s.value === v)?.label ?? v;
+      newEntries.push({
+        ts: now(),
+        kind: "status",
+        message: `Status changed: ${label(prev.status)} → ${label(patchStatus)}`,
+      });
+    }
+
+    if (patchChecklist && typeof patchChecklist === "object") {
+      for (const k of Object.keys(patchChecklist)) {
+        const before = !!prev.checklist[k];
+        const after = !!patchChecklist[k];
+        if (before !== after) {
+          newEntries.push({
+            ts: now(),
+            kind: "checklist",
+            message: `${after ? "Completed" : "Reopened"} checklist item: ${k}`,
+          });
+        }
+      }
+    }
+
+    if (Array.isArray(patchCustom)) {
+      const prevById = new Map(prev.custom_checklist.map((i) => [i.id, i]));
+      const nextById = new Map(nextCustom.map((i) => [i.id, i]));
+      for (const [id, item] of nextById) {
+        const before = prevById.get(id);
+        if (!before) {
+          newEntries.push({ ts: now(), kind: "custom", message: `Added item: ${item.label}` });
+        } else if (before.done !== item.done) {
+          newEntries.push({
+            ts: now(),
+            kind: "custom",
+            message: `${item.done ? "Completed" : "Reopened"} item: ${item.label}`,
+          });
+        } else if (before.label !== item.label) {
+          newEntries.push({
+            ts: now(),
+            kind: "custom",
+            message: `Renamed item: ${before.label} → ${item.label}`,
+          });
+        }
+      }
+      for (const [id, item] of prevById) {
+        if (!nextById.has(id)) {
+          newEntries.push({ ts: now(), kind: "custom", message: `Removed item: ${item.label}` });
+        }
+      }
+    }
+
+    const mergedTimeline: TimelineEntry[] = [...prev.timeline, ...newEntries];
+
+    const updatePayload: any = {
+      ...restPatch,
+      status: nextStatus,
+      checklist: {
+        ...nextStandardChecklist,
+        __custom: nextCustom,
+        __timeline: mergedTimeline,
+      },
+    };
+
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
-      .update(allowed)
+      .update(updatePayload)
       .eq("id", data.id)
       .select(COLS)
       .single();
     if (error) throw error;
     return normalize(row);
   });
+
 
 export const deleteOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
