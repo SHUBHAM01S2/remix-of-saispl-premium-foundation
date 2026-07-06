@@ -58,3 +58,20 @@ export const updateContactStatus = createServerFn({ method: "POST" })
     if (error) throw error;
     return row as ContactSubmission;
   });
+
+export const deleteContactSubmission = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string }) => {
+    if (!data?.id) throw new Error("id required");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertSuperAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await (supabaseAdmin as any)
+      .from("contact_submissions")
+      .delete()
+      .eq("id", data.id);
+    if (error) throw error;
+    return { ok: true, id: data.id };
+  });

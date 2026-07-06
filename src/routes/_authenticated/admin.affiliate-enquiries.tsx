@@ -11,11 +11,13 @@ import {
   ExternalLink,
   Loader2,
   Search,
+  Trash2,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   AFFILIATE_ENQUIRY_STATUSES,
+  deleteAffiliateEnquiry,
   listAffiliateEnquiries,
   updateAffiliateEnquiryStatus,
   type AffiliateEnquiry,
@@ -54,6 +56,7 @@ function AffiliateEnquiriesPage() {
   const qc = useQueryClient();
   const listFn = useServerFn(listAffiliateEnquiries);
   const updateFn = useServerFn(updateAffiliateEnquiryStatus);
+  const deleteFn = useServerFn(deleteAffiliateEnquiry);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<AffiliateEnquiryStatus | "">("");
@@ -70,6 +73,21 @@ function AffiliateEnquiriesPage() {
     mutationFn: (v: { id: string; status: AffiliateEnquiryStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "affiliate-enquiries"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: (_r, id) => {
+      if (expanded === id) setExpanded(null);
+      qc.invalidateQueries({ queryKey: ["admin", "affiliate-enquiries"] });
+    },
+  });
+
+  const confirmDelete = (r: AffiliateEnquiry) => {
+    if (window.confirm(`Delete enquiry from ${r.full_name}? This cannot be undone.`)) {
+      remove.mutate(r.id);
+    }
+  };
+
 
   const rows = useMemo(() => {
     if (!data) return [] as AffiliateEnquiry[];
@@ -201,7 +219,7 @@ function AffiliateEnquiriesPage() {
                     <Th onClick={() => toggleSort("status")}>
                       Status <SortIcon k="status" />
                     </Th>
-                    <th className="px-4 py-3 text-left">Details</th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -254,13 +272,29 @@ function AffiliateEnquiriesPage() {
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <button
-                            type="button"
-                            onClick={() => setExpanded(expanded === r.id ? null : r.id)}
-                            className="rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
-                          >
-                            {expanded === r.id ? "Hide" : "View"}
-                          </button>
+                          <div className="inline-flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => setExpanded(expanded === r.id ? null : r.id)}
+                              className="rounded-md border border-input bg-background px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                            >
+                              {expanded === r.id ? "Hide" : "View"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => confirmDelete(r)}
+                              disabled={remove.isPending && remove.variables === r.id}
+                              title="Delete"
+                              className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-background px-2 py-1.5 text-xs font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+                            >
+                              {remove.isPending && remove.variables === r.id ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-3.5 w-3.5" />
+                              )}
+                              Delete
+                            </button>
+                          </div>
                         </td>
                       </tr>
                       {expanded === r.id && (

@@ -7,14 +7,17 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  Eye,
   Search,
   Loader2,
   Download,
+  Trash2,
 } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listCareerApplications,
   updateCareerStatus,
+  deleteCareerApplication,
   getResumeDownloadUrl,
   CAREER_STATUSES,
   type CareerStatus,
@@ -53,6 +56,7 @@ function CareersPage() {
   const listFn = useServerFn(listCareerApplications);
   const updateFn = useServerFn(updateCareerStatus);
   const signFn = useServerFn(getResumeDownloadUrl);
+  const deleteFn = useServerFn(deleteCareerApplication);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<CareerStatus | "">("");
@@ -69,6 +73,21 @@ function CareersPage() {
     mutationFn: (v: { id: string; status: CareerStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "careers"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "careers"] }),
+  });
+
+  const confirmDelete = (r: CareerApplication) => {
+    if (
+      window.confirm(
+        `Delete application from ${r.name}? This will also remove the uploaded resume.`,
+      )
+    ) {
+      remove.mutate(r.id);
+    }
+  };
 
   const rows = useMemo(() => {
     if (!data) return [] as CareerApplication[];
@@ -202,6 +221,7 @@ function CareersPage() {
                     <Th onClick={() => toggleSort("status")}>
                       Status <SortIcon k="status" />
                     </Th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -275,6 +295,33 @@ function CareersPage() {
                             update.variables?.id === r.id && (
                               <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
                             )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="inline-flex items-center gap-1">
+                          <Link
+                            to="/admin/career/$id"
+                            params={{ id: r.id }}
+                            title="View"
+                            className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            View
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => confirmDelete(r)}
+                            disabled={remove.isPending && remove.variables === r.id}
+                            title="Delete"
+                            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-background px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+                          >
+                            {remove.isPending && remove.variables === r.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-3.5 w-3.5" />
+                            )}
+                            Delete
+                          </button>
                         </div>
                       </td>
                     </tr>

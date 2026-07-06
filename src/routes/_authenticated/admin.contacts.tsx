@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link, notFound , redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown, Search, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown, Eye, Search, Loader2, Trash2 } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listContactSubmissions,
   updateContactStatus,
+  deleteContactSubmission,
   CONTACT_STATUSES,
   type ContactStatus,
   type ContactSubmission,
@@ -42,6 +43,7 @@ function ContactsPage() {
   const qc = useQueryClient();
   const listFn = useServerFn(listContactSubmissions);
   const updateFn = useServerFn(updateContactStatus);
+  const deleteFn = useServerFn(deleteContactSubmission);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<ContactStatus | "">("");
@@ -57,6 +59,17 @@ function ContactsPage() {
     mutationFn: (v: { id: string; status: ContactStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "contacts"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "contacts"] }),
+  });
+
+  const confirmDelete = (r: ContactSubmission) => {
+    if (window.confirm(`Delete submission from ${r.name}? This cannot be undone.`)) {
+      remove.mutate(r.id);
+    }
+  };
 
   const rows = useMemo(() => {
     if (!data) return [] as ContactSubmission[];
@@ -161,6 +174,7 @@ function ContactsPage() {
                     <th className="px-4 py-3 text-left">Message</th>
                     <Th onClick={() => toggleSort("created_at")}>Date <SortIcon k="created_at" /></Th>
                     <Th onClick={() => toggleSort("status")}>Status <SortIcon k="status" /></Th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
@@ -211,6 +225,33 @@ function ContactsPage() {
                           {update.isPending && update.variables?.id === r.id && (
                             <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
                           )}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="inline-flex items-center gap-1">
+                          <Link
+                            to="/admin/contact/$id"
+                            params={{ id: r.id }}
+                            title="View"
+                            className="inline-flex items-center gap-1 rounded-md border border-input bg-background px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                            View
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => confirmDelete(r)}
+                            disabled={remove.isPending && remove.variables === r.id}
+                            title="Delete"
+                            className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-background px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+                          >
+                            {remove.isPending && remove.variables === r.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Trash2 className="h-3.5 w-3.5" />
+                            )}
+                            Delete
+                          </button>
                         </div>
                       </td>
                     </tr>

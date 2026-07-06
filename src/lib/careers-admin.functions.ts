@@ -82,3 +82,30 @@ export const getResumeDownloadUrl = createServerFn({ method: "POST" })
     if (error) throw error;
     return { url: signed.signedUrl as string };
   });
+
+export const deleteCareerApplication = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { id: string }) => {
+    if (!data?.id) throw new Error("id required");
+    return data;
+  })
+  .handler(async ({ context, data }) => {
+    await assertSuperAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Fetch resume path so we can clean up storage.
+    const { data: row } = await (supabaseAdmin as any)
+      .from("career_applications")
+      .select("resume_url")
+      .eq("id", data.id)
+      .maybeSingle();
+    const { error } = await (supabaseAdmin as any)
+      .from("career_applications")
+      .delete()
+      .eq("id", data.id);
+    if (error) throw error;
+    const path = row?.resume_url as string | null | undefined;
+    if (path && !/^https?:\/\//i.test(path)) {
+      await (supabaseAdmin as any).storage.from("resumes").remove([path]);
+    }
+    return { ok: true, id: data.id };
+  });
