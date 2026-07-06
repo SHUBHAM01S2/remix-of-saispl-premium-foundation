@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Send, Loader2, Paperclip, X, FileText, Download } from "lucide-react";
+import { Send, Loader2, Paperclip, X, FileText, Download, Lock, EyeOff } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import type { ChatAttachment, ChatMessage } from "@/lib/messages.functions";
 import {
@@ -7,7 +7,7 @@ import {
   signMessageAttachmentUpload,
 } from "@/lib/messages.functions";
 
-type SendPayload = { body: string; attachments: ChatAttachment[] };
+type SendPayload = { body: string; attachments: ChatAttachment[]; is_internal?: boolean };
 
 type Props = {
   messages: ChatMessage[];
@@ -21,6 +21,10 @@ type Props = {
   disabledHint?: string;
   /** When true, hides the paperclip button (e.g. anonymous / disabled uploads). */
   allowAttachments?: boolean;
+  /** When true, shows an "Internal note" toggle (admin-only). */
+  allowInternalNote?: boolean;
+  /** Onboarding id needed so admin uploads can be scoped to the correct thread. */
+  uploadOnboardingId?: string | null;
 };
 
 const MAX_FILES = 6;
