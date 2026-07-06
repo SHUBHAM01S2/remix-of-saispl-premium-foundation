@@ -112,16 +112,16 @@ async def run() -> int:
         await page.screenshot(path=str(SHOTS / "admin_unauth.png"))
 
         print("\n[5] /shivi renders the private sign-in card")
-        await page.goto(BASE + "/shivi", wait_until="domcontentloaded")
-        await page.wait_for_timeout(500)
+        await page.goto(BASE + "/shivi", wait_until="networkidle")
+        await page.wait_for_selector('input[type="email"]', timeout=5000)
         body = await page.locator("body").inner_text()
         check("shivi renders 'Restricted area'", "Restricted area" in body)
         check("shivi renders an email input", await page.locator('input[type="email"]').count() > 0)
         await page.screenshot(path=str(SHOTS / "shivi.png"))
 
         print("\n[6] /client-portal renders the client sign-in card")
-        await page.goto(BASE + "/client-portal", wait_until="domcontentloaded")
-        await page.wait_for_timeout(500)
+        await page.goto(BASE + "/client-portal", wait_until="networkidle")
+        await page.wait_for_selector('input[type="email"]', timeout=5000)
         check(
             "client portal renders an email input",
             await page.locator('input[type="email"]').count() > 0,
