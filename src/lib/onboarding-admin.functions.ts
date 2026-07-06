@@ -90,20 +90,23 @@ function splitChecklist(raw: any): {
   standard: Record<string, boolean>;
   custom: CustomChecklistItem[];
   timeline: TimelineEntry[];
+  maintenance_plan: string | null;
 } {
   const src = raw && typeof raw === "object" ? raw : {};
   const custom = Array.isArray(src.__custom) ? (src.__custom as CustomChecklistItem[]) : [];
   const timeline = Array.isArray(src.__timeline) ? (src.__timeline as TimelineEntry[]) : [];
+  const maintenance_plan =
+    typeof src.__maintenance_plan === "string" ? src.__maintenance_plan : null;
   const standard: Record<string, boolean> = {};
   for (const k of Object.keys(src)) {
-    if (k === "__custom" || k === "__timeline") continue;
+    if (k === "__custom" || k === "__timeline" || k === "__maintenance_plan") continue;
     standard[k] = !!src[k];
   }
-  return { standard, custom, timeline };
+  return { standard, custom, timeline, maintenance_plan };
 }
 
 function normalize(row: any): OnboardingRow {
-  const { standard, custom, timeline } = splitChecklist(row.checklist);
+  const { standard, custom, timeline, maintenance_plan } = splitChecklist(row.checklist);
   return {
     ...row,
     assets: row.assets ?? {},
@@ -111,8 +114,10 @@ function normalize(row: any): OnboardingRow {
     checklist: standard,
     custom_checklist: custom,
     timeline,
+    maintenance_plan,
   } as OnboardingRow;
 }
+
 
 
 export const listOnboarding = createServerFn({ method: "GET" })
