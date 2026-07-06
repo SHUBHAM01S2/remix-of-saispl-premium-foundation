@@ -289,7 +289,7 @@ function AffiliateEnquiriesPage() {
                           </td>
                         </tr>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>
