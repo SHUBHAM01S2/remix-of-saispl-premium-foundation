@@ -2,15 +2,17 @@ import { useState } from "react";
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Plus, Trash2, ShieldCheck, Loader2 } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, ShieldCheck, Loader2, History } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listAdmins,
+  listAdminRoleAudit,
   updateAdminRole,
   deleteAdmin,
   addAdminByUserId,
   ADMIN_ROLES,
 } from "@/lib/admins-admin.functions";
+
 
 export const Route = createFileRoute("/_authenticated/admin/admins")({
   beforeLoad: async () => {
@@ -33,6 +35,7 @@ function AdminsPage() {
   const qc = useQueryClient();
   const meFn = useServerFn(checkIsAdmin);
   const listFn = useServerFn(listAdmins);
+  const auditFn = useServerFn(listAdminRoleAudit);
   const updateFn = useServerFn(updateAdminRole);
   const delFn = useServerFn(deleteAdmin);
   const addFn = useServerFn(addAdminByUserId);
@@ -42,34 +45,48 @@ function AdminsPage() {
     queryKey: ["admin", "admins"],
     queryFn: () => listFn(),
   });
+  const auditQ = useQuery({
+    queryKey: ["admin", "admin-role-audit"],
+    queryFn: () => auditFn(),
+  });
 
   const update = useMutation({
     mutationFn: (v: { id: string; role: string }) => updateFn({ data: v }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "admins"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
+    },
   });
 
   const del = useMutation({
     mutationFn: (id: string) => delFn({ data: { id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "admins"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
+    },
   });
 
   const [newUserId, setNewUserId] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState<string>("editor");
+  const [confirmClientOverride, setConfirmClientOverride] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
 
   const add = useMutation({
     mutationFn: () =>
-      addFn({ data: { userId: newUserId, email: newEmail, role: newRole } }),
+      addFn({ data: { userId: newUserId, email: newEmail, role: newRole, confirmClientOverride } }),
     onSuccess: () => {
       setNewUserId("");
       setNewEmail("");
       setNewRole("editor");
+      setConfirmClientOverride(false);
       setAddError(null);
       qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
     },
     onError: (e) => setAddError(e instanceof Error ? e.message : "Failed"),
   });
+
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
@@ -145,8 +162,21 @@ function AdminsPage() {
               Add
             </button>
           </div>
+          <label className="mt-3 flex items-start gap-2 text-xs text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={confirmClientOverride}
+              onChange={(e) => setConfirmClientOverride(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              This email is registered as a client — I still want to promote them.
+              Leave unchecked unless you are certain. Client accounts should never be admins.
+            </span>
+          </label>
           {addError && <p className="mt-2 text-sm text-red-600">{addError}</p>}
         </form>
+
 
         {/* List */}
         <div className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
@@ -233,6 +263,62 @@ function AdminsPage() {
             </div>
           )}
         </div>
+
+        {/* Audit log */}
+        <section className="mt-10">
+          <div className="mb-3 flex items-center gap-2">
+            <History className="h-4 w-4 text-muted-foreground" />
+            <h2 className="text-lg font-semibold text-foreground">Role change audit</h2>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Every admin grant, role change, and revoke is logged with the acting super admin.
+            Visible to super admins only.
+          </p>
+          <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+            {auditQ.isLoading ? (
+              <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
+            ) : !auditQ.data || auditQ.data.length === 0 ? (
+              <p className="px-6 py-8 text-sm text-muted-foreground">No changes recorded yet.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="px-4 py-3 text-left">When</th>
+                      <th className="px-4 py-3 text-left">Action</th>
+                      <th className="px-4 py-3 text-left">Target</th>
+                      <th className="px-4 py-3 text-left">Change</th>
+                      <th className="px-4 py-3 text-left">Actor</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border/60">
+                    {auditQ.data.map((row) => (
+                      <tr key={row.id}>
+                        <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
+                          {new Date(row.created_at).toLocaleString()}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={
+                            row.action === "grant"  ? "rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-300"
+                          : row.action === "revoke" ? "rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-300"
+                                                    : "rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300"
+                          }>
+                            {row.action}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-foreground">{row.target_email}</td>
+                        <td className="px-4 py-3 text-muted-foreground">
+                          {row.from_role ?? "—"} → {row.to_role ?? "—"}
+                        </td>
+                        <td className="px-4 py-3 text-muted-foreground">{row.actor_email ?? "system"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     </div>
   );
@@ -240,3 +326,4 @@ function AdminsPage() {
 
 const inputCls =
   "w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-brand focus:ring-1 focus:ring-brand";
+
