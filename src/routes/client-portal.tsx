@@ -314,6 +314,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const getFn = useServerFn(getMyOnboarding);
+  const summaryFn = useServerFn(getMyThreadSummary);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["client-portal", "me"],
@@ -321,6 +322,62 @@ function Dashboard() {
   });
 
   const [tab, setTab] = useState<"overview" | "assets" | "access" | "messages" | "timeline">("overview");
+
+  const summaryQ = useQuery({
+    queryKey: ["client-portal", "notif-summary"],
+    queryFn: () => summaryFn(),
+    refetchInterval: 8000,
+    refetchOnWindowFocus: true,
+    enabled: !!data,
+  });
+
+  // Toast when new admin messages arrive (compare against last seen id).
+  const lastSeenIdRef = useRef<string | null>(null);
+  const bootedRef = useRef(false);
+  useEffect(() => {
+    const s = summaryQ.data;
+    if (!s) return;
+    const topId = s.recent_admin[0]?.id ?? null;
+    if (!bootedRef.current) {
+      bootedRef.current = true;
+      lastSeenIdRef.current = topId;
+      return;
+    }
+    if (topId && topId !== lastSeenIdRef.current && s.unread_count > 0) {
+      // find messages newer than the previously seen id
+      const newOnes: ClientNotification[] = [];
+      for (const m of s.recent_admin) {
+        if (m.id === lastSeenIdRef.current) break;
+        newOnes.push(m);
+      }
+      const first = newOnes[0];
+      if (first && tab !== "messages") {
+        toast.message(`New message from ${first.sender_name ?? "SAISPL Team"}`, {
+          description: first.body
+            ? first.body.slice(0, 140)
+            : first.has_attachments
+            ? "Sent you an attachment"
+            : "New update on your project",
+          action: {
+            label: "Open",
+            onClick: () => setTab("messages"),
+          },
+        });
+      }
+      lastSeenIdRef.current = topId;
+    }
+  }, [summaryQ.data, tab]);
+
+  // Clear unread badge cache the moment user opens Messages tab —
+  // getMyThread server-side will mark read, then refetch summary.
+  useEffect(() => {
+    if (tab === "messages") {
+      const t = setTimeout(() => {
+        qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+      }, 500);
+      return () => clearTimeout(t);
+    }
+  }, [tab, qc]);
 
   const invalidate = () =>
     qc.invalidateQueries({ queryKey: ["client-portal", "me"] });
@@ -362,9 +419,21 @@ function Dashboard() {
   if (!data) return <NotLinkedYet onSignOut={handleSignOut} />;
 
   const row = data;
+  const unread = summaryQ.data?.unread_count ?? 0;
+  const recent = summaryQ.data?.recent_admin ?? [];
 
   return (
-    <ShellFrame signedIn onSignOut={handleSignOut}>
+    <ShellFrame
+      signedIn
+      onSignOut={handleSignOut}
+      bell={
+        <NotificationBell
+          unread={unread}
+          recent={recent}
+          onOpenMessages={() => setTab("messages")}
+        />
+      }
+    >
       <div className="pb-16 pt-8">
         <ProjectHeader row={row} />
 
@@ -375,26 +444,34 @@ function Dashboard() {
             { key: "access", label: "Access" },
             { key: "messages", label: "Messages" },
             { key: "timeline", label: "Timeline" },
-          ].map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key as any)}
-              className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-                tab === t.key
-                  ? "border-brand text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+          ].map((t) => {
+            const isMsg = t.key === "messages";
+            return (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key as any)}
+                className={`-mb-px inline-flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
+                  tab === t.key
+                    ? "border-brand text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t.label}
+                {isMsg && unread > 0 && (
+                  <span className="inline-flex min-w-[18px] items-center justify-center rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
         <div className="mt-8">
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
-          {tab === "messages" && <MessagesTab row={row} />}
+          {tab === "messages" && <MessagesTab row={row} unread={unread} />}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
