@@ -53,7 +53,12 @@ jobs:
         run: bunx vitest run tests/api/
 
       - name: Run E2E RBAC tests
-        run: bunx playwright test tests/e2e/admin-access.spec.ts tests/e2e/admin-demotion.spec.ts
+        run: >
+          bunx playwright test
+          tests/e2e/admin-access.spec.ts
+          tests/e2e/admin-demotion.spec.ts
+          tests/e2e/referrals-dashboards.spec.ts
+
 
       - name: Upload Playwright artifacts
         if: failure()
