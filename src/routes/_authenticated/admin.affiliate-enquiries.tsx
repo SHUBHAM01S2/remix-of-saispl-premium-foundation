@@ -17,6 +17,7 @@ import {
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   AFFILIATE_ENQUIRY_STATUSES,
+  deleteAffiliateEnquiry,
   listAffiliateEnquiries,
   updateAffiliateEnquiryStatus,
   type AffiliateEnquiry,
