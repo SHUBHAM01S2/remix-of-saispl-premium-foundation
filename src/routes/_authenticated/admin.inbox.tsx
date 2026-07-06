@@ -211,8 +211,8 @@ function ThreadView({
   });
 
   const mut = useMutation({
-    mutationFn: (body: string) =>
-      sendFn({ data: { onboarding_id: onboardingId, body } }),
+    mutationFn: (payload: { body: string; attachments: any[] }) =>
+      sendFn({ data: { onboarding_id: onboardingId, ...payload } }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-inbox", "thread", onboardingId] });
       onChange();
@@ -241,8 +241,8 @@ function ThreadView({
     <ChatThread
       messages={messages}
       isSending={mut.isPending}
-      onSend={async (body) => {
-        await mut.mutateAsync(body);
+      onSend={async (payload) => {
+        await mut.mutateAsync(payload);
       }}
       placeholder={`Reply to ${t.contact_person ?? t.company_name}…`}
       emptyHint="No messages yet. Start the conversation."
