@@ -40,6 +40,8 @@ import {
   ONBOARDING_STATUSES,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
+import { getMyThread, sendMyMessage } from "@/lib/messages.functions";
+import { ChatThread } from "@/components/ChatThread";
 
 export const Route = createFileRoute("/client-portal")({
   ssr: false,
@@ -310,7 +312,7 @@ function Dashboard() {
     queryFn: () => getFn(),
   });
 
-  const [tab, setTab] = useState<"overview" | "assets" | "access" | "timeline">("overview");
+  const [tab, setTab] = useState<"overview" | "assets" | "access" | "messages" | "timeline">("overview");
 
   const invalidate = () =>
     qc.invalidateQueries({ queryKey: ["client-portal", "me"] });
@@ -363,6 +365,7 @@ function Dashboard() {
             { key: "overview", label: "Overview" },
             { key: "assets", label: "Assets" },
             { key: "access", label: "Access" },
+            { key: "messages", label: "Messages" },
             { key: "timeline", label: "Timeline" },
           ].map((t) => (
             <button
@@ -383,6 +386,7 @@ function Dashboard() {
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
+          {tab === "messages" && <MessagesTab />}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
@@ -511,7 +515,7 @@ function OverviewTab({
   onJump,
 }: {
   row: ClientOnboardingView;
-  onJump: (t: "assets" | "access" | "timeline") => void;
+  onJump: (t: "assets" | "access" | "messages" | "timeline") => void;
 }) {
   const currentIdx = ONBOARDING_STATUSES.findIndex((s) => s.value === row.status);
   const pendingAssets = ASSET_KEYS.filter((k) => !row.assets?.[k]);
@@ -1151,3 +1155,62 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
     </ShellFrame>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/* Messages                                                             */
+/* ------------------------------------------------------------------ */
+
+function MessagesTab() {
+  const qc = useQueryClient();
+  const getThreadFn = useServerFn(getMyThread);
+  const sendFn = useServerFn(sendMyMessage);
+
+  const q = useQuery({
+    queryKey: ["client-portal", "thread"],
+    queryFn: () => getThreadFn(),
+    refetchInterval: 4000,
+    refetchOnWindowFocus: true,
+  });
+
+  const mut = useMutation({
+    mutationFn: (body: string) => sendFn({ data: { body } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["client-portal", "thread"] }),
+  });
+
+  if (q.isLoading) {
+    return (
+      <div className="grid h-72 place-items-center text-sm text-muted-foreground">
+        <Loader2 className="h-4 w-4 animate-spin" /> Loading your conversation…
+      </div>
+    );
+  }
+  if (q.error) {
+    return (
+      <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-6 text-sm text-red-200">
+        {(q.error as Error).message}
+      </div>
+    );
+  }
+
+  const messages = q.data?.messages ?? [];
+
+  return (
+    <ChatThread
+      messages={messages}
+      isSending={mut.isPending}
+      onSend={async (body) => {
+        await mut.mutateAsync(body);
+      }}
+      placeholder="Message your project manager…"
+      emptyHint="No messages yet. Send a note and your project manager will reply here."
+      headerLeft={
+        <div className="flex items-center gap-2">
+          <MessageSquare className="h-4 w-4 text-brand" />
+          <span className="font-semibold">Conversation with your SAISPL team</span>
+        </div>
+      }
+      headerRight={mut.error ? <span className="text-red-400">{(mut.error as Error).message}</span> : null}
+    />
+  );
+}
+

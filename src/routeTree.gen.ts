@@ -44,6 +44,7 @@ import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authent
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
 import { Route as AuthenticatedAdminOnboardingRouteImport } from './routes/_authenticated/admin.onboarding'
 import { Route as AuthenticatedAdminJobsRouteImport } from './routes/_authenticated/admin.jobs'
+import { Route as AuthenticatedAdminInboxRouteImport } from './routes/_authenticated/admin.inbox'
 import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authenticated/admin.contacts'
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
 import { Route as AuthenticatedAdminCapabilitiesRouteImport } from './routes/_authenticated/admin.capabilities'
@@ -249,6 +250,11 @@ const AuthenticatedAdminJobsRoute = AuthenticatedAdminJobsRouteImport.update({
   path: '/jobs',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminInboxRoute = AuthenticatedAdminInboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AuthenticatedAdminContactsRoute =
   AuthenticatedAdminContactsRouteImport.update({
     id: '/contacts',
@@ -441,6 +447,7 @@ export interface FileRoutesByFullPath {
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
+  '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/admin/onboarding': typeof AuthenticatedAdminOnboardingRouteWithChildren
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
@@ -502,6 +509,7 @@ export interface FileRoutesByTo {
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
+  '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/onboarding': typeof AuthenticatedAdminOnboardingRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
@@ -562,6 +570,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/_authenticated/admin/contacts': typeof AuthenticatedAdminContactsRoute
+  '/_authenticated/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/_authenticated/admin/jobs': typeof AuthenticatedAdminJobsRouteWithChildren
   '/_authenticated/admin/onboarding': typeof AuthenticatedAdminOnboardingRouteWithChildren
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
@@ -626,6 +635,7 @@ export interface FileRouteTypes {
     | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
+    | '/admin/inbox'
     | '/admin/jobs'
     | '/admin/onboarding'
     | '/admin/portfolio'
@@ -687,6 +697,7 @@ export interface FileRouteTypes {
     | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
+    | '/admin/inbox'
     | '/admin/onboarding'
     | '/admin/blog/new'
     | '/admin/capabilities/new'
@@ -746,6 +757,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/capabilities'
     | '/_authenticated/admin/careers'
     | '/_authenticated/admin/contacts'
+    | '/_authenticated/admin/inbox'
     | '/_authenticated/admin/jobs'
     | '/_authenticated/admin/onboarding'
     | '/_authenticated/admin/portfolio'
@@ -1049,6 +1061,13 @@ declare module '@tanstack/react-router' {
       path: '/jobs'
       fullPath: '/admin/jobs'
       preLoaderRoute: typeof AuthenticatedAdminJobsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/inbox': {
+      id: '/_authenticated/admin/inbox'
+      path: '/inbox'
+      fullPath: '/admin/inbox'
+      preLoaderRoute: typeof AuthenticatedAdminInboxRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/contacts': {
@@ -1370,6 +1389,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminCapabilitiesRoute: typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
   AuthenticatedAdminContactsRoute: typeof AuthenticatedAdminContactsRoute
+  AuthenticatedAdminInboxRoute: typeof AuthenticatedAdminInboxRoute
   AuthenticatedAdminJobsRoute: typeof AuthenticatedAdminJobsRouteWithChildren
   AuthenticatedAdminOnboardingRoute: typeof AuthenticatedAdminOnboardingRouteWithChildren
   AuthenticatedAdminPortfolioRoute: typeof AuthenticatedAdminPortfolioRouteWithChildren
@@ -1388,6 +1408,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
     AuthenticatedAdminCapabilitiesRouteWithChildren,
   AuthenticatedAdminCareersRoute: AuthenticatedAdminCareersRoute,
   AuthenticatedAdminContactsRoute: AuthenticatedAdminContactsRoute,
+  AuthenticatedAdminInboxRoute: AuthenticatedAdminInboxRoute,
   AuthenticatedAdminJobsRoute: AuthenticatedAdminJobsRouteWithChildren,
   AuthenticatedAdminOnboardingRoute:
     AuthenticatedAdminOnboardingRouteWithChildren,

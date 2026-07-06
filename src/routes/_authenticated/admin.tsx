@@ -86,6 +86,12 @@ const NAV_GROUPS: NavGroup[] = [
         desc: "Intake, assets, access & kickoff readiness",
       },
       {
+        label: "Client Inbox",
+        to: "/admin/inbox",
+        icon: MessageSquare,
+        desc: "Shared client conversations",
+      },
+      {
         label: "Client Reports",
         to: "/admin/reports",
         icon: BarChart3,
