@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   ArrowUp,
   ArrowUpDown,
+  Download,
   ExternalLink,
   Loader2,
   Search,
@@ -157,6 +158,15 @@ function AffiliateEnquiriesPage() {
           <p className="text-xs text-muted-foreground">
             {rows.length} {rows.length === 1 ? "result" : "results"}
           </p>
+          <button
+            type="button"
+            onClick={() => downloadEnquiriesCsv(rows)}
+            disabled={rows.length === 0}
+            className="ml-auto inline-flex items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Download className="h-4 w-4" />
+            Download CSV
+          </button>
         </div>
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
@@ -335,4 +345,51 @@ function Detail({
       </div>
     </div>
   );
+}
+
+const CSV_COLUMNS: { key: keyof AffiliateEnquiry; label: string }[] = [
+  { key: "created_at", label: "Submitted" },
+  { key: "full_name", label: "Full name" },
+  { key: "email", label: "Email" },
+  { key: "phone", label: "Phone" },
+  { key: "company", label: "Company" },
+  { key: "location", label: "Location" },
+  { key: "website", label: "Website" },
+  { key: "audience_type", label: "Audience" },
+  { key: "expected_referrals", label: "Expected referrals / mo" },
+  { key: "hear_about", label: "Heard about us" },
+  { key: "experience", label: "Experience" },
+  { key: "message", label: "Message" },
+  { key: "status", label: "Status" },
+];
+
+function csvEscape(value: unknown): string {
+  if (value === null || value === undefined) return "";
+  const s = String(value).replace(/\r?\n/g, " ");
+  if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+  return s;
+}
+
+function downloadEnquiriesCsv(rows: AffiliateEnquiry[]) {
+  if (rows.length === 0) return;
+  const header = CSV_COLUMNS.map((c) => csvEscape(c.label)).join(",");
+  const body = rows
+    .map((r) =>
+      CSV_COLUMNS.map((c) => {
+        const v = r[c.key];
+        if (c.key === "created_at" && v) return csvEscape(new Date(v as string).toISOString());
+        return csvEscape(v);
+      }).join(","),
+    )
+    .join("\n");
+  const csv = `\uFEFF${header}\n${body}\n`;
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `affiliate-enquiries-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
