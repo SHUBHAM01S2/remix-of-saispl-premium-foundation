@@ -61,6 +61,20 @@ const REFERRAL_RANGES = [
   "Not sure yet",
 ];
 
+const HEAR_ABOUT_OPTIONS = [
+  "Google search",
+  "LinkedIn",
+  "Instagram",
+  "Facebook",
+  "YouTube",
+  "Referral from a friend / colleague",
+  "Existing client",
+  "Event / conference",
+  "Blog / article",
+  "Other",
+];
+
+
 const schema = z.object({
   full_name: z.string().trim().min(1, "Please enter your full name.").max(100),
   email: z.string().trim().email("Please enter a valid email address.").max(255),
