@@ -52,18 +52,60 @@ export const listAdmins = createServerFn({ method: "GET" })
     return (data ?? []) as AdminAccount[];
   });
 
+export type AdminRoleAuditQuery = {
+  q?: string;              // free-text (matches actor or target email)
+  actor?: string;          // exact actor email (ilike)
+  target?: string;         // exact target email (ilike)
+  action?: "grant" | "update" | "revoke" | "all";
+  from?: string;           // ISO date (>=)
+  to?: string;             // ISO date (<=)
+  page?: number;           // 1-based
+  pageSize?: number;       // default 25, max 100
+};
+
+export type AdminRoleAuditPage = {
+  rows: AdminRoleAuditRow[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
 export const listAdminRoleAudit = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<AdminRoleAuditRow[]> => {
+  .inputValidator((data?: AdminRoleAuditQuery) => data ?? {})
+  .handler(async ({ context, data }): Promise<AdminRoleAuditPage> => {
     await assertSuperAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data, error } = await (supabaseAdmin as any)
+    const admin = supabaseAdmin as any;
+
+    const page = Math.max(1, data.page ?? 1);
+    const pageSize = Math.min(100, Math.max(1, data.pageSize ?? 25));
+    const rangeFrom = (page - 1) * pageSize;
+    const rangeTo = rangeFrom + pageSize - 1;
+
+    let q = admin
       .from("admin_role_audit")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(200);
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false });
+
+    if (data.q && data.q.trim()) {
+      const needle = `%${data.q.trim()}%`;
+      q = q.or(`actor_email.ilike.${needle},target_email.ilike.${needle}`);
+    }
+    if (data.actor) q = q.ilike("actor_email", data.actor);
+    if (data.target) q = q.ilike("target_email", data.target);
+    if (data.action && data.action !== "all") q = q.eq("action", data.action);
+    if (data.from) q = q.gte("created_at", data.from);
+    if (data.to) q = q.lte("created_at", data.to);
+
+    const { data: rows, error, count } = await q.range(rangeFrom, rangeTo);
     if (error) throw error;
-    return (data ?? []) as AdminRoleAuditRow[];
+    return {
+      rows: (rows ?? []) as AdminRoleAuditRow[],
+      total: count ?? 0,
+      page,
+      pageSize,
+    };
   });
 
 export const updateAdminRole = createServerFn({ method: "POST" })
