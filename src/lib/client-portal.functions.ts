@@ -18,8 +18,12 @@ export type AssetSubmission = {
   submitted_at: string;
 };
 
+// Access submissions are encrypted at rest. The client-facing view exposes
+// ONLY the timestamp — plaintext credentials are never returned to the
+// browser (not even to the client that submitted them). Admins fetch
+// decrypted values through `getOnboardingAccessSubmissions` in
+// `onboarding-admin.functions`.
 export type AccessSubmission = {
-  note: string;
   submitted_at: string;
 };
 
