@@ -243,21 +243,31 @@ export function ChatThread({
                   if (e.key === "Enter" && !e.shiftKey) submit();
                 }}
                 rows={1}
-                placeholder={placeholder}
+                placeholder={isInternal ? "Internal note — clients cannot see this…" : placeholder}
                 maxLength={4000}
-                className="max-h-40 min-h-[44px] flex-1 resize-none rounded-xl border border-border/60 bg-background/70 px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:border-brand/60 focus:ring-2 focus:ring-brand/30"
+                className={`max-h-40 min-h-[44px] flex-1 resize-none rounded-xl border px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 ${
+                  isInternal
+                    ? "border-amber-400/40 bg-amber-500/5 focus:border-amber-400/60 focus:ring-amber-400/30"
+                    : "border-border/60 bg-background/70 focus:border-brand/60 focus:ring-brand/30"
+                }`}
               />
               <button
                 type="submit"
                 disabled={(!draft.trim() && pending.length === 0) || isSending || uploading}
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-brand-foreground shadow-elegant transition-opacity hover:opacity-90 disabled:opacity-40"
+                className={`inline-flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-semibold shadow-elegant transition-opacity hover:opacity-90 disabled:opacity-40 ${
+                  isInternal
+                    ? "bg-amber-500 text-black"
+                    : "bg-brand text-brand-foreground"
+                }`}
               >
                 {isSending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isInternal ? (
+                  <Lock className="h-4 w-4" />
                 ) : (
                   <Send className="h-4 w-4" />
                 )}
-                Send
+                {isInternal ? "Save note" : "Send"}
               </button>
             </div>
           </>
