@@ -65,6 +65,18 @@ function ReferralDetailAdmin() {
     onError: (e: any) => toast.error(e?.message ?? "Failed"),
   });
 
+  const approve = useMutation({
+    mutationFn: () => approveFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referral", id] }); toast.success("Payout approved"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+  const markPaid = useMutation({
+    mutationFn: () => markPaidFn({ data: { id } }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["admin", "referral", id] }); toast.success("Marked as paid"); },
+    onError: (e: any) => toast.error(e?.message ?? "Failed"),
+  });
+
+
   if (q.isLoading) return <div className="p-8 text-center text-sm text-muted-foreground"><Loader2 className="inline h-4 w-4 animate-spin mr-2" />Loading…</div>;
   if (!q.data) return <div className="p-8 text-sm text-rose-400">Not found</div>;
   const { referral: r, activity } = q.data;
