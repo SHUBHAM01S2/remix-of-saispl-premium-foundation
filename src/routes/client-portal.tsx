@@ -972,6 +972,7 @@ function AccessItem({
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
+  const submitFn = useServerFn(submitClientAccess);
   const mut = useMutation({
     mutationFn: (v: string) => submitFn({ data: { key: keyName, value: v } }),
     onSuccess: () => {
@@ -980,7 +981,6 @@ function AccessItem({
       onChanged();
     },
   });
-  const submitFn = useServerFn(submitClientAccess);
 
   return (
     <div
