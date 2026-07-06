@@ -13,7 +13,7 @@ import {
   Briefcase,
   FolderKanban,
   FileText,
-  Users,
+  
   Sparkles,
   MessageSquare,
   Layers,
