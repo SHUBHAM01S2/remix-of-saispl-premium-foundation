@@ -441,6 +441,19 @@ export const signMessageAttachmentDownload = createServerFn({ method: "POST" })
       if (!data.path.startsWith(`messages/${row.id}/`)) {
         throw new Error("Not authorized for this file");
       }
+      // Extra guard: the requested path must belong to a NON-internal
+      // message in this client's thread. Prevents a client who ever learns
+      // an internal-note attachment path from downloading it.
+      const { data: match } = await (supabaseAdmin as any)
+        .from("client_messages")
+        .select("id, is_internal, attachments")
+        .eq("onboarding_id", row.id)
+        .contains("attachments", [{ path: data.path }])
+        .limit(1);
+      const found = (match ?? [])[0];
+      if (!found || found.is_internal) {
+        throw new Error("Not authorized for this file");
+      }
     }
     const { data: signed, error } = await (supabaseAdmin as any).storage
       .from(CHAT_BUCKET)
