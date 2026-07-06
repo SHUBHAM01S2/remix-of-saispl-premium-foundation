@@ -148,7 +148,10 @@ async function loadForCurrentUser(context: any) {
     .eq("id", context.userId)
     .maybeSingle();
   if (adminRow) {
-    throw new Error("This sign-in is for client accounts only.");
+    // Admin accounts don't have a client-portal row. Return null so the
+    // client-portal UI can render its sign-in/redirect state instead of
+    // bubbling an error up to the root error boundary.
+    return { row: null, email };
   }
 
   const { data, error } = await (supabaseAdmin as any)
