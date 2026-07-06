@@ -282,7 +282,13 @@ function AdminDashboard() {
                 </p>
                 <div className="space-y-0.5">
                   {g.items.map((it) => (
-                    <SidebarLink key={it.to} to={it.to} label={it.label} icon={it.icon} />
+                    <SidebarLink
+                      key={it.to}
+                      to={it.to}
+                      label={it.label}
+                      icon={it.icon}
+                      badge={it.to === "/admin/inbox" && inboxUnread > 0 ? inboxUnread : undefined}
+                    />
                   ))}
                 </div>
               </div>
