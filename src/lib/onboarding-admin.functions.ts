@@ -347,6 +347,14 @@ export const updateOnboarding = createServerFn({ method: "POST" })
 
     const mergedTimeline: TimelineEntry[] = [...prev.timeline, ...newEntries];
 
+    // Preserve any reserved bags we don't manage explicitly (e.g. __submissions
+    // written by client-portal server functions) so admin edits never drop them.
+    const prevChecklistRaw =
+      (prevRaw as any).checklist && typeof (prevRaw as any).checklist === "object"
+        ? ((prevRaw as any).checklist as Record<string, any>)
+        : {};
+    const prevSubmissions = prevChecklistRaw.__submissions ?? null;
+
     const updatePayload: any = {
       ...restPatch,
       status: nextStatus,
@@ -355,6 +363,7 @@ export const updateOnboarding = createServerFn({ method: "POST" })
         __custom: nextCustom,
         __timeline: mergedTimeline,
         __maintenance_plan: nextMaintenance,
+        ...(prevSubmissions ? { __submissions: prevSubmissions } : {}),
       },
     };
 
