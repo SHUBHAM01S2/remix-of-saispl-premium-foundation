@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ShieldAlert, LogOut, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { logAdminAccessDenied } from "@/lib/admin-access-log.functions";
 
 export type WrongRoleMode = "client-on-admin" | "admin-on-client";
 
