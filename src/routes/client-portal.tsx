@@ -460,7 +460,8 @@ function Dashboard() {
   const recent = summaryQ.data?.recent_admin ?? [];
   const convStatus = summaryQ.data?.conversation_status ?? null;
 
-  const markAllReadFn = useServerFn(markMyMessagesRead);
+
+
   const markAllRead = async () => {
     try {
       await markAllReadFn();
