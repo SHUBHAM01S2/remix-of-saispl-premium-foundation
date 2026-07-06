@@ -65,6 +65,12 @@ export type ReferralRow = {
   commission_pct: number | null;
   commission_amount: number | null;
   payout_status: ReferralPayoutStatus;
+  payout_approved_at: string | null;
+  payout_approved_by: string | null;
+  payout_paid_at: string | null;
+  payout_paid_by: string | null;
+  last_status_change_at: string | null;
+  last_activity_at: string | null;
   notes: string | null;
   onboarding_id: string | null;
   created_at: string;
@@ -84,7 +90,26 @@ export type ReferralActivityRow = {
 const PARTNER_COLS =
   "id,user_id,full_name,company,email,phone,payout_method,payout_details,default_commission_pct,status,notes,created_at,updated_at";
 const REFERRAL_COLS =
-  "id,partner_id,client_name,company,email,phone,service_interested,package_selected,source,referral_date,status,deal_stage,deal_value,commission_pct,commission_amount,payout_status,notes,onboarding_id,created_at,updated_at";
+  "id,partner_id,client_name,company,email,phone,service_interested,package_selected,source,referral_date,status,deal_stage,deal_value,commission_pct,commission_amount,payout_status,payout_approved_at,payout_approved_by,payout_paid_at,payout_paid_by,last_status_change_at,last_activity_at,notes,onboarding_id,created_at,updated_at";
+
+// Allowed payout transitions (mirrors DB trigger `referrals_payout_gate`).
+const PAYOUT_TRANSITIONS: Record<ReferralPayoutStatus, ReferralPayoutStatus[]> = {
+  pending:  ["approved", "on_hold"],
+  approved: ["paid", "pending", "on_hold"],
+  on_hold:  ["pending", "approved"],
+  paid:     [],
+};
+function assertPayoutTransition(from: ReferralPayoutStatus, to: ReferralPayoutStatus) {
+  if (from === to) return;
+  if (!PAYOUT_TRANSITIONS[from].includes(to)) {
+    throw new Error(
+      from === "paid"
+        ? "Payout is already marked paid and is locked."
+        : `Cannot move payout from "${from}" to "${to}".`,
+    );
+  }
+}
+
 
 // ============================================================
 // PARTNER-SCOPED
