@@ -1550,7 +1550,22 @@ function MessagesTab({
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+          {convStatus === "waiting_on_client" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-sky-500/40 bg-sky-500/15 px-2 py-0.5 font-medium text-sky-300">
+              <Clock className="h-3 w-3" /> Waiting on you
+            </span>
+          )}
+          {convStatus === "waiting_on_team" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/40 bg-violet-500/15 px-2 py-0.5 font-medium text-violet-300">
+              <Loader2 className="h-3 w-3" /> Team is on it
+            </span>
+          )}
+          {convStatus === "resolved" && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 font-medium text-emerald-300">
+              <CheckCircle2 className="h-3 w-3" /> Resolved
+            </span>
+          )}
           <span
             className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${STATUS_STYLES[row.status]}`}
           >
@@ -1561,6 +1576,7 @@ function MessagesTab({
           </span>
         </div>
       </div>
+
 
 
       <ChatThread
