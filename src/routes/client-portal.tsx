@@ -1,14 +1,17 @@
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   ArrowRight,
+  Bell,
   CheckCircle2,
   Circle,
   Clock,
   ExternalLink,
   FileUp,
+  Paperclip,
   KeyRound,
   Link as LinkIcon,
   LogIn,
@@ -40,7 +43,12 @@ import {
   ONBOARDING_STATUSES,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
-import { getMyThread, sendMyMessage } from "@/lib/messages.functions";
+import {
+  getMyThread,
+  getMyThreadSummary,
+  sendMyMessage,
+  type ClientNotification,
+} from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
 
 export const Route = createFileRoute("/client-portal")({
