@@ -714,3 +714,68 @@ export const getRecentMessagesForAdmin = createServerFn({ method: "POST" })
       assignee_name: o?.conversation_assignee_name ?? null,
     };
   });
+
+/**
+ * Admin-wide inbox summary — total unread client messages across all
+ * threads plus a compact list of the most recent unread threads. Drives
+ * the sidebar unread badge and the top-bar bell notification menu.
+ */
+export type AdminInboxNotification = {
+  onboarding_id: string;
+  company_name: string;
+  sender_name: string | null;
+  body: string;
+  created_at: string;
+  has_attachments: boolean;
+};
+
+export const getAdminInboxSummary = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{
+    total_unread: number;
+    threads_with_unread: number;
+    recent: AdminInboxNotification[];
+  }> => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows, error } = await (supabaseAdmin as any)
+      .from("client_messages")
+      .select("id, onboarding_id, sender_name, body, created_at, attachments")
+      .eq("sender_role", "client")
+      .eq("is_internal", false)
+      .is("read_by_admin_at", null)
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) throw error;
+    const list = (rows ?? []) as any[];
+    const ids = Array.from(new Set(list.map((r) => r.onboarding_id)));
+    let names = new Map<string, string>();
+    if (ids.length > 0) {
+      const { data: obs } = await (supabaseAdmin as any)
+        .from("client_onboarding")
+        .select("id, company_name")
+        .in("id", ids);
+      names = new Map((obs ?? []).map((o: any) => [o.id, o.company_name]));
+    }
+    const seen = new Set<string>();
+    const recent: AdminInboxNotification[] = [];
+    for (const r of list) {
+      if (seen.has(r.onboarding_id)) continue;
+      seen.add(r.onboarding_id);
+      recent.push({
+        onboarding_id: r.onboarding_id,
+        company_name: names.get(r.onboarding_id) ?? "Client",
+        sender_name: r.sender_name ?? null,
+        body: r.body ?? "",
+        created_at: r.created_at,
+        has_attachments: Array.isArray(r.attachments) && r.attachments.length > 0,
+      });
+      if (recent.length >= 10) break;
+    }
+    return {
+      total_unread: list.length,
+      threads_with_unread: seen.size,
+      recent,
+    };
+  });
+
