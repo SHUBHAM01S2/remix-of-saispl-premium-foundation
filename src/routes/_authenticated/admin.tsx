@@ -537,11 +537,13 @@ function SidebarLink({
   label,
   icon: Icon,
   active,
+  badge,
 }: {
   to: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   active?: boolean;
+  badge?: number;
 }) {
   return (
     <Link
@@ -558,10 +560,108 @@ function SidebarLink({
       }}
     >
       <Icon className="h-4 w-4" />
-      <span className="truncate">{label}</span>
+      <span className="flex-1 truncate">{label}</span>
+      {badge && badge > 0 ? (
+        <span className="inline-flex min-w-[18px] items-center justify-center rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold leading-none text-brand-foreground">
+          {badge > 9 ? "9+" : badge}
+        </span>
+      ) : null}
     </Link>
   );
 }
+
+function AdminBell({
+  unread,
+  recent,
+}: {
+  unread: number;
+  recent: AdminInboxNotification[];
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest?.("[data-admin-bell]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+  return (
+    <div className="relative" data-admin-bell>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+        aria-label={unread > 0 ? `${unread} unread client messages` : "Notifications"}
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 && (
+          <>
+            <span className="absolute -right-1 -top-1 inline-flex min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+              {unread > 9 ? "9+" : unread}
+            </span>
+            <span className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-brand/50" />
+          </>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-11 z-40 w-[340px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+            <p className="text-sm font-semibold">Client inbox</p>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {unread > 0 ? `${unread} unread` : "All caught up"}
+            </span>
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {recent.length === 0 ? (
+              <p className="px-4 py-8 text-center text-xs text-muted-foreground">
+                No unread client messages.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border/60">
+                {recent.map((m) => (
+                  <li key={`${m.onboarding_id}-${m.created_at}`}>
+                    <Link
+                      to="/admin/inbox"
+                      search={{ thread: m.onboarding_id } as any}
+                      onClick={() => setOpen(false)}
+                      className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-surface/60"
+                    >
+                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brand" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="truncate text-xs font-semibold">
+                            {m.company_name}
+                          </p>
+                          <span className="shrink-0 text-[10px] text-muted-foreground">
+                            {timeAgo(m.created_at)}
+                          </span>
+                        </div>
+                        <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                          {m.sender_name ? `${m.sender_name}: ` : ""}
+                          {m.body ||
+                            (m.has_attachments ? "Sent an attachment" : "New reply")}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <Link
+            to="/admin/inbox"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-1 border-t border-border/60 bg-background/40 px-4 py-2.5 text-xs font-medium text-brand hover:bg-brand/10"
+          >
+            Open shared inbox <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function ModuleCard({ item }: { item: NavItem }) {
   const Icon = item.icon;
