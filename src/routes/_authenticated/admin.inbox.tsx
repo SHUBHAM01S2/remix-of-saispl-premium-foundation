@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
@@ -21,7 +21,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   CONVERSATION_STATUSES,
   getThreadForAdmin,
@@ -36,6 +35,7 @@ import {
   type ThreadContext,
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
+import { WrongRoleNotice } from "@/components/WrongRoleNotice";
 
 const inboxSearchSchema = z.object({
   thread: fallback(z.string().uuid().optional(), undefined),
@@ -43,12 +43,24 @@ const inboxSearchSchema = z.object({
 
 export const Route = createFileRoute("/_authenticated/admin/inbox")({
   validateSearch: zodValidator(inboxSearchSchema),
-  beforeLoad: async () => {
-    const r = await checkIsAdmin();
-    if (!r.isAdmin) throw notFound();
-    return { admin: r.admin };
-  },
   component: AdminInboxPage,
+  errorComponent: ({ error, reset }) => (
+    <div className="mx-auto max-w-lg rounded-2xl border border-red-500/30 bg-red-500/5 p-6 text-sm text-red-200 mt-8">
+      <p className="font-semibold">Couldn't load the inbox</p>
+      <p className="mt-2 text-red-200/80">{(error as Error)?.message ?? "Unknown error"}</p>
+      <button
+        onClick={() => reset()}
+        className="mt-4 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs hover:bg-red-500/20"
+      >
+        Try again
+      </button>
+    </div>
+  ),
+  notFoundComponent: () => (
+    <div className="mx-auto max-w-lg rounded-2xl border border-border/60 bg-card/60 p-6 text-sm text-muted-foreground mt-8">
+      Inbox not available.
+    </div>
+  ),
   head: () => ({
     meta: [
       { title: "Client Inbox — Admin" },
@@ -56,6 +68,7 @@ export const Route = createFileRoute("/_authenticated/admin/inbox")({
     ],
   }),
 });
+
 
 const STATUS_STYLES: Record<ConversationStatus, string> = {
   unread: "bg-amber-500/15 text-amber-300 border-amber-500/30",
