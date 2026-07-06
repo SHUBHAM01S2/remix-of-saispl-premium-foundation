@@ -227,6 +227,7 @@ export const updateOnboarding = createServerFn({ method: "POST" })
       timeline: _t,
       checklist: patchChecklist,
       status: patchStatus,
+      maintenance_plan: patchMaintenance,
       ...restPatch
     } = data.patch as any;
 
@@ -238,6 +239,8 @@ export const updateOnboarding = createServerFn({ method: "POST" })
       ? patchCustom
       : prev.custom_checklist;
     const nextStatus: OnboardingStatus = patchStatus ?? prev.status;
+    const nextMaintenance: string | null =
+      patchMaintenance !== undefined ? patchMaintenance : prev.maintenance_plan;
 
     // Diff → new timeline entries
     const newEntries: TimelineEntry[] = [];
