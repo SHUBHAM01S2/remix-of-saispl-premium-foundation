@@ -28,8 +28,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
+import { getAdminInboxSummary, type AdminInboxNotification } from "@/lib/messages.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   // Do NOT throw here for non-admins. We want to render a premium
@@ -131,6 +134,7 @@ function AdminDashboard() {
   const meFn = useServerFn(checkIsAdmin);
   const statsFn = useServerFn(getDashboardStats);
   const activityFn = useServerFn(getRecentActivity);
+  const inboxSummaryFn = useServerFn(getAdminInboxSummary);
 
   const { data: me } = useQuery({ queryKey: ["admin", "me"], queryFn: () => meFn() });
   const { data: stats, isLoading: statsLoading } = useQuery({
@@ -142,6 +146,48 @@ function AdminDashboard() {
     queryFn: () => activityFn(),
     enabled: !!me?.isSuperAdmin,
   });
+  const inboxSummaryQ = useQuery({
+    queryKey: ["admin", "inbox-summary"],
+    queryFn: () => inboxSummaryFn(),
+    refetchInterval: 8000,
+    refetchOnWindowFocus: true,
+  });
+
+  const inboxUnread = inboxSummaryQ.data?.total_unread ?? 0;
+  const inboxRecent = inboxSummaryQ.data?.recent ?? [];
+  const lastTopIdRef = useRef<string | null>(null);
+  const bootedRef = useRef(false);
+  useEffect(() => {
+    const s = inboxSummaryQ.data;
+    if (!s) return;
+    const topId = s.recent[0]
+      ? `${s.recent[0].onboarding_id}:${s.recent[0].created_at}`
+      : null;
+    if (!bootedRef.current) {
+      bootedRef.current = true;
+      lastTopIdRef.current = topId;
+      return;
+    }
+    if (topId && topId !== lastTopIdRef.current) {
+      const first = s.recent[0];
+      if (first) {
+        toast.message(`New message from ${first.company_name}`, {
+          description: first.body
+            ? first.body.slice(0, 140)
+            : first.has_attachments
+            ? "Sent an attachment"
+            : "New reply in the inbox",
+          action: {
+            label: "Open inbox",
+            onClick: () => {
+              window.location.href = `/admin/inbox?thread=${first.onboarding_id}`;
+            },
+          },
+        });
+      }
+      lastTopIdRef.current = topId;
+    }
+  }, [inboxSummaryQ.data]);
 
   const isSuper = me?.isSuperAdmin ?? false;
   const groups = NAV_GROUPS.map((g) => ({
@@ -236,7 +282,13 @@ function AdminDashboard() {
                 </p>
                 <div className="space-y-0.5">
                   {g.items.map((it) => (
-                    <SidebarLink key={it.to} to={it.to} label={it.label} icon={it.icon} />
+                    <SidebarLink
+                      key={it.to}
+                      to={it.to}
+                      label={it.label}
+                      icon={it.icon}
+                      badge={it.to === "/admin/inbox" && inboxUnread > 0 ? inboxUnread : undefined}
+                    />
                   ))}
                 </div>
               </div>
@@ -280,12 +332,7 @@ function AdminDashboard() {
                 <Command className="h-3.5 w-3.5" /> Quick search
                 <kbd className="ml-2 rounded border border-border/60 bg-background px-1.5 text-[10px]">⌘K</kbd>
               </button>
-              <button
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
-                aria-label="Notifications"
-              >
-                <Bell className="h-4 w-4" />
-              </button>
+              <AdminBell unread={inboxUnread} recent={inboxRecent} />
               <button
                 onClick={handleSignOut}
                 className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium backdrop-blur transition-colors hover:bg-surface lg:hidden"
@@ -490,11 +537,13 @@ function SidebarLink({
   label,
   icon: Icon,
   active,
+  badge,
 }: {
   to: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   active?: boolean;
+  badge?: number;
 }) {
   return (
     <Link
@@ -511,10 +560,108 @@ function SidebarLink({
       }}
     >
       <Icon className="h-4 w-4" />
-      <span className="truncate">{label}</span>
+      <span className="flex-1 truncate">{label}</span>
+      {badge && badge > 0 ? (
+        <span className="inline-flex min-w-[18px] items-center justify-center rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold leading-none text-brand-foreground">
+          {badge > 9 ? "9+" : badge}
+        </span>
+      ) : null}
     </Link>
   );
 }
+
+function AdminBell({
+  unread,
+  recent,
+}: {
+  unread: number;
+  recent: AdminInboxNotification[];
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest?.("[data-admin-bell]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+  return (
+    <div className="relative" data-admin-bell>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-border/60 bg-card/60 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+        aria-label={unread > 0 ? `${unread} unread client messages` : "Notifications"}
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 && (
+          <>
+            <span className="absolute -right-1 -top-1 inline-flex min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+              {unread > 9 ? "9+" : unread}
+            </span>
+            <span className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-brand/50" />
+          </>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-11 z-40 w-[340px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+            <p className="text-sm font-semibold">Client inbox</p>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {unread > 0 ? `${unread} unread` : "All caught up"}
+            </span>
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {recent.length === 0 ? (
+              <p className="px-4 py-8 text-center text-xs text-muted-foreground">
+                No unread client messages.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border/60">
+                {recent.map((m) => (
+                  <li key={`${m.onboarding_id}-${m.created_at}`}>
+                    <Link
+                      to="/admin/inbox"
+                      search={{ thread: m.onboarding_id } as any}
+                      onClick={() => setOpen(false)}
+                      className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-surface/60"
+                    >
+                      <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brand" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="truncate text-xs font-semibold">
+                            {m.company_name}
+                          </p>
+                          <span className="shrink-0 text-[10px] text-muted-foreground">
+                            {timeAgo(m.created_at)}
+                          </span>
+                        </div>
+                        <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                          {m.sender_name ? `${m.sender_name}: ` : ""}
+                          {m.body ||
+                            (m.has_attachments ? "Sent an attachment" : "New reply")}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <Link
+            to="/admin/inbox"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center gap-1 border-t border-border/60 bg-background/40 px-4 py-2.5 text-xs font-medium text-brand hover:bg-brand/10"
+          >
+            Open shared inbox <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function ModuleCard({ item }: { item: NavItem }) {
   const Icon = item.icon;

@@ -16,6 +16,7 @@ import { Footer } from "@/components/Footer";
 import { TechPartners } from "@/components/TechPartners";
 import { WhatsAppChatButton } from "@/components/WhatsAppChatButton";
 import { BackToTopButton } from "@/components/BackToTopButton";
+import { Toaster } from "@/components/ui/sonner";
 
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { useRouterState } from "@tanstack/react-router";
@@ -246,6 +247,7 @@ function RootComponent() {
       <Footer />
       {!isAdmin && <WhatsAppChatButton />}
       <BackToTopButton />
+      <Toaster theme="dark" position="top-right" richColors closeButton />
     </QueryClientProvider>
   );
 }

@@ -1,14 +1,17 @@
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
   ArrowRight,
+  Bell,
   CheckCircle2,
   Circle,
   Clock,
   ExternalLink,
   FileUp,
+  Paperclip,
   KeyRound,
   Link as LinkIcon,
   LogIn,
@@ -40,7 +43,12 @@ import {
   ONBOARDING_STATUSES,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
-import { getMyThread, sendMyMessage } from "@/lib/messages.functions";
+import {
+  getMyThread,
+  getMyThreadSummary,
+  sendMyMessage,
+  type ClientNotification,
+} from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
 
 export const Route = createFileRoute("/client-portal")({
@@ -306,6 +314,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const getFn = useServerFn(getMyOnboarding);
+  const summaryFn = useServerFn(getMyThreadSummary);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["client-portal", "me"],
@@ -313,6 +322,62 @@ function Dashboard() {
   });
 
   const [tab, setTab] = useState<"overview" | "assets" | "access" | "messages" | "timeline">("overview");
+
+  const summaryQ = useQuery({
+    queryKey: ["client-portal", "notif-summary"],
+    queryFn: () => summaryFn(),
+    refetchInterval: 8000,
+    refetchOnWindowFocus: true,
+    enabled: !!data,
+  });
+
+  // Toast when new admin messages arrive (compare against last seen id).
+  const lastSeenIdRef = useRef<string | null>(null);
+  const bootedRef = useRef(false);
+  useEffect(() => {
+    const s = summaryQ.data;
+    if (!s) return;
+    const topId = s.recent_admin[0]?.id ?? null;
+    if (!bootedRef.current) {
+      bootedRef.current = true;
+      lastSeenIdRef.current = topId;
+      return;
+    }
+    if (topId && topId !== lastSeenIdRef.current && s.unread_count > 0) {
+      // find messages newer than the previously seen id
+      const newOnes: ClientNotification[] = [];
+      for (const m of s.recent_admin) {
+        if (m.id === lastSeenIdRef.current) break;
+        newOnes.push(m);
+      }
+      const first = newOnes[0];
+      if (first && tab !== "messages") {
+        toast.message(`New message from ${first.sender_name ?? "SAISPL Team"}`, {
+          description: first.body
+            ? first.body.slice(0, 140)
+            : first.has_attachments
+            ? "Sent you an attachment"
+            : "New update on your project",
+          action: {
+            label: "Open",
+            onClick: () => setTab("messages"),
+          },
+        });
+      }
+      lastSeenIdRef.current = topId;
+    }
+  }, [summaryQ.data, tab]);
+
+  // Clear unread badge cache the moment user opens Messages tab —
+  // getMyThread server-side will mark read, then refetch summary.
+  useEffect(() => {
+    if (tab === "messages") {
+      const t = setTimeout(() => {
+        qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+      }, 500);
+      return () => clearTimeout(t);
+    }
+  }, [tab, qc]);
 
   const invalidate = () =>
     qc.invalidateQueries({ queryKey: ["client-portal", "me"] });
@@ -354,9 +419,21 @@ function Dashboard() {
   if (!data) return <NotLinkedYet onSignOut={handleSignOut} />;
 
   const row = data;
+  const unread = summaryQ.data?.unread_count ?? 0;
+  const recent = summaryQ.data?.recent_admin ?? [];
 
   return (
-    <ShellFrame signedIn onSignOut={handleSignOut}>
+    <ShellFrame
+      signedIn
+      onSignOut={handleSignOut}
+      bell={
+        <NotificationBell
+          unread={unread}
+          recent={recent}
+          onOpenMessages={() => setTab("messages")}
+        />
+      }
+    >
       <div className="pb-16 pt-8">
         <ProjectHeader row={row} />
 
@@ -367,26 +444,34 @@ function Dashboard() {
             { key: "access", label: "Access" },
             { key: "messages", label: "Messages" },
             { key: "timeline", label: "Timeline" },
-          ].map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key as any)}
-              className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-                tab === t.key
-                  ? "border-brand text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+          ].map((t) => {
+            const isMsg = t.key === "messages";
+            return (
+              <button
+                key={t.key}
+                onClick={() => setTab(t.key as any)}
+                className={`-mb-px inline-flex items-center gap-2 border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
+                  tab === t.key
+                    ? "border-brand text-foreground"
+                    : "border-transparent text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t.label}
+                {isMsg && unread > 0 && (
+                  <span className="inline-flex min-w-[18px] items-center justify-center rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </nav>
 
         <div className="mt-8">
           {tab === "overview" && <OverviewTab row={row} onJump={setTab} />}
           {tab === "assets" && <AssetsTab row={row} onChanged={invalidate} />}
           {tab === "access" && <AccessTab row={row} onChanged={invalidate} />}
-          {tab === "messages" && <MessagesTab row={row} />}
+          {tab === "messages" && <MessagesTab row={row} unread={unread} />}
           {tab === "timeline" && <TimelineTab row={row} />}
         </div>
       </div>
@@ -402,10 +487,12 @@ function ShellFrame({
   children,
   signedIn,
   onSignOut,
+  bell,
 }: {
   children: React.ReactNode;
   signedIn?: boolean;
   onSignOut?: () => void;
+  bell?: React.ReactNode;
 }) {
   return (
     <main className="relative min-h-screen bg-background text-foreground">
@@ -419,6 +506,7 @@ function ShellFrame({
             <Link to="/" className="text-muted-foreground hover:text-foreground">
               ← Back to site
             </Link>
+            {bell}
             {signedIn && onSignOut && (
               <button
                 onClick={onSignOut}
@@ -434,6 +522,130 @@ function ShellFrame({
     </main>
   );
 }
+
+function NotificationBell({
+  unread,
+  recent,
+  onOpenMessages,
+}: {
+  unread: number;
+  recent: ClientNotification[];
+  onOpenMessages: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest?.("[data-notif-root]")) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, [open]);
+  return (
+    <div className="relative" data-notif-root>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="relative inline-flex h-8 w-8 items-center justify-center rounded-lg border border-input bg-background text-muted-foreground transition hover:text-foreground"
+        aria-label={unread > 0 ? `${unread} new messages` : "Notifications"}
+      >
+        <Bell className="h-4 w-4" />
+        {unread > 0 && (
+          <>
+            <span className="absolute -right-1 -top-1 inline-flex min-w-[16px] items-center justify-center rounded-full bg-brand px-1 text-[10px] font-semibold leading-none text-brand-foreground shadow-[0_0_0_2px_var(--background)]">
+              {unread > 9 ? "9+" : unread}
+            </span>
+            <span className="absolute -right-1 -top-1 h-4 w-4 animate-ping rounded-full bg-brand/50" />
+          </>
+        )}
+      </button>
+      {open && (
+        <div className="absolute right-0 top-10 z-40 w-[320px] overflow-hidden rounded-xl border border-border/60 bg-card/95 shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="flex items-center justify-between border-b border-border/60 px-4 py-3">
+            <p className="text-sm font-semibold">Notifications</p>
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+              {unread > 0 ? `${unread} new` : "All caught up"}
+            </span>
+          </div>
+          <div className="max-h-80 overflow-y-auto">
+            {recent.length === 0 ? (
+              <p className="px-4 py-8 text-center text-xs text-muted-foreground">
+                No messages from the SAISPL team yet.
+              </p>
+            ) : (
+              <ul className="divide-y divide-border/60">
+                {recent.map((m, i) => {
+                  const isUnread = i < unread;
+                  return (
+                    <li key={m.id}>
+                      <button
+                        onClick={() => {
+                          setOpen(false);
+                          onOpenMessages();
+                        }}
+                        className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors hover:bg-surface/60 ${
+                          isUnread ? "bg-brand/[0.06]" : ""
+                        }`}
+                      >
+                        <span
+                          className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
+                            isUnread ? "bg-brand" : "bg-transparent"
+                          }`}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-xs font-medium">
+                              {m.sender_name ?? "SAISPL Team"}
+                            </p>
+                            <span className="shrink-0 text-[10px] text-muted-foreground">
+                              {relTime(m.created_at)}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">
+                            {m.body ||
+                              (m.has_attachments ? "Sent you an attachment" : "New update")}
+                          </p>
+                          {m.has_attachments && (
+                            <p className="mt-1 inline-flex items-center gap-1 text-[10px] text-brand">
+                              <Paperclip className="h-3 w-3" /> Attachment included
+                            </p>
+                          )}
+                        </div>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+          <button
+            onClick={() => {
+              setOpen(false);
+              onOpenMessages();
+            }}
+            className="flex w-full items-center justify-center gap-1 border-t border-border/60 bg-background/40 px-4 py-2.5 text-xs font-medium text-brand hover:bg-brand/10"
+          >
+            Open messages <ArrowRight className="h-3 w-3" />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function relTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const s = Math.floor(diff / 1000);
+  if (s < 60) return "just now";
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const d = Math.floor(h / 24);
+  if (d < 7) return `${d}d ago`;
+  return new Date(iso).toLocaleDateString();
+}
+
 
 function ProjectHeader({ row }: { row: ClientOnboardingView }) {
   return (
@@ -1160,7 +1372,7 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
 /* Messages                                                             */
 /* ------------------------------------------------------------------ */
 
-function MessagesTab({ row }: { row: ClientOnboardingView }) {
+function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: number }) {
   const qc = useQueryClient();
   const getThreadFn = useServerFn(getMyThread);
   const sendFn = useServerFn(sendMyMessage);
@@ -1199,6 +1411,15 @@ function MessagesTab({ row }: { row: ClientOnboardingView }) {
 
   return (
     <div className="space-y-4">
+      {unread > 0 && (
+        <div className="flex items-center gap-2 rounded-xl border border-brand/40 bg-brand/10 px-4 py-2.5 text-xs text-brand">
+          <Bell className="h-3.5 w-3.5" />
+          <span className="font-medium">
+            {unread} new message{unread > 1 ? "s" : ""} from the SAISPL team
+          </span>
+          <span className="text-brand/70">— they'll be marked as read as you scroll.</span>
+        </div>
+      )}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card/60 p-4 shadow-elegant backdrop-blur sm:p-5">
         <div className="flex min-w-0 items-center gap-3">
           <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand/30 to-emerald-400/20 text-sm font-semibold text-foreground">
@@ -1224,6 +1445,7 @@ function MessagesTab({ row }: { row: ClientOnboardingView }) {
           </span>
         </div>
       </div>
+
 
       <ChatThread
         messages={messages}
