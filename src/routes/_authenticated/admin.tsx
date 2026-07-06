@@ -134,6 +134,7 @@ function AdminDashboard() {
   const meFn = useServerFn(checkIsAdmin);
   const statsFn = useServerFn(getDashboardStats);
   const activityFn = useServerFn(getRecentActivity);
+  const inboxSummaryFn = useServerFn(getAdminInboxSummary);
 
   const { data: me } = useQuery({ queryKey: ["admin", "me"], queryFn: () => meFn() });
   const { data: stats, isLoading: statsLoading } = useQuery({
@@ -145,6 +146,48 @@ function AdminDashboard() {
     queryFn: () => activityFn(),
     enabled: !!me?.isSuperAdmin,
   });
+  const inboxSummaryQ = useQuery({
+    queryKey: ["admin", "inbox-summary"],
+    queryFn: () => inboxSummaryFn(),
+    refetchInterval: 8000,
+    refetchOnWindowFocus: true,
+  });
+
+  const inboxUnread = inboxSummaryQ.data?.total_unread ?? 0;
+  const inboxRecent = inboxSummaryQ.data?.recent ?? [];
+  const lastTopIdRef = useRef<string | null>(null);
+  const bootedRef = useRef(false);
+  useEffect(() => {
+    const s = inboxSummaryQ.data;
+    if (!s) return;
+    const topId = s.recent[0]
+      ? `${s.recent[0].onboarding_id}:${s.recent[0].created_at}`
+      : null;
+    if (!bootedRef.current) {
+      bootedRef.current = true;
+      lastTopIdRef.current = topId;
+      return;
+    }
+    if (topId && topId !== lastTopIdRef.current) {
+      const first = s.recent[0];
+      if (first) {
+        toast.message(`New message from ${first.company_name}`, {
+          description: first.body
+            ? first.body.slice(0, 140)
+            : first.has_attachments
+            ? "Sent an attachment"
+            : "New reply in the inbox",
+          action: {
+            label: "Open inbox",
+            onClick: () => {
+              window.location.href = `/admin/inbox?thread=${first.onboarding_id}`;
+            },
+          },
+        });
+      }
+      lastTopIdRef.current = topId;
+    }
+  }, [inboxSummaryQ.data]);
 
   const isSuper = me?.isSuperAdmin ?? false;
   const groups = NAV_GROUPS.map((g) => ({
