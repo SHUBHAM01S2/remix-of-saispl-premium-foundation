@@ -418,17 +418,22 @@ function AffiliateEnquiryPage() {
                   </Field>
 
                   <Field label="How did you hear about us?" htmlFor="hear_about">
-                    <input
+                    <select
                       id="hear_about"
                       name="hear_about"
-                      type="text"
-                      maxLength={200}
-                      placeholder="Google, LinkedIn, a friend, an event…"
                       value={form.hear_about}
                       onChange={(e) => set("hear_about", e.target.value)}
                       className={inputCls}
-                    />
+                    >
+                      <option value="">Select an option</option>
+                      {HEAR_ABOUT_OPTIONS.map((o) => (
+                        <option key={o} value={o} className="bg-[#0a0a0a]">
+                          {o}
+                        </option>
+                      ))}
+                    </select>
                   </Field>
+
 
                   <Field label="Message *" htmlFor="message">
                     <textarea
