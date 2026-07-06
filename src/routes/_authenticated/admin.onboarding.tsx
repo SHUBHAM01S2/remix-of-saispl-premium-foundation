@@ -12,6 +12,7 @@ import {
   Clock3,
   UserCheck,
   Eye,
+  EyeOff,
   Rocket,
   PlayCircle,
   Building2,
@@ -23,8 +24,14 @@ import {
   Layers,
   ShieldCheck,
   UserCog,
+  KeyRound,
+  RefreshCw,
   X,
 } from "lucide-react";
+import { format } from "date-fns";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
@@ -562,6 +569,7 @@ type CreatePayload = {
   company_name: string;
   contact_person?: string;
   email?: string;
+  password?: string;
   phone?: string;
   project_type?: string;
   package_selected?: string;
@@ -609,6 +617,7 @@ function CreateModal({
     company_name: "",
     contact_person: "",
     email: "",
+    password: "",
     phone: "",
     project_type: "",
     package_selected: "",
@@ -617,9 +626,40 @@ function CreateModal({
     target_launch_date: "",
     project_goals: "",
   });
+  const [showPw, setShowPw] = useState(false);
+  const [pwTouched, setPwTouched] = useState(false);
+  const [dateOpen, setDateOpen] = useState(false);
 
   const set = <K extends keyof CreatePayload>(k: K, v: string) =>
     setForm((f) => ({ ...f, [k]: v }));
+
+  const pw = form.password ?? "";
+  const pwError =
+    pw.length === 0
+      ? null
+      : pw.length < 8
+        ? "Must be at least 8 characters."
+        : !/\d/.test(pw)
+          ? "Must include at least one number."
+          : null;
+  const pwValid = pw.length === 0 || !pwError;
+
+  const generatePassword = () => {
+    const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const lower = "abcdefghijkmnopqrstuvwxyz";
+    const digits = "23456789";
+    const symbols = "!@#$%^&*";
+    const all = upper + lower + digits + symbols;
+    const pick = (s: string) => s[Math.floor(Math.random() * s.length)];
+    const chars = [pick(upper), pick(lower), pick(digits), pick(digits), pick(symbols)];
+    for (let i = 0; i < 9; i++) chars.push(pick(all));
+    const shuffled = chars.sort(() => Math.random() - 0.5).join("");
+    set("password", shuffled);
+    setShowPw(true);
+    setPwTouched(true);
+  };
+
+  const launchDate = form.target_launch_date ? new Date(form.target_launch_date + "T00:00:00") : undefined;
 
 
   return (
@@ -661,6 +701,10 @@ function CreateModal({
           onSubmit={(e) => {
             e.preventDefault();
             if (!form.company_name.trim()) return;
+            if (pw.length > 0 && !pwValid) {
+              setPwTouched(true);
+              return;
+            }
             onSubmit(form);
           }}
           className="relative max-h-[75vh] overflow-y-auto px-6 pb-6 sm:px-8"
@@ -692,6 +736,48 @@ function CreateModal({
                 className={inputCls}
               />
             </Field>
+            <div className="sm:col-span-2">
+              <Field label="Set client password" icon={KeyRound}>
+                <div className="flex gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      type={showPw ? "text" : "password"}
+                      value={form.password}
+                      onChange={(e) => {
+                        set("password", e.target.value);
+                        setPwTouched(true);
+                      }}
+                      autoComplete="new-password"
+                      placeholder="Min 8 chars, at least one number"
+                      className={`${inputCls} pr-10 ${pwTouched && pwError ? "border-red-500/60 focus:border-red-500 focus:ring-red-500/20" : ""}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPw((v) => !v)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-surface hover:text-foreground"
+                      aria-label={showPw ? "Hide password" : "Show password"}
+                      tabIndex={-1}
+                    >
+                      {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={generatePassword}
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-border/60 bg-background px-3 py-2.5 text-xs font-medium text-foreground hover:border-brand/50 hover:text-brand"
+                  >
+                    <RefreshCw className="h-3.5 w-3.5" /> Generate
+                  </button>
+                </div>
+                {pwTouched && pwError ? (
+                  <p className="mt-1.5 text-[11px] text-red-400">{pwError}</p>
+                ) : (
+                  <p className="mt-1.5 text-[11px] text-muted-foreground">
+                    Client will use this password with their email to log into the client portal.
+                  </p>
+                )}
+              </Field>
+            </div>
             <Field label="Phone number" icon={Phone}>
               <input
                 value={form.phone}
@@ -750,13 +836,61 @@ function CreateModal({
               />
             </Field>
             <Field label="Target launch date" icon={CalendarClock}>
-              <input
-                type="date"
-                value={form.target_launch_date}
-                onChange={(e) => set("target_launch_date", e.target.value)}
-                className={inputCls}
-              />
+              <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    className={cn(
+                      inputCls,
+                      "flex items-center justify-between text-left",
+                      !launchDate && "text-muted-foreground/60",
+                    )}
+                  >
+                    <span>{launchDate ? format(launchDate, "PPP") : "Pick a date"}</span>
+                    <CalendarClock className="h-4 w-4 text-muted-foreground" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="start"
+                  sideOffset={6}
+                  className="pointer-events-auto w-auto border-border/60 bg-card p-0 shadow-2xl"
+                >
+                  <Calendar
+                    mode="single"
+                    selected={launchDate}
+                    onSelect={(d) => {
+                      set("target_launch_date", d ? format(d, "yyyy-MM-dd") : "");
+                      setDateOpen(false);
+                    }}
+                    initialFocus
+                    className="p-3"
+                  />
+                  <div className="flex items-center justify-between border-t border-border/60 px-3 py-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        set("target_launch_date", format(new Date(), "yyyy-MM-dd"));
+                        setDateOpen(false);
+                      }}
+                      className="rounded-md px-2 py-1 text-xs font-medium text-brand hover:bg-brand/10"
+                    >
+                      Today
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        set("target_launch_date", "");
+                        setDateOpen(false);
+                      }}
+                      className="rounded-md px-2 py-1 text-xs font-medium text-muted-foreground hover:bg-surface hover:text-foreground"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </Field>
+
 
             <div className="sm:col-span-2">
               <Field label="Project goals / notes">

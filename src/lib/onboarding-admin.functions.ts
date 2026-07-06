@@ -165,17 +165,65 @@ export const createOnboarding = createServerFn({ method: "POST" })
     target_launch_date?: string;
     project_goals?: string;
     maintenance_plan?: string;
+    password?: string;
   }) => {
     if (!data?.company_name || !data.company_name.trim()) throw new Error("Company name required");
+    if (data.password && data.password.length > 0) {
+      if (data.password.length < 8) throw new Error("Password must be at least 8 characters");
+      if (!/\d/.test(data.password)) throw new Error("Password must contain at least one number");
+      if (!data.email || !data.email.trim()) throw new Error("Email is required when setting a client password");
+    }
     return data;
   })
   .handler(async ({ context, data }): Promise<OnboardingRow> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const clean = (v?: string) => (v && v.trim() ? v.trim() : null);
+
+    // Provision / update the client's portal login account when a password is set.
+    if (data.password && data.email) {
+      const email = data.email.trim().toLowerCase();
+      const password = data.password;
+      const meta = { company_name: data.company_name.trim(), contact_person: clean(data.contact_person) };
+      const { error: createErr } = await (supabaseAdmin as any).auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+        user_metadata: meta,
+      });
+      if (createErr) {
+        const msg = String(createErr.message ?? "").toLowerCase();
+        const alreadyExists = msg.includes("already") || msg.includes("registered") || msg.includes("exists");
+        if (!alreadyExists) throw createErr;
+        // Find existing user and update password.
+        let found: any = null;
+        for (let page = 1; page <= 5 && !found; page++) {
+          const { data: list, error: listErr } = await (supabaseAdmin as any).auth.admin.listUsers({ page, perPage: 200 });
+          if (listErr) throw listErr;
+          const users = list?.users ?? [];
+          found = users.find((u: any) => (u.email ?? "").toLowerCase() === email);
+          if (users.length < 200) break;
+        }
+        if (!found) throw new Error("Could not locate existing user to update password");
+        const { error: updErr } = await (supabaseAdmin as any).auth.admin.updateUserById(found.id, {
+          password,
+          email_confirm: true,
+          user_metadata: { ...(found.user_metadata ?? {}), ...meta },
+        });
+        if (updErr) throw updErr;
+      }
+    }
+
     const initialTimeline: TimelineEntry[] = [
       { ts: new Date().toISOString(), kind: "created", message: `Onboarding created for ${data.company_name.trim()}` },
     ];
+    if (data.password && data.email) {
+      initialTimeline.push({
+        ts: new Date().toISOString(),
+        kind: "update",
+        message: `Client portal login provisioned for ${data.email.trim()}`,
+      });
+    }
     const maintenance = clean(data.maintenance_plan) ?? "Care Basic";
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
