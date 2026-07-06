@@ -86,7 +86,9 @@ export function ChatThread({
     setDraft("");
     const atts = pending;
     setPending([]);
-    await onSend({ body, attachments: atts });
+    const internalFlag = isInternal;
+    setIsInternal(false);
+    await onSend({ body, attachments: atts, is_internal: internalFlag });
   };
 
   const handleFiles = async (files: FileList | null) => {
@@ -104,7 +106,11 @@ export function ChatThread({
           throw new Error(`${file.name} is larger than 15 MB.`);
         }
         const signed = await signUpload({
-          data: { file_name: file.name, content_type: file.type },
+          data: {
+            file_name: file.name,
+            content_type: file.type,
+            onboarding_id: uploadOnboardingId ?? undefined,
+          },
         });
         const up = await fetch(signed.signedUrl, {
           method: "PUT",
