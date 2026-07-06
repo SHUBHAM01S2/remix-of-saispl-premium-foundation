@@ -162,8 +162,21 @@ function AdminsPage() {
               Add
             </button>
           </div>
+          <label className="mt-3 flex items-start gap-2 text-xs text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={confirmClientOverride}
+              onChange={(e) => setConfirmClientOverride(e.target.checked)}
+              className="mt-0.5"
+            />
+            <span>
+              This email is registered as a client — I still want to promote them.
+              Leave unchecked unless you are certain. Client accounts should never be admins.
+            </span>
+          </label>
           {addError && <p className="mt-2 text-sm text-red-600">{addError}</p>}
         </form>
+
 
         {/* List */}
         <div className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
