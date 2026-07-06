@@ -48,6 +48,13 @@ export const CHECKLIST_KEYS = [
   "kickoff_call_scheduled",
 ] as const;
 
+export type CustomChecklistItem = { id: string; label: string; done: boolean };
+export type TimelineEntry = {
+  ts: string;
+  kind: "status" | "checklist" | "custom" | "created" | "update";
+  message: string;
+};
+
 export type OnboardingRow = {
   id: string;
   company_name: string;
@@ -65,7 +72,9 @@ export type OnboardingRow = {
   integrations_needed: string | null;
   assets: Record<string, boolean>;
   access: Record<string, boolean>;
-  checklist: Record<string, boolean>;
+  checklist: Record<string, any>;
+  custom_checklist: CustomChecklistItem[];
+  timeline: TimelineEntry[];
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -74,14 +83,37 @@ export type OnboardingRow = {
 const COLS =
   "id, company_name, contact_person, email, phone, project_type, project_manager, status, project_goals, package_selected, target_launch_date, pages_needed, features_needed, integrations_needed, assets, access, checklist, notes, created_at, updated_at";
 
+// The `checklist` jsonb column holds the standard boolean keys plus two
+// reserved keys: `__custom` (CustomChecklistItem[]) and `__timeline`
+// (TimelineEntry[]). Extract them into first-class row fields for the UI.
+function splitChecklist(raw: any): {
+  standard: Record<string, boolean>;
+  custom: CustomChecklistItem[];
+  timeline: TimelineEntry[];
+} {
+  const src = raw && typeof raw === "object" ? raw : {};
+  const custom = Array.isArray(src.__custom) ? (src.__custom as CustomChecklistItem[]) : [];
+  const timeline = Array.isArray(src.__timeline) ? (src.__timeline as TimelineEntry[]) : [];
+  const standard: Record<string, boolean> = {};
+  for (const k of Object.keys(src)) {
+    if (k === "__custom" || k === "__timeline") continue;
+    standard[k] = !!src[k];
+  }
+  return { standard, custom, timeline };
+}
+
 function normalize(row: any): OnboardingRow {
+  const { standard, custom, timeline } = splitChecklist(row.checklist);
   return {
     ...row,
     assets: row.assets ?? {},
     access: row.access ?? {},
-    checklist: row.checklist ?? {},
+    checklist: standard,
+    custom_checklist: custom,
+    timeline,
   } as OnboardingRow;
 }
+
 
 export const listOnboarding = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -134,6 +166,9 @@ export const createOnboarding = createServerFn({ method: "POST" })
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const clean = (v?: string) => (v && v.trim() ? v.trim() : null);
+    const initialTimeline: TimelineEntry[] = [
+      { ts: new Date().toISOString(), kind: "created", message: `Onboarding created for ${data.company_name.trim()}` },
+    ];
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
       .insert({
@@ -146,12 +181,14 @@ export const createOnboarding = createServerFn({ method: "POST" })
         project_manager: clean(data.project_manager),
         target_launch_date: clean(data.target_launch_date),
         project_goals: clean(data.project_goals),
+        checklist: { __timeline: initialTimeline, __custom: [] },
       })
       .select(COLS)
       .single();
     if (error) throw error;
     return normalize(row);
   });
+
 
 export const updateOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -163,16 +200,114 @@ export const updateOnboarding = createServerFn({ method: "POST" })
   .handler(async ({ context, data }): Promise<OnboardingRow> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { id, created_at, updated_at, ...allowed } = data.patch as any;
+
+    // Read previous state so we can diff and append to the timeline.
+    const { data: prevRaw, error: prevErr } = await (supabaseAdmin as any)
+      .from("client_onboarding")
+      .select(COLS)
+      .eq("id", data.id)
+      .maybeSingle();
+    if (prevErr) throw prevErr;
+    if (!prevRaw) throw new Error("Onboarding record not found");
+    const prev = normalize(prevRaw);
+
+    const {
+      id: _id,
+      created_at: _c,
+      updated_at: _u,
+      custom_checklist: patchCustom,
+      timeline: _t,
+      checklist: patchChecklist,
+      status: patchStatus,
+      ...restPatch
+    } = data.patch as any;
+
+    const nextStandardChecklist: Record<string, boolean> =
+      patchChecklist && typeof patchChecklist === "object"
+        ? { ...prev.checklist, ...patchChecklist }
+        : prev.checklist;
+    const nextCustom: CustomChecklistItem[] = Array.isArray(patchCustom)
+      ? patchCustom
+      : prev.custom_checklist;
+    const nextStatus: OnboardingStatus = patchStatus ?? prev.status;
+
+    // Diff → new timeline entries
+    const newEntries: TimelineEntry[] = [];
+    const now = () => new Date().toISOString();
+
+    if (patchStatus && patchStatus !== prev.status) {
+      const label = (v: string) => ONBOARDING_STATUSES.find((s) => s.value === v)?.label ?? v;
+      newEntries.push({
+        ts: now(),
+        kind: "status",
+        message: `Status changed: ${label(prev.status)} → ${label(patchStatus)}`,
+      });
+    }
+
+    if (patchChecklist && typeof patchChecklist === "object") {
+      for (const k of Object.keys(patchChecklist)) {
+        const before = !!prev.checklist[k];
+        const after = !!patchChecklist[k];
+        if (before !== after) {
+          newEntries.push({
+            ts: now(),
+            kind: "checklist",
+            message: `${after ? "Completed" : "Reopened"} checklist item: ${k}`,
+          });
+        }
+      }
+    }
+
+    if (Array.isArray(patchCustom)) {
+      const prevById = new Map(prev.custom_checklist.map((i) => [i.id, i]));
+      const nextById = new Map(nextCustom.map((i) => [i.id, i]));
+      for (const [id, item] of nextById) {
+        const before = prevById.get(id);
+        if (!before) {
+          newEntries.push({ ts: now(), kind: "custom", message: `Added item: ${item.label}` });
+        } else if (before.done !== item.done) {
+          newEntries.push({
+            ts: now(),
+            kind: "custom",
+            message: `${item.done ? "Completed" : "Reopened"} item: ${item.label}`,
+          });
+        } else if (before.label !== item.label) {
+          newEntries.push({
+            ts: now(),
+            kind: "custom",
+            message: `Renamed item: ${before.label} → ${item.label}`,
+          });
+        }
+      }
+      for (const [id, item] of prevById) {
+        if (!nextById.has(id)) {
+          newEntries.push({ ts: now(), kind: "custom", message: `Removed item: ${item.label}` });
+        }
+      }
+    }
+
+    const mergedTimeline: TimelineEntry[] = [...prev.timeline, ...newEntries];
+
+    const updatePayload: any = {
+      ...restPatch,
+      status: nextStatus,
+      checklist: {
+        ...nextStandardChecklist,
+        __custom: nextCustom,
+        __timeline: mergedTimeline,
+      },
+    };
+
     const { data: row, error } = await (supabaseAdmin as any)
       .from("client_onboarding")
-      .update(allowed)
+      .update(updatePayload)
       .eq("id", data.id)
       .select(COLS)
       .single();
     if (error) throw error;
     return normalize(row);
   });
+
 
 export const deleteOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
