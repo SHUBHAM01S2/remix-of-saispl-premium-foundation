@@ -22,6 +22,14 @@ export function WrongRoleNotice({
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
 
+  // Fire a deny-audit row once per mount so admins can see who attempted
+  // to reach the wrong role's surface and from where.
+  useEffect(() => {
+    const route = typeof window !== "undefined" ? window.location.pathname : "unknown";
+    const ua = typeof navigator !== "undefined" ? navigator.userAgent : undefined;
+    logAdminAccessDenied({ data: { route, reason: mode, userAgent: ua } }).catch(() => {});
+  }, [mode]);
+
   const copy =
     mode === "client-on-admin"
       ? {
