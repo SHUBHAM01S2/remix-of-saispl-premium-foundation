@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -265,62 +265,162 @@ function AdminsPage() {
         </div>
 
         {/* Audit log */}
-        <section className="mt-10">
-          <div className="mb-3 flex items-center gap-2">
-            <History className="h-4 w-4 text-muted-foreground" />
-            <h2 className="text-lg font-semibold text-foreground">Role change audit</h2>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Every admin grant, role change, and revoke is logged with the acting super admin.
-            Visible to super admins only.
-          </p>
-          <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
-            {auditQ.isLoading ? (
-              <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
-            ) : !auditQ.data || auditQ.data.length === 0 ? (
-              <p className="px-6 py-8 text-sm text-muted-foreground">No changes recorded yet.</p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
-                    <tr>
-                      <th className="px-4 py-3 text-left">When</th>
-                      <th className="px-4 py-3 text-left">Action</th>
-                      <th className="px-4 py-3 text-left">Target</th>
-                      <th className="px-4 py-3 text-left">Change</th>
-                      <th className="px-4 py-3 text-left">Actor</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/60">
-                    {auditQ.data.map((row) => (
-                      <tr key={row.id}>
-                        <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
-                          {new Date(row.created_at).toLocaleString()}
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={
-                            row.action === "grant"  ? "rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-300"
-                          : row.action === "revoke" ? "rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-300"
-                                                    : "rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300"
-                          }>
-                            {row.action}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-foreground">{row.target_email}</td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {row.from_role ?? "—"} → {row.to_role ?? "—"}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">{row.actor_email ?? "system"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        </section>
+        <AuditSection />
       </div>
     </div>
+  );
+}
+
+function AuditSection() {
+  const auditFn = useServerFn(listAdminRoleAudit);
+  const [q, setQ] = useState("");
+  const [action, setAction] = useState<"all" | "grant" | "update" | "revoke">("all");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 25;
+
+  // Reset to page 1 whenever filters change
+  const filterKey = `${q}|${action}|${from}|${to}`;
+  const lastKey = useRef(filterKey);
+  if (lastKey.current !== filterKey) {
+    lastKey.current = filterKey;
+    if (page !== 1) setPage(1);
+  }
+
+  const auditQ = useQuery({
+    queryKey: ["admin", "admin-role-audit", { q, action, from, to, page, pageSize }],
+    queryFn: () =>
+      auditFn({
+        data: {
+          q: q || undefined,
+          action,
+          from: from ? new Date(from).toISOString() : undefined,
+          to: to ? new Date(to + "T23:59:59").toISOString() : undefined,
+          page,
+          pageSize,
+        },
+      }),
+    placeholderData: (prev) => prev,
+  });
+
+  const rows = auditQ.data?.rows ?? [];
+  const total = auditQ.data?.total ?? 0;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
+  return (
+    <section className="mt-10">
+      <div className="mb-3 flex items-center gap-2">
+        <History className="h-4 w-4 text-muted-foreground" />
+        <h2 className="text-lg font-semibold text-foreground">Role change audit</h2>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Every admin grant, role change, and revoke is logged with the acting super admin.
+        Visible to super admins only.
+      </p>
+
+      <div className="mt-4 grid gap-3 rounded-2xl border border-border/60 bg-card p-4 sm:grid-cols-2 lg:grid-cols-5">
+        <input
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          placeholder="Search actor or target email…"
+          className={inputCls + " lg:col-span-2"}
+        />
+        <select
+          value={action}
+          onChange={(e) => setAction(e.target.value as typeof action)}
+          className={inputCls}
+        >
+          <option value="all">All actions</option>
+          <option value="grant">Grant</option>
+          <option value="update">Update</option>
+          <option value="revoke">Revoke</option>
+        </select>
+        <input
+          type="date"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className={inputCls}
+          aria-label="From date"
+        />
+        <input
+          type="date"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          className={inputCls}
+          aria-label="To date"
+        />
+      </div>
+
+      <div className="mt-4 overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+        {auditQ.isLoading ? (
+          <p className="px-6 py-8 text-sm text-muted-foreground">Loading…</p>
+        ) : rows.length === 0 ? (
+          <p className="px-6 py-8 text-sm text-muted-foreground">No changes match these filters.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-3 text-left">When</th>
+                  <th className="px-4 py-3 text-left">Action</th>
+                  <th className="px-4 py-3 text-left">Target</th>
+                  <th className="px-4 py-3 text-left">Change</th>
+                  <th className="px-4 py-3 text-left">Actor</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/60">
+                {rows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
+                      {new Date(row.created_at).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={
+                        row.action === "grant"  ? "rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-300"
+                      : row.action === "revoke" ? "rounded-full bg-rose-500/10 px-2 py-0.5 text-xs font-medium text-rose-300"
+                                                : "rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-300"
+                      }>
+                        {row.action}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-foreground">{row.target_email}</td>
+                    <td className="px-4 py-3 text-muted-foreground">
+                      {row.from_role ?? "—"} → {row.to_role ?? "—"}
+                    </td>
+                    <td className="px-4 py-3 text-muted-foreground">{row.actor_email ?? "system"}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+        <span>
+          {total === 0 ? "0 results" : `Page ${page} of ${totalPages} · ${total} total`}
+        </span>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page <= 1 || auditQ.isFetching}
+            className="rounded-md border border-border/60 px-3 py-1 hover:bg-muted/40 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page >= totalPages || auditQ.isFetching}
+            className="rounded-md border border-border/60 px-3 py-1 hover:bg-muted/40 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
