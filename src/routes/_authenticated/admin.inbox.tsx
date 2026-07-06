@@ -96,6 +96,10 @@ function fmtRelative(iso: string | null): string {
 }
 
 function AdminInboxPage() {
+  const parentCtx = Route.useRouteContext() as {
+    isAdminRole?: boolean;
+    currentUserEmail?: string | null;
+  };
   const qc = useQueryClient();
   const navigate = useNavigate({ from: "/admin/inbox" });
   const search = Route.useSearch();
@@ -104,6 +108,7 @@ function AdminInboxPage() {
   const [selected, setSelected] = useState<string | null>(search.thread ?? null);
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ConversationStatus>("all");
+
 
   // Sync selection ← URL (deep-link from onboarding "Messages" card).
   useEffect(() => {
