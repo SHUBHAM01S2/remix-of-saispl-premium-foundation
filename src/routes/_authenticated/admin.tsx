@@ -1,7 +1,6 @@
 import {
   createFileRoute,
   Link,
-  notFound,
   Outlet,
   useLocation,
   useRouter,
@@ -30,12 +29,19 @@ import {
 } from "lucide-react";
 import { checkIsAdmin, getDashboardStats, getRecentActivity } from "@/lib/admin.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { WrongRoleNotice } from "@/components/WrongRoleNotice";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  // Do NOT throw here for non-admins. We want to render a premium
+  // "wrong role" page so signed-in clients understand why they can't
+  // reach /admin instead of getting a bare 404.
   beforeLoad: async () => {
     const result = await checkIsAdmin();
-    if (!result.isAdmin) throw notFound();
-    return { admin: result.admin };
+    return {
+      admin: result.admin,
+      isAdminRole: result.isAdmin,
+      currentUserEmail: result.email,
+    };
   },
   component: AdminShell,
   head: () => ({
@@ -48,9 +54,16 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 function AdminShell() {
   const location = useLocation();
+  const { isAdminRole, currentUserEmail } = Route.useRouteContext();
+
+  if (!isAdminRole) {
+    return <WrongRoleNotice mode="client-on-admin" email={currentUserEmail} />;
+  }
+
   if (location.pathname.replace(/\/$/, "") !== "/admin") return <Outlet />;
   return <AdminDashboard />;
 }
+
 
 type NavItem = {
   label: string;
