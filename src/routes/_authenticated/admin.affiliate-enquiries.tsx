@@ -56,6 +56,7 @@ function AffiliateEnquiriesPage() {
   const qc = useQueryClient();
   const listFn = useServerFn(listAffiliateEnquiries);
   const updateFn = useServerFn(updateAffiliateEnquiryStatus);
+  const deleteFn = useServerFn(deleteAffiliateEnquiry);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<AffiliateEnquiryStatus | "">("");
@@ -72,6 +73,21 @@ function AffiliateEnquiriesPage() {
     mutationFn: (v: { id: string; status: AffiliateEnquiryStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "affiliate-enquiries"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: (_r, id) => {
+      if (expanded === id) setExpanded(null);
+      qc.invalidateQueries({ queryKey: ["admin", "affiliate-enquiries"] });
+    },
+  });
+
+  const confirmDelete = (r: AffiliateEnquiry) => {
+    if (window.confirm(`Delete enquiry from ${r.full_name}? This cannot be undone.`)) {
+      remove.mutate(r.id);
+    }
+  };
+
 
   const rows = useMemo(() => {
     if (!data) return [] as AffiliateEnquiry[];
