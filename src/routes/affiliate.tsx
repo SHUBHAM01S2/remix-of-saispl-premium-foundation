@@ -82,7 +82,24 @@ function AffiliatePage() {
       </div>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-24 md:px-12 md:py-32">
+        {bookingConfirmed && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="mb-10 flex items-start gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-emerald-100"
+          >
+            <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400" />
+            <div>
+              <p className="font-semibold text-white">Your affiliate booking is confirmed</p>
+              <p className="mt-1 text-sm text-emerald-100/80">
+                Thanks for signing up. We've emailed the calendar invite and onboarding
+                details — check your inbox (and spam) for next steps.
+              </p>
+            </div>
+          </div>
+        )}
         <div className="max-w-3xl">
+
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium uppercase tracking-wider text-blue-400">
             Partner with us
           </div>
