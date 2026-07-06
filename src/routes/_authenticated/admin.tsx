@@ -117,6 +117,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: "Contact Submissions", to: "/admin/contacts", icon: Mail, desc: "Inbound enquiries", superOnly: true },
       { label: "Affiliate Enquiries", to: "/admin/affiliate-enquiries", icon: BadgeCheck, desc: "Partner applications", superOnly: true },
+      { label: "Affiliate Program", to: "/admin/affiliates", icon: Handshake, desc: "Sales partners & referrals" },
       { label: "Career Applications", to: "/admin/careers", icon: Briefcase, desc: "Candidate applications", superOnly: true },
       { label: "Job Openings", to: "/admin/jobs", icon: Sparkles, desc: "Manage roles listed on /career", superOnly: true },
     ],
