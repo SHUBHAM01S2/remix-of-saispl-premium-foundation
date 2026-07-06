@@ -1480,7 +1480,15 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
 /* Messages                                                             */
 /* ------------------------------------------------------------------ */
 
-function MessagesTab({ row, unread }: { row: ClientOnboardingView; unread: number }) {
+function MessagesTab({
+  row,
+  unread,
+  convStatus,
+}: {
+  row: ClientOnboardingView;
+  unread: number;
+  convStatus: import("@/lib/messages.functions").ConversationStatus | null;
+}) {
   const qc = useQueryClient();
   const getThreadFn = useServerFn(getMyThread);
   const sendFn = useServerFn(sendMyMessage);
