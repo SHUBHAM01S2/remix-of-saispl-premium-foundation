@@ -266,24 +266,25 @@ export const submitClientAccess = createServerFn({ method: "POST" })
     const { row } = await loadForCurrentUser(context);
     if (!row) throw new Error("No onboarding record linked to your account. Contact your project manager.");
 
+    const { encryptCreds } = await import("@/lib/creds-crypto.server");
+    const enc = encryptCreds(data.value.trim());
+    const submittedAt = new Date().toISOString();
+
     return writeChecklistUpdate(row.id, (prev) => {
       const src = prev.checklist && typeof prev.checklist === "object" ? { ...prev.checklist } : {};
       const subs = { ...(src.__submissions ?? {}) };
-      const accessSubs = { ...(subs.access ?? {}) } as Record<string, AccessSubmission[]>;
+      // Stored shape: { enc, submitted_at }. Never store the plaintext.
+      const accessSubs = { ...(subs.access ?? {}) } as Record<string, Array<{ enc: unknown; submitted_at: string }>>;
       const existing = Array.isArray(accessSubs[data.key]) ? accessSubs[data.key] : [];
-      const entry: AccessSubmission = {
-        note: data.value.trim(),
-        submitted_at: new Date().toISOString(),
-      };
-      accessSubs[data.key] = [...existing, entry];
+      accessSubs[data.key] = [...existing, { enc, submitted_at: submittedAt }];
       subs.access = accessSubs;
       src.__submissions = subs;
 
       const nextAccess = { ...(prev.access ?? {}), [data.key]: true };
       const nextChecklist = appendTimeline(src, {
-        ts: entry.submitted_at,
+        ts: submittedAt,
         kind: "update",
-        message: `Client submitted access for "${data.key}"`,
+        message: `Client submitted access for "${data.key}" (encrypted at rest)`,
       });
       return { checklist: nextChecklist, access: nextAccess };
     });
