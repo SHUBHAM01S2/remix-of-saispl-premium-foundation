@@ -312,7 +312,7 @@ function Dashboard() {
     queryFn: () => getFn(),
   });
 
-  const [tab, setTab] = useState<"overview" | "assets" | "access" | "timeline">("overview");
+  const [tab, setTab] = useState<"overview" | "assets" | "access" | "messages" | "timeline">("overview");
 
   const invalidate = () =>
     qc.invalidateQueries({ queryKey: ["client-portal", "me"] });
