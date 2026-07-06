@@ -287,6 +287,8 @@ export type ClientNotification = {
   body: string;
   created_at: string;
   has_attachments: boolean;
+  attachment_count: number;
+  attachments: ChatAttachment[];
 };
 
 export const getMyThreadSummary = createServerFn({ method: "GET" })
@@ -295,11 +297,18 @@ export const getMyThreadSummary = createServerFn({ method: "GET" })
     onboarding_id: string | null;
     unread_count: number;
     latest_admin_at: string | null;
+    conversation_status: ConversationStatus | null;
     recent_admin: ClientNotification[];
   }> => {
     const { row } = await loadClientOnboarding(context);
     if (!row) {
-      return { onboarding_id: null, unread_count: 0, latest_admin_at: null, recent_admin: [] };
+      return {
+        onboarding_id: null,
+        unread_count: 0,
+        latest_admin_at: null,
+        conversation_status: null,
+        recent_admin: [],
+      };
     }
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: recent, error } = await (supabaseAdmin as any)
@@ -311,20 +320,60 @@ export const getMyThreadSummary = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false })
       .limit(10);
     if (error) throw error;
+    const { data: ob } = await (supabaseAdmin as any)
+      .from("client_onboarding")
+      .select("conversation_status")
+      .eq("id", row.id)
+      .maybeSingle();
     const list = (recent ?? []) as any[];
     const unread_count = list.filter((m) => !m.read_by_client_at).length;
     return {
       onboarding_id: row.id,
       unread_count,
       latest_admin_at: list[0]?.created_at ?? null,
-      recent_admin: list.map((m) => ({
-        id: m.id,
-        sender_name: m.sender_name ?? null,
-        body: m.body ?? "",
-        created_at: m.created_at,
-        has_attachments: Array.isArray(m.attachments) && m.attachments.length > 0,
-      })),
+      conversation_status: (ob?.conversation_status ?? null) as ConversationStatus | null,
+      recent_admin: list.map((m) => {
+        const rawAtt = Array.isArray(m.attachments) ? m.attachments : [];
+        const attachments: ChatAttachment[] = rawAtt.map((a: any) => ({
+          path: String(a?.path ?? ""),
+          name: String(a?.name ?? "file"),
+          size: Number(a?.size ?? 0),
+          type: String(a?.type ?? ""),
+        }));
+        return {
+          id: m.id,
+          sender_name: m.sender_name ?? null,
+          body: m.body ?? "",
+          created_at: m.created_at,
+          has_attachments: attachments.length > 0,
+          attachment_count: attachments.length,
+          attachments,
+        };
+      }),
     };
+  });
+
+/**
+ * Mark every unread admin message in the client's thread as read.
+ * Powers the "Mark all as read" action in the notification bell.
+ */
+export const markMyMessagesRead = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<{ ok: true; cleared: number }> => {
+    const { row } = await loadClientOnboarding(context);
+    if (!row) return { ok: true, cleared: 0 };
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const now = new Date().toISOString();
+    const { data, error } = await (supabaseAdmin as any)
+      .from("client_messages")
+      .update({ read_by_client_at: now })
+      .eq("onboarding_id", row.id)
+      .eq("sender_role", "admin")
+      .eq("is_internal", false)
+      .is("read_by_client_at", null)
+      .select("id");
+    if (error) throw error;
+    return { ok: true, cleared: (data ?? []).length };
   });
 
 /* ------------------------------------------------------------------ */
