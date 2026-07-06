@@ -1160,7 +1160,7 @@ function NotLinkedYet({ onSignOut }: { onSignOut: () => void }) {
 /* Messages                                                             */
 /* ------------------------------------------------------------------ */
 
-function MessagesTab() {
+function MessagesTab({ row }: { row: ClientOnboardingView }) {
   const qc = useQueryClient();
   const getThreadFn = useServerFn(getMyThread);
   const sendFn = useServerFn(sendMyMessage);
@@ -1194,24 +1194,66 @@ function MessagesTab() {
   }
 
   const messages = q.data?.messages ?? [];
+  const pmName = row.project_manager?.trim() || "SAISPL project team";
+  const initials = row.company_name.slice(0, 2).toUpperCase();
 
   return (
-    <ChatThread
-      messages={messages}
-      isSending={mut.isPending}
-      onSend={async (payload) => {
-        await mut.mutateAsync(payload);
-      }}
-      placeholder="Message your project manager…"
-      emptyHint="No messages yet. Send a note and your project manager will reply here."
-      headerLeft={
-        <div className="flex items-center gap-2">
-          <MessageSquare className="h-4 w-4 text-brand" />
-          <span className="font-semibold">Conversation with your SAISPL team</span>
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card/60 p-4 shadow-elegant backdrop-blur sm:p-5">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand/30 to-emerald-400/20 text-sm font-semibold text-foreground">
+            {initials}
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-foreground">
+              {row.company_name}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">
+              Project chat · {pmName}
+            </p>
+          </div>
         </div>
-      }
-      headerRight={mut.error ? <span className="text-red-400">{(mut.error as Error).message}</span> : null}
-    />
+        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 ${STATUS_STYLES[row.status]}`}
+          >
+            {STATUS_LABELS[row.status]}
+          </span>
+          <span className="hidden items-center gap-1 sm:inline-flex">
+            <ShieldCheck className="h-3 w-3" /> Private &amp; encrypted in transit
+          </span>
+        </div>
+      </div>
+
+      <ChatThread
+        messages={messages}
+        isSending={mut.isPending}
+        onSend={async (payload) => {
+          await mut.mutateAsync(payload);
+        }}
+        placeholder="Message your project manager…"
+        emptyHint="No messages yet. Send a note and your project manager will reply here."
+        headerLeft={
+          <div className="flex items-center gap-2">
+            <MessageSquare className="h-4 w-4 text-brand" />
+            <span className="font-semibold">Conversation with your SAISPL team</span>
+          </div>
+        }
+        headerRight={
+          mut.error ? (
+            <span className="text-red-400">{(mut.error as Error).message}</span>
+          ) : q.isFetching ? (
+            <span className="inline-flex items-center gap-1">
+              <Loader2 className="h-3 w-3 animate-spin" /> syncing
+            </span>
+          ) : null
+        }
+      />
+
+      <p className="px-1 text-[11px] text-muted-foreground">
+        Files up to 15 MB · Messages are visible only to you and the SAISPL team assigned to your project.
+      </p>
+    </div>
   );
 }
 
