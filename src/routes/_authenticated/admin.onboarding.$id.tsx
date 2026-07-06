@@ -38,6 +38,7 @@ import {
   type OnboardingRow,
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
+import { getOnboardingAccessSubmissions } from "@/lib/onboarding-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/onboarding/$id")({
   beforeLoad: async () => {
