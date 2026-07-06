@@ -61,6 +61,20 @@ const REFERRAL_RANGES = [
   "Not sure yet",
 ];
 
+const HEAR_ABOUT_OPTIONS = [
+  "Google search",
+  "LinkedIn",
+  "Instagram",
+  "Facebook",
+  "YouTube",
+  "Referral from a friend / colleague",
+  "Existing client",
+  "Event / conference",
+  "Blog / article",
+  "Other",
+];
+
+
 const schema = z.object({
   full_name: z.string().trim().min(1, "Please enter your full name.").max(100),
   email: z.string().trim().email("Please enter a valid email address.").max(255),
@@ -404,17 +418,22 @@ function AffiliateEnquiryPage() {
                   </Field>
 
                   <Field label="How did you hear about us?" htmlFor="hear_about">
-                    <input
+                    <select
                       id="hear_about"
                       name="hear_about"
-                      type="text"
-                      maxLength={200}
-                      placeholder="Google, LinkedIn, a friend, an event…"
                       value={form.hear_about}
                       onChange={(e) => set("hear_about", e.target.value)}
                       className={inputCls}
-                    />
+                    >
+                      <option value="">Select an option</option>
+                      {HEAR_ABOUT_OPTIONS.map((o) => (
+                        <option key={o} value={o} className="bg-[#0a0a0a]">
+                          {o}
+                        </option>
+                      ))}
+                    </select>
                   </Field>
+
 
                   <Field label="Message *" htmlFor="message">
                     <textarea
