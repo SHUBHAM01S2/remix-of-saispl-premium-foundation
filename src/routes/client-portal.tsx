@@ -515,7 +515,7 @@ function OverviewTab({
   onJump,
 }: {
   row: ClientOnboardingView;
-  onJump: (t: "assets" | "access" | "timeline") => void;
+  onJump: (t: "assets" | "access" | "messages" | "timeline") => void;
 }) {
   const currentIdx = ONBOARDING_STATUSES.findIndex((s) => s.value === row.status);
   const pendingAssets = ASSET_KEYS.filter((k) => !row.assets?.[k]);
