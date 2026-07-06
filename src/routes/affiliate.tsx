@@ -191,6 +191,8 @@ function AffiliatePage() {
               calLink="shivaryan-infotech-ozoylu/affiliate-member"
               namespace="affiliate-member"
               title="Affiliate member booking"
+              analytics={{ event: "affiliate_cta_click", location: "footer_cta", cta: "book_onboarding_call" }}
+              onBookingSuccessful={handleBooked}
               className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-brand-foreground shadow-[0_10px_40px_-10px_var(--color-brand)] transition-all hover:brightness-110"
             >
               Book onboarding call
