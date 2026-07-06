@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LogIn, Lock, Loader2, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +22,7 @@ export const Route = createFileRoute("/client-portal")({
 
 function ClientPortalPage() {
   const navigate = useNavigate();
+  const router = useRouter();
   const [checking, setChecking] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
   const [email, setEmail] = useState("");
@@ -34,13 +35,18 @@ function ClientPortalPage() {
     (async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        setSignedIn(true);
         const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-        if (r.isAdmin) navigate({ to: "/admin", replace: true });
+        if (r.isAdmin) {
+          await supabase.auth.signOut();
+          setError("This sign-in is for client accounts only. Admin access uses the private admin sign-in route.");
+          setSignedIn(false);
+        } else {
+          setSignedIn(true);
+        }
       }
       setChecking(false);
     })();
-  }, [navigate]);
+  }, []);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,9 +56,17 @@ function ClientPortalPage() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
+      await router.invalidate();
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      if (r.isAdmin) navigate({ to: "/admin", replace: true });
-      else setSignedIn(true);
+      if (r.isAdmin) {
+        await supabase.auth.signOut();
+        await router.invalidate();
+        setSignedIn(false);
+        setError("This sign-in is for client accounts only. Admin access uses the private admin sign-in route.");
+        return;
+      }
+      navigate({ to: "/client-portal", replace: true });
+      setSignedIn(true);
     } catch (err: any) {
       setError(err?.message ?? "Unable to sign in");
     } finally {
@@ -73,7 +87,7 @@ function ClientPortalPage() {
     setError(null);
     setNotice(null);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/reset-password?flow=client`,
     });
     if (error) setError(error.message);
     else setNotice("Password reset email sent. Check your inbox.");

@@ -30,7 +30,12 @@ function ShiviLogin() {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
+      if (r.isAdmin) {
+        navigate({ to: "/admin", replace: true });
+        return;
+      }
+      await supabase.auth.signOut();
+      setError("This private sign-in is for admin accounts only. Client access starts from the public Sign In button.");
     });
   }, [navigate]);
 
@@ -44,7 +49,13 @@ function ShiviLogin() {
       if (error) throw error;
       await router.invalidate();
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
+      if (!r.isAdmin) {
+        await supabase.auth.signOut();
+        await router.invalidate();
+        setError("This private sign-in is for admin accounts only. Client access starts from the public Sign In button.");
+        return;
+      }
+      navigate({ to: "/admin", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to sign in");
     } finally {
@@ -59,7 +70,7 @@ function ShiviLogin() {
     setResetLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/reset-password?flow=admin`,
       });
       if (error) throw error;
       setNotice("If that email is registered, a reset link has been sent.");

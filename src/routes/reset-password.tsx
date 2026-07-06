@@ -15,6 +15,7 @@ export const Route = createFileRoute("/reset-password")({
 
 function ResetPasswordPage() {
   const navigate = useNavigate();
+  const flow = new URLSearchParams(window.location.search).get("flow") === "admin" ? "admin" : "client";
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ function ResetPasswordPage() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
       await supabase.auth.signOut();
-      navigate({ to: "/shivi", replace: true });
+      navigate({ to: flow === "admin" ? "/shivi" : "/client-portal", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to reset password");
     } finally {
