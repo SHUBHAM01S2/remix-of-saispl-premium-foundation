@@ -328,10 +328,48 @@ function Dashboard() {
   const summaryQ = useQuery({
     queryKey: ["client-portal", "notif-summary"],
     queryFn: () => summaryFn(),
-    refetchInterval: 8000,
+    // Realtime pushes updates instantly; poll acts as a safety net.
+    refetchInterval: 60_000,
     refetchOnWindowFocus: true,
     enabled: !!data,
   });
+
+  // Supabase Realtime: new admin messages / status changes → instant refresh.
+  const onboardingId = summaryQ.data?.onboarding_id ?? null;
+  useEffect(() => {
+    if (!onboardingId) return;
+    const ch = supabase
+      .channel(`client-thread-${onboardingId}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "client_messages",
+          filter: `onboarding_id=eq.${onboardingId}`,
+        },
+        () => {
+          qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+          qc.invalidateQueries({ queryKey: ["client-portal", "thread"] });
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "client_onboarding",
+          filter: `id=eq.${onboardingId}`,
+        },
+        () => {
+          qc.invalidateQueries({ queryKey: ["client-portal", "notif-summary"] });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [onboardingId, qc]);
 
   // Toast when new admin messages arrive (compare against last seen id).
   const lastSeenIdRef = useRef<string | null>(null);
@@ -346,7 +384,6 @@ function Dashboard() {
       return;
     }
     if (topId && topId !== lastSeenIdRef.current && s.unread_count > 0) {
-      // find messages newer than the previously seen id
       const newOnes: ClientNotification[] = [];
       for (const m of s.recent_admin) {
         if (m.id === lastSeenIdRef.current) break;
@@ -354,12 +391,13 @@ function Dashboard() {
       }
       const first = newOnes[0];
       if (first && tab !== "messages") {
+        const attNote =
+          first.attachment_count > 0
+            ? ` · 📎 ${first.attachment_count} attachment${first.attachment_count > 1 ? "s" : ""}`
+            : "";
         toast.message(`New message from ${first.sender_name ?? "SAISPL Team"}`, {
-          description: first.body
-            ? first.body.slice(0, 140)
-            : first.has_attachments
-            ? "Sent you an attachment"
-            : "New update on your project",
+          description:
+            (first.body ? first.body.slice(0, 140) : "New update on your project") + attNote,
           action: {
             label: "Open",
             onClick: () => setTab("messages"),
