@@ -103,7 +103,6 @@ const STATUS_STYLES: Record<OnboardingStatus, string> = {
 function ClientPortalPage() {
   const [checking, setChecking] = useState(true);
   const [signedIn, setSignedIn] = useState(false);
-  const [rejectMessage, setRejectMessage] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -111,14 +110,13 @@ function ClientPortalPage() {
       if (data.user) {
         const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
         if (r.isAdmin) {
+          // Admin accounts belong on the admin sign-in surface. Sign the
+          // session out silently and send them there — no error banner.
           await supabase.auth.signOut();
-          setRejectMessage(
-            "This sign-in is for client accounts only. Admin access uses the private admin sign-in route.",
-          );
-          setSignedIn(false);
-        } else {
-          setSignedIn(true);
+          window.location.replace("/shivi");
+          return;
         }
+        setSignedIn(true);
       }
       setChecking(false);
     })();
@@ -142,7 +140,7 @@ function ClientPortalPage() {
   }
 
   if (!signedIn) {
-    return <SignInView initialError={rejectMessage} onSignedIn={() => setSignedIn(true)} />;
+    return <SignInView onSignedIn={() => setSignedIn(true)} />;
   }
 
   return <Dashboard />;
@@ -153,17 +151,15 @@ function ClientPortalPage() {
 /* ------------------------------------------------------------------ */
 
 function SignInView({
-  initialError,
   onSignedIn,
 }: {
-  initialError: string | null;
   onSignedIn: () => void;
 }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(initialError);
+  const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -177,11 +173,10 @@ function SignInView({
       await router.invalidate();
       const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
       if (r.isAdmin) {
+        // Silently route admin accounts to the admin sign-in flow.
         await supabase.auth.signOut();
         await router.invalidate();
-        setError(
-          "This sign-in is for client accounts only. Admin access uses the private admin sign-in route.",
-        );
+        window.location.replace("/shivi");
         return;
       }
       onSignedIn();
