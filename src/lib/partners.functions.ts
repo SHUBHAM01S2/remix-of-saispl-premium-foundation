@@ -402,6 +402,20 @@ export const adminUpdateReferral = createServerFn({ method: "POST" })
   .handler(async ({ context, data }): Promise<ReferralRow> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+
+    // If payout is changing, validate the transition against the state machine.
+    if (data.payout_status !== undefined) {
+      const { data: current, error: curErr } = await admin
+        .from("referrals").select("payout_status").eq("id", data.id).maybeSingle();
+      if (curErr) throw curErr;
+      if (!current) throw new Error("Referral not found");
+      assertPayoutTransition(
+        current.payout_status as ReferralPayoutStatus,
+        data.payout_status,
+      );
+    }
+
     const patch: any = {};
     for (const k of [
       "status","deal_stage","deal_value","commission_pct","payout_status",
@@ -409,8 +423,47 @@ export const adminUpdateReferral = createServerFn({ method: "POST" })
     ] as const) {
       if (data[k] !== undefined) patch[k] = data[k];
     }
-    const { data: row, error } = await (supabaseAdmin as any)
+    const { data: row, error } = await admin
       .from("referrals").update(patch).eq("id", data.id)
+      .select(REFERRAL_COLS).single();
+    if (error) throw error;
+    return row as ReferralRow;
+  });
+
+// Convenience: explicit admin approval action. Requires payout in `pending` or `on_hold`.
+export const adminApprovePayout = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => { if (!d?.id) throw new Error("id required"); return d; })
+  .handler(async ({ context, data }): Promise<ReferralRow> => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+    const { data: cur } = await admin.from("referrals").select("payout_status,commission_amount").eq("id", data.id).maybeSingle();
+    if (!cur) throw new Error("Not found");
+    if (!cur.commission_amount || Number(cur.commission_amount) <= 0) {
+      throw new Error("Set a deal value and commission % before approving payout.");
+    }
+    assertPayoutTransition(cur.payout_status as ReferralPayoutStatus, "approved");
+    const { data: row, error } = await admin
+      .from("referrals").update({ payout_status: "approved" }).eq("id", data.id)
+      .select(REFERRAL_COLS).single();
+    if (error) throw error;
+    return row as ReferralRow;
+  });
+
+// Convenience: mark an approved payout as paid.
+export const adminMarkPayoutPaid = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => { if (!d?.id) throw new Error("id required"); return d; })
+  .handler(async ({ context, data }): Promise<ReferralRow> => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+    const { data: cur } = await admin.from("referrals").select("payout_status").eq("id", data.id).maybeSingle();
+    if (!cur) throw new Error("Not found");
+    assertPayoutTransition(cur.payout_status as ReferralPayoutStatus, "paid");
+    const { data: row, error } = await admin
+      .from("referrals").update({ payout_status: "paid" }).eq("id", data.id)
       .select(REFERRAL_COLS).single();
     if (error) throw error;
     return row as ReferralRow;
@@ -437,6 +490,7 @@ export const adminAddReferralNote = createServerFn({ method: "POST" })
     if (error) throw error;
     return { ok: true };
   });
+
 
 export const adminCreatePartner = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
