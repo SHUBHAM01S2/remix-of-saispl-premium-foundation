@@ -7,14 +7,17 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
+  Eye,
   Search,
   Loader2,
   Download,
+  Trash2,
 } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listCareerApplications,
   updateCareerStatus,
+  deleteCareerApplication,
   getResumeDownloadUrl,
   CAREER_STATUSES,
   type CareerStatus,
