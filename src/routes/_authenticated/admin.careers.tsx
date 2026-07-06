@@ -56,6 +56,7 @@ function CareersPage() {
   const listFn = useServerFn(listCareerApplications);
   const updateFn = useServerFn(updateCareerStatus);
   const signFn = useServerFn(getResumeDownloadUrl);
+  const deleteFn = useServerFn(deleteCareerApplication);
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<CareerStatus | "">("");
@@ -72,6 +73,21 @@ function CareersPage() {
     mutationFn: (v: { id: string; status: CareerStatus }) => updateFn({ data: v }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "careers"] }),
   });
+
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "careers"] }),
+  });
+
+  const confirmDelete = (r: CareerApplication) => {
+    if (
+      window.confirm(
+        `Delete application from ${r.name}? This will also remove the uploaded resume.`,
+      )
+    ) {
+      remove.mutate(r.id);
+    }
+  };
 
   const rows = useMemo(() => {
     if (!data) return [] as CareerApplication[];
