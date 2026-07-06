@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_role_audit: {
+        Row: {
+          action: string
+          actor_email: string | null
+          actor_id: string | null
+          created_at: string
+          from_role: string | null
+          id: string
+          reason: string | null
+          target_email: string
+          target_id: string
+          to_role: string | null
+        }
+        Insert: {
+          action: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          from_role?: string | null
+          id?: string
+          reason?: string | null
+          target_email: string
+          target_id: string
+          to_role?: string | null
+        }
+        Update: {
+          action?: string
+          actor_email?: string | null
+          actor_id?: string | null
+          created_at?: string
+          from_role?: string | null
+          id?: string
+          reason?: string | null
+          target_email?: string
+          target_id?: string
+          to_role?: string | null
+        }
+        Relationships: []
+      }
       admins: {
         Row: {
           created_at: string
@@ -566,10 +605,16 @@ export type Database = {
           deal_value: number | null
           email: string | null
           id: string
+          last_activity_at: string
+          last_status_change_at: string | null
           notes: string | null
           onboarding_id: string | null
           package_selected: string | null
           partner_id: string
+          payout_approved_at: string | null
+          payout_approved_by: string | null
+          payout_paid_at: string | null
+          payout_paid_by: string | null
           payout_status: Database["public"]["Enums"]["referral_payout_status"]
           phone: string | null
           referral_date: string
@@ -588,10 +633,16 @@ export type Database = {
           deal_value?: number | null
           email?: string | null
           id?: string
+          last_activity_at?: string
+          last_status_change_at?: string | null
           notes?: string | null
           onboarding_id?: string | null
           package_selected?: string | null
           partner_id: string
+          payout_approved_at?: string | null
+          payout_approved_by?: string | null
+          payout_paid_at?: string | null
+          payout_paid_by?: string | null
           payout_status?: Database["public"]["Enums"]["referral_payout_status"]
           phone?: string | null
           referral_date?: string
@@ -610,10 +661,16 @@ export type Database = {
           deal_value?: number | null
           email?: string | null
           id?: string
+          last_activity_at?: string
+          last_status_change_at?: string | null
           notes?: string | null
           onboarding_id?: string | null
           package_selected?: string | null
           partner_id?: string
+          payout_approved_at?: string | null
+          payout_approved_by?: string | null
+          payout_paid_at?: string | null
+          payout_paid_by?: string | null
           payout_status?: Database["public"]["Enums"]["referral_payout_status"]
           phone?: string | null
           referral_date?: string
