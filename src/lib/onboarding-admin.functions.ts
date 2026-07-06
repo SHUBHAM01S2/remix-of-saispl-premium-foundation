@@ -48,6 +48,13 @@ export const CHECKLIST_KEYS = [
   "kickoff_call_scheduled",
 ] as const;
 
+export type CustomChecklistItem = { id: string; label: string; done: boolean };
+export type TimelineEntry = {
+  ts: string;
+  kind: "status" | "checklist" | "custom" | "created" | "update";
+  message: string;
+};
+
 export type OnboardingRow = {
   id: string;
   company_name: string;
@@ -65,7 +72,9 @@ export type OnboardingRow = {
   integrations_needed: string | null;
   assets: Record<string, boolean>;
   access: Record<string, boolean>;
-  checklist: Record<string, boolean>;
+  checklist: Record<string, any>;
+  custom_checklist: CustomChecklistItem[];
+  timeline: TimelineEntry[];
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -74,14 +83,37 @@ export type OnboardingRow = {
 const COLS =
   "id, company_name, contact_person, email, phone, project_type, project_manager, status, project_goals, package_selected, target_launch_date, pages_needed, features_needed, integrations_needed, assets, access, checklist, notes, created_at, updated_at";
 
+// The `checklist` jsonb column holds the standard boolean keys plus two
+// reserved keys: `__custom` (CustomChecklistItem[]) and `__timeline`
+// (TimelineEntry[]). Extract them into first-class row fields for the UI.
+function splitChecklist(raw: any): {
+  standard: Record<string, boolean>;
+  custom: CustomChecklistItem[];
+  timeline: TimelineEntry[];
+} {
+  const src = raw && typeof raw === "object" ? raw : {};
+  const custom = Array.isArray(src.__custom) ? (src.__custom as CustomChecklistItem[]) : [];
+  const timeline = Array.isArray(src.__timeline) ? (src.__timeline as TimelineEntry[]) : [];
+  const standard: Record<string, boolean> = {};
+  for (const k of Object.keys(src)) {
+    if (k === "__custom" || k === "__timeline") continue;
+    standard[k] = !!src[k];
+  }
+  return { standard, custom, timeline };
+}
+
 function normalize(row: any): OnboardingRow {
+  const { standard, custom, timeline } = splitChecklist(row.checklist);
   return {
     ...row,
     assets: row.assets ?? {},
     access: row.access ?? {},
-    checklist: row.checklist ?? {},
+    checklist: standard,
+    custom_checklist: custom,
+    timeline,
   } as OnboardingRow;
 }
+
 
 export const listOnboarding = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
