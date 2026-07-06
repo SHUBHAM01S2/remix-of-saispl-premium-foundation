@@ -18,6 +18,7 @@ import { Route as SeoDigitalMarketingRouteImport } from './routes/seo-digital-ma
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as OurWorksRouteImport } from './routes/our-works'
 import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-portals-software'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -33,12 +34,17 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
+import { Route as PartnerReferralsRouteImport } from './routes/partner.referrals'
+import { Route as PartnerProfileRouteImport } from './routes/partner.profile'
+import { Route as PartnerEarningsRouteImport } from './routes/partner.earnings'
 import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$caseStudyId'
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as ClientReportsClientSlugRouteImport } from './routes/client-reports.$clientSlug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as PartnerReferralsNewRouteImport } from './routes/partner.referrals.new'
+import { Route as PartnerReferralsIdRouteImport } from './routes/partner.referrals.$id'
 import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
 import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin.reports'
 import { Route as AuthenticatedAdminPortfolioRouteImport } from './routes/_authenticated/admin.portfolio'
@@ -49,6 +55,7 @@ import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
 import { Route as AuthenticatedAdminCapabilitiesRouteImport } from './routes/_authenticated/admin.capabilities'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
+import { Route as AuthenticatedAdminAffiliatesRouteImport } from './routes/_authenticated/admin.affiliates'
 import { Route as AuthenticatedAdminAffiliateEnquiriesRouteImport } from './routes/_authenticated/admin.affiliate-enquiries'
 import { Route as AuthenticatedAdminAdminsRouteImport } from './routes/_authenticated/admin.admins'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
@@ -65,12 +72,17 @@ import { Route as AuthenticatedAdminContactIdRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminCareerIdRouteImport } from './routes/_authenticated/admin.career.$id'
 import { Route as AuthenticatedAdminCapabilitiesNewRouteImport } from './routes/_authenticated/admin.capabilities.new'
 import { Route as AuthenticatedAdminBlogNewRouteImport } from './routes/_authenticated/admin.blog.new'
+import { Route as AuthenticatedAdminAffiliatesReferralsRouteImport } from './routes/_authenticated/admin.affiliates.referrals'
+import { Route as AuthenticatedAdminAffiliatesPayoutsRouteImport } from './routes/_authenticated/admin.affiliates.payouts'
+import { Route as AuthenticatedAdminAffiliatesPartnersRouteImport } from './routes/_authenticated/admin.affiliates.partners'
 import { Route as AuthenticatedAdminTestimonialsIdEditRouteImport } from './routes/_authenticated/admin.testimonials.$id.edit'
 import { Route as AuthenticatedAdminReportsIdEditRouteImport } from './routes/_authenticated/admin.reports.$id.edit'
 import { Route as AuthenticatedAdminPortfolioIdEditRouteImport } from './routes/_authenticated/admin.portfolio.$id.edit'
 import { Route as AuthenticatedAdminJobsIdEditRouteImport } from './routes/_authenticated/admin.jobs.$id.edit'
 import { Route as AuthenticatedAdminCapabilitiesIdEditRouteImport } from './routes/_authenticated/admin.capabilities.$id.edit'
 import { Route as AuthenticatedAdminBlogIdEditRouteImport } from './routes/_authenticated/admin.blog.$id.edit'
+import { Route as AuthenticatedAdminAffiliatesReferralsIdRouteImport } from './routes/_authenticated/admin.affiliates.referrals.$id'
+import { Route as AuthenticatedAdminAffiliatesPartnersIdRouteImport } from './routes/_authenticated/admin.affiliates.partners.$id'
 
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
   id: '/web-design-development',
@@ -115,6 +127,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnerRoute = PartnerRouteImport.update({
+  id: '/partner',
+  path: '/partner',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OurWorksRoute = OurWorksRouteImport.update({
@@ -191,6 +208,21 @@ const ReportsIdRoute = ReportsIdRouteImport.update({
   path: '/reports/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PartnerReferralsRoute = PartnerReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => PartnerRoute,
+} as any)
+const PartnerProfileRoute = PartnerProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => PartnerRoute,
+} as any)
+const PartnerEarningsRoute = PartnerEarningsRouteImport.update({
+  id: '/earnings',
+  path: '/earnings',
+  getParentRoute: () => PartnerRoute,
+} as any)
 const OurWorksCaseStudyIdRoute = OurWorksCaseStudyIdRouteImport.update({
   id: '/$caseStudyId',
   path: '/$caseStudyId',
@@ -220,6 +252,16 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const PartnerReferralsNewRoute = PartnerReferralsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => PartnerReferralsRoute,
+} as any)
+const PartnerReferralsIdRoute = PartnerReferralsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => PartnerReferralsRoute,
 } as any)
 const AuthenticatedAdminTestimonialsRoute =
   AuthenticatedAdminTestimonialsRouteImport.update({
@@ -278,6 +320,12 @@ const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAffiliatesRoute =
+  AuthenticatedAdminAffiliatesRouteImport.update({
+    id: '/affiliates',
+    path: '/affiliates',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAffiliateEnquiriesRoute =
   AuthenticatedAdminAffiliateEnquiriesRouteImport.update({
     id: '/affiliate-enquiries',
@@ -374,6 +422,24 @@ const AuthenticatedAdminBlogNewRoute =
     path: '/new',
     getParentRoute: () => AuthenticatedAdminBlogRoute,
   } as any)
+const AuthenticatedAdminAffiliatesReferralsRoute =
+  AuthenticatedAdminAffiliatesReferralsRouteImport.update({
+    id: '/referrals',
+    path: '/referrals',
+    getParentRoute: () => AuthenticatedAdminAffiliatesRoute,
+  } as any)
+const AuthenticatedAdminAffiliatesPayoutsRoute =
+  AuthenticatedAdminAffiliatesPayoutsRouteImport.update({
+    id: '/payouts',
+    path: '/payouts',
+    getParentRoute: () => AuthenticatedAdminAffiliatesRoute,
+  } as any)
+const AuthenticatedAdminAffiliatesPartnersRoute =
+  AuthenticatedAdminAffiliatesPartnersRouteImport.update({
+    id: '/partners',
+    path: '/partners',
+    getParentRoute: () => AuthenticatedAdminAffiliatesRoute,
+  } as any)
 const AuthenticatedAdminTestimonialsIdEditRoute =
   AuthenticatedAdminTestimonialsIdEditRouteImport.update({
     id: '/$id/edit',
@@ -410,6 +476,18 @@ const AuthenticatedAdminBlogIdEditRoute =
     path: '/$id/edit',
     getParentRoute: () => AuthenticatedAdminBlogRoute,
   } as any)
+const AuthenticatedAdminAffiliatesReferralsIdRoute =
+  AuthenticatedAdminAffiliatesReferralsIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminAffiliatesReferralsRoute,
+  } as any)
+const AuthenticatedAdminAffiliatesPartnersIdRoute =
+  AuthenticatedAdminAffiliatesPartnersIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedAdminAffiliatesPartnersRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -424,6 +502,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
+  '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -439,10 +518,14 @@ export interface FileRoutesByFullPath {
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/partner/earnings': typeof PartnerEarningsRoute
+  '/partner/profile': typeof PartnerProfileRoute
+  '/partner/referrals': typeof PartnerReferralsRouteWithChildren
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
+  '/admin/affiliates': typeof AuthenticatedAdminAffiliatesRouteWithChildren
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -453,6 +536,11 @@ export interface FileRoutesByFullPath {
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
+  '/partner/referrals/$id': typeof PartnerReferralsIdRoute
+  '/partner/referrals/new': typeof PartnerReferralsNewRoute
+  '/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
+  '/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
@@ -467,6 +555,8 @@ export interface FileRoutesByFullPath {
   '/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
   '/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
   '/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/admin/affiliates/partners/$id': typeof AuthenticatedAdminAffiliatesPartnersIdRoute
+  '/admin/affiliates/referrals/$id': typeof AuthenticatedAdminAffiliatesReferralsIdRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
@@ -487,6 +577,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
+  '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -502,15 +593,24 @@ export interface FileRoutesByTo {
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/partner/earnings': typeof PartnerEarningsRoute
+  '/partner/profile': typeof PartnerProfileRoute
+  '/partner/referrals': typeof PartnerReferralsRouteWithChildren
   '/reports/$id': typeof ReportsIdRoute
   '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
+  '/admin/affiliates': typeof AuthenticatedAdminAffiliatesRouteWithChildren
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
   '/admin/inbox': typeof AuthenticatedAdminInboxRoute
   '/admin/onboarding': typeof AuthenticatedAdminOnboardingRouteWithChildren
+  '/partner/referrals/$id': typeof PartnerReferralsIdRoute
+  '/partner/referrals/new': typeof PartnerReferralsNewRoute
+  '/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
+  '/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
@@ -525,6 +625,8 @@ export interface FileRoutesByTo {
   '/admin/portfolio': typeof AuthenticatedAdminPortfolioIndexRoute
   '/admin/reports': typeof AuthenticatedAdminReportsIndexRoute
   '/admin/testimonials': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/admin/affiliates/partners/$id': typeof AuthenticatedAdminAffiliatesPartnersIdRoute
+  '/admin/affiliates/referrals/$id': typeof AuthenticatedAdminAffiliatesReferralsIdRoute
   '/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
@@ -547,6 +649,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
   '/our-works': typeof OurWorksRouteWithChildren
+  '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -562,10 +665,14 @@ export interface FileRoutesById {
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
   '/our-works/$caseStudyId': typeof OurWorksCaseStudyIdRoute
+  '/partner/earnings': typeof PartnerEarningsRoute
+  '/partner/profile': typeof PartnerProfileRoute
+  '/partner/referrals': typeof PartnerReferralsRouteWithChildren
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
   '/_authenticated/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
+  '/_authenticated/admin/affiliates': typeof AuthenticatedAdminAffiliatesRouteWithChildren
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -576,6 +683,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/portfolio': typeof AuthenticatedAdminPortfolioRouteWithChildren
   '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRouteWithChildren
   '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRouteWithChildren
+  '/partner/referrals/$id': typeof PartnerReferralsIdRoute
+  '/partner/referrals/new': typeof PartnerReferralsNewRoute
+  '/_authenticated/admin/affiliates/partners': typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  '/_authenticated/admin/affiliates/payouts': typeof AuthenticatedAdminAffiliatesPayoutsRoute
+  '/_authenticated/admin/affiliates/referrals': typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
   '/_authenticated/admin/blog/new': typeof AuthenticatedAdminBlogNewRoute
   '/_authenticated/admin/capabilities/new': typeof AuthenticatedAdminCapabilitiesNewRoute
   '/_authenticated/admin/career/$id': typeof AuthenticatedAdminCareerIdRoute
@@ -590,6 +702,8 @@ export interface FileRoutesById {
   '/_authenticated/admin/portfolio/': typeof AuthenticatedAdminPortfolioIndexRoute
   '/_authenticated/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
   '/_authenticated/admin/testimonials/': typeof AuthenticatedAdminTestimonialsIndexRoute
+  '/_authenticated/admin/affiliates/partners/$id': typeof AuthenticatedAdminAffiliatesPartnersIdRoute
+  '/_authenticated/admin/affiliates/referrals/$id': typeof AuthenticatedAdminAffiliatesReferralsIdRoute
   '/_authenticated/admin/blog/$id/edit': typeof AuthenticatedAdminBlogIdEditRoute
   '/_authenticated/admin/capabilities/$id/edit': typeof AuthenticatedAdminCapabilitiesIdEditRoute
   '/_authenticated/admin/jobs/$id/edit': typeof AuthenticatedAdminJobsIdEditRoute
@@ -612,6 +726,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
+    | '/partner'
     | '/pricing'
     | '/privacy'
     | '/reset-password'
@@ -627,10 +742,14 @@ export interface FileRouteTypes {
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
+    | '/partner/earnings'
+    | '/partner/profile'
+    | '/partner/referrals'
     | '/reports/$id'
     | '/blog/'
     | '/admin/admins'
     | '/admin/affiliate-enquiries'
+    | '/admin/affiliates'
     | '/admin/blog'
     | '/admin/capabilities'
     | '/admin/careers'
@@ -641,6 +760,11 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/reports'
     | '/admin/testimonials'
+    | '/partner/referrals/$id'
+    | '/partner/referrals/new'
+    | '/admin/affiliates/partners'
+    | '/admin/affiliates/payouts'
+    | '/admin/affiliates/referrals'
     | '/admin/blog/new'
     | '/admin/capabilities/new'
     | '/admin/career/$id'
@@ -655,6 +779,8 @@ export interface FileRouteTypes {
     | '/admin/portfolio/'
     | '/admin/reports/'
     | '/admin/testimonials/'
+    | '/admin/affiliates/partners/$id'
+    | '/admin/affiliates/referrals/$id'
     | '/admin/blog/$id/edit'
     | '/admin/capabilities/$id/edit'
     | '/admin/jobs/$id/edit'
@@ -675,6 +801,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
+    | '/partner'
     | '/pricing'
     | '/privacy'
     | '/reset-password'
@@ -690,15 +817,24 @@ export interface FileRouteTypes {
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
+    | '/partner/earnings'
+    | '/partner/profile'
+    | '/partner/referrals'
     | '/reports/$id'
     | '/blog'
     | '/admin/admins'
     | '/admin/affiliate-enquiries'
+    | '/admin/affiliates'
     | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
     | '/admin/inbox'
     | '/admin/onboarding'
+    | '/partner/referrals/$id'
+    | '/partner/referrals/new'
+    | '/admin/affiliates/partners'
+    | '/admin/affiliates/payouts'
+    | '/admin/affiliates/referrals'
     | '/admin/blog/new'
     | '/admin/capabilities/new'
     | '/admin/career/$id'
@@ -713,6 +849,8 @@ export interface FileRouteTypes {
     | '/admin/portfolio'
     | '/admin/reports'
     | '/admin/testimonials'
+    | '/admin/affiliates/partners/$id'
+    | '/admin/affiliates/referrals/$id'
     | '/admin/blog/$id/edit'
     | '/admin/capabilities/$id/edit'
     | '/admin/jobs/$id/edit'
@@ -734,6 +872,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/custom-portals-software'
     | '/our-works'
+    | '/partner'
     | '/pricing'
     | '/privacy'
     | '/reset-password'
@@ -749,10 +888,14 @@ export interface FileRouteTypes {
     | '/internal/architecture'
     | '/internal/quarterly-addons'
     | '/our-works/$caseStudyId'
+    | '/partner/earnings'
+    | '/partner/profile'
+    | '/partner/referrals'
     | '/reports/$id'
     | '/blog/'
     | '/_authenticated/admin/admins'
     | '/_authenticated/admin/affiliate-enquiries'
+    | '/_authenticated/admin/affiliates'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/capabilities'
     | '/_authenticated/admin/careers'
@@ -763,6 +906,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/portfolio'
     | '/_authenticated/admin/reports'
     | '/_authenticated/admin/testimonials'
+    | '/partner/referrals/$id'
+    | '/partner/referrals/new'
+    | '/_authenticated/admin/affiliates/partners'
+    | '/_authenticated/admin/affiliates/payouts'
+    | '/_authenticated/admin/affiliates/referrals'
     | '/_authenticated/admin/blog/new'
     | '/_authenticated/admin/capabilities/new'
     | '/_authenticated/admin/career/$id'
@@ -777,6 +925,8 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/portfolio/'
     | '/_authenticated/admin/reports/'
     | '/_authenticated/admin/testimonials/'
+    | '/_authenticated/admin/affiliates/partners/$id'
+    | '/_authenticated/admin/affiliates/referrals/$id'
     | '/_authenticated/admin/blog/$id/edit'
     | '/_authenticated/admin/capabilities/$id/edit'
     | '/_authenticated/admin/jobs/$id/edit'
@@ -799,6 +949,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CustomPortalsSoftwareRoute: typeof CustomPortalsSoftwareRoute
   OurWorksRoute: typeof OurWorksRouteWithChildren
+  PartnerRoute: typeof PartnerRouteWithChildren
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -879,6 +1030,13 @@ declare module '@tanstack/react-router' {
       path: '/pricing'
       fullPath: '/pricing'
       preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partner': {
+      id: '/partner'
+      path: '/partner'
+      fullPath: '/partner'
+      preLoaderRoute: typeof PartnerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/our-works': {
@@ -986,6 +1144,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/partner/referrals': {
+      id: '/partner/referrals'
+      path: '/referrals'
+      fullPath: '/partner/referrals'
+      preLoaderRoute: typeof PartnerReferralsRouteImport
+      parentRoute: typeof PartnerRoute
+    }
+    '/partner/profile': {
+      id: '/partner/profile'
+      path: '/profile'
+      fullPath: '/partner/profile'
+      preLoaderRoute: typeof PartnerProfileRouteImport
+      parentRoute: typeof PartnerRoute
+    }
+    '/partner/earnings': {
+      id: '/partner/earnings'
+      path: '/earnings'
+      fullPath: '/partner/earnings'
+      preLoaderRoute: typeof PartnerEarningsRouteImport
+      parentRoute: typeof PartnerRoute
+    }
     '/our-works/$caseStudyId': {
       id: '/our-works/$caseStudyId'
       path: '/$caseStudyId'
@@ -1027,6 +1206,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/partner/referrals/new': {
+      id: '/partner/referrals/new'
+      path: '/new'
+      fullPath: '/partner/referrals/new'
+      preLoaderRoute: typeof PartnerReferralsNewRouteImport
+      parentRoute: typeof PartnerReferralsRoute
+    }
+    '/partner/referrals/$id': {
+      id: '/partner/referrals/$id'
+      path: '/$id'
+      fullPath: '/partner/referrals/$id'
+      preLoaderRoute: typeof PartnerReferralsIdRouteImport
+      parentRoute: typeof PartnerReferralsRoute
     }
     '/_authenticated/admin/testimonials': {
       id: '/_authenticated/admin/testimonials'
@@ -1096,6 +1289,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/affiliates': {
+      id: '/_authenticated/admin/affiliates'
+      path: '/affiliates'
+      fullPath: '/admin/affiliates'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/affiliate-enquiries': {
@@ -1210,6 +1410,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBlogNewRouteImport
       parentRoute: typeof AuthenticatedAdminBlogRoute
     }
+    '/_authenticated/admin/affiliates/referrals': {
+      id: '/_authenticated/admin/affiliates/referrals'
+      path: '/referrals'
+      fullPath: '/admin/affiliates/referrals'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesReferralsRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesRoute
+    }
+    '/_authenticated/admin/affiliates/payouts': {
+      id: '/_authenticated/admin/affiliates/payouts'
+      path: '/payouts'
+      fullPath: '/admin/affiliates/payouts'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesPayoutsRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesRoute
+    }
+    '/_authenticated/admin/affiliates/partners': {
+      id: '/_authenticated/admin/affiliates/partners'
+      path: '/partners'
+      fullPath: '/admin/affiliates/partners'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesPartnersRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesRoute
+    }
     '/_authenticated/admin/testimonials/$id/edit': {
       id: '/_authenticated/admin/testimonials/$id/edit'
       path: '/$id/edit'
@@ -1252,8 +1473,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminBlogIdEditRouteImport
       parentRoute: typeof AuthenticatedAdminBlogRoute
     }
+    '/_authenticated/admin/affiliates/referrals/$id': {
+      id: '/_authenticated/admin/affiliates/referrals/$id'
+      path: '/$id'
+      fullPath: '/admin/affiliates/referrals/$id'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesReferralsIdRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesReferralsRoute
+    }
+    '/_authenticated/admin/affiliates/partners/$id': {
+      id: '/_authenticated/admin/affiliates/partners/$id'
+      path: '/$id'
+      fullPath: '/admin/affiliates/partners/$id'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliatesPartnersIdRouteImport
+      parentRoute: typeof AuthenticatedAdminAffiliatesPartnersRoute
+    }
   }
 }
+
+interface AuthenticatedAdminAffiliatesPartnersRouteChildren {
+  AuthenticatedAdminAffiliatesPartnersIdRoute: typeof AuthenticatedAdminAffiliatesPartnersIdRoute
+}
+
+const AuthenticatedAdminAffiliatesPartnersRouteChildren: AuthenticatedAdminAffiliatesPartnersRouteChildren =
+  {
+    AuthenticatedAdminAffiliatesPartnersIdRoute:
+      AuthenticatedAdminAffiliatesPartnersIdRoute,
+  }
+
+const AuthenticatedAdminAffiliatesPartnersRouteWithChildren =
+  AuthenticatedAdminAffiliatesPartnersRoute._addFileChildren(
+    AuthenticatedAdminAffiliatesPartnersRouteChildren,
+  )
+
+interface AuthenticatedAdminAffiliatesReferralsRouteChildren {
+  AuthenticatedAdminAffiliatesReferralsIdRoute: typeof AuthenticatedAdminAffiliatesReferralsIdRoute
+}
+
+const AuthenticatedAdminAffiliatesReferralsRouteChildren: AuthenticatedAdminAffiliatesReferralsRouteChildren =
+  {
+    AuthenticatedAdminAffiliatesReferralsIdRoute:
+      AuthenticatedAdminAffiliatesReferralsIdRoute,
+  }
+
+const AuthenticatedAdminAffiliatesReferralsRouteWithChildren =
+  AuthenticatedAdminAffiliatesReferralsRoute._addFileChildren(
+    AuthenticatedAdminAffiliatesReferralsRouteChildren,
+  )
+
+interface AuthenticatedAdminAffiliatesRouteChildren {
+  AuthenticatedAdminAffiliatesPartnersRoute: typeof AuthenticatedAdminAffiliatesPartnersRouteWithChildren
+  AuthenticatedAdminAffiliatesPayoutsRoute: typeof AuthenticatedAdminAffiliatesPayoutsRoute
+  AuthenticatedAdminAffiliatesReferralsRoute: typeof AuthenticatedAdminAffiliatesReferralsRouteWithChildren
+}
+
+const AuthenticatedAdminAffiliatesRouteChildren: AuthenticatedAdminAffiliatesRouteChildren =
+  {
+    AuthenticatedAdminAffiliatesPartnersRoute:
+      AuthenticatedAdminAffiliatesPartnersRouteWithChildren,
+    AuthenticatedAdminAffiliatesPayoutsRoute:
+      AuthenticatedAdminAffiliatesPayoutsRoute,
+    AuthenticatedAdminAffiliatesReferralsRoute:
+      AuthenticatedAdminAffiliatesReferralsRouteWithChildren,
+  }
+
+const AuthenticatedAdminAffiliatesRouteWithChildren =
+  AuthenticatedAdminAffiliatesRoute._addFileChildren(
+    AuthenticatedAdminAffiliatesRouteChildren,
+  )
 
 interface AuthenticatedAdminBlogRouteChildren {
   AuthenticatedAdminBlogNewRoute: typeof AuthenticatedAdminBlogNewRoute
@@ -1385,6 +1671,7 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAdminsRoute: typeof AuthenticatedAdminAdminsRoute
   AuthenticatedAdminAffiliateEnquiriesRoute: typeof AuthenticatedAdminAffiliateEnquiriesRoute
+  AuthenticatedAdminAffiliatesRoute: typeof AuthenticatedAdminAffiliatesRouteWithChildren
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminCapabilitiesRoute: typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
@@ -1403,6 +1690,8 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAdminsRoute: AuthenticatedAdminAdminsRoute,
   AuthenticatedAdminAffiliateEnquiriesRoute:
     AuthenticatedAdminAffiliateEnquiriesRoute,
+  AuthenticatedAdminAffiliatesRoute:
+    AuthenticatedAdminAffiliatesRouteWithChildren,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
   AuthenticatedAdminCapabilitiesRoute:
     AuthenticatedAdminCapabilitiesRouteWithChildren,
@@ -1447,6 +1736,34 @@ const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
   OurWorksRouteChildren,
 )
 
+interface PartnerReferralsRouteChildren {
+  PartnerReferralsIdRoute: typeof PartnerReferralsIdRoute
+  PartnerReferralsNewRoute: typeof PartnerReferralsNewRoute
+}
+
+const PartnerReferralsRouteChildren: PartnerReferralsRouteChildren = {
+  PartnerReferralsIdRoute: PartnerReferralsIdRoute,
+  PartnerReferralsNewRoute: PartnerReferralsNewRoute,
+}
+
+const PartnerReferralsRouteWithChildren =
+  PartnerReferralsRoute._addFileChildren(PartnerReferralsRouteChildren)
+
+interface PartnerRouteChildren {
+  PartnerEarningsRoute: typeof PartnerEarningsRoute
+  PartnerProfileRoute: typeof PartnerProfileRoute
+  PartnerReferralsRoute: typeof PartnerReferralsRouteWithChildren
+}
+
+const PartnerRouteChildren: PartnerRouteChildren = {
+  PartnerEarningsRoute: PartnerEarningsRoute,
+  PartnerProfileRoute: PartnerProfileRoute,
+  PartnerReferralsRoute: PartnerReferralsRouteWithChildren,
+}
+
+const PartnerRouteWithChildren =
+  PartnerRoute._addFileChildren(PartnerRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -1461,6 +1778,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CustomPortalsSoftwareRoute: CustomPortalsSoftwareRoute,
   OurWorksRoute: OurWorksRouteWithChildren,
+  PartnerRoute: PartnerRouteWithChildren,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
