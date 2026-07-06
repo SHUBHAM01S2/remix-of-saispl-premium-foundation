@@ -298,29 +298,37 @@ export function ChatThread({
 
 function MessageBubble({ msg }: { msg: ChatMessage }) {
   const mine = msg.is_mine;
+  const internal = msg.is_internal;
+  const bubbleClass = internal
+    ? "rounded-2xl border border-amber-400/40 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-50 shadow-sm"
+    : mine
+    ? "rounded-2xl rounded-br-md bg-brand px-4 py-2.5 text-sm text-brand-foreground shadow-sm"
+    : "rounded-2xl rounded-bl-md border border-border/60 bg-muted/40 px-4 py-2.5 text-sm text-foreground shadow-sm";
   return (
     <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[85%] flex-col ${mine ? "items-end" : "items-start"}`}>
-        <div
-          className={`rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
-            mine
-              ? "rounded-br-md bg-brand text-brand-foreground"
-              : "rounded-bl-md border border-border/60 bg-muted/40 text-foreground"
-          }`}
-        >
+        {internal && (
+          <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+            <EyeOff className="h-2.5 w-2.5" /> Internal note
+          </span>
+        )}
+        <div className={bubbleClass}>
           {msg.body && (
             <div className="whitespace-pre-wrap break-words">{msg.body}</div>
           )}
           {msg.attachments.length > 0 && (
             <div className={`${msg.body ? "mt-2" : ""} flex flex-col gap-1.5`}>
               {msg.attachments.map((a) => (
-                <AttachmentChip key={a.path} attachment={a} mine={mine} />
+                <AttachmentChip key={a.path} attachment={a} mine={mine && !internal} />
               ))}
             </div>
           )}
         </div>
         <div className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground">
           {!mine && msg.sender_name && <span className="font-medium">{msg.sender_name}</span>}
+          {mine && internal && msg.sender_name && (
+            <span className="font-medium">{msg.sender_name}</span>
+          )}
           <span>{formatTs(msg.created_at)}</span>
         </div>
       </div>
