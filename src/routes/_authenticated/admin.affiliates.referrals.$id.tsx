@@ -26,7 +26,10 @@ function ReferralDetailAdmin() {
   const getFn = useServerFn(adminGetReferral);
   const updateFn = useServerFn(adminUpdateReferral);
   const noteFn = useServerFn(adminAddReferralNote);
+  const approveFn = useServerFn(adminApprovePayout);
+  const markPaidFn = useServerFn(adminMarkPayoutPaid);
   const q = useQuery({ queryKey: ["admin", "referral", id], queryFn: () => getFn({ data: { id } }) });
+
 
   const [status, setStatus] = useState<ReferralStatus>("new");
   const [stage, setStage] = useState<ReferralDealStage>("lead");
