@@ -219,7 +219,7 @@ function AffiliateEnquiriesPage() {
                     <Th onClick={() => toggleSort("status")}>
                       Status <SortIcon k="status" />
                     </Th>
-                    <th className="px-4 py-3 text-left">Details</th>
+                    <th className="px-4 py-3 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border/60">
