@@ -2,6 +2,13 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { assertAnyAdmin } from "@/lib/admin-auth";
 
+export type ChatAttachment = {
+  path: string;
+  name: string;
+  size: number;
+  type: string;
+};
+
 export type ChatMessage = {
   id: string;
   onboarding_id: string;
@@ -10,6 +17,7 @@ export type ChatMessage = {
   body: string;
   created_at: string;
   is_mine: boolean;
+  attachments: ChatAttachment[];
 };
 
 export type InboxThread = {
@@ -25,7 +33,39 @@ export type InboxThread = {
 };
 
 const MSG_COLS =
-  "id, onboarding_id, sender_role, sender_id, sender_name, body, created_at, read_by_client_at, read_by_admin_at";
+  "id, onboarding_id, sender_role, sender_id, sender_name, body, created_at, read_by_client_at, read_by_admin_at, attachments";
+
+const CHAT_BUCKET = "client-onboarding-assets";
+const MAX_ATTACHMENTS = 6;
+const MAX_ATTACHMENT_BYTES = 15 * 1024 * 1024; // 15 MB per file
+
+function sanitizeFileName(name: string): string {
+  return (
+    name
+      .replace(/[^\w.\-]+/g, "_")
+      .replace(/^_+|_+$/g, "")
+      .slice(0, 120) || "file"
+  );
+}
+
+function validateAttachments(input: unknown): ChatAttachment[] {
+  if (input == null) return [];
+  if (!Array.isArray(input)) throw new Error("attachments must be an array");
+  if (input.length > MAX_ATTACHMENTS)
+    throw new Error(`Too many attachments (max ${MAX_ATTACHMENTS})`);
+  return input.map((raw: any) => {
+    if (!raw || typeof raw !== "object") throw new Error("Invalid attachment");
+    const path = String(raw.path ?? "");
+    const name = String(raw.name ?? "").slice(0, 200);
+    const size = Number(raw.size ?? 0);
+    const type = String(raw.type ?? "").slice(0, 120);
+    if (!path.startsWith("messages/")) throw new Error("Invalid attachment path");
+    if (!name) throw new Error("Attachment name required");
+    if (!Number.isFinite(size) || size < 0 || size > MAX_ATTACHMENT_BYTES)
+      throw new Error("Attachment too large");
+    return { path, name, size, type };
+  });
+}
 
 /* ------------------------------------------------------------------ */
 /* Shared helpers                                                       */
@@ -55,6 +95,13 @@ async function loadClientOnboarding(context: any) {
 }
 
 function toChatMessage(row: any, viewerRole: "client" | "admin"): ChatMessage {
+  const rawAtt = Array.isArray(row.attachments) ? row.attachments : [];
+  const attachments: ChatAttachment[] = rawAtt.map((a: any) => ({
+    path: String(a?.path ?? ""),
+    name: String(a?.name ?? "file"),
+    size: Number(a?.size ?? 0),
+    type: String(a?.type ?? ""),
+  }));
   return {
     id: row.id,
     onboarding_id: row.onboarding_id,
@@ -63,6 +110,7 @@ function toChatMessage(row: any, viewerRole: "client" | "admin"): ChatMessage {
     body: row.body,
     created_at: row.created_at,
     is_mine: row.sender_role === viewerRole,
+    attachments,
   };
 }
 
