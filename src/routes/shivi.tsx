@@ -27,8 +27,10 @@ function ShiviLogin() {
   const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/admin", replace: true });
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user) return;
+      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
+      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
     });
   }, [navigate]);
 
