@@ -3,14 +3,16 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2, Send } from "lucide-react";
+import { ArrowLeft, Loader2, Send, CheckCircle2, BadgeCheck, Lock } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   adminGetReferral, adminUpdateReferral, adminAddReferralNote,
+  adminApprovePayout, adminMarkPayoutPaid,
   REFERRAL_STATUSES, DEAL_STAGES, PAYOUT_STATUSES,
   type ReferralStatus, type ReferralDealStage, type ReferralPayoutStatus,
 } from "@/lib/partners.functions";
 import { fmtDate, fmtDateTime, fmtMoney, StatusChip, PayoutChip, STAGE_LABEL } from "@/lib/partners-ui";
+
 
 export const Route = createFileRoute("/_authenticated/admin/affiliates/referrals/$id")({
   beforeLoad: async () => { const r = await checkIsAdmin(); if (!r.isAdmin) throw notFound(); return {}; },
