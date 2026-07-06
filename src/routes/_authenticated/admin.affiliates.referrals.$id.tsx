@@ -173,11 +173,6 @@ function ReferralDetailAdmin() {
             <Field label="Commission %">
               <input value={commissionPct} onChange={(e) => setCommissionPct(e.target.value)} className={inp} />
             </Field>
-            <Field label="Payout status">
-              <select value={payout} onChange={(e) => setPayout(e.target.value as ReferralPayoutStatus)} className={inp}>
-                {PAYOUT_STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-              </select>
-            </Field>
             <div className="pt-2">
               <div className="text-xs text-muted-foreground mb-2">
                 Computed commission: <span className="text-foreground">{fmtMoney(
@@ -190,6 +185,52 @@ function ReferralDetailAdmin() {
               </button>
             </div>
           </Card>
+
+          <Card title="Payout">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Current</span>
+              <PayoutChip status={r.payout_status} />
+            </div>
+            <div className="space-y-1 text-xs text-muted-foreground">
+              {r.payout_approved_at && (
+                <div>Approved {fmtDateTime(r.payout_approved_at)}</div>
+              )}
+              {r.payout_paid_at && (
+                <div>Paid {fmtDateTime(r.payout_paid_at)}</div>
+              )}
+              {!r.payout_approved_at && !r.payout_paid_at && (
+                <div>Awaiting approval.</div>
+              )}
+            </div>
+            <div className="grid grid-cols-1 gap-2 pt-1">
+              {r.payout_status !== "paid" && (
+                <button
+                  onClick={() => approve.mutate()}
+                  disabled={approve.isPending || r.payout_status === "approved"}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-blue-400/40 bg-blue-500/10 text-blue-200 py-2 text-sm disabled:opacity-50">
+                  <BadgeCheck className="h-4 w-4" />
+                  {r.payout_status === "approved" ? "Approved" : "Approve payout"}
+                </button>
+              )}
+              {r.payout_status === "approved" && (
+                <button
+                  onClick={() => markPaid.mutate()}
+                  disabled={markPaid.isPending}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-emerald-400/40 bg-emerald-500/10 text-emerald-200 py-2 text-sm disabled:opacity-50">
+                  <CheckCircle2 className="h-4 w-4" /> Mark as paid
+                </button>
+              )}
+              {r.payout_status === "paid" && (
+                <div className="inline-flex items-center justify-center gap-2 rounded-lg border border-border/60 bg-muted/30 py-2 text-xs text-muted-foreground">
+                  <Lock className="h-3 w-3" /> Locked — payout complete
+                </div>
+              )}
+            </div>
+            <p className="text-[11px] text-muted-foreground pt-1">
+              Payouts follow Pending → Approved → Paid. Set a deal value and commission % before approving.
+            </p>
+          </Card>
+
         </aside>
       </div>
     </div>
