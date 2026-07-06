@@ -1,6 +1,7 @@
-import { createFileRoute, useNavigate, useRouter, notFound } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { checkIsAdmin } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/shivi")({
   ssr: false,
@@ -26,8 +27,10 @@ function ShiviLogin() {
   const [resetLoading, setResetLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/admin", replace: true });
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user) return;
+      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
+      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
     });
   }, [navigate]);
 
@@ -40,7 +43,8 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      navigate({ to: "/admin", replace: true });
+      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
+      navigate({ to: r.isAdmin ? "/admin" : "/client-portal", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Unable to sign in");
     } finally {
