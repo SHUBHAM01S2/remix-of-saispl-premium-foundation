@@ -25,6 +25,7 @@ import { Route as CareerRouteImport } from './routes/career'
 import { Route as CareMaintenanceRouteImport } from './routes/care-maintenance'
 import { Route as BrandingGraphicDesignRouteImport } from './routes/branding-graphic-design'
 import { Route as AutomationAiServicesRouteImport } from './routes/automation-ai-services'
+import { Route as AffiliateEnquiryRouteImport } from './routes/affiliate-enquiry'
 import { Route as AffiliateRouteImport } from './routes/affiliate'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -45,6 +46,7 @@ import { Route as AuthenticatedAdminContactsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminCareersRouteImport } from './routes/_authenticated/admin.careers'
 import { Route as AuthenticatedAdminCapabilitiesRouteImport } from './routes/_authenticated/admin.capabilities'
 import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
+import { Route as AuthenticatedAdminAffiliateEnquiriesRouteImport } from './routes/_authenticated/admin.affiliate-enquiries'
 import { Route as AuthenticatedAdminAdminsRouteImport } from './routes/_authenticated/admin.admins'
 import { Route as AuthenticatedAdminTestimonialsIndexRouteImport } from './routes/_authenticated/admin.testimonials.index'
 import { Route as AuthenticatedAdminReportsIndexRouteImport } from './routes/_authenticated/admin.reports.index'
@@ -144,6 +146,11 @@ const BrandingGraphicDesignRoute = BrandingGraphicDesignRouteImport.update({
 const AutomationAiServicesRoute = AutomationAiServicesRouteImport.update({
   id: '/automation-ai-services',
   path: '/automation-ai-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateEnquiryRoute = AffiliateEnquiryRouteImport.update({
+  id: '/affiliate-enquiry',
+  path: '/affiliate-enquiry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AffiliateRoute = AffiliateRouteImport.update({
@@ -251,6 +258,12 @@ const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminAffiliateEnquiriesRoute =
+  AuthenticatedAdminAffiliateEnquiriesRouteImport.update({
+    id: '/affiliate-enquiries',
+    path: '/affiliate-enquiries',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAdminsRoute =
   AuthenticatedAdminAdminsRouteImport.update({
     id: '/admins',
@@ -376,6 +389,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -401,6 +415,7 @@ export interface FileRoutesByFullPath {
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -433,6 +448,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -458,6 +474,7 @@ export interface FileRoutesByTo {
   '/reports/$id': typeof ReportsIdRoute
   '/blog': typeof BlogIndexRoute
   '/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/admin/careers': typeof AuthenticatedAdminCareersRoute
   '/admin/contacts': typeof AuthenticatedAdminContactsRoute
@@ -487,6 +504,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/affiliate': typeof AffiliateRoute
+  '/affiliate-enquiry': typeof AffiliateEnquiryRoute
   '/automation-ai-services': typeof AutomationAiServicesRoute
   '/branding-graphic-design': typeof BrandingGraphicDesignRoute
   '/care-maintenance': typeof CareMaintenanceRoute
@@ -512,6 +530,7 @@ export interface FileRoutesById {
   '/reports/$id': typeof ReportsIdRoute
   '/blog/': typeof BlogIndexRoute
   '/_authenticated/admin/admins': typeof AuthenticatedAdminAdminsRoute
+  '/_authenticated/admin/affiliate-enquiries': typeof AuthenticatedAdminAffiliateEnquiriesRoute
   '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRouteWithChildren
   '/_authenticated/admin/capabilities': typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   '/_authenticated/admin/careers': typeof AuthenticatedAdminCareersRoute
@@ -546,6 +565,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -571,6 +591,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog/'
     | '/admin/admins'
+    | '/admin/affiliate-enquiries'
     | '/admin/blog'
     | '/admin/capabilities'
     | '/admin/careers'
@@ -603,6 +624,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -628,6 +650,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog'
     | '/admin/admins'
+    | '/admin/affiliate-enquiries'
     | '/admin/capabilities'
     | '/admin/careers'
     | '/admin/contacts'
@@ -656,6 +679,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/affiliate'
+    | '/affiliate-enquiry'
     | '/automation-ai-services'
     | '/branding-graphic-design'
     | '/care-maintenance'
@@ -681,6 +705,7 @@ export interface FileRouteTypes {
     | '/reports/$id'
     | '/blog/'
     | '/_authenticated/admin/admins'
+    | '/_authenticated/admin/affiliate-enquiries'
     | '/_authenticated/admin/blog'
     | '/_authenticated/admin/capabilities'
     | '/_authenticated/admin/careers'
@@ -715,6 +740,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AffiliateRoute: typeof AffiliateRoute
+  AffiliateEnquiryRoute: typeof AffiliateEnquiryRoute
   AutomationAiServicesRoute: typeof AutomationAiServicesRoute
   BrandingGraphicDesignRoute: typeof BrandingGraphicDesignRoute
   CareMaintenanceRoute: typeof CareMaintenanceRoute
@@ -851,6 +877,13 @@ declare module '@tanstack/react-router' {
       path: '/automation-ai-services'
       fullPath: '/automation-ai-services'
       preLoaderRoute: typeof AutomationAiServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-enquiry': {
+      id: '/affiliate-enquiry'
+      path: '/affiliate-enquiry'
+      fullPath: '/affiliate-enquiry'
+      preLoaderRoute: typeof AffiliateEnquiryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/affiliate': {
@@ -991,6 +1024,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/admin/blog'
       preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/affiliate-enquiries': {
+      id: '/_authenticated/admin/affiliate-enquiries'
+      path: '/affiliate-enquiries'
+      fullPath: '/admin/affiliate-enquiries'
+      preLoaderRoute: typeof AuthenticatedAdminAffiliateEnquiriesRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/admins': {
@@ -1251,6 +1291,7 @@ const AuthenticatedAdminTestimonialsRouteWithChildren =
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAdminsRoute: typeof AuthenticatedAdminAdminsRoute
+  AuthenticatedAdminAffiliateEnquiriesRoute: typeof AuthenticatedAdminAffiliateEnquiriesRoute
   AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRouteWithChildren
   AuthenticatedAdminCapabilitiesRoute: typeof AuthenticatedAdminCapabilitiesRouteWithChildren
   AuthenticatedAdminCareersRoute: typeof AuthenticatedAdminCareersRoute
@@ -1265,6 +1306,8 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAdminsRoute: AuthenticatedAdminAdminsRoute,
+  AuthenticatedAdminAffiliateEnquiriesRoute:
+    AuthenticatedAdminAffiliateEnquiriesRoute,
   AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRouteWithChildren,
   AuthenticatedAdminCapabilitiesRoute:
     AuthenticatedAdminCapabilitiesRouteWithChildren,
@@ -1311,6 +1354,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AffiliateRoute: AffiliateRoute,
+  AffiliateEnquiryRoute: AffiliateEnquiryRoute,
   AutomationAiServicesRoute: AutomationAiServicesRoute,
   BrandingGraphicDesignRoute: BrandingGraphicDesignRoute,
   CareMaintenanceRoute: CareMaintenanceRoute,

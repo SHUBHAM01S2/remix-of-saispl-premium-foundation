@@ -136,6 +136,13 @@ function AdminDashboard() {
                   Manage Contacts
                 </Link>
                 <Link
+                  to="/admin/affiliate-enquiries"
+                  className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+                >
+                  Affiliate Enquiries
+                </Link>
+
+                <Link
                   to="/admin/careers"
                   className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
                 >
