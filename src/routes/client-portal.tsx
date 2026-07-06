@@ -1173,7 +1173,8 @@ function MessagesTab() {
   });
 
   const mut = useMutation({
-    mutationFn: (body: string) => sendFn({ data: { body } }),
+    mutationFn: (payload: { body: string; attachments: any[] }) =>
+      sendFn({ data: payload }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["client-portal", "thread"] }),
   });
 
@@ -1198,8 +1199,8 @@ function MessagesTab() {
     <ChatThread
       messages={messages}
       isSending={mut.isPending}
-      onSend={async (body) => {
-        await mut.mutateAsync(body);
+      onSend={async (payload) => {
+        await mut.mutateAsync(payload);
       }}
       placeholder="Message your project manager…"
       emptyHint="No messages yet. Send a note and your project manager will reply here."
