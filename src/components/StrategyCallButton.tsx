@@ -35,21 +35,6 @@ export function StrategyCallButton({ children, className, ariaLabel, calLink, na
     })();
   }, [NAMESPACE]);
 
-
-  useEffect(() => {
-    (async () => {
-      const cal = await getCalApi({ namespace: NAMESPACE });
-      cal("ui", {
-        hideEventTypeDetails: false,
-        layout: "month_view",
-        cssVarsPerTheme: {
-          dark: { "cal-brand": "#3b82f6" },
-          light: { "cal-brand": "#3b82f6" },
-        },
-      });
-    })();
-  }, []);
-
   return (
     <>
       <button
@@ -71,9 +56,10 @@ export function StrategyCallButton({ children, className, ariaLabel, calLink, na
           <DialogHeader className="border-b border-white/10 px-6 py-4">
             <DialogTitle className="flex items-center gap-2 text-base text-foreground">
               <CalendarClock className="h-4 w-4 text-brand" />
-              Book a strategy call
+              {title ?? "Book a strategy call"}
             </DialogTitle>
           </DialogHeader>
+
           <div className="h-[75vh] w-full bg-background">
             {open && (
               <Cal
