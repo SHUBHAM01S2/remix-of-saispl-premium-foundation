@@ -19,6 +19,10 @@ import {
   Phone,
   CalendarClock,
   Sparkles,
+  Package,
+  Layers,
+  ShieldCheck,
+  UserCog,
   X,
 } from "lucide-react";
 
