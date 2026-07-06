@@ -2,11 +2,12 @@ import { useMemo, useState } from "react";
 import { createFileRoute, Link, notFound , redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown, Search, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowUpDown, ArrowUp, ArrowDown, Eye, Search, Loader2, Trash2 } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import {
   listContactSubmissions,
   updateContactStatus,
+  deleteContactSubmission,
   CONTACT_STATUSES,
   type ContactStatus,
   type ContactSubmission,
