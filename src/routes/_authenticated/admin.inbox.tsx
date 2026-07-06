@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { z } from "zod";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import {
   Inbox,
   Loader2,
@@ -35,7 +37,12 @@ import {
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
 
+const inboxSearchSchema = z.object({
+  thread: fallback(z.string().uuid().optional(), undefined),
+});
+
 export const Route = createFileRoute("/_authenticated/admin/inbox")({
+  validateSearch: zodValidator(inboxSearchSchema),
   beforeLoad: async () => {
     const r = await checkIsAdmin();
     if (!r.isAdmin) throw notFound();
