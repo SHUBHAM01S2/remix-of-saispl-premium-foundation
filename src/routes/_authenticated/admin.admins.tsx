@@ -35,6 +35,7 @@ function AdminsPage() {
   const qc = useQueryClient();
   const meFn = useServerFn(checkIsAdmin);
   const listFn = useServerFn(listAdmins);
+  const auditFn = useServerFn(listAdminRoleAudit);
   const updateFn = useServerFn(updateAdminRole);
   const delFn = useServerFn(deleteAdmin);
   const addFn = useServerFn(addAdminByUserId);
@@ -44,34 +45,48 @@ function AdminsPage() {
     queryKey: ["admin", "admins"],
     queryFn: () => listFn(),
   });
+  const auditQ = useQuery({
+    queryKey: ["admin", "admin-role-audit"],
+    queryFn: () => auditFn(),
+  });
 
   const update = useMutation({
     mutationFn: (v: { id: string; role: string }) => updateFn({ data: v }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "admins"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
+    },
   });
 
   const del = useMutation({
     mutationFn: (id: string) => delFn({ data: { id } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin", "admins"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
+    },
   });
 
   const [newUserId, setNewUserId] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newRole, setNewRole] = useState<string>("editor");
+  const [confirmClientOverride, setConfirmClientOverride] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
 
   const add = useMutation({
     mutationFn: () =>
-      addFn({ data: { userId: newUserId, email: newEmail, role: newRole } }),
+      addFn({ data: { userId: newUserId, email: newEmail, role: newRole, confirmClientOverride } }),
     onSuccess: () => {
       setNewUserId("");
       setNewEmail("");
       setNewRole("editor");
+      setConfirmClientOverride(false);
       setAddError(null);
       qc.invalidateQueries({ queryKey: ["admin", "admins"] });
+      qc.invalidateQueries({ queryKey: ["admin", "admin-role-audit"] });
     },
     onError: (e) => setAddError(e instanceof Error ? e.message : "Failed"),
   });
+
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
