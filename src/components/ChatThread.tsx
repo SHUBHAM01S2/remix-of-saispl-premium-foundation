@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Send, Loader2, Paperclip, X, FileText, Download } from "lucide-react";
+import { Send, Loader2, Paperclip, X, FileText, Download, Lock, EyeOff } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import type { ChatAttachment, ChatMessage } from "@/lib/messages.functions";
 import {
@@ -7,7 +7,7 @@ import {
   signMessageAttachmentUpload,
 } from "@/lib/messages.functions";
 
-type SendPayload = { body: string; attachments: ChatAttachment[] };
+type SendPayload = { body: string; attachments: ChatAttachment[]; is_internal?: boolean };
 
 type Props = {
   messages: ChatMessage[];
@@ -21,6 +21,10 @@ type Props = {
   disabledHint?: string;
   /** When true, hides the paperclip button (e.g. anonymous / disabled uploads). */
   allowAttachments?: boolean;
+  /** When true, shows an "Internal note" toggle (admin-only). */
+  allowInternalNote?: boolean;
+  /** Onboarding id needed so admin uploads can be scoped to the correct thread. */
+  uploadOnboardingId?: string | null;
 };
 
 const MAX_FILES = 6;
@@ -56,9 +60,12 @@ export function ChatThread({
   disabled,
   disabledHint,
   allowAttachments = true,
+  allowInternalNote = false,
+  uploadOnboardingId = null,
 }: Props) {
   const [draft, setDraft] = useState("");
   const [pending, setPending] = useState<ChatAttachment[]>([]);
+  const [isInternal, setIsInternal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -79,7 +86,9 @@ export function ChatThread({
     setDraft("");
     const atts = pending;
     setPending([]);
-    await onSend({ body, attachments: atts });
+    const internalFlag = isInternal;
+    setIsInternal(false);
+    await onSend({ body, attachments: atts, is_internal: internalFlag });
   };
 
   const handleFiles = async (files: FileList | null) => {
@@ -97,7 +106,11 @@ export function ChatThread({
           throw new Error(`${file.name} is larger than 15 MB.`);
         }
         const signed = await signUpload({
-          data: { file_name: file.name, content_type: file.type },
+          data: {
+            file_name: file.name,
+            content_type: file.type,
+            onboarding_id: uploadOnboardingId ?? undefined,
+          },
         });
         const up = await fetch(signed.signedUrl, {
           method: "PUT",
@@ -230,23 +243,52 @@ export function ChatThread({
                   if (e.key === "Enter" && !e.shiftKey) submit();
                 }}
                 rows={1}
-                placeholder={placeholder}
+                placeholder={isInternal ? "Internal note — clients cannot see this…" : placeholder}
                 maxLength={4000}
-                className="max-h-40 min-h-[44px] flex-1 resize-none rounded-xl border border-border/60 bg-background/70 px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:border-brand/60 focus:ring-2 focus:ring-brand/30"
+                className={`max-h-40 min-h-[44px] flex-1 resize-none rounded-xl border px-4 py-2.5 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 ${
+                  isInternal
+                    ? "border-amber-400/40 bg-amber-500/5 focus:border-amber-400/60 focus:ring-amber-400/30"
+                    : "border-border/60 bg-background/70 focus:border-brand/60 focus:ring-brand/30"
+                }`}
               />
               <button
                 type="submit"
                 disabled={(!draft.trim() && pending.length === 0) || isSending || uploading}
-                className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-4 text-sm font-semibold text-brand-foreground shadow-elegant transition-opacity hover:opacity-90 disabled:opacity-40"
+                className={`inline-flex h-11 items-center gap-2 rounded-xl px-4 text-sm font-semibold shadow-elegant transition-opacity hover:opacity-90 disabled:opacity-40 ${
+                  isInternal
+                    ? "bg-amber-500 text-black"
+                    : "bg-brand text-brand-foreground"
+                }`}
               >
                 {isSending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
+                ) : isInternal ? (
+                  <Lock className="h-4 w-4" />
                 ) : (
                   <Send className="h-4 w-4" />
                 )}
-                Send
+                {isInternal ? "Save note" : "Send"}
               </button>
             </div>
+            {allowInternalNote && (
+              <div className="mt-2 flex items-center justify-between px-1">
+                <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={isInternal}
+                    onChange={(e) => setIsInternal(e.target.checked)}
+                    className="h-3.5 w-3.5 rounded border-border/60 bg-background text-amber-500 focus:ring-amber-400/40"
+                  />
+                  <EyeOff className="h-3.5 w-3.5" />
+                  Internal note — team-only, not shown to client
+                </label>
+                {isInternal && (
+                  <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-amber-300">
+                    Internal
+                  </span>
+                )}
+              </div>
+            )}
           </>
         )}
       </form>
@@ -256,29 +298,37 @@ export function ChatThread({
 
 function MessageBubble({ msg }: { msg: ChatMessage }) {
   const mine = msg.is_mine;
+  const internal = msg.is_internal;
+  const bubbleClass = internal
+    ? "rounded-2xl border border-amber-400/40 bg-amber-500/10 px-4 py-2.5 text-sm text-amber-50 shadow-sm"
+    : mine
+    ? "rounded-2xl rounded-br-md bg-brand px-4 py-2.5 text-sm text-brand-foreground shadow-sm"
+    : "rounded-2xl rounded-bl-md border border-border/60 bg-muted/40 px-4 py-2.5 text-sm text-foreground shadow-sm";
   return (
     <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[85%] flex-col ${mine ? "items-end" : "items-start"}`}>
-        <div
-          className={`rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
-            mine
-              ? "rounded-br-md bg-brand text-brand-foreground"
-              : "rounded-bl-md border border-border/60 bg-muted/40 text-foreground"
-          }`}
-        >
+        {internal && (
+          <span className="mb-1 inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+            <EyeOff className="h-2.5 w-2.5" /> Internal note
+          </span>
+        )}
+        <div className={bubbleClass}>
           {msg.body && (
             <div className="whitespace-pre-wrap break-words">{msg.body}</div>
           )}
           {msg.attachments.length > 0 && (
             <div className={`${msg.body ? "mt-2" : ""} flex flex-col gap-1.5`}>
               {msg.attachments.map((a) => (
-                <AttachmentChip key={a.path} attachment={a} mine={mine} />
+                <AttachmentChip key={a.path} attachment={a} mine={mine && !internal} />
               ))}
             </div>
           )}
         </div>
         <div className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground">
           {!mine && msg.sender_name && <span className="font-medium">{msg.sender_name}</span>}
+          {mine && internal && msg.sender_name && (
+            <span className="font-medium">{msg.sender_name}</span>
+          )}
           <span>{formatTs(msg.created_at)}</span>
         </div>
       </div>

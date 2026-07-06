@@ -23,6 +23,8 @@ import {
   Building2,
   X,
   AlertTriangle,
+  MessageSquare,
+  ArrowUpRight,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
@@ -39,6 +41,7 @@ import {
   type OnboardingStatus,
 } from "@/lib/onboarding-admin.functions";
 import { getOnboardingAccessSubmissions } from "@/lib/onboarding-admin.functions";
+import { getRecentMessagesForAdmin, type ConversationStatus } from "@/lib/messages.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/onboarding/$id")({
   beforeLoad: async () => {
@@ -632,7 +635,11 @@ function OnboardingDetailPage() {
         />
       </SectionCard>
 
+      {/* Messages preview — quick view of latest thread */}
+      <MessagesCard onboardingId={row.id} />
+
       {/* Status Timeline */}
+
       <SectionCard icon={Clock} title="Status Timeline" subtitle="Auto-updated when status or checklist items change">
         {row.timeline.length === 0 ? (
           <p className="text-xs text-muted-foreground">No activity yet.</p>
@@ -714,6 +721,103 @@ function PageShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-[80vh] bg-background px-4 py-12">
       <div className="mx-auto max-w-6xl">{children}</div>
     </div>
+  );
+}
+
+const CONV_STATUS_STYLES: Record<ConversationStatus, string> = {
+  unread: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+  waiting_on_team: "bg-violet-500/15 text-violet-300 border-violet-500/30",
+  waiting_on_client: "bg-sky-500/15 text-sky-300 border-sky-500/30",
+  resolved: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
+};
+
+const CONV_STATUS_LABEL: Record<ConversationStatus, string> = {
+  unread: "Unread",
+  waiting_on_team: "Waiting on Team",
+  waiting_on_client: "Waiting on Client",
+  resolved: "Resolved",
+};
+
+function MessagesCard({ onboardingId }: { onboardingId: string }) {
+  const getFn = useServerFn(getRecentMessagesForAdmin);
+  const q = useQuery({
+    queryKey: ["admin", "onboarding", onboardingId, "messages-preview"],
+    queryFn: () => getFn({ data: { onboarding_id: onboardingId, limit: 5 } }),
+    refetchInterval: 15000,
+  });
+
+  const data = q.data;
+  return (
+    <SectionCard icon={MessageSquare} title="Messages" subtitle="Latest chat with this client">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {data && (
+            <>
+              <span
+                className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${CONV_STATUS_STYLES[data.conversation_status]}`}
+              >
+                {CONV_STATUS_LABEL[data.conversation_status]}
+              </span>
+              {data.assignee_name && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/50 px-2 py-0.5 text-[11px] text-muted-foreground">
+                  <User className="h-3 w-3" /> {data.assignee_name}
+                </span>
+              )}
+              {data.unread_for_admin > 0 && (
+                <span className="inline-flex items-center rounded-full bg-brand px-2 py-0.5 text-[11px] font-semibold text-brand-foreground">
+                  {data.unread_for_admin} unread
+                </span>
+              )}
+            </>
+          )}
+        </div>
+        <Link
+          to="/admin/inbox"
+          className="inline-flex items-center gap-1 rounded-lg border border-border/60 bg-background/70 px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
+        >
+          Open conversation <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+      {q.isLoading ? (
+        <p className="text-xs text-muted-foreground">Loading…</p>
+      ) : !data || data.messages.length === 0 ? (
+        <p className="text-xs text-muted-foreground">
+          No messages yet. Open the inbox to start the conversation.
+        </p>
+      ) : (
+        <ul className="divide-y divide-border/40 rounded-xl border border-border/40 bg-background/30">
+          {data.messages.map((m) => (
+            <li key={m.id} className="flex items-start gap-3 px-3 py-2.5">
+              <span
+                className={`mt-1 inline-block h-2 w-2 shrink-0 rounded-full ${
+                  m.is_internal
+                    ? "bg-amber-400"
+                    : m.sender_role === "client"
+                    ? "bg-sky-400"
+                    : "bg-brand"
+                }`}
+              />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    {m.sender_name ?? (m.sender_role === "client" ? "Client" : "Team")}
+                  </span>
+                  {m.is_internal && (
+                    <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[10px] uppercase tracking-wider text-amber-300">
+                      Internal
+                    </span>
+                  )}
+                  <span>{new Date(m.created_at).toLocaleString()}</span>
+                </div>
+                <p className="mt-0.5 line-clamp-2 text-sm text-foreground">
+                  {m.body || (m.attachments.length ? `📎 ${m.attachments.length} attachment(s)` : "—")}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </SectionCard>
   );
 }
 
