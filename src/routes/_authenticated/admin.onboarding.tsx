@@ -31,6 +31,12 @@ export const Route = createFileRoute("/_authenticated/admin/onboarding")({
     ],
   }),
 });
+function OnboardingRoute() {
+  const location = useLocation();
+  if (location.pathname.replace(/\/$/, "") !== "/admin/onboarding") return <Outlet />;
+  return <OnboardingListPage />;
+}
+
 
 const STATUS_STYLES: Record<OnboardingStatus, string> = {
   pending: "bg-zinc-500/15 text-zinc-300 border-zinc-500/30",
