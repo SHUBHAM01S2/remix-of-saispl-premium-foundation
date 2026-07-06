@@ -11,6 +11,7 @@ import {
   ExternalLink,
   Loader2,
   Search,
+  Trash2,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
