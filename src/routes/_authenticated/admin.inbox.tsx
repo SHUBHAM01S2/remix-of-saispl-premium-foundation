@@ -123,18 +123,22 @@ function AdminInboxPage() {
     navigate({ search: { thread: id }, replace: true });
   };
 
+  const isAdmin = parentCtx?.isAdminRole !== false; // undefined = fallback allow, server will still enforce
   const threadsQ = useQuery({
     queryKey: ["admin-inbox", "list"],
     queryFn: () => listFn(),
     refetchInterval: 5000,
     refetchOnWindowFocus: true,
+    enabled: isAdmin,
   });
 
   const adminsQ = useQuery({
     queryKey: ["admin-inbox", "admins"],
     queryFn: () => adminsFn(),
     staleTime: 60_000,
+    enabled: isAdmin,
   });
+
 
   const threads = threadsQ.data ?? [];
   const filtered = useMemo(() => {
