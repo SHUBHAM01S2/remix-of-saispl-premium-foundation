@@ -1,8 +1,10 @@
 import { createFileRoute, Link, notFound , redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin, getSubmissionDetail } from "@/lib/admin.functions";
+import { getResumeDownloadUrl } from "@/lib/careers-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/career/$id")({
   beforeLoad: async () => {
