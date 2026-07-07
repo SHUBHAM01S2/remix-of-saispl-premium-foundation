@@ -84,14 +84,17 @@ function CareerDetailPage() {
                     Resume
                   </dt>
                   <dd className="mt-1 text-sm">
-                    <a
-                      href={row.resume_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-brand underline"
+                    <button
+                      type="button"
+                      onClick={() => openResume(row.resume_url as string)}
+                      disabled={signing}
+                      className="text-brand underline disabled:opacity-60"
                     >
-                      Open resume
-                    </a>
+                      {signing ? "Preparing…" : "Open resume"}
+                    </button>
+                    {signError && (
+                      <p className="mt-1 text-xs text-red-600">{signError}</p>
+                    )}
                   </dd>
                 </div>
               )}
