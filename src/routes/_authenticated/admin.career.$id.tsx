@@ -25,12 +25,28 @@ export const Route = createFileRoute("/_authenticated/admin/career/$id")({
 function CareerDetailPage() {
   const { id } = Route.useParams();
   const fn = useServerFn(getSubmissionDetail);
+  const signFn = useServerFn(getResumeDownloadUrl);
+  const [signing, setSigning] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "career", id],
     queryFn: () => fn({ data: { type: "career", id } }),
   });
 
   const row = data?.row;
+
+  async function openResume(path: string) {
+    setSignError(null);
+    setSigning(true);
+    try {
+      const { url } = await signFn({ data: { path } });
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      setSignError(e instanceof Error ? e.message : "Failed to open resume");
+    } finally {
+      setSigning(false);
+    }
+  }
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
