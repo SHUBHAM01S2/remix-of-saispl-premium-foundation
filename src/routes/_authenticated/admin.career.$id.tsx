@@ -1,8 +1,10 @@
 import { createFileRoute, Link, notFound , redirect } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { checkIsAdmin, getSubmissionDetail } from "@/lib/admin.functions";
+import { getResumeDownloadUrl } from "@/lib/careers-admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/career/$id")({
   beforeLoad: async () => {
@@ -23,12 +25,28 @@ export const Route = createFileRoute("/_authenticated/admin/career/$id")({
 function CareerDetailPage() {
   const { id } = Route.useParams();
   const fn = useServerFn(getSubmissionDetail);
+  const signFn = useServerFn(getResumeDownloadUrl);
+  const [signing, setSigning] = useState(false);
+  const [signError, setSignError] = useState<string | null>(null);
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin", "career", id],
     queryFn: () => fn({ data: { type: "career", id } }),
   });
 
   const row = data?.row;
+
+  async function openResume(path: string) {
+    setSignError(null);
+    setSigning(true);
+    try {
+      const { url } = await signFn({ data: { path } });
+      window.open(url, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      setSignError(e instanceof Error ? e.message : "Failed to open resume");
+    } finally {
+      setSigning(false);
+    }
+  }
 
   return (
     <div className="min-h-[80vh] bg-background px-4 py-16">
@@ -66,14 +84,17 @@ function CareerDetailPage() {
                     Resume
                   </dt>
                   <dd className="mt-1 text-sm">
-                    <a
-                      href={row.resume_url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-brand underline"
+                    <button
+                      type="button"
+                      onClick={() => openResume(row.resume_url as string)}
+                      disabled={signing}
+                      className="text-brand underline disabled:opacity-60"
                     >
-                      Open resume
-                    </a>
+                      {signing ? "Preparing…" : "Open resume"}
+                    </button>
+                    {signError && (
+                      <p className="mt-1 text-xs text-red-600">{signError}</p>
+                    )}
                   </dd>
                 </div>
               )}
