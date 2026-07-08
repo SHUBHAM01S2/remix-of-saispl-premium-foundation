@@ -85,6 +85,13 @@
 :root {
   --radius: 0.875rem;
 
+  /* Responsive container width driving --container-7xl (see @theme inline).
+     Mobile: full width; wrapper padding handles gutters.
+     Desktop (>=768px): centered 85vw block.
+     Ultra-wide (>=1920px): cap at 110rem to preserve readable line-length. */
+  --app-container-max: 100%;
+
+
   /* Monolithic dark studio — matches the /contact aesthetic */
   --background: #050505;
   --foreground: #E4E4E7; /* zinc-200 */
