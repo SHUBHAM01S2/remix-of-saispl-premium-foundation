@@ -3,10 +3,25 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, Plus, Search, X } from "lucide-react";
+import { Check, Copy, Eye, EyeOff, Loader2, Plus, RefreshCw, Search, X } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { adminListPartners, adminCreatePartner } from "@/lib/partners.functions";
 import { fmtMoney, PARTNER_STATUS_STYLES } from "@/lib/partners-ui";
+
+function generateStrongPassword(len = 16) {
+  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const lower = "abcdefghijkmnpqrstuvwxyz";
+  const digits = "23456789";
+  const symbols = "!@#$%^&*-_=+?";
+  const all = upper + lower + digits + symbols;
+  const rand = (set: string) => set[Math.floor(Math.random() * set.length)];
+  const chars = [rand(upper), rand(lower), rand(digits), rand(symbols)];
+  const buf = new Uint32Array(len - chars.length);
+  crypto.getRandomValues(buf);
+  for (const n of buf) chars.push(all[n % all.length]);
+  return chars.sort(() => Math.random() - 0.5).join("");
+}
+
 
 export const Route = createFileRoute("/_authenticated/admin/affiliates/partners")({
   beforeLoad: async () => {
