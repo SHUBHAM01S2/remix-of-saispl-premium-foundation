@@ -255,3 +255,12 @@
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
+
+/* Responsive container width overrides — drives max-w-7xl globally. */
+@media (min-width: 768px) {
+  :root { --app-container-max: 85vw; }
+}
+@media (min-width: 1920px) {
+  :root { --app-container-max: 110rem; }
+}
+
