@@ -12,6 +12,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Global content container: 85% of viewport, capped so ultra-wide
+     screens don't stretch line-length. Mobile is unaffected because the
+     viewport is already below the cap; horizontal padding on wrappers
+     (px-4 sm:px-6 lg:px-8) handles small-screen breathing room. */
+  --container-7xl: min(85vw, 96rem);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
