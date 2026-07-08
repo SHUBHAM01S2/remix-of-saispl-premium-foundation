@@ -12,11 +12,17 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Global content container. Value is driven by --app-container-max, which
+  /* Global content containers. Values are driven by --app-container-max, which
      switches per breakpoint below so mobile relies on wrapper padding
      (px-4 sm:px-6 lg:px-8) while desktop centers content at ~85vw and
-     ultra-wide screens cap at 110rem to preserve line-length. */
+     ultra-wide screens cap to preserve line-length. max-w-5xl / 6xl / 7xl
+     all track the same responsive rule so hero, CTA, testimonials and
+     content grids share the same rhythm. */
   --container-7xl: var(--app-container-max);
+  --container-6xl: var(--app-container-max);
+  --container-5xl: var(--app-container-max);
+
+
 
 
   --radius-sm: calc(var(--radius) - 4px);
