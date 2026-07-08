@@ -32,7 +32,7 @@ const productLinks = [
 const resourceLinks = [
   { label: "Case Studies", to: "/our-works" },
   { label: "Services", to: "/services" },
-  { label: "FAQ", to: "/contact" },
+  { label: "FAQ", to: "/faq" },
 ];
 
 
