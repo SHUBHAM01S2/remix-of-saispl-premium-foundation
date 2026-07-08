@@ -508,30 +508,63 @@ export const adminCreatePartner = createServerFn({ method: "POST" })
     company?: string | null;
     phone?: string | null;
     default_commission_pct?: number | null;
+    mode?: "invite" | "password";
+    password?: string | null;
   }) => {
     if (!d?.email) throw new Error("email required");
     if (!d?.full_name) throw new Error("full_name required");
+    if (d?.mode === "password") {
+      if (!d.password || d.password.length < 12) {
+        throw new Error("Password must be at least 12 characters");
+      }
+    }
     return d;
   })
-  .handler(async ({ context, data }): Promise<PartnerRow> => {
+  .handler(async ({ context, data }): Promise<PartnerRow & { auth_mode: "invite" | "password"; password_set: boolean }> => {
     await assertAnyAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
+    const mode: "invite" | "password" = data.mode === "password" ? "password" : "invite";
 
-    // Find or invite user
+    // Find existing user (by email)
     let userId: string | null = null;
     const listRes = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
     const existing = listRes?.data?.users?.find(
       (u: any) => (u.email ?? "").toLowerCase() === data.email.toLowerCase(),
     );
+
     if (existing) {
       userId = existing.id;
+      if (mode === "password") {
+        const upd = await admin.auth.admin.updateUserById(userId!, {
+          password: data.password!,
+          email_confirm: true,
+        });
+        if (upd.error) throw upd.error;
+      }
+    } else if (mode === "password") {
+      // Create user directly with the chosen password so partner can log in immediately.
+      const created = await admin.auth.admin.createUser({
+        email: data.email,
+        password: data.password!,
+        email_confirm: true,
+        user_metadata: { role: "sales_partner", full_name: data.full_name },
+      });
+      if (created.error) throw created.error;
+      userId = created.data.user?.id ?? null;
     } else {
-      const invited = await admin.auth.admin.inviteUserByEmail(data.email);
+      // Invite mode: partner receives an email to set their own password.
+      const invited = await admin.auth.admin.inviteUserByEmail(data.email, {
+        data: { role: "sales_partner", full_name: data.full_name },
+      });
       if (invited.error) throw invited.error;
       userId = invited.data.user?.id ?? null;
     }
     if (!userId) throw new Error("Could not resolve user id");
+
+    // Safety: ensure this user is NOT an admin. Sales-partner role comes from
+    // presence in sales_partners (has_role in DB derives from that table).
+    await admin.from("admins").delete().eq("id", userId);
 
     const { data: row, error } = await admin
       .from("sales_partners")
@@ -546,8 +579,9 @@ export const adminCreatePartner = createServerFn({ method: "POST" })
       .select(PARTNER_COLS)
       .single();
     if (error) throw error;
-    return row as PartnerRow;
+    return { ...(row as PartnerRow), auth_mode: mode, password_set: mode === "password" };
   });
+
 
 export const adminUpdatePartner = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
