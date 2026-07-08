@@ -12,11 +12,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Global content container: 85% of viewport, capped so ultra-wide
-     screens don't stretch line-length. Mobile is unaffected because the
-     viewport is already below the cap; horizontal padding on wrappers
-     (px-4 sm:px-6 lg:px-8) handles small-screen breathing room. */
-  --container-7xl: min(85vw, 96rem);
+  /* Global content container. Value is driven by --app-container-max, which
+     switches per breakpoint below so mobile relies on wrapper padding
+     (px-4 sm:px-6 lg:px-8) while desktop centers content at ~85vw and
+     ultra-wide screens cap at 110rem to preserve line-length. */
+  --container-7xl: var(--app-container-max);
+
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -83,6 +84,13 @@
 
 :root {
   --radius: 0.875rem;
+
+  /* Responsive container width driving --container-7xl (see @theme inline).
+     Mobile: full width; wrapper padding handles gutters.
+     Desktop (>=768px): centered 85vw block.
+     Ultra-wide (>=1920px): cap at 110rem to preserve readable line-length. */
+  --app-container-max: 100%;
+
 
   /* Monolithic dark studio — matches the /contact aesthetic */
   --background: #050505;
@@ -247,3 +255,12 @@
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
+
+/* Responsive container width overrides — drives max-w-7xl globally. */
+@media (min-width: 768px) {
+  :root { --app-container-max: 85vw; }
+}
+@media (min-width: 1920px) {
+  :root { --app-container-max: 110rem; }
+}
+
