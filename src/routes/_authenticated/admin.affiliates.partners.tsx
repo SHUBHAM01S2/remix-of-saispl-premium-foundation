@@ -39,6 +39,21 @@ function PartnersPage() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ email: "", full_name: "", company: "", phone: "", default_commission_pct: "10" });
+  const [authMode, setAuthMode] = useState<"invite" | "password">("invite");
+  const [password, setPassword] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [createdPwd, setCreatedPwd] = useState<string | null>(null);
+  const [createdMode, setCreatedMode] = useState<"invite" | "password" | null>(null);
+  const [createdEmail, setCreatedEmail] = useState<string>("");
+
+  const resetForm = () => {
+    setForm({ email: "", full_name: "", company: "", phone: "", default_commission_pct: "10" });
+    setAuthMode("invite");
+    setPassword("");
+    setShowPwd(false);
+    setCopied(false);
+  };
 
   const rows = useMemo(() => {
     const items = q.data ?? [];
@@ -53,15 +68,32 @@ function PartnersPage() {
       email: form.email, full_name: form.full_name,
       company: form.company || null, phone: form.phone || null,
       default_commission_pct: Number(form.default_commission_pct) || 10,
+      mode: authMode,
+      password: authMode === "password" ? password : null,
     }}),
-    onSuccess: () => {
-      toast.success("Partner added. An invite was sent if the user is new.");
+    onSuccess: (res: any) => {
       qc.invalidateQueries({ queryKey: ["admin", "partners"] });
+      if (authMode === "password") {
+        setCreatedPwd(password);
+        setCreatedMode("password");
+        setCreatedEmail(form.email);
+        toast.success("Partner created with password.");
+      } else {
+        setCreatedPwd(null);
+        setCreatedMode("invite");
+        setCreatedEmail(form.email);
+        toast.success("Invite email sent to partner.");
+      }
       setOpen(false);
-      setForm({ email: "", full_name: "", company: "", phone: "", default_commission_pct: "10" });
+      resetForm();
     },
     onError: (e: any) => toast.error(e?.message ?? "Failed to add"),
   });
+
+  const copyPwd = async (value: string) => {
+    try { await navigator.clipboard.writeText(value); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {}
+  };
+
 
   return (
     <div className="space-y-4">
