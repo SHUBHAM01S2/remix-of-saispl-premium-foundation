@@ -38,7 +38,7 @@ import { ChatThread } from "@/components/ChatThread";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
 
 const inboxSearchSchema = z.object({
-  thread: fallback(z.string().uuid().optional(), undefined),
+  thread: fallback(z.string().uuid(), undefined as unknown as string).optional(),
 });
 
 export const Route = createFileRoute("/_authenticated/admin/inbox")({
