@@ -52,6 +52,7 @@ import {
   type ClientNotification,
 } from "@/lib/messages.functions";
 import { ChatThread } from "@/components/ChatThread";
+import { getMyPartnerProfile } from "@/lib/partners.functions";
 
 export const Route = createFileRoute("/client-portal")({
   ssr: false,
