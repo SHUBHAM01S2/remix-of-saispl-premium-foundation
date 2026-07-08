@@ -3,7 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
-import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { zodValidator } from "@tanstack/zod-adapter";
 import {
   Inbox,
   Loader2,
@@ -37,8 +37,13 @@ import {
 import { ChatThread } from "@/components/ChatThread";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
 
+const threadSearchParam = z.preprocess((value) => {
+  if (typeof value !== "string") return undefined;
+  return z.string().uuid().safeParse(value).success ? value : undefined;
+}, z.string().uuid().optional());
+
 const inboxSearchSchema = z.object({
-  thread: fallback(z.string().uuid(), undefined as unknown as string).optional(),
+  thread: threadSearchParam,
 });
 
 export const Route = createFileRoute("/_authenticated/admin/inbox")({
