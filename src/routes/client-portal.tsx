@@ -156,11 +156,16 @@ function SignInView({
   onSignedIn: () => void;
 }) {
   const router = useRouter();
+  const navigate = useNavigate();
+  const [role, setRole] = useState<"client" | "partner">("client");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const getPartner = useServerFn(getMyPartnerProfile);
+
+  const isPartner = role === "partner";
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -179,6 +184,17 @@ function SignInView({
         window.location.replace("/shivi");
         return;
       }
+      if (isPartner) {
+        const partner = await getPartner().catch(() => null);
+        if (!partner) {
+          await supabase.auth.signOut();
+          await router.invalidate();
+          setError("This account isn't registered as an affiliate partner.");
+          return;
+        }
+        navigate({ to: "/partner", replace: true });
+        return;
+      }
       onSignedIn();
     } catch (err: any) {
       setError(err?.message ?? "Unable to sign in");
@@ -195,7 +211,7 @@ function SignInView({
     setError(null);
     setNotice(null);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password?flow=client`,
+      redirectTo: `${window.location.origin}/reset-password?flow=${isPartner ? "partner" : "client"}`,
     });
     if (error) setError(error.message);
     else setNotice("Password reset email sent. Check your inbox.");
@@ -203,102 +219,158 @@ function SignInView({
 
   return (
     <ShellFrame>
-      <section className="grid flex-1 items-center gap-10 py-16 lg:grid-cols-2">
-        <div>
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1 text-xs text-muted-foreground">
-            <Lock className="h-3.5 w-3.5" /> Client Portal
-          </span>
-          <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
-            Your project,{" "}
-            <span className="bg-gradient-to-r from-brand to-emerald-400 bg-clip-text text-transparent">
-              one place.
+      <div className="mx-auto flex w-full max-w-[min(90vw,72rem)] flex-1 items-center px-2 sm:px-4">
+        <section className="grid w-full items-center gap-8 py-12 sm:py-16 md:gap-10 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1 text-xs text-muted-foreground">
+              <Lock className="h-3.5 w-3.5" />
+              {isPartner ? "Affiliate Partner" : "Client Portal"}
             </span>
-          </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
-            Sign in to view onboarding progress, upload missing assets, share
-            platform access, and track your project status with our delivery team.
-          </p>
+            <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-5xl">
+              {isPartner ? (
+                <>
+                  Your referrals,{" "}
+                  <span className="bg-gradient-to-r from-brand to-emerald-400 bg-clip-text text-transparent">
+                    one dashboard.
+                  </span>
+                </>
+              ) : (
+                <>
+                  Your project,{" "}
+                  <span className="bg-gradient-to-r from-brand to-emerald-400 bg-clip-text text-transparent">
+                    one place.
+                  </span>
+                </>
+              )}
+            </h1>
+            <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground">
+              {isPartner
+                ? "Sign in to submit new leads, track deal progress, and monitor your commissions and payouts in real time."
+                : "Sign in to view onboarding progress, upload missing assets, share platform access, and track your project status with our delivery team."}
+            </p>
 
-          <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
-            {[
-              "Live onboarding checklist & completion state",
-              "Secure asset & access submission",
-              "Kickoff readiness and launch tracking",
-            ].map((f) => (
-              <li key={f} className="flex items-start gap-3">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand" />
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
+            <ul className="mt-8 space-y-3 text-sm text-muted-foreground">
+              {(isPartner
+                ? [
+                    "Submit and track referral opportunities",
+                    "Live pipeline, stage, and commission updates",
+                    "Payout status and earnings history",
+                  ]
+                : [
+                    "Live onboarding checklist & completion state",
+                    "Secure asset & access submission",
+                    "Kickoff readiness and launch tracking",
+                  ]
+              ).map((f) => (
+                <li key={f} className="flex items-start gap-3">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-brand" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="mx-auto w-full max-w-md rounded-2xl border border-border/60 bg-card/80 p-8 shadow-2xl shadow-black/20 backdrop-blur">
-          <form onSubmit={handleSignIn} className="space-y-4">
-            <div>
-              <h2 className="text-xl font-semibold">Client sign in</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Use the credentials shared by your project manager.
-              </p>
-            </div>
-
-            <div>
-              <label className="mb-1 block text-xs font-medium text-muted-foreground">Email</label>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
-                placeholder="you@company.com"
-              />
-            </div>
-
-            <div>
-              <label className="mb-1 block text-xs font-medium text-muted-foreground">Password</label>
-              <input
-                type="password"
-                required
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none focus:border-brand"
-                placeholder="••••••••"
-              />
-            </div>
-
-            {error && (
-              <p className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
-                {error}
-              </p>
-            )}
-            {notice && (
-              <p className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
-                {notice}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition hover:bg-cta/90 disabled:opacity-60"
+          <div className="w-full rounded-2xl border border-border/60 bg-card/80 p-6 shadow-2xl shadow-black/20 backdrop-blur sm:p-8 lg:mx-0 lg:ml-auto lg:max-w-md">
+            <div
+              role="tablist"
+              aria-label="Sign in as"
+              className="mb-6 grid grid-cols-2 gap-1 rounded-lg border border-border/60 bg-background/60 p-1"
             >
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-4 w-4" />}
-              Sign in
-            </button>
-
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <button type="button" onClick={handleReset} className="hover:text-foreground">
-                Forgot password?
-              </button>
-              <Link to="/contact" className="hover:text-foreground">
-                Need access?
-              </Link>
+              {(["client", "partner"] as const).map((r) => {
+                const active = role === r;
+                return (
+                  <button
+                    key={r}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => {
+                      setRole(r);
+                      setError(null);
+                      setNotice(null);
+                    }}
+                    className={`min-h-[44px] rounded-md px-3 text-sm font-medium transition ${
+                      active
+                        ? "bg-cta text-cta-foreground shadow"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {r === "client" ? "Client" : "Affiliate Partner"}
+                  </button>
+                );
+              })}
             </div>
-          </form>
-        </div>
-      </section>
+
+            <form onSubmit={handleSignIn} className="space-y-4">
+              <div>
+                <h2 className="text-xl font-semibold">
+                  {isPartner ? "Partner sign in" : "Client sign in"}
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {isPartner
+                    ? "Use the credentials shared by our affiliate team."
+                    : "Use the credentials shared by your project manager."}
+                </p>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Email</label>
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="min-h-[44px] w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base outline-none focus:border-brand sm:text-sm"
+                  placeholder="you@company.com"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-medium text-muted-foreground">Password</label>
+                <input
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="min-h-[44px] w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base outline-none focus:border-brand sm:text-sm"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              {error && (
+                <p className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+                  {error}
+                </p>
+              )}
+              {notice && (
+                <p className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
+                  {notice}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-lg bg-cta px-4 py-2.5 text-sm font-semibold text-cta-foreground transition hover:bg-cta/90 disabled:opacity-60"
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-4 w-4" />}
+                Sign in
+              </button>
+
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
+                <button type="button" onClick={handleReset} className="hover:text-foreground">
+                  Forgot password?
+                </button>
+                <Link to="/contact" className="hover:text-foreground">
+                  Need access?
+                </Link>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
     </ShellFrame>
   );
 }
