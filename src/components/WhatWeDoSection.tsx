@@ -51,11 +51,19 @@ export function WhatWeDoSection() {
 
   const routeForCapability = (cap: CapabilityRow): string => {
     const key = `${cap.tag} ${cap.title}`.toLowerCase();
-    if (/website|web design|web develop/.test(key)) return "/web-design-development";
+
+    // Explicit title matches first (most reliable)
+    if (/web\s*&\s*software|web and software/.test(key)) return "/web-design-development";
+    if (/ai\s*&\s*automation|ai and automation/.test(key)) return "/automation-ai-services";
+    if (/custom business portals?|business portals?/.test(key)) return "/custom-portals-software";
+    if (/digital product design|product design/.test(key)) return "/branding-graphic-design";
+
+    // Tag-based fallback
+    if (/engineering/.test(key)) return "/web-design-development";
+    if (/automation|\bai\b/.test(key)) return "/automation-ai-services";
+    if (/platforms?|portal|dashboard|software/.test(key)) return "/custom-portals-software";
+    if (/design|brand|graphic|logo/.test(key)) return "/branding-graphic-design";
     if (/seo|marketing/.test(key)) return "/seo-digital-marketing";
-    if (/automation|whatsapp|ai\b|agent|bot/.test(key)) return "/automation-ai-services";
-    if (/portal|software|dashboard|platform/.test(key)) return "/custom-portals-software";
-    if (/brand|design|graphic|logo/.test(key)) return "/branding-graphic-design";
     if (/support|maintenance|care/.test(key)) return "/care-maintenance";
     return "/services";
   };
