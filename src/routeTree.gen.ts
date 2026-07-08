@@ -20,6 +20,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as OurWorksRouteImport } from './routes/our-works'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as CustomPortalsSoftwareRouteImport } from './routes/custom-portals-software'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ClientPortalRouteImport } from './routes/client-portal'
@@ -137,6 +138,11 @@ const PartnerRoute = PartnerRouteImport.update({
 const OurWorksRoute = OurWorksRouteImport.update({
   id: '/our-works',
   path: '/our-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CustomPortalsSoftwareRoute = CustomPortalsSoftwareRouteImport.update({
@@ -501,6 +507,7 @@ export interface FileRoutesByFullPath {
   '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
+  '/faq': typeof FaqRoute
   '/our-works': typeof OurWorksRouteWithChildren
   '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -576,6 +583,7 @@ export interface FileRoutesByTo {
   '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
+  '/faq': typeof FaqRoute
   '/our-works': typeof OurWorksRouteWithChildren
   '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -648,6 +656,7 @@ export interface FileRoutesById {
   '/client-portal': typeof ClientPortalRoute
   '/contact': typeof ContactRoute
   '/custom-portals-software': typeof CustomPortalsSoftwareRoute
+  '/faq': typeof FaqRoute
   '/our-works': typeof OurWorksRouteWithChildren
   '/partner': typeof PartnerRouteWithChildren
   '/pricing': typeof PricingRoute
@@ -725,6 +734,7 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
+    | '/faq'
     | '/our-works'
     | '/partner'
     | '/pricing'
@@ -800,6 +810,7 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
+    | '/faq'
     | '/our-works'
     | '/partner'
     | '/pricing'
@@ -871,6 +882,7 @@ export interface FileRouteTypes {
     | '/client-portal'
     | '/contact'
     | '/custom-portals-software'
+    | '/faq'
     | '/our-works'
     | '/partner'
     | '/pricing'
@@ -948,6 +960,7 @@ export interface RootRouteChildren {
   ClientPortalRoute: typeof ClientPortalRoute
   ContactRoute: typeof ContactRoute
   CustomPortalsSoftwareRoute: typeof CustomPortalsSoftwareRoute
+  FaqRoute: typeof FaqRoute
   OurWorksRoute: typeof OurWorksRouteWithChildren
   PartnerRoute: typeof PartnerRouteWithChildren
   PricingRoute: typeof PricingRoute
@@ -1044,6 +1057,13 @@ declare module '@tanstack/react-router' {
       path: '/our-works'
       fullPath: '/our-works'
       preLoaderRoute: typeof OurWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/custom-portals-software': {
@@ -1777,6 +1797,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientPortalRoute: ClientPortalRoute,
   ContactRoute: ContactRoute,
   CustomPortalsSoftwareRoute: CustomPortalsSoftwareRoute,
+  FaqRoute: FaqRoute,
   OurWorksRoute: OurWorksRouteWithChildren,
   PartnerRoute: PartnerRouteWithChildren,
   PricingRoute: PricingRoute,
