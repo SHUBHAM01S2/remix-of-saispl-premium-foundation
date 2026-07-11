@@ -44,8 +44,8 @@ function ShiviLogin() {
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false, email: null }));
-      if (r.isAdmin) {
+      const isAdmin = await isCurrentUserAdmin(data.user.id);
+      if (isAdmin) {
         navigate({ to: "/admin", replace: true });
         return;
       }
