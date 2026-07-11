@@ -62,10 +62,9 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      if (!r.isAdmin) {
-        // Keep them signed in so the wrong-role screen can show identity + a
-        // clean sign-out button. The WrongRoleNotice component handles logout.
+      const { data: userData } = await supabase.auth.getUser();
+      const isAdmin = userData.user ? await isCurrentUserAdmin(userData.user.id) : false;
+      if (!isAdmin) {
         setWrongRoleEmail(email);
         return;
       }
