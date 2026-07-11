@@ -1,8 +1,19 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin } from "@/lib/admin.functions";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
+
+// Direct RLS-backed check so admin routing works even if server functions
+// are unreachable (e.g. self-hosted VPS with missing env vars / 502).
+async function isCurrentUserAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("admins")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) return false;
+  return !!data;
+}
 
 export const Route = createFileRoute("/shivi")({
   ssr: false,
