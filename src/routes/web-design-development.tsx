@@ -32,48 +32,102 @@ import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
+const SEO_TITLE =
+  "Web Design & Development Company in India | Custom Websites — SAISPL";
+const SEO_DESCRIPTION =
+  "Custom web design and development company in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, mobile-first websites and web apps for clinics, hotels, schools, real estate, SaaS and local businesses — serving clients in 12+ countries.";
+const SEO_URL = "/web-design-development";
+
 export const Route = createFileRoute("/web-design-development")({
   head: () => ({
     meta: [
-      { title: "Website Design & Development in Himachal Pradesh | SAISPL" },
-      {
-        name: "description",
-        content:
-          "Custom, fast, SEO-ready website design & development in Himachal Pradesh. Built to convert visitors into customers — book a free strategy call today.",
-      },
+      { title: SEO_TITLE },
+      { name: "description", content: SEO_DESCRIPTION },
       {
         name: "keywords",
         content:
-          "website design Himachal Pradesh, website development India, custom business website, SEO website, responsive website, CMS website, Shivaryan Infotech, SAISPL",
+          "web design company India, website development company, custom website design, business website development, responsive website design, SEO website development, CMS website, Next.js development, React web app development, web design Himachal Pradesh, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
-      {
-        property: "og:description",
-        content:
-          "Custom, fast, SEO-ready websites built to convert. Book a free strategy call with SAISPL today.",
-      },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+      { property: "og:title", content: SEO_TITLE },
+      { property: "og:description", content: SEO_DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/web-design-development" },
+      { property: "og:url", content: SEO_URL },
+      { property: "og:site_name", content: "Shivaryan Infotech" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
+      { name: "twitter:site", content: "@ShivaryanInfotech" },
+      { name: "twitter:title", content: SEO_TITLE },
+      { name: "twitter:description", content: SEO_DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: "/web-design-development" }],
+    links: [{ rel: "canonical", href: SEO_URL }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Service",
-          name: "Website Design & Development",
-          serviceType: "Website Design & Development",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          "@id": `${SEO_URL}#service`,
+          name: "Web Design & Development",
+          serviceType: "Web Design & Development",
+          provider: { "@id": "/#organization" },
           areaServed: [
-            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
           ],
-          url: "/web-design-development",
-          description:
-            "Custom, fast, SEO-ready website design and development for clinics, hotels, schools, real estate, SaaS, and local businesses.",
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType:
+              "Clinics, hotels, schools, real-estate agencies, local service businesses, SaaS startups",
+          },
+          url: SEO_URL,
+          description: SEO_DESCRIPTION,
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "INR",
+            availability: "https://schema.org/InStock",
+            offerCount: pricing.length,
+          },
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Website Packages",
+            itemListElement: pricing.map((p) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: p.name,
+                description: `${p.highlight}. Includes: ${p.features.join("; ")}.`,
+              },
+            })),
+          },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "/services" },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Web Design & Development",
+              item: SEO_URL,
+            },
+          ],
         }),
       },
     ],
@@ -81,6 +135,7 @@ export const Route = createFileRoute("/web-design-development")({
 
   component: WebsiteDesignDevelopmentPage,
 });
+
 
 const included = [
   { icon: Layout, title: "Custom-Designed Responsive Websites", desc: "Bespoke UI crafted for your brand — pixel-perfect on mobile, tablet, and desktop." },
