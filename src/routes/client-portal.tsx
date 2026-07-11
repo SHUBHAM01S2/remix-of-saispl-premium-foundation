@@ -186,8 +186,9 @@ function SignInView({
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      if (r.isAdmin) {
+      const { data: userData } = await supabase.auth.getUser();
+      const isAdmin = userData.user ? await isCurrentUserAdmin(userData.user.id) : false;
+      if (isAdmin) {
         // Silently route admin accounts to the admin sign-in flow.
         await supabase.auth.signOut();
         await router.invalidate();
