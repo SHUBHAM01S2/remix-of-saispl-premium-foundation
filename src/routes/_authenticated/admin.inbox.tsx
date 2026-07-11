@@ -186,7 +186,7 @@ function AdminInboxPage() {
 
   return (
 
-    <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
       <header className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="flex items-center gap-2 text-2xl font-semibold">
