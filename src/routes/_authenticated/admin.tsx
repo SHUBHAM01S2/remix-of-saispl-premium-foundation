@@ -254,7 +254,7 @@ function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto flex max-w-[1400px] gap-8 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl gap-8 px-4 py-6 sm:px-6 lg:px-8">
         {/* Sidebar */}
         <aside className="sticky top-6 hidden h-[calc(100vh-3rem)] w-[260px] shrink-0 flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur lg:flex">
           <div className="flex items-center gap-3 border-b border-border/60 px-5 py-5">
