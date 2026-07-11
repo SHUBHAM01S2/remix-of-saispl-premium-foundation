@@ -28,7 +28,16 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin } from "@/lib/admin.functions";
+// Direct RLS-backed admin check (works even when server functions are down).
+async function isCurrentUserAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("admins")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) return false;
+  return !!data;
+}
 import {
   getMyOnboarding,
   signClientAssetUrl,
@@ -109,8 +118,8 @@ function ClientPortalPage() {
     (async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-        if (r.isAdmin) {
+        const isAdmin = await isCurrentUserAdmin(data.user.id);
+        if (isAdmin) {
           // Admin accounts belong on the admin sign-in surface. Sign the
           // session out silently and send them there — no error banner.
           await supabase.auth.signOut();
@@ -177,8 +186,9 @@ function SignInView({
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      if (r.isAdmin) {
+      const { data: userData } = await supabase.auth.getUser();
+      const isAdmin = userData.user ? await isCurrentUserAdmin(userData.user.id) : false;
+      if (isAdmin) {
         // Silently route admin accounts to the admin sign-in flow.
         await supabase.auth.signOut();
         await router.invalidate();

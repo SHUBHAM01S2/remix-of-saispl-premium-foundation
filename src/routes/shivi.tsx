@@ -1,8 +1,19 @@
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin } from "@/lib/admin.functions";
 import { WrongRoleNotice } from "@/components/WrongRoleNotice";
+
+// Direct RLS-backed check so admin routing works even if server functions
+// are unreachable (e.g. self-hosted VPS with missing env vars / 502).
+async function isCurrentUserAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("admins")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) return false;
+  return !!data;
+}
 
 export const Route = createFileRoute("/shivi")({
   ssr: false,
@@ -33,8 +44,8 @@ function ShiviLogin() {
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) return;
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false, email: null }));
-      if (r.isAdmin) {
+      const isAdmin = await isCurrentUserAdmin(data.user.id);
+      if (isAdmin) {
         navigate({ to: "/admin", replace: true });
         return;
       }
@@ -51,10 +62,9 @@ function ShiviLogin() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await router.invalidate();
-      const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-      if (!r.isAdmin) {
-        // Keep them signed in so the wrong-role screen can show identity + a
-        // clean sign-out button. The WrongRoleNotice component handles logout.
+      const { data: userData } = await supabase.auth.getUser();
+      const isAdmin = userData.user ? await isCurrentUserAdmin(userData.user.id) : false;
+      if (!isAdmin) {
         setWrongRoleEmail(email);
         return;
       }
