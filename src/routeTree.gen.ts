@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebDevelopmentCompanyBilaspurHimachalPradeshRouteImport } from './routes/web-development-company-bilaspur-himachal-pradesh'
 import { Route as WebDesignDevelopmentRouteImport } from './routes/web-design-development'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -85,6 +86,12 @@ import { Route as AuthenticatedAdminBlogIdEditRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminAffiliatesReferralsIdRouteImport } from './routes/_authenticated/admin.affiliates.referrals.$id'
 import { Route as AuthenticatedAdminAffiliatesPartnersIdRouteImport } from './routes/_authenticated/admin.affiliates.partners.$id'
 
+const WebDevelopmentCompanyBilaspurHimachalPradeshRoute =
+  WebDevelopmentCompanyBilaspurHimachalPradeshRouteImport.update({
+    id: '/web-development-company-bilaspur-himachal-pradesh',
+    path: '/web-development-company-bilaspur-himachal-pradesh',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WebDesignDevelopmentRoute = WebDesignDevelopmentRouteImport.update({
   id: '/web-design-development',
   path: '/web-design-development',
@@ -519,6 +526,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
@@ -595,6 +603,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
@@ -668,6 +677,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/web-design-development': typeof WebDesignDevelopmentRoute
+  '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
@@ -746,6 +756,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/web-development-company-bilaspur-himachal-pradesh'
     | '/admin'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
@@ -822,6 +833,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/web-development-company-bilaspur-himachal-pradesh'
     | '/admin'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
@@ -894,6 +906,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/web-design-development'
+    | '/web-development-company-bilaspur-himachal-pradesh'
     | '/_authenticated/admin'
     | '/blog/$slug'
     | '/client-reports/$clientSlug'
@@ -972,6 +985,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
+  WebDevelopmentCompanyBilaspurHimachalPradeshRoute: typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   BlogSlugRoute: typeof BlogSlugRoute
   ClientReportsClientSlugRoute: typeof ClientReportsClientSlugRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
@@ -982,6 +996,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/web-development-company-bilaspur-himachal-pradesh': {
+      id: '/web-development-company-bilaspur-himachal-pradesh'
+      path: '/web-development-company-bilaspur-himachal-pradesh'
+      fullPath: '/web-development-company-bilaspur-himachal-pradesh'
+      preLoaderRoute: typeof WebDevelopmentCompanyBilaspurHimachalPradeshRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/web-design-development': {
       id: '/web-design-development'
       path: '/web-design-development'
@@ -1809,6 +1830,8 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   WebDesignDevelopmentRoute: WebDesignDevelopmentRoute,
+  WebDevelopmentCompanyBilaspurHimachalPradeshRoute:
+    WebDevelopmentCompanyBilaspurHimachalPradeshRoute,
   BlogSlugRoute: BlogSlugRoute,
   ClientReportsClientSlugRoute: ClientReportsClientSlugRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
