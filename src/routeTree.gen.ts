@@ -43,6 +43,7 @@ import { Route as OurWorksCaseStudyIdRouteImport } from './routes/our-works.$cas
 import { Route as InternalQuarterlyAddonsRouteImport } from './routes/internal.quarterly-addons'
 import { Route as InternalArchitectureRouteImport } from './routes/internal.architecture'
 import { Route as ClientReportsClientSlugRouteImport } from './routes/client-reports.$clientSlug'
+import { Route as BlogAiAutomationSmallBusinessIndiaRouteImport } from './routes/blog.ai-automation-small-business-india'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as PartnerReferralsNewRouteImport } from './routes/partner.referrals.new'
@@ -256,6 +257,12 @@ const ClientReportsClientSlugRoute = ClientReportsClientSlugRouteImport.update({
   path: '/client-reports/$clientSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogAiAutomationSmallBusinessIndiaRoute =
+  BlogAiAutomationSmallBusinessIndiaRouteImport.update({
+    id: '/blog/ai-automation-small-business-india',
+    path: '/blog/ai-automation-small-business-india',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -529,6 +536,7 @@ export interface FileRoutesByFullPath {
   '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/ai-automation-small-business-india': typeof BlogAiAutomationSmallBusinessIndiaRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -606,6 +614,7 @@ export interface FileRoutesByTo {
   '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/ai-automation-small-business-india': typeof BlogAiAutomationSmallBusinessIndiaRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -680,6 +689,7 @@ export interface FileRoutesById {
   '/web-development-company-bilaspur-himachal-pradesh': typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/blog/ai-automation-small-business-india': typeof BlogAiAutomationSmallBusinessIndiaRoute
   '/client-reports/$clientSlug': typeof ClientReportsClientSlugRoute
   '/internal/architecture': typeof InternalArchitectureRoute
   '/internal/quarterly-addons': typeof InternalQuarterlyAddonsRoute
@@ -759,6 +769,7 @@ export interface FileRouteTypes {
     | '/web-development-company-bilaspur-himachal-pradesh'
     | '/admin'
     | '/blog/$slug'
+    | '/blog/ai-automation-small-business-india'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -836,6 +847,7 @@ export interface FileRouteTypes {
     | '/web-development-company-bilaspur-himachal-pradesh'
     | '/admin'
     | '/blog/$slug'
+    | '/blog/ai-automation-small-business-india'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -909,6 +921,7 @@ export interface FileRouteTypes {
     | '/web-development-company-bilaspur-himachal-pradesh'
     | '/_authenticated/admin'
     | '/blog/$slug'
+    | '/blog/ai-automation-small-business-india'
     | '/client-reports/$clientSlug'
     | '/internal/architecture'
     | '/internal/quarterly-addons'
@@ -987,6 +1000,7 @@ export interface RootRouteChildren {
   WebDesignDevelopmentRoute: typeof WebDesignDevelopmentRoute
   WebDevelopmentCompanyBilaspurHimachalPradeshRoute: typeof WebDevelopmentCompanyBilaspurHimachalPradeshRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogAiAutomationSmallBusinessIndiaRoute: typeof BlogAiAutomationSmallBusinessIndiaRoute
   ClientReportsClientSlugRoute: typeof ClientReportsClientSlugRoute
   InternalArchitectureRoute: typeof InternalArchitectureRoute
   InternalQuarterlyAddonsRoute: typeof InternalQuarterlyAddonsRoute
@@ -1232,6 +1246,13 @@ declare module '@tanstack/react-router' {
       path: '/client-reports/$clientSlug'
       fullPath: '/client-reports/$clientSlug'
       preLoaderRoute: typeof ClientReportsClientSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/ai-automation-small-business-india': {
+      id: '/blog/ai-automation-small-business-india'
+      path: '/blog/ai-automation-small-business-india'
+      fullPath: '/blog/ai-automation-small-business-india'
+      preLoaderRoute: typeof BlogAiAutomationSmallBusinessIndiaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
@@ -1833,6 +1854,8 @@ const rootRouteChildren: RootRouteChildren = {
   WebDevelopmentCompanyBilaspurHimachalPradeshRoute:
     WebDevelopmentCompanyBilaspurHimachalPradeshRoute,
   BlogSlugRoute: BlogSlugRoute,
+  BlogAiAutomationSmallBusinessIndiaRoute:
+    BlogAiAutomationSmallBusinessIndiaRoute,
   ClientReportsClientSlugRoute: ClientReportsClientSlugRoute,
   InternalArchitectureRoute: InternalArchitectureRoute,
   InternalQuarterlyAddonsRoute: InternalQuarterlyAddonsRoute,
