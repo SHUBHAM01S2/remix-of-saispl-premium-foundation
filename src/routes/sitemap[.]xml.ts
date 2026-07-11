@@ -29,6 +29,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/web-development-company-bilaspur-himachal-pradesh", changefreq: "monthly", priority: "0.9" },
 
           { path: "/blog", changefreq: "weekly", priority: "0.7" },
+          { path: "/blog/ai-automation-small-business-india", changefreq: "monthly", priority: "0.7" },
           { path: "/career", changefreq: "weekly", priority: "0.7" },
           { path: "/contact", changefreq: "monthly", priority: "0.7" },
           { path: "/privacy", changefreq: "yearly", priority: "0.3" },
