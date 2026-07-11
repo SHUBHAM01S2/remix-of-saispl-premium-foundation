@@ -12,4 +12,17 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    server: {
+      proxy: {
+        // Proxy Lovable CDN asset requests to the public CDN when running on plain localhost.
+        // On Lovable preview/published domains this path is served natively and the proxy is unused.
+        "/__l5e": {
+          target: "https://cdn.lovable.dev",
+          changeOrigin: true,
+          secure: true,
+        },
+      },
+    },
+  },
 });
