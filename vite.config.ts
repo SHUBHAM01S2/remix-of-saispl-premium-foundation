@@ -11,11 +11,6 @@ export default defineConfig({
   // Lovable preview/publish builds still force the Cloudflare target internally.
   nitro: {
     preset: "node-server",
-    output: {
-      dir: "dist",
-      serverDir: "dist/server",
-      publicDir: "dist/client",
-    },
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
