@@ -28,7 +28,16 @@ import {
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
-import { checkIsAdmin } from "@/lib/admin.functions";
+// Direct RLS-backed admin check (works even when server functions are down).
+async function isCurrentUserAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("admins")
+    .select("id")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) return false;
+  return !!data;
+}
 import {
   getMyOnboarding,
   signClientAssetUrl,
