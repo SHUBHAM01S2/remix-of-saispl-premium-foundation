@@ -118,8 +118,8 @@ function ClientPortalPage() {
     (async () => {
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        const r = await checkIsAdmin().catch(() => ({ isAdmin: false }));
-        if (r.isAdmin) {
+        const isAdmin = await isCurrentUserAdmin(data.user.id);
+        if (isAdmin) {
           // Admin accounts belong on the admin sign-in surface. Sign the
           // session out silently and send them there — no error banner.
           await supabase.auth.signOut();
