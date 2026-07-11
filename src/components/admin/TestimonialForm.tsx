@@ -41,7 +41,22 @@ export function TestimonialForm({ existing }: Props) {
       qc.invalidateQueries({ queryKey: ["admin", "testimonials"] });
       navigate({ to: "/admin/testimonials" });
     },
-    onError: (err) => setError(err instanceof Error ? err.message : "Save failed"),
+    onError: (err) => {
+      const raw = err instanceof Error ? err.message : String(err ?? "");
+      let msg = raw;
+      // Strip HTML (e.g. nginx 502 Bad Gateway page) so we don't render markup as text
+      if (/<\/?[a-z][\s\S]*>/i.test(raw)) {
+        const text = raw.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        const m = text.match(/\b(\d{3})\b\s*([A-Za-z ]+)?/);
+        msg = m
+          ? `Server error ${m[1]}${m[2] ? ` — ${m[2].trim()}` : ""}. Please try again in a moment.`
+          : "Server error. Please try again in a moment.";
+      }
+      if (/502|bad gateway/i.test(raw)) {
+        msg = "Server is temporarily unavailable (502 Bad Gateway). Please try again in a moment.";
+      }
+      setError(msg || "Save failed");
+    },
   });
 
   return (
