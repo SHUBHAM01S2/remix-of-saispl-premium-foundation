@@ -18,7 +18,7 @@ export default defineConfig({
         // Proxy Lovable CDN asset requests to the public CDN when running on plain localhost.
         // On Lovable preview/published domains this path is served natively and the proxy is unused.
         "/__l5e": {
-          target: "https://cdn.lovable.dev",
+          target: "https://lovable.dev",
           changeOrigin: true,
           secure: true,
         },
