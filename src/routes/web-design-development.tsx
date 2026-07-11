@@ -569,6 +569,47 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* RELATED SERVICES */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <ScrollReveal className="mb-8">
+          <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Related Services
+          </span>
+          <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl" style={displayFont}>
+            Pair your website with growth & automation.
+          </h2>
+        </ScrollReveal>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { to: "/automation-ai-services", title: "AI & Automation", desc: "AI agents and workflow automation that scale operations." },
+            { to: "/custom-portals-software", title: "Custom Portals & Software", desc: "Internal dashboards, APIs, and role-based portals." },
+            { to: "/seo-digital-marketing", title: "SEO & Digital Marketing", desc: "Rank higher, convert better, get found in AI search." },
+            { to: "/care-maintenance", title: "Care & Maintenance", desc: "Ongoing hosting, security, and content support." },
+          ].map((r) => (
+            <Link
+              key={r.to}
+              to={r.to}
+              className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white/[0.06]"
+            >
+              <div>
+                <h3 className="text-base font-bold text-foreground" style={displayFont}>{r.title}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{r.desc}</p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand">
+                Explore <ArrowUpRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
+          ))}
+        </div>
+        <p className="mt-8 text-sm text-muted-foreground">
+          Not sure which package fits?{" "}
+          <Link to="/contact" className="font-semibold text-brand hover:underline">Talk to our team</Link>{" "}
+          or{" "}
+          <Link to="/pricing" className="font-semibold text-brand hover:underline">compare pricing</Link>.
+        </p>
+      </section>
+
+
       {/* FINAL CTA */}
       <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-24 md:py-32">
         <div
