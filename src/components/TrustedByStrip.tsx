@@ -9,20 +9,21 @@ import dogra from "@/assets/logos/dogra.png.asset.json";
 import avttours from "@/assets/logos/avttours.png.asset.json";
 import jevar from "@/assets/logos/jevar.png.asset.json";
 import sumit from "@/assets/logos/sumit.png.asset.json";
+import { resolveLovableAssetUrl } from "@/lib/lovable-asset-url";
 
 const DARK_BG = "#1b1b1b";
 
 const LOGOS = [
-  { name: "Rukoo Services", src: rukoo.url },
-  { name: "Accupressure E-learning", src: acupressure.url },
-  { name: "Hotel Bandla Heights", src: bandla.url },
-  { name: "Manali Miles", src: manaliMiles.url },
-  { name: "Derma Epsilon", src: derma.url, bg: DARK_BG },
-  { name: "Button Craft", src: buttonCraft.url },
-  { name: "Dogra Ji Tours & Travels", src: dogra.url },
-  { name: "AvtTours", src: avttours.url },
-  { name: "Jevar by Shagun", src: jevar.url, bg: DARK_BG },
-  { name: "Sumit Enterprises", src: sumit.url, bg: DARK_BG },
+  { name: "Rukoo Services", src: resolveLovableAssetUrl(rukoo.url) },
+  { name: "Accupressure E-learning", src: resolveLovableAssetUrl(acupressure.url) },
+  { name: "Hotel Bandla Heights", src: resolveLovableAssetUrl(bandla.url) },
+  { name: "Manali Miles", src: resolveLovableAssetUrl(manaliMiles.url) },
+  { name: "Derma Epsilon", src: resolveLovableAssetUrl(derma.url), bg: DARK_BG },
+  { name: "Button Craft", src: resolveLovableAssetUrl(buttonCraft.url) },
+  { name: "Dogra Ji Tours & Travels", src: resolveLovableAssetUrl(dogra.url) },
+  { name: "AvtTours", src: resolveLovableAssetUrl(avttours.url) },
+  { name: "Jevar by Shagun", src: resolveLovableAssetUrl(jevar.url), bg: DARK_BG },
+  { name: "Sumit Enterprises", src: resolveLovableAssetUrl(sumit.url), bg: DARK_BG },
 ];
 
 

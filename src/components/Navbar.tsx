@@ -11,6 +11,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import saisplLogo from "@/assets/saispl-logo.png.asset.json";
+import { resolveLovableAssetUrl } from "@/lib/lovable-asset-url";
 
 
 type NavLink =
@@ -41,7 +42,7 @@ function Logo() {
   return (
     <Link to="/" className="flex items-center">
       <img
-        src={saisplLogo.url}
+        src={resolveLovableAssetUrl(saisplLogo.url)}
         alt="SAISPL Infotech Services"
         className="h-9 w-auto shrink-0 sm:h-10 md:h-12 lg:h-14"
       />
