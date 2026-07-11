@@ -32,48 +32,102 @@ import { StrategyCallButton } from "@/components/StrategyCallButton";
 
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
+const SEO_TITLE =
+  "Web Design & Development Company in India | Custom Websites — SAISPL";
+const SEO_DESCRIPTION =
+  "Custom web design and development company in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, mobile-first websites and web apps for clinics, hotels, schools, real estate, SaaS and local businesses — serving clients in 12+ countries.";
+const SEO_URL = "/web-design-development";
+
 export const Route = createFileRoute("/web-design-development")({
   head: () => ({
     meta: [
-      { title: "Website Design & Development in Himachal Pradesh | SAISPL" },
-      {
-        name: "description",
-        content:
-          "Custom, fast, SEO-ready website design & development in Himachal Pradesh. Built to convert visitors into customers — book a free strategy call today.",
-      },
+      { title: SEO_TITLE },
+      { name: "description", content: SEO_DESCRIPTION },
       {
         name: "keywords",
         content:
-          "website design Himachal Pradesh, website development India, custom business website, SEO website, responsive website, CMS website, Shivaryan Infotech, SAISPL",
+          "web design company India, website development company, custom website design, business website development, responsive website design, SEO website development, CMS website, Next.js development, React web app development, web design Himachal Pradesh, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
-      {
-        property: "og:description",
-        content:
-          "Custom, fast, SEO-ready websites built to convert. Book a free strategy call with SAISPL today.",
-      },
+      { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+      { property: "og:title", content: SEO_TITLE },
+      { property: "og:description", content: SEO_DESCRIPTION },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/web-design-development" },
+      { property: "og:url", content: SEO_URL },
+      { property: "og:site_name", content: "Shivaryan Infotech" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Website Design & Development in Himachal Pradesh | SAISPL" },
+      { name: "twitter:site", content: "@ShivaryanInfotech" },
+      { name: "twitter:title", content: SEO_TITLE },
+      { name: "twitter:description", content: SEO_DESCRIPTION },
     ],
-    links: [{ rel: "canonical", href: "/web-design-development" }],
+    links: [{ rel: "canonical", href: SEO_URL }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Service",
-          name: "Website Design & Development",
-          serviceType: "Website Design & Development",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          "@id": `${SEO_URL}#service`,
+          name: "Web Design & Development",
+          serviceType: "Web Design & Development",
+          provider: { "@id": "/#organization" },
           areaServed: [
-            { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },
+            { "@type": "Place", name: "Worldwide" },
           ],
-          url: "/web-design-development",
-          description:
-            "Custom, fast, SEO-ready website design and development for clinics, hotels, schools, real estate, SaaS, and local businesses.",
+          audience: {
+            "@type": "BusinessAudience",
+            audienceType:
+              "Clinics, hotels, schools, real-estate agencies, local service businesses, SaaS startups",
+          },
+          url: SEO_URL,
+          description: SEO_DESCRIPTION,
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "INR",
+            availability: "https://schema.org/InStock",
+            offerCount: pricing.length,
+          },
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Website Packages",
+            itemListElement: pricing.map((p) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: p.name,
+                description: `${p.highlight}. Includes: ${p.features.join("; ")}.`,
+              },
+            })),
+          },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "/services" },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: "Web Design & Development",
+              item: SEO_URL,
+            },
+          ],
         }),
       },
     ],
@@ -81,6 +135,7 @@ export const Route = createFileRoute("/web-design-development")({
 
   component: WebsiteDesignDevelopmentPage,
 });
+
 
 const included = [
   { icon: Layout, title: "Custom-Designed Responsive Websites", desc: "Bespoke UI crafted for your brand — pixel-perfect on mobile, tablet, and desktop." },
@@ -513,6 +568,47 @@ function WebsiteDesignDevelopmentPage() {
           </div>
         </div>
       </section>
+
+      {/* RELATED SERVICES */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <ScrollReveal className="mb-8">
+          <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Related Services
+          </span>
+          <h2 className="text-3xl font-black tracking-tight text-foreground md:text-4xl" style={displayFont}>
+            Pair your website with growth & automation.
+          </h2>
+        </ScrollReveal>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { to: "/automation-ai-services", title: "AI & Automation", desc: "AI agents and workflow automation that scale operations." },
+            { to: "/custom-portals-software", title: "Custom Portals & Software", desc: "Internal dashboards, APIs, and role-based portals." },
+            { to: "/seo-digital-marketing", title: "SEO & Digital Marketing", desc: "Rank higher, convert better, get found in AI search." },
+            { to: "/care-maintenance", title: "Care & Maintenance", desc: "Ongoing hosting, security, and content support." },
+          ].map((r) => (
+            <Link
+              key={r.to}
+              to={r.to}
+              className="group flex h-full flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:bg-white/[0.06]"
+            >
+              <div>
+                <h3 className="text-base font-bold text-foreground" style={displayFont}>{r.title}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{r.desc}</p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand">
+                Explore <ArrowUpRight className="h-3.5 w-3.5" />
+              </span>
+            </Link>
+          ))}
+        </div>
+        <p className="mt-8 text-sm text-muted-foreground">
+          Not sure which package fits?{" "}
+          <Link to="/contact" className="font-semibold text-brand hover:underline">Talk to our team</Link>{" "}
+          or{" "}
+          <Link to="/pricing" className="font-semibold text-brand hover:underline">compare pricing</Link>.
+        </p>
+      </section>
+
 
       {/* FINAL CTA */}
       <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-24 md:py-32">
