@@ -703,27 +703,22 @@ function InfoTile({ icon: Icon, title, body }: { icon: any; title: string; body:
   );
 }
 
-export function EmptyState({ icon: Icon, title, body, cta }: { icon: any; title: string; body: string; cta?: { to?: string; onClick?: () => void; label: string } }) {
+export function EmptyState({ icon, title, body, cta }: { icon: any; title: string; body: string; cta?: { to?: string; onClick?: () => void; label: string } }) {
   return (
-    <div className="px-6 py-12 text-center">
-      <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-teal-500/20 to-cyan-500/10 text-teal-300 ring-1 ring-teal-400/20">
-        <Icon className="h-6 w-6" />
-      </div>
-      <h4 className="mt-4 text-base font-semibold">{title}</h4>
-      <p className="mx-auto mt-1.5 max-w-sm text-sm text-slate-400">{body}</p>
-      {cta && (cta.onClick ? (
-        <button onClick={cta.onClick} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20">
-          <Sparkles className="h-4 w-4" /> {cta.label}
-        </button>
-      ) : cta.to ? (
-        <Link to={cta.to} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20">
-          <Sparkles className="h-4 w-4" /> {cta.label}
-        </Link>
-      ) : null)}
-    </div>
+    <PartnerEmptyState
+      icon={icon}
+      title={title}
+      body={body}
+      compact
+      cta={cta ? { label: cta.label, to: cta.to, onClick: cta.onClick, icon: Sparkles } : undefined}
+      quickLinks={[
+        { label: "Submit a referral", to: "/partner/referrals/new", icon: Sparkles },
+        { label: "View commission rules", to: "/partner/earnings", icon: BookOpen },
+      ]}
+    />
   );
-
 }
+
 
 function DashboardHero({ partner, referralLink, copied, setCopied, onOpenModal }: { partner: any; referralLink: string; copied: boolean; setCopied: (v: boolean) => void; onOpenModal: () => void }) {
   return (
