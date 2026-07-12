@@ -126,15 +126,25 @@ function ShiviLogin() {
             </div>
             <div>
               <label htmlFor="password" className="block text-xs font-medium text-white/70">Password</label>
-              <input
-                id="password"
-                type="password"
-                required
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1.5 w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/30"
-              />
+              <div className="relative mt-1.5">
+                <input
+                  id="password"
+                  type={showPw ? "text" : "password"}
+                  required
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-md border border-white/10 bg-black/40 px-3 py-2 pr-11 text-sm text-white outline-none placeholder:text-white/30 focus:border-white/30"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPw((s) => !s)}
+                  aria-label={showPw ? "Hide password" : "Show password"}
+                  className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-white/50 hover:text-white"
+                >
+                  {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
 
             {error && <p className="text-xs text-red-400">{error}</p>}
