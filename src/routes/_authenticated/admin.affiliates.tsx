@@ -255,8 +255,8 @@ function AffiliatesOverview() {
         <div className="space-y-5">
           {/* Leaderboard */}
           <Panel
-            eyebrow="Leaderboard"
-            title="Top partners by commission"
+            eyebrow="Business intelligence · Leaderboard"
+            title="Top performing partners"
             action={
               <Link
                 to="/admin/affiliates/partners"
@@ -269,12 +269,7 @@ function AffiliatesOverview() {
             {loading ? (
               <PanelLoading />
             ) : !d || d.leaderboard.length === 0 ? (
-              <EmptyState
-                icon={Trophy}
-                title="Leaderboard is warming up"
-                body="No commissions have been earned yet. Invite partners and log their first referrals — top performers will rank here automatically."
-                cta={{ to: "/admin/affiliates/partners", label: "Invite a partner" }}
-              />
+              <LeaderboardEmpty />
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -282,13 +277,16 @@ function AffiliatesOverview() {
                     <tr className="text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                       <th className="px-5 py-2.5 font-semibold">#</th>
                       <th className="px-5 py-2.5 font-semibold">Partner</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Referrals</th>
                       <th className="px-5 py-2.5 text-right font-semibold">Won</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Deal value</th>
                       <th className="px-5 py-2.5 text-right font-semibold">Commission</th>
-                      <th className="px-5 py-2.5 font-semibold w-[120px]">Share</th>
+                      <th className="px-5 py-2.5 text-right font-semibold w-[92px]">Trend</th>
+                      <th className="px-5 py-2.5 font-semibold w-[110px]">Share</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {d.leaderboard.map((b, i) => {
+                    {d.leaderboard.map((b: any, i: number) => {
                       const top = d.leaderboard[0].commission || 1;
                       const pct = Math.max(4, Math.round((b.commission / top) * 100));
                       return (
@@ -296,38 +294,52 @@ function AffiliatesOverview() {
                           key={b.partner_id}
                           className="border-t border-border/40 transition-colors hover:bg-muted/20"
                         >
-                          <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
+                          <td className="px-5 py-3 text-xs tabular-nums text-muted-foreground">
                             <RankBadge index={i} />
                           </td>
-                          <td className="px-5 py-2.5">
+                          <td className="px-5 py-3">
                             <Link
                               to="/admin/affiliates/partners/$id"
                               params={{ id: b.partner_id }}
                               className="group flex min-w-0 items-center gap-2.5"
                             >
-                              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[11px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
-                                {initials(b.name)}
-                              </span>
+                              <PartnerAvatar name={b.name} index={i} />
                               <span className="min-w-0">
                                 <span className="block truncate font-medium text-foreground group-hover:text-cyan-200">
                                   {b.name}
                                 </span>
                                 <span className="block truncate text-xs text-muted-foreground">
-                                  {b.company ?? "—"}
+                                  {b.company ?? "Independent"}
                                 </span>
                               </span>
                             </Link>
                           </td>
-                          <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
-                          <td className="px-5 py-2.5 text-right font-semibold tabular-nums text-cyan-200">
+                          <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
+                            {b.referrals ?? 0}
+                          </td>
+                          <td className="px-5 py-3 text-right tabular-nums">
+                            <span className="font-medium text-foreground">{b.won}</span>
+                          </td>
+                          <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
+                            {fmtMoney(b.deal_value ?? 0)}
+                          </td>
+                          <td className="px-5 py-3 text-right font-semibold tabular-nums text-cyan-200">
                             {fmtMoney(b.commission)}
                           </td>
-                          <td className="px-5 py-2.5">
-                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
-                              <div
-                                className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
-                                style={{ width: `${pct}%` }}
-                              />
+                          <td className="px-5 py-3 text-right">
+                            <TrendPill pct={b.trendPct ?? null} />
+                          </td>
+                          <td className="px-5 py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                                <div
+                                  className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                              <span className="w-8 text-right text-[10px] tabular-nums text-muted-foreground">
+                                {pct}%
+                              </span>
                             </div>
                           </td>
                         </tr>
@@ -338,6 +350,7 @@ function AffiliatesOverview() {
               </div>
             )}
           </Panel>
+
 
           {/* Recent referral activity */}
           <Panel
