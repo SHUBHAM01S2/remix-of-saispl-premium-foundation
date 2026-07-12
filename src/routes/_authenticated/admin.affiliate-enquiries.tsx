@@ -146,10 +146,9 @@ function AffiliateEnquiriesPage() {
         </Link>
 
         <div className="mt-4">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Affiliate Enquiries</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Partner Applications</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Review applications from the affiliate program, update status, and drill into each
-            enquiry.
+            Review inbound affiliate applications, progress each enquiry through qualification, and route approved partners into onboarding.
           </p>
         </div>
 
