@@ -51,6 +51,7 @@ function PartnerShell() {
   const [err, setErr] = useState<string | null>(null);
   const [showPw, setShowPw] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -68,6 +69,13 @@ function PartnerShell() {
     queryFn: () => profileFn(),
     enabled: !!session,
   });
+
+  const partner = profileQ.data;
+  const referralLink = useMemo(() => {
+    const code = (partner as any)?.referral_code ?? partner?.id ?? "";
+    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
+    return `${window.location.origin}/?ref=${code}`;
+  }, [partner]);
 
   if (session === undefined) {
     return (
@@ -162,18 +170,10 @@ function PartnerShell() {
     );
   }
 
-  const partner = profileQ.data;
   const path = location.pathname.replace(/\/$/, "") || "/partner";
   const header = PAGE_TITLES[path] ?? PAGE_TITLES[Object.keys(PAGE_TITLES).find((k) => path.startsWith(k)) ?? "/partner"] ?? PAGE_TITLES["/partner"];
-  const initials = (partner.full_name ?? partner.email ?? "P").split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
+  const initials = (partner!.full_name ?? partner!.email ?? "P").split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
 
-  const referralLink = useMemo(() => {
-    const code = (partner as any).referral_code ?? partner.id ?? "";
-    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
-    return `${window.location.origin}/?ref=${code}`;
-  }, [partner]);
-
-  const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
 
   return (
@@ -219,8 +219,8 @@ function PartnerShell() {
               </button>
               <div className="flex items-center gap-2.5 pl-3 ml-1 border-l border-white/[0.06]">
                 <div className="hidden md:block text-right">
-                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner.full_name ?? "Partner"}</p>
-                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner.company ?? partner.email}</p>
+                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner!.full_name ?? "Partner"}</p>
+                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner!.company ?? partner!.email}</p>
                 </div>
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow-md shadow-teal-500/30 ring-2 ring-white/10">
                   {initials}
