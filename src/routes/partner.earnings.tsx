@@ -8,7 +8,7 @@ import {
   AlertTriangle, RefreshCw,
 } from "lucide-react";
 import { listMyReferrals, getMyStats } from "@/lib/partners.functions";
-import { fmtDate, fmtMoney, PayoutChip, PAYOUT_LABEL } from "@/lib/partners-ui";
+import { fmtDate, fmtMoney, PayoutChip } from "@/lib/partners-ui";
 import { useOpenNewReferral } from "@/components/partner/new-referral-context";
 
 export const Route = createFileRoute("/partner/earnings")({
