@@ -350,14 +350,14 @@ function AffiliatesOverview() {
         <div className="space-y-5">
           {/* Leaderboard */}
           <Panel
-            eyebrow="Business intelligence · Leaderboard"
-            title="Top performing partners"
+            eyebrow="Performance intelligence"
+            title="Top-performing partners"
             action={
               <Link
                 to="/admin/affiliates/partners"
                 className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
               >
-                All partners <ArrowUpRight className="h-3 w-3" />
+                View all partners <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
           >
