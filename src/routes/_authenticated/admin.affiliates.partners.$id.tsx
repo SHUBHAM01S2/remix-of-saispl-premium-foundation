@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Target, Mail, ArrowRight } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { adminGetPartner, adminUpdatePartner } from "@/lib/partners.functions";
 import { fmtDate, fmtMoney, StatusChip, PayoutChip, PARTNER_STATUS_STYLES } from "@/lib/partners-ui";
