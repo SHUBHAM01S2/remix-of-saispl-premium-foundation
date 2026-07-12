@@ -322,23 +322,23 @@ function KpiCard({
   label, value, icon: Icon, tint, trend, hint,
 }: { label: string; value: string | number; icon: any; tint: string; trend?: { dir: "up" | "down"; value: string }; hint?: string }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:border-white/10 hover:bg-white/[0.035] transition">
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-[radial-gradient(80%_60%_at_100%_0%,rgba(20,184,166,0.08),transparent_60%)]" />
-      <div className="relative flex items-center justify-between">
-        <p className="text-xs text-slate-400">{label}</p>
-        <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tint}`}><Icon className="h-4 w-4" /></span>
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-white/[0.01] p-5 transition-all hover:border-white/[0.12] hover:from-white/[0.05] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20">
+      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(80%_60%_at_100%_0%,rgba(20,184,166,0.10),transparent_60%)]" />
+      <div className="relative flex items-start justify-between gap-3">
+        <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500 font-medium">{label}</p>
+        <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset ring-white/5 ${tint}`}><Icon className="h-4 w-4" /></span>
       </div>
-      <p className="relative mt-3 text-2xl font-semibold tracking-tight">{value}</p>
-      <div className="relative mt-2 flex items-center gap-2 text-xs">
+      <p className="relative mt-3 text-[26px] font-semibold tracking-tight leading-none tabular-nums">{value}</p>
+      <div className="relative mt-auto pt-3 flex items-center gap-2 text-xs min-h-[22px]">
         {trend && (
-          <span className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 font-medium ${
-            trend.dir === "up" ? "bg-emerald-500/10 text-emerald-300" : "bg-rose-500/10 text-rose-300"
+          <span className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 font-semibold text-[10.5px] ${
+            trend.dir === "up" ? "bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-400/20" : "bg-rose-500/10 text-rose-300 ring-1 ring-inset ring-rose-400/20"
           }`}>
             {trend.dir === "up" ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
             {trend.value}
           </span>
         )}
-        {hint && <span className="text-slate-500">{hint}</span>}
+        {hint && <span className="text-slate-500 truncate">{hint}</span>}
       </div>
     </div>
   );
