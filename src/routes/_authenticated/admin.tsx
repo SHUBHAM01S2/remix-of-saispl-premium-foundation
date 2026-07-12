@@ -546,7 +546,7 @@ function AdminDashboardContent({
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
                             <p className="truncate text-sm font-medium">{item.name}</p>
-                            <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted-foreground">{timeAgo(item.createdAt)}</span>
+                            <span className="shrink-0 whitespace-nowrap text-[10px] tracking-wider text-muted-foreground">{formatIST(item.createdAt)}</span>
                           </div>
                           <p className="truncate text-xs text-muted-foreground">{item.subtitle}</p>
                         </div>
@@ -696,4 +696,11 @@ function timeAgo(iso: string): string {
   const d = Math.floor(h / 24);
   if (d < 30) return `${d}d`;
   return new Date(iso).toLocaleDateString();
+}
+
+function formatIST(iso: string): string {
+  const d = new Date(iso);
+  const date = d.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "2-digit", month: "2-digit", year: "numeric" });
+  const time = d.toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false });
+  return `${date} · ${time}`;
 }
