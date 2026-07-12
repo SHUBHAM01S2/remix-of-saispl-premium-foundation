@@ -15,8 +15,8 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 
 const contactSearchSchema = z.object({
-  service: fallback(z.string().max(100).optional(), undefined),
-  subject: fallback(z.string().max(200).optional(), undefined),
+  service: fallback(z.string().max(100), "").optional(),
+  subject: fallback(z.string().max(200), "").optional(),
 });
 
 
