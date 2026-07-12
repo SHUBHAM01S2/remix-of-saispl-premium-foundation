@@ -51,6 +51,7 @@ function PartnerShell() {
   const [err, setErr] = useState<string | null>(null);
   const [showPw, setShowPw] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
