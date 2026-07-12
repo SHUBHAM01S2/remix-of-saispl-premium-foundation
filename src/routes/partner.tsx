@@ -253,52 +253,64 @@ function PartnerShell() {
 
 
 function SidebarInner({ partner, path, onNav, onSignOut }: { partner: any; path: string; onNav: () => void; onSignOut: () => void }) {
+  const initials = (partner.full_name ?? partner.email ?? "P").split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
   return (
     <>
-      <div className="flex items-center justify-between gap-3 px-5 py-5 border-b border-white/5">
+      <div className="flex items-center justify-between gap-3 px-5 h-[68px] border-b border-white/[0.06]">
         <div className="flex items-center gap-3 min-w-0">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 shadow shadow-teal-500/20">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 shadow-md shadow-teal-500/25 ring-1 ring-teal-300/40">
             <Handshake className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight truncate">SAISPL</p>
-            <p className="text-[10px] uppercase tracking-widest text-slate-400">Partner Portal</p>
+            <p className="text-sm font-semibold leading-tight truncate tracking-tight">SAISPL</p>
+            <p className="text-[10px] uppercase tracking-[0.14em] text-slate-500 mt-0.5">Partner Portal</p>
           </div>
         </div>
-        <button className="lg:hidden text-slate-400 hover:text-white" onClick={onNav} aria-label="Close">
+        <button className="lg:hidden grid h-8 w-8 place-items-center rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition" onClick={onNav} aria-label="Close">
           <X className="h-4 w-4" />
         </button>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3">
-        <p className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-widest text-slate-500">Workspace</p>
-        {NAV.map((item) => {
-          const active = item.end ? path === item.to : path === item.to || path.startsWith(item.to + "/");
-          const Icon = item.icon;
-          return (
-            <Link key={item.to} to={item.to} onClick={onNav}
-              className={`group relative mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-                active
-                  ? "bg-gradient-to-r from-teal-500/15 to-cyan-500/5 text-white ring-1 ring-teal-400/25"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
-              }`}>
-              {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-teal-400" />}
-              <Icon className={`h-4 w-4 ${active ? "text-teal-300" : ""}`} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <p className="px-3 pb-2 text-[10px] uppercase tracking-[0.14em] text-slate-500 font-medium">Workspace</p>
+        <div className="space-y-0.5">
+          {NAV.map((item) => {
+            const active = item.end ? path === item.to : path === item.to || path.startsWith(item.to + "/");
+            const Icon = item.icon;
+            return (
+              <Link key={item.to} to={item.to} onClick={onNav}
+                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
+                  active
+                    ? "bg-gradient-to-r from-teal-500/[0.18] via-teal-500/[0.08] to-transparent text-white ring-1 ring-inset ring-teal-400/20"
+                    : "text-slate-400 hover:bg-white/[0.04] hover:text-slate-100"
+                }`}>
+                {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-teal-400 shadow-[0_0_12px_rgba(45,212,191,0.6)]" />}
+                <Icon className={`h-[18px] w-[18px] transition-colors ${active ? "text-teal-300" : "text-slate-500 group-hover:text-slate-300"}`} />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
-      <div className="border-t border-white/5 p-3 space-y-2">
-        <div className="rounded-xl border border-white/5 bg-white/[0.02] p-3">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+      <div className="border-t border-white/[0.06] p-3 space-y-2">
+        <div className="rounded-xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-3.5">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-slate-500 font-medium">
             <Award className="h-3.5 w-3.5 text-teal-300" /> Partner tier
           </div>
-          <p className="mt-1 text-sm font-semibold">{partner.company ? "Verified Partner" : "Getting Started"}</p>
+          <p className="mt-1.5 text-sm font-semibold tracking-tight">{partner.company ? "Verified Partner" : "Getting Started"}</p>
         </div>
-        <button onClick={onSignOut}
-          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400 hover:bg-white/5 hover:text-white">
-          <LogOut className="h-4 w-4" /> Sign out
-        </button>
+        <div className="flex items-center gap-2.5 rounded-xl px-2.5 py-2">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-[11px] font-bold ring-2 ring-white/10">
+            {initials}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold truncate">{partner.full_name ?? "Partner"}</p>
+            <p className="text-[10px] text-slate-500 truncate">{partner.email}</p>
+          </div>
+          <button onClick={onSignOut} title="Sign out"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-500 hover:text-rose-300 hover:bg-rose-500/10 transition">
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </>
   );
