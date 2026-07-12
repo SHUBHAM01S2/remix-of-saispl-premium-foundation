@@ -204,7 +204,25 @@ export const Route = createFileRoute("/faq")({
           "Everything you need to know about working with SAISPL — services, pricing, timelines, support and the affiliate program.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "/faq" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "/faq" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: categories.flatMap((c) =>
+            c.items.map((qa) => ({
+              "@type": "Question",
+              name: qa.q,
+              acceptedAnswer: { "@type": "Answer", text: qa.a },
+            })),
+          ),
+        }),
+      },
     ],
   }),
   component: FAQPage,
