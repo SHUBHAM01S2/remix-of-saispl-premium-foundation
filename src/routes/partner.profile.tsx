@@ -274,47 +274,47 @@ function ProfilePage() {
 
             <div className="rounded-xl border border-white/5 bg-slate-950/40 p-3.5 flex items-start gap-3">
               <ShieldCheck className="h-4 w-4 text-emerald-300 shrink-0 mt-0.5" />
-              <p className="text-xs text-slate-400 leading-relaxed">Payout details are encrypted at rest. Only you and our finance team can see them.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Your payout details are encrypted at rest. Only you and our finance team can access them.</p>
             </div>
           </div>
         </Card>
 
         {/* Tax */}
-        <Card id="tax" icon={FileText} tint="text-amber-300 bg-amber-500/10" title="Tax & compliance" desc="Optional, but required to unlock invoicing above ₹20,000 / month.">
+        <Card id="tax" icon={FileText} tint="text-amber-300 bg-amber-500/10" title="Tax & compliance" desc="Optional — required only to unlock invoicing above ₹20,000 per month.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="PAN" hint="10-character alphanumeric (e.g. ABCDE1234F).">
+            <Field label="PAN" hint="10-character alphanumeric identifier (e.g. ABCDE1234F).">
               <input {...bind("pan")} maxLength={10} className={`${inp} uppercase tracking-wider`} />
             </Field>
-            <Field label="GSTIN" hint="Only if you're GST-registered.">
+            <Field label="GSTIN" hint="Provide only if you are GST-registered.">
               <input {...bind("gstin")} maxLength={15} className={`${inp} uppercase tracking-wider`} />
             </Field>
           </div>
         </Card>
 
         {/* Notifications */}
-        <Card id="notifications" icon={Bell} tint="text-indigo-300 bg-indigo-500/10" title="Notification preferences" desc="Choose what lands in your inbox.">
+        <Card id="notifications" icon={Bell} tint="text-indigo-300 bg-indigo-500/10" title="Notification preferences" desc="Choose which partner updates you'd like to receive.">
           <div className="divide-y divide-white/5">
             <Toggle
-              label="Referral updates"
-              hint="Status changes, new messages from the SAI team on your deals."
+              label="Referral activity"
+              hint="Deal status changes and messages from the SAI team on your active referrals."
               checked={form.notify_referral_updates}
               onChange={(v) => set("notify_referral_updates", v)}
             />
             <Toggle
               label="Payouts & commissions"
-              hint="When a commission is approved and when a payout is sent."
+              hint="Alerts when a commission is approved and when a payout has been released."
               checked={form.notify_payouts}
               onChange={(v) => set("notify_payouts", v)}
             />
             <Toggle
-              label="Product & platform"
-              hint="New tools, dashboard changes, occasional partner tips."
+              label="Product & platform updates"
+              hint="New partner tools, dashboard improvements, and occasional best-practice tips."
               checked={form.notify_product}
               onChange={(v) => set("notify_product", v)}
             />
             <Toggle
-              label="Marketing & offers"
-              hint="Campaigns you can pitch and partner-exclusive perks."
+              label="Marketing & partner offers"
+              hint="Campaigns you can share with prospects and partner-exclusive incentives."
               checked={form.notify_marketing}
               onChange={(v) => set("notify_marketing", v)}
             />
@@ -322,12 +322,12 @@ function ProfilePage() {
         </Card>
 
         {/* Security */}
-        <Card id="security" icon={Lock} tint="text-rose-300 bg-rose-500/10" title="Password & security" desc="Keep your account safe.">
+        <Card id="security" icon={Lock} tint="text-rose-300 bg-rose-500/10" title="Password & security" desc="Manage the credentials that protect your partner account.">
           <PasswordSection />
         </Card>
 
         {/* Referral link */}
-        <Card id="referral" icon={Link2} tint="text-fuchsia-300 bg-fuchsia-500/10" title="Your referral link" desc="Share this to attribute new partner signups to you.">
+        <Card id="referral" icon={Link2} tint="text-fuchsia-300 bg-fuchsia-500/10" title="Your partner referral link" desc="Share this link to attribute new partner sign-ups to your account.">
           <div className="grid gap-4">
             <div className="grid gap-4 sm:grid-cols-[auto,1fr] items-stretch">
               <div className="rounded-xl border border-white/10 bg-slate-950/60 px-4 py-3 flex items-center gap-3">
@@ -339,7 +339,7 @@ function ProfilePage() {
               </div>
               <CopyField label="Invite link" value={inviteLink} />
             </div>
-            <p className="text-xs text-slate-500">Every partner who signs up through your link is tagged to you — you'll see them in your team view when it launches.</p>
+            <p className="text-xs text-slate-500">Every partner who signs up through your link is automatically attributed to you — they'll appear in your team view when it launches.</p>
           </div>
         </Card>
 
