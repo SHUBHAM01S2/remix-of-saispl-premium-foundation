@@ -156,27 +156,27 @@ const stats = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
+      { title: "Services — Web, SEO, Automation & Software | SAISPL" },
       {
         name: "description",
         content:
-          "SAISPL services: website design & development, SEO & local digital marketing, WhatsApp & AI automation, custom portals & software, branding & graphic design, and website maintenance & support.",
+          "Website design, SEO, WhatsApp & AI automation, custom portals, branding, and maintenance — end-to-end services by Shivaryan Infotech.",
       },
       {
         name: "keywords",
         content:
           "website design and development, SEO services, local digital marketing, WhatsApp automation, AI automation, custom portals, business software, branding, graphic design, website maintenance, Shivaryan Infotech services, SAISPL",
       },
-      { property: "og:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
+      { property: "og:title", content: "Services — Web, SEO, Automation & Software | SAISPL" },
       {
         property: "og:description",
         content:
-          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and website maintenance — built by SAISPL for growing businesses.",
+          "Websites, SEO, WhatsApp & AI automation, custom portals, branding, and maintenance — built by SAISPL for growing businesses.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/services" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Services — Websites, SEO, Automation & Software | Shivaryan Infotech" },
+      { name: "twitter:title", content: "Services — Web, SEO, Automation & Software | SAISPL" },
       {
         name: "twitter:description",
         content:
