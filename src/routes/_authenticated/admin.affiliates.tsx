@@ -171,6 +171,35 @@ function AffiliatesOverview() {
   const partnersNoActivity = d ? Math.max(0, (d.totalPartners ?? 0) - activePartnersWithRefs) : 0;
   const pendingReview = refs.filter((r) => r.payout_status === "pending").length;
 
+  // Derived health scores (0–100, higher is healthier)
+  const stallRate = openReferrals > 0 ? Math.round((stalled.length / openReferrals) * 100) : 0;
+  const pipelineHealth = openReferrals === 0
+    ? (d?.totalReferrals ? 30 : 0)
+    : Math.max(0, 100 - stallRate);
+  const activationScore = d?.avgActivationDays == null
+    ? 0
+    : d.avgActivationDays <= 7
+    ? 100
+    : d.avgActivationDays <= 14
+    ? 75
+    : d.avgActivationDays <= 30
+    ? 50
+    : 25;
+  const healthScore = loading
+    ? 0
+    : Math.round(
+        (activeRate +
+          pipelineHealth +
+          Math.min(100, wonRate * 2) +
+          Math.max(0, 100 - stallRate) +
+          payoutReadiness +
+          activationScore) /
+          6,
+      );
+  const healthLabel =
+    healthScore >= 70 ? "Healthy" : healthScore >= 40 ? "Needs attention" : "At risk";
+
+
   return (
     <div className="space-y-6">
       {/* Hero action cards: pending payout + pipeline value */}
@@ -221,34 +250,100 @@ function AffiliatesOverview() {
       </div>
 
       {/* Program health */}
-      <Panel eyebrow="Program health" title="Operational status" >
-        <div className="grid gap-5 p-5 sm:grid-cols-2 lg:grid-cols-4">
-          <HealthBar
+      <Panel
+        eyebrow="Program health"
+        title="Operational status"
+        action={
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <span className={`h-1.5 w-1.5 rounded-full ${healthScore >= 70 ? "bg-emerald-400" : healthScore >= 40 ? "bg-cyan-400" : "bg-amber-400"} animate-pulse`} />
+            Overall {loading ? "—" : `${healthScore}%`} · {healthLabel}
+          </span>
+        }
+      >
+        <div className="grid gap-3 p-4 sm:p-5 md:grid-cols-2 xl:grid-cols-3">
+          <HealthMetric
+            icon={Users}
             label="Active partners"
+            value={loading ? "—" : `${activeRate}%`}
+            supporting={loading ? "—" : `${d?.activePartners ?? 0} active · ${inactivePartners} idle`}
             pct={activeRate}
-            caption={loading ? "—" : `${d?.activePartners ?? 0} of ${d?.totalPartners ?? 0} onboarded`}
-            tone={activeRate >= 60 ? "emerald" : activeRate >= 30 ? "cyan" : "amber"}
+            status={activeRate >= 60 ? "healthy" : activeRate >= 30 ? "watch" : "critical"}
+            warning={!loading && inactivePartners > 0 ? `${inactivePartners} inactive` : null}
+            to="/admin/affiliates/partners"
+            ctaLabel="Manage partners"
           />
-          <HealthBar
-            label="Referrals in progress"
-            pct={openRate}
-            caption={loading ? "—" : `${openReferrals} open of ${d?.totalReferrals ?? 0}`}
-            tone="cyan"
+          <HealthMetric
+            icon={TrendingUp}
+            label="Pipeline health"
+            value={loading ? "—" : `${openReferrals}`}
+            supporting={loading ? "—" : `${fmtMoney(openPipelineValue)} · ${openRate}% of all referrals`}
+            pct={pipelineHealth}
+            status={pipelineHealth >= 70 ? "healthy" : pipelineHealth >= 40 ? "watch" : "critical"}
+            warning={!loading && stalled.length > 0 ? `${stalled.length} stalled` : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Open pipeline"
           />
-          <HealthBar
-            label="Conversion performance"
-            pct={wonRate}
-            caption={loading ? "—" : `${d?.wonThisMonth ?? 0} won this month`}
-            tone={wonRate >= 25 ? "emerald" : wonRate >= 10 ? "cyan" : "amber"}
+          <HealthMetric
+            icon={CheckCircle2}
+            label="Won this month"
+            value={loading ? "—" : `${d?.wonThisMonth ?? 0}`}
+            supporting={loading ? "—" : `${wonRate}% win rate all-time`}
+            pct={Math.min(100, wonRate * 2)}
+            status={wonRate >= 25 ? "healthy" : wonRate >= 10 ? "watch" : "critical"}
+            warning={!loading && (d?.wonThisMonth ?? 0) === 0 && (d?.totalReferrals ?? 0) > 0 ? "No wins yet" : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Review closed deals"
           />
-          <HealthBar
-            label="Payout readiness"
+          <HealthMetric
+            icon={Clock}
+            label="Stalled follow-ups"
+            value={loading ? "—" : `${stalled.length}`}
+            supporting={loading ? "—" : `>${STALL_DAYS}d inactive · ${stallRate}% of open pipeline`}
+            pct={100 - stallRate}
+            status={stallRate === 0 ? "healthy" : stallRate <= 20 ? "watch" : "critical"}
+            warning={!loading && stalled.length > 0 ? "Needs follow-up" : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Chase stalled deals"
+          />
+          <HealthMetric
+            icon={Wallet}
+            label="Pending payout load"
+            value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
+            supporting={loading ? "—" : `${pendingReview} awaiting review · ${payoutReadiness}% cleared`}
             pct={payoutReadiness}
-            caption={loading ? "—" : `${paidCount} paid · ${pendingCount} pending`}
-            tone={payoutReadiness >= 70 ? "emerald" : payoutReadiness >= 40 ? "cyan" : "amber"}
+            status={payoutReadiness >= 70 ? "healthy" : payoutReadiness >= 40 ? "watch" : "critical"}
+            warning={!loading && pendingReview >= 5 ? "Backlog building" : null}
+            to="/admin/affiliates/payouts"
+            ctaLabel="Process payouts"
+          />
+          <HealthMetric
+            icon={Sparkles}
+            label="Avg. partner activation"
+            value={loading ? "—" : d?.avgActivationDays == null ? "—" : `${d.avgActivationDays}d`}
+            supporting={
+              loading
+                ? "—"
+                : d?.avgActivationDays == null
+                ? "No activations yet"
+                : `${d?.activatedPartners ?? 0} of ${d?.totalPartners ?? 0} activated · ${partnersNoActivity} pending`
+            }
+            pct={activationScore}
+            status={
+              d?.avgActivationDays == null
+                ? "watch"
+                : activationScore >= 70
+                ? "healthy"
+                : activationScore >= 40
+                ? "watch"
+                : "critical"
+            }
+            warning={!loading && partnersNoActivity > 0 ? `${partnersNoActivity} never active` : null}
+            to="/admin/affiliates/partners"
+            ctaLabel="Onboard partners"
           />
         </div>
       </Panel>
+
 
       {/* Two-column: leaderboard + side rail (alerts, recent, snapshot) */}
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
@@ -559,6 +654,126 @@ function HealthBar({
     </div>
   );
 }
+
+type HealthStatus = "healthy" | "watch" | "critical";
+
+function HealthMetric({
+  icon: Icon,
+  label,
+  value,
+  supporting,
+  pct,
+  status,
+  warning,
+  to,
+  ctaLabel,
+}: {
+  icon: any;
+  label: string;
+  value: string;
+  supporting: string;
+  pct: number;
+  status: HealthStatus;
+  warning?: string | null;
+  to: string;
+  ctaLabel: string;
+}) {
+  const styles =
+    status === "healthy"
+      ? {
+          chipBg: "bg-emerald-500/10 text-emerald-300 ring-emerald-400/25",
+          bar: "from-emerald-500 to-teal-400",
+          icon: "bg-emerald-500/10 text-emerald-200 ring-emerald-400/25",
+          rail: "ring-emerald-400/15",
+          chipLabel: "Healthy",
+          dot: "bg-emerald-400",
+        }
+      : status === "watch"
+      ? {
+          chipBg: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+          bar: "from-cyan-500 to-sky-400",
+          icon: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+          rail: "ring-cyan-400/15",
+          chipLabel: "Watch",
+          dot: "bg-cyan-400",
+        }
+      : {
+          chipBg: "bg-amber-500/10 text-amber-200 ring-amber-400/30",
+          bar: "from-amber-500 to-orange-400",
+          icon: "bg-amber-500/10 text-amber-200 ring-amber-400/30",
+          rail: "ring-amber-400/15",
+          chipLabel: "At risk",
+          dot: "bg-amber-400",
+        };
+
+  const clamped = Math.min(100, Math.max(0, pct));
+
+  return (
+    <div
+      className={`group relative flex flex-col gap-3 rounded-2xl border border-border/50 bg-background/40 p-4 ring-1 ${styles.rail} transition hover:border-border/70 hover:bg-background/60`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span
+            className={`grid h-8 w-8 place-items-center rounded-lg ring-1 ${styles.icon}`}
+          >
+            <Icon className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {label}
+            </p>
+          </div>
+        </div>
+        <span
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ring-1 ${styles.chipBg}`}
+        >
+          <span className={`h-1.5 w-1.5 rounded-full ${styles.dot}`} />
+          {styles.chipLabel}
+        </span>
+      </div>
+
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="truncate text-2xl font-semibold tracking-tight text-foreground tabular-nums">
+          {value}
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground tabular-nums">
+          {clamped}%
+        </span>
+      </div>
+
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+        <div
+          className={`h-full rounded-full bg-gradient-to-r ${styles.bar}`}
+          style={{ width: `${clamped}%` }}
+        />
+      </div>
+
+      <p className="min-h-[16px] truncate text-[11px] text-muted-foreground">
+        {supporting}
+      </p>
+
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/40 pt-3">
+        {warning ? (
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200 ring-1 ring-amber-400/25">
+            <AlertTriangle className="h-3 w-3" /> {warning}
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-semibold text-emerald-300/90 ring-1 ring-emerald-400/20">
+            <CheckCircle2 className="h-3 w-3" /> On track
+          </span>
+        )}
+        <Link
+          to={to}
+          className="inline-flex items-center gap-1 text-[11px] font-medium text-cyan-300 transition hover:text-cyan-200"
+        >
+          {ctaLabel} <ArrowUpRight className="h-3 w-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 
 function AlertRow({
   icon: Icon, tone, label, value, hint, to,

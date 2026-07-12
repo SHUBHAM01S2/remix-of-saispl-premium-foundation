@@ -363,9 +363,10 @@ export const adminOverview = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
     const [partnersRes, refsRes] = await Promise.all([
-      admin.from("sales_partners").select("id,status,full_name,company"),
-      admin.from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,created_at"),
+      admin.from("sales_partners").select("id,status,full_name,company,created_at"),
+      admin.from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,created_at,last_activity_at"),
     ]);
+
     if (partnersRes.error) throw partnersRes.error;
     if (refsRes.error) throw refsRes.error;
     const partners = (partnersRes.data ?? []) as any[];
@@ -430,6 +431,27 @@ export const adminOverview = createServerFn({ method: "GET" })
       .sort((a, b) => b.commission - a.commission || b.won - a.won || b.referrals - a.referrals)
       .slice(0, 5);
 
+    // Average partner activation: days from partner created_at → their first referral
+    const firstRefByPartner = new Map<string, string>();
+    for (const r of refs) {
+      const prev = firstRefByPartner.get(r.partner_id);
+      if (!prev || r.created_at < prev) firstRefByPartner.set(r.partner_id, r.created_at);
+    }
+    const activationDays: number[] = [];
+    for (const p of partners) {
+      const first = firstRefByPartner.get(p.id);
+      if (!first || !p.created_at) continue;
+      const days = Math.max(
+        0,
+        Math.round((new Date(first).getTime() - new Date(p.created_at).getTime()) / msDay),
+      );
+      activationDays.push(days);
+    }
+    const avgActivationDays = activationDays.length
+      ? Math.round(activationDays.reduce((s, n) => s + n, 0) / activationDays.length)
+      : null;
+    const activatedPartners = activationDays.length;
+
     return {
       totalPartners: partners.length,
       activePartners,
@@ -437,9 +459,12 @@ export const adminOverview = createServerFn({ method: "GET" })
       wonThisMonth,
       dealValue,
       pendingPayout,
+      avgActivationDays,
+      activatedPartners,
       leaderboard,
     };
   });
+
 
 export const adminUpdateReferral = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
