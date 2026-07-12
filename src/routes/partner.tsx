@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, Users, TrendingUp, User as UserIcon, LogOut, Loader2, Sparkles,
-  ArrowUpRight, BadgeDollarSign, CheckCircle2, Handshake, XCircle,
+  ArrowUpRight, BadgeDollarSign, CheckCircle2, Handshake, XCircle, Eye, EyeOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyPartnerProfile, getMyStats, listMyReferrals } from "@/lib/partners.functions";
