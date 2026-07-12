@@ -166,73 +166,89 @@ function PartnerShell() {
   const header = PAGE_TITLES[path] ?? PAGE_TITLES[Object.keys(PAGE_TITLES).find((k) => path.startsWith(k)) ?? "/partner"] ?? PAGE_TITLES["/partner"];
   const initials = (partner.full_name ?? partner.email ?? "P").split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
 
+  const referralLink = useMemo(() => {
+    const code = (partner as any).referral_code ?? partner.id ?? "";
+    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
+    return `${window.location.origin}/?ref=${code}`;
+  }, [partner]);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+
   return (
-    <div className="min-h-screen bg-[#0a0f1a] text-slate-100">
-      {/* Ambient glow */}
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_0%,rgba(20,184,166,0.10),transparent_60%),radial-gradient(60%_50%_at_80%_10%,rgba(56,189,248,0.08),transparent_60%)]" />
+    <NewReferralContext.Provider value={{ open: openModal }}>
+      <div className="min-h-screen bg-[#0a0f1a] text-slate-100">
+        {/* Ambient glow */}
+        <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_0%,rgba(20,184,166,0.10),transparent_60%),radial-gradient(60%_50%_at_80%_10%,rgba(56,189,248,0.08),transparent_60%)]" />
 
-      {/* Sidebar (desktop) */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-white/5 bg-[#0b1220]/80 backdrop-blur-xl lg:flex lg:flex-col">
-        <SidebarInner partner={partner} path={path} onNav={() => {}} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
-      </aside>
+        {/* Sidebar (desktop) */}
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-white/5 bg-[#0b1220]/80 backdrop-blur-xl lg:flex lg:flex-col">
+          <SidebarInner partner={partner} path={path} onNav={() => {}} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
+        </aside>
 
-      {/* Sidebar (mobile drawer) */}
-      {mobileNav && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
-          <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/5 bg-[#0b1220] flex flex-col">
-            <SidebarInner partner={partner} path={path} onNav={() => setMobileNav(false)} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
-          </aside>
-        </div>
-      )}
+        {/* Sidebar (mobile drawer) */}
+        {mobileNav && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
+            <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/5 bg-[#0b1220] flex flex-col">
+              <SidebarInner partner={partner} path={path} onNav={() => setMobileNav(false)} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
+            </aside>
+          </div>
+        )}
 
-      <div className="lg:pl-[248px]">
-        {/* Top bar */}
-        <header className="sticky top-0 z-20 border-b border-white/5 bg-[#0a0f1a]/80 backdrop-blur-xl">
-          <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-16">
-            <button onClick={() => setMobileNav(true)} className="lg:hidden p-2 -ml-2 text-slate-300 hover:text-white" aria-label="Open menu">
-              <Menu className="h-5 w-5" />
-            </button>
-            <div className="min-w-0 flex-1">
-              <h1 className="text-base sm:text-lg font-semibold truncate">{header.title}</h1>
-              <p className="hidden sm:block text-xs text-slate-400 truncate">{header.sub}</p>
-            </div>
-            <Link to="/partner/referrals/new"
-              className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20 hover:brightness-110 transition">
-              <Sparkles className="h-4 w-4" /> New referral
-            </Link>
-            <button className="relative p-2 rounded-lg border border-white/5 text-slate-300 hover:text-white hover:bg-white/5" aria-label="Notifications">
-              <Bell className="h-4 w-4" />
-              <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400" />
-            </button>
-            <div className="flex items-center gap-2 pl-2 border-l border-white/5">
-              <div className="hidden md:block text-right">
-                <p className="text-xs font-medium leading-tight truncate max-w-[140px]">{partner.full_name ?? "Partner"}</p>
-                <p className="text-[10px] text-slate-400 truncate max-w-[140px]">{partner.company ?? partner.email}</p>
+        <div className="lg:pl-[248px]">
+          {/* Top bar */}
+          <header className="sticky top-0 z-20 border-b border-white/5 bg-[#0a0f1a]/80 backdrop-blur-xl">
+            <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-16">
+              <button onClick={() => setMobileNav(true)} className="lg:hidden p-2 -ml-2 text-slate-300 hover:text-white" aria-label="Open menu">
+                <Menu className="h-5 w-5" />
+              </button>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-base sm:text-lg font-semibold truncate">{header.title}</h1>
+                <p className="hidden sm:block text-xs text-slate-400 truncate">{header.sub}</p>
               </div>
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow shadow-teal-500/20">
-                {initials}
-              </span>
+              <button
+                onClick={openModal}
+                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20 hover:brightness-110 transition">
+                <Sparkles className="h-4 w-4" /> New referral
+              </button>
+              <button className="relative p-2 rounded-lg border border-white/5 text-slate-300 hover:text-white hover:bg-white/5" aria-label="Notifications">
+                <Bell className="h-4 w-4" />
+                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400" />
+              </button>
+              <div className="flex items-center gap-2 pl-2 border-l border-white/5">
+                <div className="hidden md:block text-right">
+                  <p className="text-xs font-medium leading-tight truncate max-w-[140px]">{partner.full_name ?? "Partner"}</p>
+                  <p className="text-[10px] text-slate-400 truncate max-w-[140px]">{partner.company ?? partner.email}</p>
+                </div>
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow shadow-teal-500/20">
+                  {initials}
+                </span>
+              </div>
             </div>
-          </div>
-          {/* Mobile primary CTA */}
-          <div className="sm:hidden px-4 pb-3">
-            <Link to="/partner/referrals/new"
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm">
-              <Sparkles className="h-4 w-4" /> New referral
-            </Link>
-          </div>
-        </header>
+            {/* Mobile primary CTA */}
+            <div className="sm:hidden px-4 pb-3">
+              <button
+                onClick={openModal}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm">
+                <Sparkles className="h-4 w-4" /> New referral
+              </button>
+            </div>
+          </header>
 
-        <main className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-          <div className="mx-auto max-w-[1280px]">
-            {path === "/partner" ? <PartnerHome partner={partner} /> : <Outlet />}
-          </div>
-        </main>
+          <main className="px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+            <div className="mx-auto max-w-[1280px]">
+              {path === "/partner" ? <PartnerHome partner={partner} referralLink={referralLink} /> : <Outlet />}
+            </div>
+          </main>
+        </div>
+
+        <NewReferralModal open={modalOpen} onClose={() => setModalOpen(false)} referralLink={referralLink} />
       </div>
-    </div>
+    </NewReferralContext.Provider>
   );
 }
+
 
 function SidebarInner({ partner, path, onNav, onSignOut }: { partner: any; path: string; onNav: () => void; onSignOut: () => void }) {
   return (
