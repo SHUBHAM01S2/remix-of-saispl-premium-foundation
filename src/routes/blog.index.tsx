@@ -118,11 +118,11 @@ async function fetchBlogPosts(): Promise<{ posts: BlogPost[]; source: "db" | "fa
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog & Insights — Local SEO, Web Design & Automation | Shivaryan Infotech" },
+      { title: "Blog & Insights — Web, SEO & Automation | SAISPL" },
       {
         name: "description",
         content:
-          "Articles on web design pricing, school websites, WhatsApp automation, hiring web designers and local SEO for businesses across Himachal Pradesh.",
+          "Articles on web design pricing, WhatsApp automation, hiring web designers, and local SEO for businesses across Himachal Pradesh.",
       },
       { property: "og:title", content: "Shivaryan Infotech Blog & Insights" },
       {

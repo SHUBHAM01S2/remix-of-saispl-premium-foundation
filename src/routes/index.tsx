@@ -10,7 +10,7 @@ import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 const TITLE =
   "Shivaryan Infotech — AI Automation, Custom Software & Web Development Company";
 const DESCRIPTION =
-  "Shivaryan Infotech (SAISPL) is an India-based software company building AI agents, workflow automation, custom web apps, and business portals for startups and enterprises across 12+ countries. Trusted engineering partner for founders and operations leaders who want to ship faster.";
+  "Shivaryan Infotech (SAISPL) builds AI agents, workflow automation, custom web apps, and business portals for founders and ops leaders across 12+ countries.";
 const CANONICAL = "/";
 
 export const Route = createFileRoute("/")({
@@ -45,13 +45,13 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "@id": "/#webpage",
-          url: "/",
+          "@id": "https://shivaryaninfotech.com/#webpage",
+          url: "https://shivaryaninfotech.com/",
           name: TITLE,
           description: DESCRIPTION,
-          isPartOf: { "@id": "/#website" },
-          about: { "@id": "/#organization" },
-          primaryImageOfPage: { "@type": "ImageObject", url: "/favicon.png" },
+          isPartOf: { "@id": "https://shivaryaninfotech.com/#website" },
+          about: { "@id": "https://shivaryaninfotech.com/#organization" },
+          primaryImageOfPage: { "@type": "ImageObject", url: "https://shivaryaninfotech.com/favicon.png" },
           inLanguage: "en",
         }),
       },
@@ -60,11 +60,11 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
-          "@id": "/#service-provider",
+          "@id": "https://shivaryaninfotech.com/#service-provider",
           name: "Shivaryan Infotech (SAISPL)",
           description:
             "AI automation, custom software development, and business portal engineering for global clients.",
-          url: "/",
+          url: "https://shivaryaninfotech.com/",
           areaServed: "Worldwide",
           serviceType: [
             "AI Automation",
@@ -85,7 +85,7 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "AI Automation & AI Agents",
-                  url: "/automation-ai-services",
+                  url: "https://shivaryaninfotech.com/automation-ai-services",
                   description:
                     "LLM-powered agents, RAG systems, and workflow automations that cut cost and eliminate operational bottlenecks.",
                 },
@@ -95,7 +95,7 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "Web & Software Development",
-                  url: "/web-design-development",
+                  url: "https://shivaryaninfotech.com/web-design-development",
                   description:
                     "Scalable web apps and custom software built with React, Node, and TypeScript.",
                 },
@@ -105,7 +105,7 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "Custom Business Portals",
-                  url: "/custom-portals-software",
+                  url: "https://shivaryaninfotech.com/custom-portals-software",
                   description:
                     "Dashboards and internal portals that unify data and give teams real-time visibility.",
                 },
@@ -115,7 +115,7 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "Branding & Product Design",
-                  url: "/branding-graphic-design",
+                  url: "https://shivaryaninfotech.com/branding-graphic-design",
                   description:
                     "User-centered design and prototyping for high-conversion digital products.",
                 },
@@ -125,7 +125,7 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "SEO & Digital Marketing",
-                  url: "/seo-digital-marketing",
+                  url: "https://shivaryaninfotech.com/seo-digital-marketing",
                   description:
                     "Technical SEO, content, and AI-search optimization to grow qualified traffic.",
                 },
@@ -135,14 +135,14 @@ export const Route = createFileRoute("/")({
                 itemOffered: {
                   "@type": "Service",
                   name: "Care & Maintenance",
-                  url: "/care-maintenance",
+                  url: "https://shivaryaninfotech.com/care-maintenance",
                   description:
                     "Ongoing engineering, monitoring, and support to keep production software healthy.",
                 },
               },
             ],
           },
-          provider: { "@id": "/#organization" },
+          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
         }),
       },
       {
@@ -151,7 +151,7 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://shivaryaninfotech.com/" },
           ],
         }),
       },

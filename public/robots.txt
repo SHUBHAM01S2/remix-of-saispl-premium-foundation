@@ -1,2 +1,17 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /partner
+Disallow: /partner/
+Disallow: /internal
+Disallow: /internal/
+Disallow: /client-portal
+Disallow: /client-reports/
+Disallow: /reports/
+Disallow: /reset-password
+Disallow: /shivi
+Disallow: /api/
+Disallow: /__l5e/
+
+Sitemap: https://shivaryaninfotech.com/sitemap.xml
