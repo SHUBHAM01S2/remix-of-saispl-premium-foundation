@@ -588,9 +588,9 @@ function EmptyState({ anyFilter, onClear }: { anyFilter: boolean; onClear: () =>
           <Target className="h-5 w-5" />
         </span>
         <div>
-          <p className="text-sm font-semibold text-foreground">No referrals in the pipeline yet</p>
+          <p className="text-sm font-semibold text-foreground">No qualified referrals in the pipeline yet</p>
           <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
-            Share the onboarding pack with partners so they know how to submit deals, or activate more partners to start driving referrals.
+            Distribute the onboarding pack to partners or activate additional partners to start generating pipeline deals.
           </p>
         </div>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
