@@ -5,6 +5,8 @@ import {
   BadgeDollarSign,
   Users,
   TrendingUp,
+  TrendingDown,
+  Minus,
   LayoutDashboard,
   Wallet,
   Trophy,
@@ -16,7 +18,11 @@ import {
   UserX,
   CheckCircle2,
   BarChart3,
+  UserPlus,
+  Settings2,
+  Sparkles,
 } from "lucide-react";
+
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { adminOverview, adminListReferrals } from "@/lib/partners.functions";
 import { fmtMoney } from "@/lib/partners-ui";
@@ -249,8 +255,8 @@ function AffiliatesOverview() {
         <div className="space-y-5">
           {/* Leaderboard */}
           <Panel
-            eyebrow="Leaderboard"
-            title="Top partners by commission"
+            eyebrow="Business intelligence · Leaderboard"
+            title="Top performing partners"
             action={
               <Link
                 to="/admin/affiliates/partners"
@@ -263,12 +269,7 @@ function AffiliatesOverview() {
             {loading ? (
               <PanelLoading />
             ) : !d || d.leaderboard.length === 0 ? (
-              <EmptyState
-                icon={Trophy}
-                title="Leaderboard is warming up"
-                body="No commissions have been earned yet. Invite partners and log their first referrals — top performers will rank here automatically."
-                cta={{ to: "/admin/affiliates/partners", label: "Invite a partner" }}
-              />
+              <LeaderboardEmpty />
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -276,13 +277,16 @@ function AffiliatesOverview() {
                     <tr className="text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                       <th className="px-5 py-2.5 font-semibold">#</th>
                       <th className="px-5 py-2.5 font-semibold">Partner</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Referrals</th>
                       <th className="px-5 py-2.5 text-right font-semibold">Won</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Deal value</th>
                       <th className="px-5 py-2.5 text-right font-semibold">Commission</th>
-                      <th className="px-5 py-2.5 font-semibold w-[120px]">Share</th>
+                      <th className="px-5 py-2.5 text-right font-semibold w-[92px]">Trend</th>
+                      <th className="px-5 py-2.5 font-semibold w-[110px]">Share</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {d.leaderboard.map((b, i) => {
+                    {d.leaderboard.map((b: any, i: number) => {
                       const top = d.leaderboard[0].commission || 1;
                       const pct = Math.max(4, Math.round((b.commission / top) * 100));
                       return (
@@ -290,38 +294,52 @@ function AffiliatesOverview() {
                           key={b.partner_id}
                           className="border-t border-border/40 transition-colors hover:bg-muted/20"
                         >
-                          <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
+                          <td className="px-5 py-3 text-xs tabular-nums text-muted-foreground">
                             <RankBadge index={i} />
                           </td>
-                          <td className="px-5 py-2.5">
+                          <td className="px-5 py-3">
                             <Link
                               to="/admin/affiliates/partners/$id"
                               params={{ id: b.partner_id }}
                               className="group flex min-w-0 items-center gap-2.5"
                             >
-                              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[11px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
-                                {initials(b.name)}
-                              </span>
+                              <PartnerAvatar name={b.name} index={i} />
                               <span className="min-w-0">
                                 <span className="block truncate font-medium text-foreground group-hover:text-cyan-200">
                                   {b.name}
                                 </span>
                                 <span className="block truncate text-xs text-muted-foreground">
-                                  {b.company ?? "—"}
+                                  {b.company ?? "Independent"}
                                 </span>
                               </span>
                             </Link>
                           </td>
-                          <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
-                          <td className="px-5 py-2.5 text-right font-semibold tabular-nums text-cyan-200">
+                          <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
+                            {b.referrals ?? 0}
+                          </td>
+                          <td className="px-5 py-3 text-right tabular-nums">
+                            <span className="font-medium text-foreground">{b.won}</span>
+                          </td>
+                          <td className="px-5 py-3 text-right tabular-nums text-muted-foreground">
+                            {fmtMoney(b.deal_value ?? 0)}
+                          </td>
+                          <td className="px-5 py-3 text-right font-semibold tabular-nums text-cyan-200">
                             {fmtMoney(b.commission)}
                           </td>
-                          <td className="px-5 py-2.5">
-                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
-                              <div
-                                className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
-                                style={{ width: `${pct}%` }}
-                              />
+                          <td className="px-5 py-3 text-right">
+                            <TrendPill pct={b.trendPct ?? null} />
+                          </td>
+                          <td className="px-5 py-3">
+                            <div className="flex items-center gap-2">
+                              <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                                <div
+                                  className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
+                                  style={{ width: `${pct}%` }}
+                                />
+                              </div>
+                              <span className="w-8 text-right text-[10px] tabular-nums text-muted-foreground">
+                                {pct}%
+                              </span>
                             </div>
                           </td>
                         </tr>
@@ -332,6 +350,7 @@ function AffiliatesOverview() {
               </div>
             )}
           </Panel>
+
 
           {/* Recent referral activity */}
           <Panel
@@ -821,3 +840,113 @@ function initials(name: string) {
     .join("")
     .toUpperCase();
 }
+
+const AVATAR_TONES = [
+  "bg-gradient-to-br from-amber-400/25 to-amber-500/10 text-amber-200 ring-amber-400/30",
+  "bg-gradient-to-br from-cyan-400/25 to-cyan-500/10 text-cyan-200 ring-cyan-400/30",
+  "bg-gradient-to-br from-violet-400/25 to-violet-500/10 text-violet-200 ring-violet-400/30",
+  "bg-gradient-to-br from-emerald-400/25 to-emerald-500/10 text-emerald-200 ring-emerald-400/30",
+  "bg-gradient-to-br from-rose-400/25 to-rose-500/10 text-rose-200 ring-rose-400/30",
+];
+
+function PartnerAvatar({ name, index }: { name: string; index: number }) {
+  const tone = AVATAR_TONES[index % AVATAR_TONES.length];
+  return (
+    <span
+      className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-[11px] font-semibold ring-1 ${tone}`}
+    >
+      {initials(name)}
+    </span>
+  );
+}
+
+function TrendPill({ pct }: { pct: number | null }) {
+  if (pct === null) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+        <Minus className="h-3 w-3" /> New
+      </span>
+    );
+  }
+  if (pct === 0) {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+        <Minus className="h-3 w-3" /> Flat
+      </span>
+    );
+  }
+  const up = pct > 0;
+  const cls = up
+    ? "border-emerald-400/25 bg-emerald-500/10 text-emerald-300"
+    : "border-rose-400/25 bg-rose-500/10 text-rose-300";
+  const Icon = up ? TrendingUp : TrendingDown;
+  const label = `${up ? "+" : ""}${pct}%`;
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold tabular-nums ${cls}`}
+    >
+      <Icon className="h-3 w-3" /> {label}
+    </span>
+  );
+}
+
+function LeaderboardEmpty() {
+  return (
+    <div className="relative overflow-hidden px-5 py-8 sm:px-8 sm:py-10">
+      {/* Ghost rows preview */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        aria-hidden
+      >
+        <div className="flex h-full flex-col justify-center gap-2.5 px-6">
+          {[92, 74, 58, 44, 32].map((w, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="h-6 w-6 rounded-full bg-muted/40" />
+              <span className="h-8 w-8 rounded-full bg-muted/40" />
+              <span className="h-2 flex-1 rounded-full bg-muted/30" />
+              <span
+                className="h-2 rounded-full bg-gradient-to-r from-cyan-500/40 to-teal-400/30"
+                style={{ width: `${w}px` }}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
+      </div>
+
+      <div className="relative mx-auto grid max-w-md place-items-center gap-4 text-center">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-amber-400/20 to-cyan-500/10 text-amber-200 ring-1 ring-amber-400/25 shadow-[0_8px_30px_-10px_rgba(251,191,36,0.35)]">
+          <Trophy className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-foreground">
+            No ranked performance yet
+          </p>
+          <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+            Once partners start generating qualified referrals and closed deals,
+            this leaderboard will highlight top contributors with commission, deal
+            value, and 30-day momentum.
+          </p>
+        </div>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+          <Link
+            to="/admin/affiliates/partners"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_20px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
+          >
+            <UserPlus className="h-3.5 w-3.5" /> Invite a partner
+          </Link>
+          <Link
+            to="/admin/affiliates/partners"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+          >
+            <Settings2 className="h-3.5 w-3.5" /> Review partner setup
+          </Link>
+        </div>
+        <p className="mt-1 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
+          <Sparkles className="h-3 w-3 text-cyan-300" /> Auto-ranks by commission · Updates in real time
+        </p>
+      </div>
+    </div>
+  );
+}
+

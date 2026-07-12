@@ -378,20 +378,58 @@ export const adminOverview = createServerFn({ method: "GET" })
     const pendingPayout = refs.filter((r) => r.payout_status !== "paid")
       .reduce((s, r) => s + Number(r.commission_amount ?? 0), 0);
     // Leaderboard
-    const board = new Map<string, { partner_id: string; won: number; commission: number }>();
+    const msDay = 24 * 60 * 60 * 1000;
+    const win30 = new Date(now.getTime() - 30 * msDay).toISOString();
+    const win60 = new Date(now.getTime() - 60 * msDay).toISOString();
+    type BoardRow = {
+      partner_id: string;
+      referrals: number;
+      won: number;
+      deal_value: number;
+      commission: number;
+      commission_recent: number;
+      commission_prev: number;
+    };
+    const board = new Map<string, BoardRow>();
     for (const r of refs) {
-      const s = board.get(r.partner_id) ?? { partner_id: r.partner_id, won: 0, commission: 0 };
-      if (r.status === "won") s.won += 1;
-      s.commission += Number(r.commission_amount ?? 0);
+      const s = board.get(r.partner_id) ?? {
+        partner_id: r.partner_id,
+        referrals: 0,
+        won: 0,
+        deal_value: 0,
+        commission: 0,
+        commission_recent: 0,
+        commission_prev: 0,
+      };
+      s.referrals += 1;
+      if (r.status === "won") {
+        s.won += 1;
+        s.deal_value += Number(r.deal_value ?? 0);
+      }
+      const c = Number(r.commission_amount ?? 0);
+      s.commission += c;
+      if (r.created_at >= win30) s.commission_recent += c;
+      else if (r.created_at >= win60) s.commission_prev += c;
       board.set(r.partner_id, s);
     }
     const leaderboard = Array.from(board.values())
       .map((b) => {
         const p = partners.find((x) => x.id === b.partner_id);
-        return { ...b, name: p?.full_name ?? "Unknown", company: p?.company ?? null };
+        const prev = b.commission_prev;
+        const rec = b.commission_recent;
+        let trendPct: number | null = null;
+        if (prev > 0) trendPct = Math.round(((rec - prev) / prev) * 100);
+        else if (rec > 0) trendPct = 100;
+        return {
+          ...b,
+          name: p?.full_name ?? "Unknown",
+          company: p?.company ?? null,
+          trendPct,
+        };
       })
-      .sort((a, b) => b.commission - a.commission)
+      .sort((a, b) => b.commission - a.commission || b.won - a.won || b.referrals - a.referrals)
       .slice(0, 5);
+
     return {
       totalPartners: partners.length,
       activePartners,
