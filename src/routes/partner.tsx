@@ -147,13 +147,13 @@ function PartnerShell() {
           <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-amber-500/15 text-amber-300 grid place-items-center">
             <XCircle className="h-6 w-6" />
           </div>
-          <h2 className="text-lg font-semibold">Not registered as a sales partner</h2>
+          <h2 className="text-lg font-semibold">Partner account not yet activated</h2>
           <p className="mt-2 text-sm text-slate-400">
-            Your account <span className="text-slate-100">{session.email}</span> is signed in but has no partner profile yet.
-            Ask an admin to add you, or apply to the affiliate program.
+            Your account <span className="text-slate-100">{session.email}</span> is signed in but does not have an active partner profile.
+            Please ask your SAISPL administrator to complete onboarding, or apply to the affiliate program below.
           </p>
           <div className="mt-6 flex gap-2 justify-center">
-            <Link to="/affiliate-enquiry" className="rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm">Apply as affiliate</Link>
+            <Link to="/affiliate-enquiry" className="rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm">Apply as an affiliate</Link>
             <button onClick={async () => { await supabase.auth.signOut(); router.invalidate(); }}
               className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5">Sign out</button>
           </div>
