@@ -5,6 +5,8 @@ import {
   BadgeDollarSign,
   Users,
   TrendingUp,
+  TrendingDown,
+  Minus,
   LayoutDashboard,
   Wallet,
   Trophy,
@@ -16,7 +18,11 @@ import {
   UserX,
   CheckCircle2,
   BarChart3,
+  UserPlus,
+  Settings2,
+  Sparkles,
 } from "lucide-react";
+
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { adminOverview, adminListReferrals } from "@/lib/partners.functions";
 import { fmtMoney } from "@/lib/partners-ui";
