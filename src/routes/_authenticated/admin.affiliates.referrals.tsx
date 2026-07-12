@@ -567,15 +567,15 @@ function EmptyState({ anyFilter, onClear }: { anyFilter: boolean; onClear: () =>
         <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60">
           <Search className="h-4 w-4" />
         </span>
-        <p className="text-sm font-medium">No referrals match your filters</p>
+        <p className="text-sm font-medium">No referrals match the current filters</p>
         <p className="max-w-xs text-xs text-muted-foreground">
-          Try widening the date range, resetting the status filter, or searching a different partner.
+          Widen the date range, reset status, or search a different partner to surface more deals.
         </p>
         <button
           onClick={onClear}
           className="mt-1 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200"
         >
-          Clear all filters
+          Reset all filters
         </button>
       </div>
     );
