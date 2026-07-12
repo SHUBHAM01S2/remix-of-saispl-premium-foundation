@@ -249,10 +249,10 @@ function AffiliatesOverview() {
         </ClusterCard>
       </div>
 
-      {/* Program health */}
+      {/* Operational Health */}
       <Panel
-        eyebrow="Program health"
-        title="Operational status"
+        eyebrow="Operational Health"
+        title="Program status"
         action={
           <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <span className={`h-1.5 w-1.5 rounded-full ${healthScore >= 70 ? "bg-emerald-400" : healthScore >= 40 ? "bg-cyan-400" : "bg-amber-400"} animate-pulse`} />
