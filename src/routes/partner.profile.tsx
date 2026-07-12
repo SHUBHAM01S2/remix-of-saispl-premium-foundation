@@ -86,8 +86,8 @@ function ProfilePage() {
         notify_marketing: form.notify_marketing,
       },
     }}),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["partner", "me"] }); toast.success("Profile updated"); },
-    onError: (e: any) => toast.error(e?.message ?? "Failed to update"),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["partner", "me"] }); toast.success("Profile updated successfully"); },
+    onError: (e: any) => toast.error(e?.message ?? "We couldn't save your changes. Please try again."),
   });
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
