@@ -5,11 +5,12 @@ import { useMemo, useState } from "react";
 import {
   Search, Plus, Users, Filter, AlertTriangle, RefreshCw, X, Calendar,
   IndianRupee, ArrowUpDown, ArrowUp, ArrowDown, MoreHorizontal, Eye,
-  Pencil, Copy, Check, Sparkles, TrendingUp,
+  Pencil, Copy, Check, Sparkles, TrendingUp, BookOpen,
 } from "lucide-react";
 import { listMyReferrals, REFERRAL_STATUSES, type ReferralStatus } from "@/lib/partners.functions";
 import { fmtDate, fmtDateTime, fmtMoney, StatusChip, PayoutChip } from "@/lib/partners-ui";
 import { useOpenNewReferral } from "@/components/partner/new-referral-context";
+import { PartnerEmptyState, ReferralIllustration } from "@/components/partner/EmptyState";
 
 export const Route = createFileRoute("/partner/referrals")({
   component: MyReferralsPage,
@@ -472,49 +473,39 @@ function TableSkeleton() {
 
 function NoResults({ onClear }: { onClear: () => void }) {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.02] px-6 py-14 text-center">
-      <div className="mx-auto grid h-12 w-12 place-items-center rounded-xl bg-white/5 text-slate-400">
-        <Search className="h-5 w-5" />
-      </div>
-      <h4 className="mt-4 text-base font-semibold">No referrals match your filters</h4>
-      <p className="mx-auto mt-1.5 max-w-sm text-sm text-slate-400">Try broadening your search, changing the status tab, or clearing filters.</p>
-      <button onClick={onClear} className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs text-slate-200 hover:bg-white/[0.06]">
-        <X className="h-3.5 w-3.5" /> Clear filters
-      </button>
-    </div>
+    <PartnerEmptyState
+      icon={Search}
+      tone="indigo"
+      title="No referrals match your filters"
+      body="Try broadening your search, changing the status tab, or clearing the active filters."
+      cta={{ label: "Clear filters", onClick: onClear, icon: X }}
+      quickLinks={[
+        { label: "Submit a referral", to: "/partner/referrals/new", icon: Sparkles },
+        { label: "View commission rules", to: "/partner/earnings", icon: BookOpen },
+      ]}
+      compact
+    />
   );
 }
 
 function FirstReferralEmpty({ onOpen }: { onOpen: () => void }) {
-  const steps = [
-    { n: 1, title: "Introduce a business", body: "Anyone who could benefit from our engineering, AI, or automation services." },
-    { n: 2, title: "Submit their details", body: "Add company, contact, and the service they're interested in — takes under a minute." },
-    { n: 3, title: "Earn on conversion", body: "You get paid commission the moment the deal closes and the client onboards." },
-  ];
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] px-6 py-10 sm:px-10 sm:py-14 text-center">
-      <div className="absolute -top-16 -left-10 h-48 w-48 rounded-full bg-teal-500/10 blur-3xl" />
-      <div className="absolute -bottom-16 -right-10 h-48 w-48 rounded-full bg-cyan-500/10 blur-3xl" />
-      <div className="relative">
-        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-teal-500/25 to-cyan-500/10 text-teal-300 ring-1 ring-teal-400/25">
-          <Users className="h-6 w-6" />
-        </div>
-        <h3 className="mt-4 text-xl font-semibold">Submit your first referral</h3>
-        <p className="mx-auto mt-1.5 max-w-md text-sm text-slate-400">Here's how it works — you can send us a lead in under a minute.</p>
-        <div className="mx-auto mt-6 grid max-w-3xl gap-3 sm:grid-cols-3 text-left">
-          {steps.map((s) => (
-            <div key={s.n} className="rounded-xl border border-white/5 bg-slate-950/40 p-4">
-              <div className="grid h-7 w-7 place-items-center rounded-lg bg-teal-400/15 text-teal-300 text-xs font-semibold ring-1 ring-teal-400/20">{s.n}</div>
-              <div className="mt-2 text-sm font-semibold">{s.title}</div>
-              <div className="mt-1 text-xs text-slate-400 leading-relaxed">{s.body}</div>
-            </div>
-          ))}
-        </div>
-        <button onClick={onOpen} className="mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-5 py-2.5 text-sm shadow-lg shadow-teal-500/25 hover:brightness-110 transition">
-          <Sparkles className="h-4 w-4" /> Submit your first referral
-        </button>
-      </div>
-    </section>
+    <PartnerEmptyState
+      illustration={<ReferralIllustration Icon={Users} />}
+      eyebrow="Your referrals live here"
+      title="You haven't submitted any referrals yet"
+      body="Start by adding your first lead and we'll help you track every stage — from first intro to closed deal and paid commission."
+      cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
+      quickLinks={[
+        { label: "How commissions work", to: "/partner/earnings", icon: BookOpen },
+        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+      ]}
+      steps={[
+        { title: "Introduce a business", body: "Anyone who could benefit from our engineering, AI, or automation services." },
+        { title: "Submit their details", body: "Add company, contact, and the service they're interested in — takes under a minute." },
+        { title: "Earn on conversion", body: "You get paid commission the moment the deal closes and the client onboards." },
+      ]}
+    />
   );
 }
 
