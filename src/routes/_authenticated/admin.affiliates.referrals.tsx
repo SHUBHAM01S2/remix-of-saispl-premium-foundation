@@ -561,26 +561,57 @@ function MenuBtn({ icon, label, onClick, disabled }: { icon: React.ReactNode; la
 }
 
 function EmptyState({ anyFilter, onClear }: { anyFilter: boolean; onClear: () => void }) {
-  return (
-    <div className="grid place-items-center gap-2 px-6 py-16 text-center">
-      <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60">
-        <Search className="h-4 w-4" />
-      </span>
-      <p className="text-sm font-medium">
-        {anyFilter ? "No referrals match your filters" : "No referrals yet"}
-      </p>
-      <p className="text-xs text-muted-foreground">
-        {anyFilter ? "Try clearing filters or widening the date range." : "Referrals submitted by partners will land here."}
-      </p>
-      {anyFilter && (
-        <button onClick={onClear}
-          className="mt-1 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200">
+  if (anyFilter) {
+    return (
+      <div className="grid place-items-center gap-2 px-6 py-16 text-center">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60">
+          <Search className="h-4 w-4" />
+        </span>
+        <p className="text-sm font-medium">No referrals match your filters</p>
+        <p className="max-w-xs text-xs text-muted-foreground">
+          Try widening the date range, resetting the status filter, or searching a different partner.
+        </p>
+        <button
+          onClick={onClear}
+          className="mt-1 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200"
+        >
           Clear all filters
         </button>
-      )}
+      </div>
+    );
+  }
+  return (
+    <div className="relative overflow-hidden px-6 py-16">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.10),transparent_65%)]" />
+      <div className="relative mx-auto grid max-w-md place-items-center gap-3 text-center">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400/20 to-teal-500/10 text-cyan-200 ring-1 ring-cyan-400/25 shadow-[0_8px_24px_-10px_rgba(34,211,238,0.45)]">
+          <Target className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-foreground">No referrals in the pipeline yet</p>
+          <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
+            Share the onboarding pack with partners so they know how to submit deals, or activate more partners to start driving referrals.
+          </p>
+        </div>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+          <Link
+            to="/admin/affiliates/partners"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_18px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
+          >
+            <Users className="h-3.5 w-3.5" /> Activate partners
+          </Link>
+          <Link
+            to="/admin/affiliates"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+          >
+            Review program setup <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
+
 
 function TableSkeleton() {
   return (
