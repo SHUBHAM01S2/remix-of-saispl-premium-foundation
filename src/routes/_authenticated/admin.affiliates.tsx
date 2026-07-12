@@ -94,7 +94,7 @@ function AffiliatesShell() {
       </header>
 
       {/* Sticky segmented tab rail with active underline */}
-      <div className="sticky top-0 z-20 -mx-4 border-b border-border/50 bg-background/70 px-4 pb-1.5 pt-2 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div className="sticky top-[60px] z-20 -mx-4 border-b border-border/50 bg-background/85 px-4 pb-1.5 pt-2 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <nav
           className="scrollbar-none relative -mb-px flex gap-1 overflow-x-auto"
           aria-label="Affiliate sections"
