@@ -10,6 +10,8 @@ import {
   Circle,
   Clock,
   ExternalLink,
+  Eye,
+  EyeOff,
   FileUp,
   Paperclip,
   KeyRound,
