@@ -330,22 +330,17 @@ function KpiCard({
   );
 }
 
-function PartnerHome({ partner }: { partner: any }) {
+function PartnerHome({ partner, referralLink }: { partner: any; referralLink: string }) {
   const statsFn = useServerFn(getMyStats);
   const listFn = useServerFn(listMyReferrals);
   const statsQ = useQuery({ queryKey: ["partner", "stats"], queryFn: () => statsFn() });
   const listQ = useQuery({ queryKey: ["partner", "referrals"], queryFn: () => listFn() });
+  const openNewReferral = useOpenNewReferral();
 
   const s = statsQ.data;
   const list = listQ.data ?? [];
   const recent = list.slice(0, 5);
   const [copied, setCopied] = useState(false);
-
-  const referralLink = useMemo(() => {
-    const code = partner.referral_code ?? partner.id ?? "";
-    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
-    return `${window.location.origin}/?ref=${code}`;
-  }, [partner]);
 
   const goal = 10;
   const wonCount = s?.won ?? 0;
@@ -366,11 +361,61 @@ function PartnerHome({ partner }: { partner: any }) {
   const pendingPayout = s?.pendingPayout ?? 0;
   const total = s?.total ?? 0;
 
+  // Compute trend: this month vs last month
+  const trend = useMemo(() => {
+    const now = new Date();
+    const startThis = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    const startLast = new Date(now.getFullYear(), now.getMonth() - 1, 1).getTime();
+    let thisMo = 0, lastMo = 0, thisWon = 0, lastWon = 0;
+    for (const r of list) {
+      const t = new Date(r.created_at).getTime();
+      if (t >= startThis) { thisMo += 1; if (r.status === "won") thisWon += 1; }
+      else if (t >= startLast) { lastMo += 1; if (r.status === "won") lastWon += 1; }
+    }
+    return { thisMo, lastMo, thisWon, lastWon };
+  }, [list]);
+  const leadsTrend = trend.lastMo === 0
+    ? (trend.thisMo > 0 ? { dir: "up" as const, value: `+${trend.thisMo}` } : undefined)
+    : (() => {
+      const diff = trend.thisMo - trend.lastMo;
+      if (diff === 0) return undefined;
+      return { dir: (diff > 0 ? "up" : "down") as "up" | "down", value: `${diff > 0 ? "+" : ""}${diff}` };
+    })();
+  const wonTrend = trend.thisWon > 0
+    ? { dir: "up" as const, value: `+${trend.thisWon}` }
+    : undefined;
+
+  // Loading skeleton page
+  if (statsQ.isLoading && listQ.isLoading) {
+    return (
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="min-w-0 space-y-6">
+          <DashboardHero partner={partner} referralLink={referralLink} copied={copied} setCopied={setCopied} onOpenModal={openNewReferral} />
+          <SectionSkeleton titleWidth="w-24" rows={2} cols={6} />
+          <SectionSkeleton titleWidth="w-24" rows={1} cols={3} />
+          <SectionSkeleton titleWidth="w-28" rows={1} cols={3} />
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 animate-pulse space-y-3">
+            <div className="h-4 w-40 rounded bg-white/10" />
+            <div className="h-2.5 w-full rounded-full bg-white/10" />
+            <div className="grid gap-3 sm:grid-cols-4">
+              {[0,1,2,3].map((i) => <div key={i} className="h-9 rounded-lg bg-white/5" />)}
+            </div>
+          </div>
+          <TableSkeleton />
+        </div>
+        <aside className="space-y-4">
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 animate-pulse h-40" />
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5 animate-pulse h-40" />
+        </aside>
+      </div>
+    );
+  }
+
   // Empty-state page
-  if (!statsQ.isLoading && !listQ.isLoading && list.length === 0) {
+  if (!statsQ.isLoading && !listQ.isLoading && !statsQ.error && !listQ.error && list.length === 0) {
     return (
       <div className="space-y-6">
-        <DashboardHero partner={partner} referralLink={referralLink} copied={copied} setCopied={setCopied} />
+        <DashboardHero partner={partner} referralLink={referralLink} copied={copied} setCopied={setCopied} onOpenModal={openNewReferral} />
         <section className="relative overflow-hidden rounded-3xl border border-white/5 bg-gradient-to-br from-teal-500/10 via-white/[0.02] to-cyan-500/5 p-8 sm:p-14 text-center">
           <div className="absolute -top-24 -right-16 h-72 w-72 rounded-full bg-teal-500/10 blur-3xl" />
           <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -383,9 +428,9 @@ function PartnerHome({ partner }: { partner: any }) {
               Introduce us to a business you know. Our team qualifies, pitches, and closes — you earn on every win. Most partners submit their first referral in under 2 minutes.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link to="/partner/referrals/new" className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-5 py-2.5 text-sm shadow-lg shadow-teal-500/25">
+              <button onClick={openNewReferral} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-5 py-2.5 text-sm shadow-lg shadow-teal-500/25">
                 <Sparkles className="h-4 w-4" /> Submit your first referral
-              </Link>
+              </button>
               <button onClick={() => { navigator.clipboard?.writeText(referralLink); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
                 className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 text-slate-100 px-5 py-2.5 text-sm hover:bg-white/10">
                 {copied ? <><Check className="h-4 w-4" /> Link copied</> : <><Copy className="h-4 w-4" /> Copy referral link</>}
@@ -401,6 +446,8 @@ function PartnerHome({ partner }: { partner: any }) {
       </div>
     );
   }
+
+
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
