@@ -1,29 +1,18 @@
 import { ScrollReveal } from "@/components/ScrollReveal";
-import rukoo from "@/assets/logos/rukoo.png.asset.json";
-import acupressure from "@/assets/logos/acupressure.png.asset.json";
-import bandla from "@/assets/logos/bandla.png.asset.json";
-import manaliMiles from "@/assets/logos/manali-miles.png.asset.json";
-import derma from "@/assets/logos/derma.png.asset.json";
-import buttonCraft from "@/assets/logos/button-craft.png.asset.json";
-import dogra from "@/assets/logos/dogra.png.asset.json";
-import avttours from "@/assets/logos/avttours.png.asset.json";
-import jevar from "@/assets/logos/jevar.png.asset.json";
-import sumit from "@/assets/logos/sumit.png.asset.json";
-import { resolveLovableAssetUrl } from "@/lib/lovable-asset-url";
 
 const DARK_BG = "#1b1b1b";
 
 const LOGOS = [
-  { name: "Rukoo Services", src: resolveLovableAssetUrl(rukoo.url) },
-  { name: "Accupressure E-learning", src: resolveLovableAssetUrl(acupressure.url) },
-  { name: "Hotel Bandla Heights", src: resolveLovableAssetUrl(bandla.url) },
-  { name: "Manali Miles", src: resolveLovableAssetUrl(manaliMiles.url) },
-  { name: "Derma Epsilon", src: resolveLovableAssetUrl(derma.url), bg: DARK_BG },
-  { name: "Button Craft", src: resolveLovableAssetUrl(buttonCraft.url) },
-  { name: "Dogra Ji Tours & Travels", src: resolveLovableAssetUrl(dogra.url) },
-  { name: "AvtTours", src: resolveLovableAssetUrl(avttours.url) },
-  { name: "Jevar by Shagun", src: resolveLovableAssetUrl(jevar.url), bg: DARK_BG },
-  { name: "Sumit Enterprises", src: resolveLovableAssetUrl(sumit.url), bg: DARK_BG },
+  { name: "Rukoo Services", src: "/logos/rukoo.png" },
+  { name: "Accupressure E-learning", src: "/logos/acupressure.png" },
+  { name: "Hotel Bandla Heights", src: "/logos/bandla.png" },
+  { name: "Manali Miles", src: "/logos/manali-miles.png" },
+  { name: "Derma Epsilon", src: "/logos/derma.png", bg: DARK_BG },
+  { name: "Button Craft", src: "/logos/button-craft.png" },
+  { name: "Dogra Ji Tours & Travels", src: "/logos/dogra.png" },
+  { name: "AvtTours", src: "/logos/avttours.png" },
+  { name: "Jevar by Shagun", src: "/logos/jevar.png", bg: DARK_BG },
+  { name: "Sumit Enterprises", src: "/logos/sumit.png", bg: DARK_BG },
 ];
 
 
