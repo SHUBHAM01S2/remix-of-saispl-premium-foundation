@@ -75,13 +75,13 @@ function AffiliatesShell() {
             to="/admin/affiliates/payouts"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card/60 px-3.5 py-2 text-xs font-semibold text-foreground/90 transition hover:border-cyan-400/40 hover:bg-cyan-500/5 hover:text-foreground"
           >
-            <Wallet className="h-3.5 w-3.5" /> Payout Queue
+            <Wallet className="h-3.5 w-3.5" /> Payout queue
           </Link>
           <Link
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-cyan-400 to-cyan-600 px-3.5 py-2 text-xs font-semibold text-slate-950 shadow-[0_1px_0_0_rgba(255,255,255,0.2)_inset,0_10px_28px_-10px_rgba(6,182,212,0.55)] transition hover:from-cyan-300 hover:to-cyan-500"
           >
-            <Plus className="h-3.5 w-3.5" /> New Partner
+            <Plus className="h-3.5 w-3.5" /> Add partner
           </Link>
         </div>
       </header>
