@@ -86,8 +86,8 @@ function ProfilePage() {
         notify_marketing: form.notify_marketing,
       },
     }}),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["partner", "me"] }); toast.success("Profile updated"); },
-    onError: (e: any) => toast.error(e?.message ?? "Failed to update"),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["partner", "me"] }); toast.success("Profile updated successfully"); },
+    onError: (e: any) => toast.error(e?.message ?? "We couldn't save your changes. Please try again."),
   });
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
@@ -179,36 +179,36 @@ function ProfilePage() {
         </header>
 
         {/* Personal */}
-        <Card id="personal" icon={UserIcon} tint="text-teal-300 bg-teal-500/10" title="Personal information" desc="How we address you across the platform.">
+        <Card id="personal" icon={UserIcon} tint="text-teal-300 bg-teal-500/10" title="Personal information" desc="How SAISPL identifies and contacts you across the partner platform.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Full name" hint="Appears on payouts and communications." required>
+            <Field label="Full name" hint="This name appears on all payouts and official communications." required>
               <input {...bind("full_name")} placeholder="e.g. Ananya Sharma" className={inp} />
             </Field>
-            <Field label="Email" hint="Contact support to change your email.">
+            <Field label="Email address" hint="Contact support if you need to update your email.">
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input value={q.data?.email ?? ""} readOnly className={`${inp} pl-9 opacity-60 cursor-not-allowed`} />
               </div>
             </Field>
-            <Field label="Phone" hint="We'll call only for deal coordination.">
+            <Field label="Phone number" hint="Used only for time-sensitive deal coordination.">
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input {...bind("phone")} placeholder="+91 90000 00000" className={`${inp} pl-9`} />
               </div>
             </Field>
-            <Field label="Website" hint="Personal or professional site (optional).">
+            <Field label="Website" hint="Your personal or professional site (optional).">
               <input {...bind("website")} placeholder="https://" className={inp} />
             </Field>
           </div>
         </Card>
 
         {/* Company */}
-        <Card id="company" icon={Building2} tint="text-cyan-300 bg-cyan-500/10" title="Company details" desc="Details about the business you represent.">
+        <Card id="company" icon={Building2} tint="text-cyan-300 bg-cyan-500/10" title="Company details" desc="Information about the business you represent.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Company name" hint="Leave blank if you're an independent partner.">
+            <Field label="Company name" hint="Leave blank if you're operating as an independent partner.">
               <input {...bind("company")} placeholder="Acme Pvt Ltd" className={inp} />
             </Field>
-            <Field label="Business type">
+            <Field label="Business entity">
               <select {...bind("business_type")} className={inp}>
                 <option value="individual">Individual / Freelancer</option>
                 <option value="proprietor">Sole Proprietor</option>
@@ -218,7 +218,7 @@ function ProfilePage() {
               </select>
             </Field>
             <div className="md:col-span-2">
-              <Field label="Business address" hint="Used for invoices and tax records.">
+              <Field label="Registered business address" hint="Used on invoices and for tax reporting.">
                 <textarea {...bind("address")} rows={3} placeholder="Street, City, State, PIN" className={`${inp} resize-none`} />
               </Field>
             </div>
@@ -226,9 +226,9 @@ function ProfilePage() {
         </Card>
 
         {/* Payout */}
-        <Card id="payout" icon={Wallet} tint="text-emerald-300 bg-emerald-500/10" title="Payout details" desc="Choose how you'd like to receive commissions." accent>
+        <Card id="payout" icon={Wallet} tint="text-emerald-300 bg-emerald-500/10" title="Payout details" desc="Select how you'd like to receive your commissions." accent>
           <div className="grid gap-5">
-            <Field label="Payout method" hint="You can switch methods anytime — the change applies to the next cycle.">
+            <Field label="Preferred payout method" hint="You can change methods at any time — updates apply to the next payout cycle.">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
                   { v: "upi", label: "UPI" },
@@ -274,47 +274,47 @@ function ProfilePage() {
 
             <div className="rounded-xl border border-white/5 bg-slate-950/40 p-3.5 flex items-start gap-3">
               <ShieldCheck className="h-4 w-4 text-emerald-300 shrink-0 mt-0.5" />
-              <p className="text-xs text-slate-400 leading-relaxed">Payout details are encrypted at rest. Only you and our finance team can see them.</p>
+              <p className="text-xs text-slate-400 leading-relaxed">Your payout details are encrypted at rest. Only you and our finance team can access them.</p>
             </div>
           </div>
         </Card>
 
         {/* Tax */}
-        <Card id="tax" icon={FileText} tint="text-amber-300 bg-amber-500/10" title="Tax & compliance" desc="Optional, but required to unlock invoicing above ₹20,000 / month.">
+        <Card id="tax" icon={FileText} tint="text-amber-300 bg-amber-500/10" title="Tax & compliance" desc="Optional — required only to unlock invoicing above ₹20,000 per month.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="PAN" hint="10-character alphanumeric (e.g. ABCDE1234F).">
+            <Field label="PAN" hint="10-character alphanumeric identifier (e.g. ABCDE1234F).">
               <input {...bind("pan")} maxLength={10} className={`${inp} uppercase tracking-wider`} />
             </Field>
-            <Field label="GSTIN" hint="Only if you're GST-registered.">
+            <Field label="GSTIN" hint="Provide only if you are GST-registered.">
               <input {...bind("gstin")} maxLength={15} className={`${inp} uppercase tracking-wider`} />
             </Field>
           </div>
         </Card>
 
         {/* Notifications */}
-        <Card id="notifications" icon={Bell} tint="text-indigo-300 bg-indigo-500/10" title="Notification preferences" desc="Choose what lands in your inbox.">
+        <Card id="notifications" icon={Bell} tint="text-indigo-300 bg-indigo-500/10" title="Notification preferences" desc="Choose which partner updates you'd like to receive.">
           <div className="divide-y divide-white/5">
             <Toggle
-              label="Referral updates"
-              hint="Status changes, new messages from the SAI team on your deals."
+              label="Referral activity"
+              hint="Deal status changes and messages from the SAI team on your active referrals."
               checked={form.notify_referral_updates}
               onChange={(v) => set("notify_referral_updates", v)}
             />
             <Toggle
               label="Payouts & commissions"
-              hint="When a commission is approved and when a payout is sent."
+              hint="Alerts when a commission is approved and when a payout has been released."
               checked={form.notify_payouts}
               onChange={(v) => set("notify_payouts", v)}
             />
             <Toggle
-              label="Product & platform"
-              hint="New tools, dashboard changes, occasional partner tips."
+              label="Product & platform updates"
+              hint="New partner tools, dashboard improvements, and occasional best-practice tips."
               checked={form.notify_product}
               onChange={(v) => set("notify_product", v)}
             />
             <Toggle
-              label="Marketing & offers"
-              hint="Campaigns you can pitch and partner-exclusive perks."
+              label="Marketing & partner offers"
+              hint="Campaigns you can share with prospects and partner-exclusive incentives."
               checked={form.notify_marketing}
               onChange={(v) => set("notify_marketing", v)}
             />
@@ -322,12 +322,12 @@ function ProfilePage() {
         </Card>
 
         {/* Security */}
-        <Card id="security" icon={Lock} tint="text-rose-300 bg-rose-500/10" title="Password & security" desc="Keep your account safe.">
+        <Card id="security" icon={Lock} tint="text-rose-300 bg-rose-500/10" title="Password & security" desc="Manage the credentials that protect your partner account.">
           <PasswordSection />
         </Card>
 
         {/* Referral link */}
-        <Card id="referral" icon={Link2} tint="text-fuchsia-300 bg-fuchsia-500/10" title="Your referral link" desc="Share this to attribute new partner signups to you.">
+        <Card id="referral" icon={Link2} tint="text-fuchsia-300 bg-fuchsia-500/10" title="Your partner referral link" desc="Share this link to attribute new partner sign-ups to your account.">
           <div className="grid gap-4">
             <div className="grid gap-4 sm:grid-cols-[auto,1fr] items-stretch">
               <div className="rounded-xl border border-white/10 bg-slate-950/60 px-4 py-3 flex items-center gap-3">
@@ -339,7 +339,7 @@ function ProfilePage() {
               </div>
               <CopyField label="Invite link" value={inviteLink} />
             </div>
-            <p className="text-xs text-slate-500">Every partner who signs up through your link is tagged to you — you'll see them in your team view when it launches.</p>
+            <p className="text-xs text-slate-500">Every partner who signs up through your link is automatically attributed to you — they'll appear in your team view when it launches.</p>
           </div>
         </Card>
 
@@ -351,7 +351,7 @@ function ProfilePage() {
               : "border-white/5 bg-slate-950/50"
           }`}>
             <p className="text-xs text-slate-400">
-              {dirty ? "You have unsaved changes — don't forget to save." : "All changes saved."}
+              {dirty ? "You have unsaved changes — remember to save before leaving this page." : "All changes saved."}
             </p>
             <div className="flex gap-2">
               {dirty && (

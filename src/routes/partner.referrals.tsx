@@ -134,7 +134,7 @@ function MyReferralsPage() {
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Referral pipeline</p>
             <h1 className="mt-1 truncate text-2xl sm:text-3xl font-semibold tracking-tight">My Referrals</h1>
-            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track every lead you've introduced — status, deal value, and expected commission at a glance.</p>
+            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Manage every lead you've introduced — review deal stage, projected value, and expected commission in a single view.</p>
           </div>
           <button
             onClick={openNewReferral}
@@ -183,7 +183,7 @@ function MyReferralsPage() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search leads, company, email, service…"
+              placeholder="Search by lead, company, email, or service…"
               className="w-full rounded-xl border border-white/10 bg-slate-950/40 pl-9 pr-3 py-2.5 text-sm outline-none focus:border-teal-400/50 focus:ring-2 focus:ring-teal-400/20"
             />
           </div>
@@ -476,12 +476,12 @@ function NoResults({ onClear }: { onClear: () => void }) {
     <PartnerEmptyState
       icon={Search}
       tone="indigo"
-      title="No referrals match your filters"
-      body="Try broadening your search, changing the status tab, or clearing the active filters."
-      cta={{ label: "Clear filters", onClick: onClear, icon: X }}
+      title="No referrals match the current filters"
+      body="Try broadening your search terms, switching to another status tab, or clearing the active filters to see more results."
+      cta={{ label: "Clear all filters", onClick: onClear, icon: X }}
       quickLinks={[
-        { label: "Submit a referral", to: "/partner/referrals/new", icon: Sparkles },
-        { label: "View commission rules", to: "/partner/earnings", icon: BookOpen },
+        { label: "Submit a new referral", to: "/partner/referrals/new", icon: Sparkles },
+        { label: "Review commission rules", to: "/partner/earnings", icon: BookOpen },
       ]}
       compact
     />
@@ -492,18 +492,18 @@ function FirstReferralEmpty({ onOpen }: { onOpen: () => void }) {
   return (
     <PartnerEmptyState
       illustration={<ReferralIllustration Icon={Users} />}
-      eyebrow="Your referrals live here"
-      title="You haven't submitted any referrals yet"
-      body="Start by adding your first lead and we'll help you track every stage — from first intro to closed deal and paid commission."
+      eyebrow="Your referrals will appear here"
+      title="No referrals submitted yet"
+      body="Submit your first lead to begin tracking deals and commissions. We'll guide every referral from introduction to closed deal — and pay you when the client onboards."
       cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
       quickLinks={[
         { label: "How commissions work", to: "/partner/earnings", icon: BookOpen },
-        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+        { label: "Copy your referral link", to: "/partner/profile", icon: Copy },
       ]}
       steps={[
-        { title: "Introduce a business", body: "Anyone who could benefit from our engineering, AI, or automation services." },
-        { title: "Submit their details", body: "Add company, contact, and the service they're interested in — takes under a minute." },
-        { title: "Earn on conversion", body: "You get paid commission the moment the deal closes and the client onboards." },
+        { title: "Introduce a business", body: "Anyone in your network who could benefit from our engineering, AI, or automation expertise." },
+        { title: "Submit lead details", body: "Add the company, contact, and service of interest — the form takes under a minute to complete." },
+        { title: "Earn on every close", body: "Receive your commission the moment the deal closes and the client is successfully onboarded." },
       ]}
     />
   );

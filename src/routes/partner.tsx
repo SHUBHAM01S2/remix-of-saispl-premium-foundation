@@ -35,10 +35,10 @@ const NAV = [
 ];
 
 const PAGE_TITLES: Record<string, { title: string; sub: string }> = {
-  "/partner": { title: "Partner Performance", sub: "Track referrals, deals and payouts in one place." },
-  "/partner/referrals": { title: "My Referrals", sub: "Every client you have referred to SAISPL." },
-  "/partner/earnings": { title: "Earnings & Payouts", sub: "What you've earned and what's on the way." },
-  "/partner/profile": { title: "Profile & Payouts", sub: "Keep this current so payouts reach you." },
+  "/partner": { title: "Partner Dashboard", sub: "Monitor referrals, deal progress, earnings, and payout status from one workspace." },
+  "/partner/referrals": { title: "My Referrals", sub: "Manage every lead you've introduced to SAISPL and follow each deal to close." },
+  "/partner/earnings": { title: "Earnings & Payouts", sub: "Review approved commissions, upcoming payouts, and your full payment history." },
+  "/partner/profile": { title: "Account & Payout Settings", sub: "Keep your profile, tax details, and payout preferences current so every payment reaches you on time." },
 };
 
 function PartnerShell() {
@@ -88,7 +88,7 @@ function PartnerShell() {
             </span>
             <div className="min-w-0">
               <h1 className="text-base sm:text-lg font-semibold truncate">SAISPL Partner Portal</h1>
-              <p className="text-xs text-slate-400">Sign in to manage your referrals</p>
+              <p className="text-xs text-slate-400">Sign in to manage referrals, track deals, and monitor payouts.</p>
             </div>
           </div>
           <form
@@ -125,7 +125,7 @@ function PartnerShell() {
             </button>
           </form>
           <p className="mt-5 text-xs text-slate-400 text-center">
-            Not a partner yet? <Link to="/affiliate-enquiry" className="text-teal-300 hover:underline">Apply to the affiliate program</Link>
+            Not a partner yet? <Link to="/affiliate-enquiry" className="text-teal-300 hover:underline">Apply to join the SAISPL affiliate program</Link>
           </p>
         </div>
       </div>
@@ -147,13 +147,13 @@ function PartnerShell() {
           <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-amber-500/15 text-amber-300 grid place-items-center">
             <XCircle className="h-6 w-6" />
           </div>
-          <h2 className="text-lg font-semibold">Not registered as a sales partner</h2>
+          <h2 className="text-lg font-semibold">Partner account not yet activated</h2>
           <p className="mt-2 text-sm text-slate-400">
-            Your account <span className="text-slate-100">{session.email}</span> is signed in but has no partner profile yet.
-            Ask an admin to add you, or apply to the affiliate program.
+            Your account <span className="text-slate-100">{session.email}</span> is signed in but does not have an active partner profile.
+            Please ask your SAISPL administrator to complete onboarding, or apply to the affiliate program below.
           </p>
           <div className="mt-6 flex gap-2 justify-center">
-            <Link to="/affiliate-enquiry" className="rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm">Apply as affiliate</Link>
+            <Link to="/affiliate-enquiry" className="rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm">Apply as an affiliate</Link>
             <button onClick={async () => { await supabase.auth.signOut(); router.invalidate(); }}
               className="rounded-lg border border-white/10 px-4 py-2 text-sm hover:bg-white/5">Sign out</button>
           </div>
@@ -426,7 +426,7 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             </div>
             <h2 className="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">Ready to earn your first commission?</h2>
             <p className="mt-3 text-sm text-slate-400">
-              Introduce us to a business you know. Our team qualifies, pitches, and closes — you earn on every win. Most partners submit their first referral in under 2 minutes.
+              Introduce SAISPL to a business in your network. Our team qualifies, pitches, and closes every opportunity — you earn on every win. Most partners submit their first referral in under two minutes.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <button onClick={openNewReferral} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-5 py-2.5 text-sm shadow-lg shadow-teal-500/25">
@@ -438,9 +438,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
               </button>
             </div>
             <div className="relative mt-10 grid gap-3 sm:grid-cols-3 text-left">
-              <OnboardStep n={1} title="Share your link" body="Send it to businesses that could use SAISPL." />
-              <OnboardStep n={2} title="We close the deal" body="Our team qualifies, pitches, and onboards." />
-              <OnboardStep n={3} title="You get paid" body="Commission is paid on the 5th of every month." />
+              <OnboardStep n={1} title="Share your unique link" body="Send it to businesses that could benefit from SAISPL's expertise." />
+              <OnboardStep n={2} title="We close the deal" body="Our specialists qualify the lead, present the solution, and onboard the client." />
+              <OnboardStep n={3} title="Get paid every month" body="Commissions are released on the 5th of every month to your saved payout method." />
             </div>
           </div>
         </section>
@@ -458,7 +458,7 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
         {statsQ.error && (
           <ErrorBanner
-            title="We couldn't load your KPIs"
+            title="We couldn't load your performance metrics"
             message={(statsQ.error as any)?.message ?? "Unknown error"}
             onRetry={() => statsQ.refetch()}
           />
@@ -473,28 +473,28 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
 
         {/* Pipeline group */}
-        <KpiGroup title="Pipeline" caption="Where your referrals stand right now">
-          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={leadsTrend} hint="vs last month" />
-          <KpiCard label="Active"       value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   hint="in pipeline" />
-          <KpiCard label="Pending"      value={s?.pending ?? 0}             icon={Clock}        tint="bg-amber-500/15 text-amber-300"     hint="awaiting first contact" />
-          <KpiCard label="Won"          value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={wonTrend} hint="this month" />
-          <KpiCard label="Lost"         value={s?.lost ?? 0}                icon={XCircle}      tint="bg-rose-500/15 text-rose-300"       hint="closed lost" />
-          <KpiCard label="Conversion"   value={(s?.conversionRate ?? 0) + "%"} icon={ArrowUpRight} tint="bg-cyan-500/15 text-cyan-300"   hint="leads → won" />
+        <KpiGroup title="Pipeline health" caption="A real-time snapshot of every referral in your pipeline.">
+          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={leadsTrend} hint="vs. last month" />
+          <KpiCard label="Active deals" value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   hint="currently in progress" />
+          <KpiCard label="Awaiting review" value={s?.pending ?? 0}          icon={Clock}        tint="bg-amber-500/15 text-amber-300"     hint="pending qualification" />
+          <KpiCard label="Closed won"   value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={wonTrend} hint="this month" />
+          <KpiCard label="Closed lost"  value={s?.lost ?? 0}                icon={XCircle}      tint="bg-rose-500/15 text-rose-300"       hint="did not convert" />
+          <KpiCard label="Conversion rate" value={(s?.conversionRate ?? 0) + "%"} icon={ArrowUpRight} tint="bg-cyan-500/15 text-cyan-300"   hint="leads that closed" />
         </KpiGroup>
 
 
         {/* Revenue group */}
-        <KpiGroup title="Revenue" caption="Deal value flowing through your referrals">
+        <KpiGroup title="Revenue impact" caption="Total deal value your referrals are generating for SAISPL.">
           <KpiCard label="Total deal value"   value={fmtMoney(s?.dealValue)}     icon={BadgeDollarSign} tint="bg-amber-500/15 text-amber-300"     hint="pipeline + closed" />
           <KpiCard label="Won deal value"     value={fmtMoney((s?.dealValue ?? 0) * (s?.won && s?.total ? s.won / s.total : 0))} icon={Trophy} tint="bg-emerald-500/15 text-emerald-300" hint="closed & invoiced" />
-          <KpiCard label="Avg deal size"      value={fmtMoney(total ? (s?.dealValue ?? 0) / total : 0)} icon={TrendingUp} tint="bg-cyan-500/15 text-cyan-300" hint="across all referrals" />
+          <KpiCard label="Average deal size"  value={fmtMoney(total ? (s?.dealValue ?? 0) / total : 0)} icon={TrendingUp} tint="bg-cyan-500/15 text-cyan-300" hint="across all referrals" />
         </KpiGroup>
 
         {/* Payout group */}
-        <KpiGroup title="Payouts" caption="What you've earned and what's on the way">
-          <KpiCard label="Total commission" value={fmtMoney(commissionTotal)} icon={Wallet}        tint="bg-emerald-500/15 text-emerald-300" hint="lifetime earned" />
-          <KpiCard label="Paid till date"   value={fmtMoney(paidTotal)}       icon={CheckCircle2}  tint="bg-teal-500/15 text-teal-300"       hint="cleared payouts" />
-          <KpiCard label="Pending payout"   value={fmtMoney(pendingPayout)}   icon={CalendarClock} tint="bg-violet-500/15 text-violet-300"   hint={`Next: ${fmtDate(nextPayout.toISOString())}`} />
+        <KpiGroup title="Commissions & payouts" caption="Track earned commissions and upcoming payments in real time.">
+          <KpiCard label="Total commission" value={fmtMoney(commissionTotal)} icon={Wallet}        tint="bg-emerald-500/15 text-emerald-300" hint="lifetime earnings" />
+          <KpiCard label="Paid to date"     value={fmtMoney(paidTotal)}       icon={CheckCircle2}  tint="bg-teal-500/15 text-teal-300"       hint="cleared payouts" />
+          <KpiCard label="Pending payout"   value={fmtMoney(pendingPayout)}   icon={CalendarClock} tint="bg-violet-500/15 text-violet-300"   hint={`Next release: ${fmtDate(nextPayout.toISOString())}`} />
         </KpiGroup>
 
         {/* Performance + Commission summary */}
@@ -503,9 +503,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-semibold">Performance overview</h3>
-                <p className="text-xs text-slate-400">Pipeline distribution across all your referrals.</p>
+                <p className="text-xs text-slate-400">A live view of how your referrals are distributed across each pipeline stage.</p>
               </div>
-              <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all →</Link>
+              <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all referrals →</Link>
             </div>
 
             {/* Stacked bar */}
@@ -531,14 +531,14 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
             {/* Progress bars */}
             <div className="mt-6 space-y-4 border-t border-white/5 pt-5">
-              <ProgressRow label="Conversion rate"   value={`${s?.conversionRate ?? 0}%`} pct={s?.conversionRate ?? 0} className="from-teal-400 to-cyan-400" />
-              <ProgressRow label="Quarterly goal"    value={`${wonCount} / ${goal} wins`} pct={goalPct} className="from-emerald-400 to-teal-400" />
-              <ProgressRow label="Payout collected"  value={`${commissionTotal ? Math.round((paidTotal / commissionTotal) * 100) : 0}%`} pct={commissionTotal ? (paidTotal / commissionTotal) * 100 : 0} className="from-violet-400 to-fuchsia-400" />
+              <ProgressRow label="Conversion rate"    value={`${s?.conversionRate ?? 0}%`} pct={s?.conversionRate ?? 0} className="from-teal-400 to-cyan-400" />
+              <ProgressRow label="Quarterly target"   value={`${wonCount} / ${goal} closed`} pct={goalPct} className="from-emerald-400 to-teal-400" />
+              <ProgressRow label="Payouts collected"  value={`${commissionTotal ? Math.round((paidTotal / commissionTotal) * 100) : 0}%`} pct={commissionTotal ? (paidTotal / commissionTotal) * 100 : 0} className="from-violet-400 to-fuchsia-400" />
             </div>
 
             <div className="mt-6 border-t border-white/5 pt-4 grid gap-3 sm:grid-cols-2">
-              <InfoRow icon={Trophy} label="Best-performing referral" value={bestReferral ? `${bestReferral.client_name} • ${fmtMoney(bestReferral.deal_value)}` : "No wins yet"} />
-              <InfoRow icon={Target} label="Deals to next tier"       value={`${Math.max(0, goal - wonCount)} more wins`} />
+              <InfoRow icon={Trophy} label="Top-performing referral" value={bestReferral ? `${bestReferral.client_name} • ${fmtMoney(bestReferral.deal_value)}` : "No closed deals yet"} />
+              <InfoRow icon={Target} label="Deals to next tier"     value={`${Math.max(0, goal - wonCount)} more to unlock`} />
             </div>
           </section>
 
@@ -549,17 +549,17 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
               <Wallet className="h-3.5 w-3.5" /> Commission summary
             </div>
             <p className="relative mt-3 text-3xl font-semibold tracking-tight">{fmtMoney(pendingPayout)}</p>
-            <p className="relative text-xs text-slate-400">pending payout</p>
+            <p className="relative text-xs text-slate-400">awaiting payout</p>
 
             <div className="relative mt-5 space-y-3">
-              <SummaryRow label="Paid till date"   value={fmtMoney(paidTotal)}       accent="text-emerald-300" />
-              <SummaryRow label="Total commission" value={fmtMoney(commissionTotal)} accent="text-slate-100" />
-              <SummaryRow label="Next payout"      value={fmtDate(nextPayout.toISOString())} accent="text-slate-100" />
+              <SummaryRow label="Paid to date"      value={fmtMoney(paidTotal)}       accent="text-emerald-300" />
+              <SummaryRow label="Total commission"  value={fmtMoney(commissionTotal)} accent="text-slate-100" />
+              <SummaryRow label="Next payout date"  value={fmtDate(nextPayout.toISOString())} accent="text-slate-100" />
             </div>
 
             <div className="relative mt-5 rounded-xl border border-white/10 bg-slate-950/40 p-3">
-              <div className="flex items-center gap-2 text-xs text-slate-400"><CalendarClock className="h-3.5 w-3.5" /> Payout cycle</div>
-              <p className="mt-1 text-xs text-slate-300 leading-relaxed">Approved commissions are cleared on the <span className="text-teal-300 font-medium">5th of each month</span> to your saved payout method.</p>
+              <div className="flex items-center gap-2 text-xs text-slate-400"><CalendarClock className="h-3.5 w-3.5" /> Payout schedule</div>
+              <p className="mt-1 text-xs text-slate-300 leading-relaxed">Approved commissions are released on the <span className="text-teal-300 font-medium">5th of every month</span> to your saved payout method.</p>
             </div>
 
             <Link to="/partner/earnings" className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-teal-400/30 bg-teal-400/10 text-teal-200 px-4 py-2 text-sm font-medium hover:bg-teal-400/15">
@@ -573,9 +573,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
           <div className="flex items-center justify-between p-5 border-b border-white/5">
             <div>
               <h3 className="text-sm font-semibold">Recent referrals</h3>
-              <p className="text-xs text-slate-400">Your five latest submissions and their current stage.</p>
+              <p className="text-xs text-slate-400">Your five most recent submissions and their current pipeline stage.</p>
             </div>
-            <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all →</Link>
+            <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all referrals →</Link>
           </div>
           {listQ.isLoading ? (
             <TableSkeleton />
@@ -625,14 +625,14 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
       <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
         <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
           <div className="flex items-center gap-2 text-xs text-teal-300">
-            <Sparkles className="h-3.5 w-3.5" /> Partner tips
+            <Sparkles className="h-3.5 w-3.5" /> Partner playbook
           </div>
-          <h3 className="mt-1 text-sm font-semibold">How to earn more</h3>
+          <h3 className="mt-1 text-sm font-semibold">Proven ways to grow your earnings</h3>
           <ul className="mt-4 space-y-3">
-            <TipRow n={1} title="Target mid-market ops teams" body="They convert 2× faster than enterprise leads." />
-            <TipRow n={2} title="Share the full deck early"    body="Prospects who see our case studies close in 40% less time." />
-            <TipRow n={3} title="Follow up within 48 hours"    body="Fastest wins come from partners who nudge us on stale leads." />
-            <TipRow n={4} title="Focus on retainer packages"   body="Recurring deals earn you recurring commissions." />
+            <TipRow n={1} title="Target mid-market operations teams" body="They typically convert twice as fast as enterprise leads." />
+            <TipRow n={2} title="Share our case studies upfront"     body="Prospects who see proven outcomes close in 40% less time." />
+            <TipRow n={3} title="Follow up within 48 hours"          body="Fast-moving partners close the majority of qualified deals." />
+            <TipRow n={4} title="Prioritise retainer packages"       body="Recurring engagements unlock recurring commissions for you." />
           </ul>
         </section>
 
@@ -643,15 +643,15 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
           </div>
           <h3 className="relative mt-1 text-sm font-semibold">How commissions work</h3>
           <p className="relative mt-2 text-xs text-slate-400 leading-relaxed">
-            Earn <span className="text-teal-300 font-medium">10–15%</span> on the first-year contract value of every closed referral. Retainer packages pay recurring commissions for the lifetime of the account.
+            Earn <span className="text-teal-300 font-medium">10–15%</span> on the first-year contract value of every closed referral. Retainer engagements pay recurring commissions for the lifetime of the account.
           </p>
           <div className="relative mt-4 space-y-2 text-xs">
-            <ProgramLine label="Standard tier" value="10% • up to 5 wins" />
-            <ProgramLine label="Verified tier" value="12% • 5+ wins" />
-            <ProgramLine label="Elite tier"    value="15% • 10+ wins" />
+            <ProgramLine label="Standard tier" value="10% • up to 5 closed deals" />
+            <ProgramLine label="Verified tier" value="12% • 5+ closed deals" />
+            <ProgramLine label="Elite tier"    value="15% • 10+ closed deals" />
           </div>
           <Link to="/affiliate" className="relative mt-4 inline-flex items-center gap-1 text-xs text-cyan-300 hover:underline">
-            Read the full program terms →
+            Review the full program terms →
           </Link>
         </section>
 
@@ -730,11 +730,11 @@ function DashboardHero({ partner, referralLink, copied, setCopied, onOpenModal }
         <div className="min-w-0">
           <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Welcome back, {partner.full_name?.split(" ")[0] ?? "Partner"}</p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">Partner Dashboard</h2>
-          <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track referrals, conversion, deal value, and payouts in one place.</p>
+          <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Monitor referrals, deal progress, earnings, and payout status from one workspace.</p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
           <div className="w-full md:min-w-[300px]">
-            <label className="text-[10px] uppercase tracking-widest text-slate-400">Your referral link</label>
+            <label className="text-[10px] uppercase tracking-widest text-slate-400">Your unique referral link</label>
             <div className="mt-1.5 flex items-stretch gap-2 rounded-xl border border-white/10 bg-slate-950/40 p-1.5">
               <input readOnly value={referralLink}
                 className="flex-1 min-w-0 bg-transparent px-2 text-xs text-slate-200 outline-none" />

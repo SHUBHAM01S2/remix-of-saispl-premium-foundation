@@ -131,7 +131,7 @@ function EarningsPage() {
               <ShieldCheck className="h-3 w-3" /> Verified partner earnings
             </div>
             <h1 className="mt-3 truncate text-2xl sm:text-3xl font-semibold tracking-tight">Earnings & Payouts</h1>
-            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track every commission you've earned, every payout in flight, and everything that's already landed in your account.</p>
+            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Review every commission you've earned, monitor payouts in progress, and view a complete history of payments already released to your account.</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button
@@ -139,7 +139,7 @@ function EarningsPage() {
               disabled={earning.length === 0}
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-slate-100 hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <Download className="h-4 w-4" /> Statement
+              <Download className="h-4 w-4" /> Export statement
             </button>
           </div>
         </div>
@@ -147,9 +147,9 @@ function EarningsPage() {
         {/* Hero stats grid */}
         <div className="relative mt-6 grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
           <HeroMoney tint="from-teal-500/25 to-cyan-500/5" icon={Wallet} label="Total earnings" value={fmtMoney(totalCommission)} sub="Lifetime commission" loading={s.isLoading} />
-          <HeroMoney tint="from-amber-500/25 to-orange-500/5" icon={Clock} label="Pending payout" value={fmtMoney(pendingPayout)} sub={`Next in ${daysToPayout}d`} loading={s.isLoading} />
-          <HeroMoney tint="from-emerald-500/25 to-teal-500/5" icon={CheckCircle2} label="Paid amount" value={fmtMoney(paidTotal)} sub="Cleared to date" loading={s.isLoading} />
-          <HeroMoney tint="from-violet-500/25 to-fuchsia-500/5" icon={TrendingUp} label="This month" value={fmtMoney(thisMonthEarnings)} sub={momDelta ? `${momDelta.value} vs last month` : "First month"} delta={momDelta ?? undefined} loading={l.isLoading} />
+          <HeroMoney tint="from-amber-500/25 to-orange-500/5" icon={Clock} label="Pending payout" value={fmtMoney(pendingPayout)} sub={`Releases in ${daysToPayout} days`} loading={s.isLoading} />
+          <HeroMoney tint="from-emerald-500/25 to-teal-500/5" icon={CheckCircle2} label="Paid to date" value={fmtMoney(paidTotal)} sub="Successfully cleared" loading={s.isLoading} />
+          <HeroMoney tint="from-violet-500/25 to-fuchsia-500/5" icon={TrendingUp} label="This month" value={fmtMoney(thisMonthEarnings)} sub={momDelta ? `${momDelta.value} vs. last month` : "First month of earnings"} delta={momDelta ?? undefined} loading={l.isLoading} />
         </div>
       </section>
 
@@ -252,12 +252,12 @@ function EarningsPage() {
                 icon={Wallet}
                 tone="indigo"
                 compact
-                title="No payouts in this stage"
-                body="Nothing sits at this payout stage right now. Try a different tab, or keep the pipeline flowing with a fresh referral."
-                cta={{ label: "Submit a referral", onClick: openNewReferral, icon: Sparkles }}
+                title="No payouts in this stage right now"
+                body="There are no commissions at this payout stage yet. Switch to another tab to review activity, or keep the pipeline moving by submitting a new referral."
+                cta={{ label: "Submit a new referral", onClick: openNewReferral, icon: Sparkles }}
                 quickLinks={[
                   { label: "View all payouts", onClick: () => setLedgerFilter("all"), icon: ArrowUpRight },
-                  { label: "Commission rules", to: "/partner/profile", icon: BookOpen },
+                  { label: "Review commission policy", to: "/partner/profile", icon: BookOpen },
                 ]}
               />
             </div>
@@ -540,18 +540,18 @@ function EarningsEmpty({ onOpen }: { onOpen: () => void }) {
     <PartnerEmptyState
       illustration={<CoinsIllustration />}
       tone="emerald"
-      eyebrow="Your earnings will land here"
-      title="No commissions yet — but they're on the way"
-      body="Once one of your referrals closes, you'll see the commission calculated, its payout stage, and every payment we send you — all in one clean ledger."
+      eyebrow="Your earnings will appear here"
+      title="No commissions yet — they'll show up the moment a deal closes"
+      body="As soon as one of your referrals closes, we'll calculate the commission, track its payout stage, and log every payment released to you — all in a single, transparent ledger."
       cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
       quickLinks={[
-        { label: "How commissions work", to: "/partner/profile", icon: BookOpen },
-        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+        { label: "How commissions are calculated", to: "/partner/profile", icon: BookOpen },
+        { label: "Copy your referral link", to: "/partner/profile", icon: Copy },
       ]}
       steps={[
-        { title: "Deal closes", body: "We mark your referral as won." },
-        { title: "Commission approved", body: "Reviewed within 5 business days." },
-        { title: "Payout on the 5th", body: "Sent to your chosen method." },
+        { title: "Deal closes", body: "The referred client signs and we mark the referral as won." },
+        { title: "Commission approved", body: "Our finance team reviews and approves within 5 business days." },
+        { title: "Payout released on the 5th", body: "Funds are sent to your saved payout method every month." },
       ]}
     />
   );
