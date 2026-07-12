@@ -537,31 +537,22 @@ function LedgerSkeleton() {
 
 function EarningsEmpty({ onOpen }: { onOpen: () => void }) {
   return (
-    <div className="relative overflow-hidden px-6 py-14 sm:px-10 sm:py-16 text-center">
-      <div className="absolute -top-12 left-1/2 -translate-x-1/2 h-40 w-72 rounded-full bg-teal-500/10 blur-3xl" />
-      <div className="relative mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-teal-500/25 to-cyan-500/10 text-teal-300 ring-1 ring-teal-400/25">
-        <Wallet className="h-6 w-6" />
-      </div>
-      <h3 className="relative mt-4 text-lg font-semibold">Your earnings will land here</h3>
-      <p className="relative mx-auto mt-1.5 max-w-md text-sm text-slate-400">
-        Once one of your referrals closes, you'll see the commission calculated, its payout stage, and every payment we send you — all in one clean ledger.
-      </p>
-      <div className="relative mx-auto mt-6 grid max-w-2xl gap-3 sm:grid-cols-3 text-left">
-        {[
-          { label: "Deal closes", desc: "We mark your referral as won." },
-          { label: "Commission approved", desc: "Reviewed within 5 business days." },
-          { label: "Payout on the 5th", desc: "Sent to your chosen method." },
-        ].map((step, i) => (
-          <div key={i} className="rounded-xl border border-white/5 bg-slate-950/40 p-4">
-            <div className="grid h-6 w-6 place-items-center rounded-md bg-teal-400/15 text-teal-300 text-xs font-semibold ring-1 ring-teal-400/20">{i + 1}</div>
-            <div className="mt-2 text-sm font-semibold">{step.label}</div>
-            <div className="mt-1 text-xs text-slate-400">{step.desc}</div>
-          </div>
-        ))}
-      </div>
-      <button onClick={onOpen} className="relative mt-7 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 hover:brightness-110 transition">
-        <Sparkles className="h-4 w-4" /> Submit your first referral
-      </button>
-    </div>
+    <PartnerEmptyState
+      illustration={<CoinsIllustration />}
+      tone="emerald"
+      eyebrow="Your earnings will land here"
+      title="No commissions yet — but they're on the way"
+      body="Once one of your referrals closes, you'll see the commission calculated, its payout stage, and every payment we send you — all in one clean ledger."
+      cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
+      quickLinks={[
+        { label: "How commissions work", to: "/partner/profile", icon: BookOpen },
+        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+      ]}
+      steps={[
+        { title: "Deal closes", body: "We mark your referral as won." },
+        { title: "Commission approved", body: "Reviewed within 5 business days." },
+        { title: "Payout on the 5th", body: "Sent to your chosen method." },
+      ]}
+    />
   );
 }
