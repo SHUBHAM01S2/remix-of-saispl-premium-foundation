@@ -573,9 +573,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
           <div className="flex items-center justify-between p-5 border-b border-white/5">
             <div>
               <h3 className="text-sm font-semibold">Recent referrals</h3>
-              <p className="text-xs text-slate-400">Your five latest submissions and their current stage.</p>
+              <p className="text-xs text-slate-400">Your five most recent submissions and their current pipeline stage.</p>
             </div>
-            <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all →</Link>
+            <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all referrals →</Link>
           </div>
           {listQ.isLoading ? (
             <TableSkeleton />
