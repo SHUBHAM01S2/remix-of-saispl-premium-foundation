@@ -174,7 +174,6 @@ function PartnerShell() {
     return `${window.location.origin}/?ref=${code}`;
   }, [partner]);
 
-  const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => setModalOpen(true);
 
   return (
