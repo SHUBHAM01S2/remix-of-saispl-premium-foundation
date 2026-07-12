@@ -6,11 +6,14 @@ import {
   LayoutDashboard, Users, TrendingUp, User as UserIcon, LogOut, Loader2, Sparkles,
   ArrowUpRight, ArrowDownRight, BadgeDollarSign, CheckCircle2, Handshake, XCircle,
   Eye, EyeOff, Bell, Menu, X, Copy, Check, Trophy, Target, HelpCircle,
-  Wallet, CalendarClock, Rocket, Clock, Award,
+  Wallet, CalendarClock, Rocket, Clock, Award, AlertTriangle, RefreshCw,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyPartnerProfile, getMyStats, listMyReferrals } from "@/lib/partners.functions";
 import { fmtDate, fmtMoney, StatusChip } from "@/lib/partners-ui";
+import { NewReferralModal } from "@/components/partner/NewReferralModal";
+import { NewReferralContext, useOpenNewReferral } from "@/components/partner/new-referral-context";
+
 
 export const Route = createFileRoute("/partner")({
   ssr: false,
