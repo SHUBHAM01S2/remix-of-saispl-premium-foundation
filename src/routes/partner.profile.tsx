@@ -113,7 +113,7 @@ function ProfilePage() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); m.mutate(); }}
-      className="grid gap-6 lg:grid-cols-[300px,1fr] items-start"
+      className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start"
     >
       {/* Sidebar summary */}
       <aside className="space-y-4 lg:sticky lg:top-6">
