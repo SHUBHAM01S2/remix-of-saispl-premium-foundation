@@ -170,16 +170,9 @@ function PartnerShell() {
     );
   }
 
-  const partner = profileQ.data;
   const path = location.pathname.replace(/\/$/, "") || "/partner";
   const header = PAGE_TITLES[path] ?? PAGE_TITLES[Object.keys(PAGE_TITLES).find((k) => path.startsWith(k)) ?? "/partner"] ?? PAGE_TITLES["/partner"];
-  const initials = (partner.full_name ?? partner.email ?? "P").split(" ").map((s) => s[0]).slice(0, 2).join("").toUpperCase();
-
-  const referralLink = useMemo(() => {
-    const code = (partner as any).referral_code ?? partner.id ?? "";
-    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
-    return `${window.location.origin}/?ref=${code}`;
-  }, [partner]);
+  const initials = (partner!.full_name ?? partner!.email ?? "P").split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
 
   const openModal = () => setModalOpen(true);
 
