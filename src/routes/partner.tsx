@@ -549,17 +549,17 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
               <Wallet className="h-3.5 w-3.5" /> Commission summary
             </div>
             <p className="relative mt-3 text-3xl font-semibold tracking-tight">{fmtMoney(pendingPayout)}</p>
-            <p className="relative text-xs text-slate-400">pending payout</p>
+            <p className="relative text-xs text-slate-400">awaiting payout</p>
 
             <div className="relative mt-5 space-y-3">
-              <SummaryRow label="Paid till date"   value={fmtMoney(paidTotal)}       accent="text-emerald-300" />
-              <SummaryRow label="Total commission" value={fmtMoney(commissionTotal)} accent="text-slate-100" />
-              <SummaryRow label="Next payout"      value={fmtDate(nextPayout.toISOString())} accent="text-slate-100" />
+              <SummaryRow label="Paid to date"      value={fmtMoney(paidTotal)}       accent="text-emerald-300" />
+              <SummaryRow label="Total commission"  value={fmtMoney(commissionTotal)} accent="text-slate-100" />
+              <SummaryRow label="Next payout date"  value={fmtDate(nextPayout.toISOString())} accent="text-slate-100" />
             </div>
 
             <div className="relative mt-5 rounded-xl border border-white/10 bg-slate-950/40 p-3">
-              <div className="flex items-center gap-2 text-xs text-slate-400"><CalendarClock className="h-3.5 w-3.5" /> Payout cycle</div>
-              <p className="mt-1 text-xs text-slate-300 leading-relaxed">Approved commissions are cleared on the <span className="text-teal-300 font-medium">5th of each month</span> to your saved payout method.</p>
+              <div className="flex items-center gap-2 text-xs text-slate-400"><CalendarClock className="h-3.5 w-3.5" /> Payout schedule</div>
+              <p className="mt-1 text-xs text-slate-300 leading-relaxed">Approved commissions are released on the <span className="text-teal-300 font-medium">5th of every month</span> to your saved payout method.</p>
             </div>
 
             <Link to="/partner/earnings" className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-teal-400/30 bg-teal-400/10 text-teal-200 px-4 py-2 text-sm font-medium hover:bg-teal-400/15">
