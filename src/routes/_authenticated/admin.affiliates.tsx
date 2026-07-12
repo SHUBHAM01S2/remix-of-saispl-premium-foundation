@@ -655,6 +655,126 @@ function HealthBar({
   );
 }
 
+type HealthStatus = "healthy" | "watch" | "critical";
+
+function HealthMetric({
+  icon: Icon,
+  label,
+  value,
+  supporting,
+  pct,
+  status,
+  warning,
+  to,
+  ctaLabel,
+}: {
+  icon: any;
+  label: string;
+  value: string;
+  supporting: string;
+  pct: number;
+  status: HealthStatus;
+  warning?: string | null;
+  to: string;
+  ctaLabel: string;
+}) {
+  const styles =
+    status === "healthy"
+      ? {
+          chipBg: "bg-emerald-500/10 text-emerald-300 ring-emerald-400/25",
+          bar: "from-emerald-500 to-teal-400",
+          icon: "bg-emerald-500/10 text-emerald-200 ring-emerald-400/25",
+          rail: "ring-emerald-400/15",
+          chipLabel: "Healthy",
+          dot: "bg-emerald-400",
+        }
+      : status === "watch"
+      ? {
+          chipBg: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+          bar: "from-cyan-500 to-sky-400",
+          icon: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+          rail: "ring-cyan-400/15",
+          chipLabel: "Watch",
+          dot: "bg-cyan-400",
+        }
+      : {
+          chipBg: "bg-amber-500/10 text-amber-200 ring-amber-400/30",
+          bar: "from-amber-500 to-orange-400",
+          icon: "bg-amber-500/10 text-amber-200 ring-amber-400/30",
+          rail: "ring-amber-400/15",
+          chipLabel: "At risk",
+          dot: "bg-amber-400",
+        };
+
+  const clamped = Math.min(100, Math.max(0, pct));
+
+  return (
+    <div
+      className={`group relative flex flex-col gap-3 rounded-2xl border border-border/50 bg-background/40 p-4 ring-1 ${styles.rail} transition hover:border-border/70 hover:bg-background/60`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span
+            className={`grid h-8 w-8 place-items-center rounded-lg ring-1 ${styles.icon}`}
+          >
+            <Icon className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {label}
+            </p>
+          </div>
+        </div>
+        <span
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ring-1 ${styles.chipBg}`}
+        >
+          <span className={`h-1.5 w-1.5 rounded-full ${styles.dot}`} />
+          {styles.chipLabel}
+        </span>
+      </div>
+
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="truncate text-2xl font-semibold tracking-tight text-foreground tabular-nums">
+          {value}
+        </span>
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground tabular-nums">
+          {clamped}%
+        </span>
+      </div>
+
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+        <div
+          className={`h-full rounded-full bg-gradient-to-r ${styles.bar}`}
+          style={{ width: `${clamped}%` }}
+        />
+      </div>
+
+      <p className="min-h-[16px] truncate text-[11px] text-muted-foreground">
+        {supporting}
+      </p>
+
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-border/40 pt-3">
+        {warning ? (
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-200 ring-1 ring-amber-400/25">
+            <AlertTriangle className="h-3 w-3" /> {warning}
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/[0.08] px-2 py-0.5 text-[10px] font-semibold text-emerald-300/90 ring-1 ring-emerald-400/20">
+            <CheckCircle2 className="h-3 w-3" /> On track
+          </span>
+        )}
+        <Link
+          to={to}
+          className="inline-flex items-center gap-1 text-[11px] font-medium text-cyan-300 transition hover:text-cyan-200"
+        >
+          {ctaLabel} <ArrowUpRight className="h-3 w-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+
 function AlertRow({
   icon: Icon, tone, label, value, hint, to,
 }: {
