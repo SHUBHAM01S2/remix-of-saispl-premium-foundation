@@ -148,17 +148,52 @@ function AffiliatesOverview() {
     .filter((r) => OPEN_STATUSES.has(r.status))
     .reduce((s, r) => s + Number(r.deal_value ?? 0), 0);
 
+  const activeRate = d && d.totalPartners ? Math.round(((d.activePartners ?? 0) / d.totalPartners) * 100) : 0;
+  const openReferrals = refs.filter((r) => OPEN_STATUSES.has(r.status)).length;
+  const openRate = d && d.totalReferrals ? Math.round((openReferrals / d.totalReferrals) * 100) : 0;
+  const paidCount = refs.filter((r) => r.payout_status === "paid").length;
+  const pendingCount = refs.filter((r) => r.payout_status !== "paid" && Number(r.commission_amount ?? 0) > 0).length;
+  const payoutReadiness = paidCount + pendingCount > 0
+    ? Math.round((paidCount / (paidCount + pendingCount)) * 100)
+    : 0;
+
+  const recent = [...refs]
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5);
+
+  const activePartnersWithRefs = new Set(refs.map((r) => r.partner_id)).size;
+  const partnersNoActivity = d ? Math.max(0, (d.totalPartners ?? 0) - activePartnersWithRefs) : 0;
+  const pendingReview = refs.filter((r) => r.payout_status === "pending").length;
+
   return (
     <div className="space-y-6">
-      {/* KPI clusters */}
+      {/* Hero action cards: pending payout + pipeline value */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <HeroCard
+          tone="amber"
+          eyebrow="Awaiting release"
+          label="Pending payout"
+          value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
+          hint={`${pendingReview} referral${pendingReview === 1 ? "" : "s"} awaiting review`}
+          icon={Wallet}
+          cta={{ to: "/admin/affiliates/payouts", label: "Open payout queue" }}
+        />
+        <HeroCard
+          tone="cyan"
+          eyebrow="Live pipeline"
+          label="Pipeline deal value"
+          value={loading ? "—" : fmtMoney(openPipelineValue)}
+          hint={`${openReferrals} open deal${openReferrals === 1 ? "" : "s"} in motion`}
+          icon={TrendingUp}
+          cta={{ to: "/admin/affiliates/referrals", label: "View pipeline" }}
+        />
+      </div>
+
+      {/* KPI groups */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <ClusterCard title="Partners" hint="Network health" icon={Users}>
+        <ClusterCard title="Partner metrics" hint="Network" icon={Users}>
           <KpiTile label="Total" value={loading ? "—" : d?.totalPartners ?? 0} />
-          <KpiTile
-            label="Active"
-            value={loading ? "—" : d?.activePartners ?? 0}
-            tone="emerald"
-          />
+          <KpiTile label="Active" value={loading ? "—" : d?.activePartners ?? 0} tone="emerald" />
           <KpiTile
             label="Inactive"
             value={loading ? "—" : inactivePartners}
@@ -166,189 +201,227 @@ function AffiliatesOverview() {
           />
         </ClusterCard>
 
-        <ClusterCard title="Pipeline" hint="Deal flow" icon={TrendingUp}>
+        <ClusterCard title="Referrals & pipeline" hint="Deal flow" icon={TrendingUp}>
           <KpiTile label="Referrals" value={loading ? "—" : d?.totalReferrals ?? 0} />
-          <KpiTile
-            label="Won this mo."
-            value={loading ? "—" : d?.wonThisMonth ?? 0}
-            tone="emerald"
-          />
-          <KpiTile
-            label="Open value"
-            value={loading ? "—" : fmtMoney(openPipelineValue)}
-            tone="cyan"
-            money
-          />
+          <KpiTile label="Open" value={loading ? "—" : openReferrals} tone="cyan" />
+          <KpiTile label="Won this mo." value={loading ? "—" : d?.wonThisMonth ?? 0} tone="emerald" />
         </ClusterCard>
 
-        <ClusterCard title="Commissions" hint="Cash position" icon={Wallet}>
-          <KpiTile
-            label="Pending"
-            value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
-            tone="amber"
-            money
-          />
-          <KpiTile
-            label="Approved"
-            value={loading ? "—" : fmtMoney(approvedTotal)}
-            tone="cyan"
-            money
-          />
-          <KpiTile
-            label="Paid"
-            value={loading ? "—" : fmtMoney(paidTotal)}
-            tone="emerald"
-            money
-          />
+        <ClusterCard title="Earnings & payouts" hint="Cash" icon={BadgeDollarSign}>
+          <KpiTile label="Deal value" value={loading ? "—" : fmtMoney(d?.dealValue ?? 0)} money />
+          <KpiTile label="Approved" value={loading ? "—" : fmtMoney(approvedTotal)} tone="cyan" money />
+          <KpiTile label="Paid" value={loading ? "—" : fmtMoney(paidTotal)} tone="emerald" money />
         </ClusterCard>
       </div>
 
-      {/* Attention / signals */}
-      <section className="grid gap-3 md:grid-cols-3">
-        <SignalCard
-          tone={stalled.length > 0 ? "amber" : "neutral"}
-          icon={Clock}
-          label="Stalled referrals"
-          value={loading ? "—" : stalled.length}
-          hint={`No activity in ${STALL_DAYS}+ days`}
-          cta={stalled.length > 0 ? { to: "/admin/affiliates/referrals", label: "Review" } : undefined}
-        />
-        <SignalCard
-          tone={inactivePartners > 0 ? "amber" : "neutral"}
-          icon={UserX}
-          label="Inactive partners"
-          value={loading ? "—" : inactivePartners}
-          hint="Paused or dormant partners"
-          cta={inactivePartners > 0 ? { to: "/admin/affiliates/partners", label: "View" } : undefined}
-        />
-        <SignalCard
-          tone={(d?.pendingPayout ?? 0) > 0 ? "cyan" : "neutral"}
-          icon={BadgeDollarSign}
-          label="Awaiting release"
-          value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
-          hint="Approve to release funds"
-          cta={(d?.pendingPayout ?? 0) > 0 ? { to: "/admin/affiliates/payouts", label: "Approve" } : undefined}
-        />
-      </section>
+      {/* Program health */}
+      <Panel eyebrow="Program health" title="Operational status" >
+        <div className="grid gap-5 p-5 sm:grid-cols-2 lg:grid-cols-4">
+          <HealthBar
+            label="Active partners"
+            pct={activeRate}
+            caption={loading ? "—" : `${d?.activePartners ?? 0} of ${d?.totalPartners ?? 0} onboarded`}
+            tone={activeRate >= 60 ? "emerald" : activeRate >= 30 ? "cyan" : "amber"}
+          />
+          <HealthBar
+            label="Referrals in progress"
+            pct={openRate}
+            caption={loading ? "—" : `${openReferrals} open of ${d?.totalReferrals ?? 0}`}
+            tone="cyan"
+          />
+          <HealthBar
+            label="Conversion performance"
+            pct={wonRate}
+            caption={loading ? "—" : `${d?.wonThisMonth ?? 0} won this month`}
+            tone={wonRate >= 25 ? "emerald" : wonRate >= 10 ? "cyan" : "amber"}
+          />
+          <HealthBar
+            label="Payout readiness"
+            pct={payoutReadiness}
+            caption={loading ? "—" : `${paidCount} paid · ${pendingCount} pending`}
+            tone={payoutReadiness >= 70 ? "emerald" : payoutReadiness >= 40 ? "cyan" : "amber"}
+          />
+        </div>
+      </Panel>
 
-      {/* Two-column body */}
+      {/* Two-column: leaderboard + side rail (alerts, recent, snapshot) */}
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        {/* Top partners */}
-        <Panel
-          eyebrow="Leaderboard"
-          title="Top partners by commission"
-          action={
-            <Link
-              to="/admin/affiliates/partners"
-              className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
-            >
-              All partners <ArrowUpRight className="h-3 w-3" />
-            </Link>
-          }
-        >
-          {loading ? (
-            <PanelLoading />
-          ) : !d || d.leaderboard.length === 0 ? (
-            <EmptyState
-              icon={Trophy}
-              title="No partner activity yet"
-              body="Once partners start closing referrals, top performers appear here ranked by commission earned."
-              cta={{ to: "/admin/affiliates/partners", label: "Invite a partner" }}
-            />
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                    <th className="px-5 py-2.5 font-semibold">#</th>
-                    <th className="px-5 py-2.5 font-semibold">Partner</th>
-                    <th className="px-5 py-2.5 text-right font-semibold">Won</th>
-                    <th className="px-5 py-2.5 text-right font-semibold">Commission</th>
-                    <th className="px-5 py-2.5 font-semibold w-[120px]">Share</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {d.leaderboard.map((b, i) => {
-                    const top = d.leaderboard[0].commission || 1;
-                    const pct = Math.max(4, Math.round((b.commission / top) * 100));
-                    return (
-                      <tr
-                        key={b.partner_id}
-                        className="border-t border-border/40 transition-colors hover:bg-muted/20"
-                      >
-                        <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
-                          <RankBadge index={i} />
-                        </td>
-                        <td className="px-5 py-2.5">
-                          <Link
-                            to="/admin/affiliates/partners/$id"
-                            params={{ id: b.partner_id }}
-                            className="group flex min-w-0 items-center gap-2.5"
-                          >
-                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[11px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
-                              {initials(b.name)}
-                            </span>
-                            <span className="min-w-0">
-                              <span className="block truncate font-medium text-foreground group-hover:text-cyan-200">
-                                {b.name}
-                              </span>
-                              <span className="block truncate text-xs text-muted-foreground">
-                                {b.company ?? "—"}
-                              </span>
-                            </span>
-                          </Link>
-                        </td>
-                        <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
-                        <td className="px-5 py-2.5 text-right font-semibold tabular-nums text-cyan-200">
-                          {fmtMoney(b.commission)}
-                        </td>
-                        <td className="px-5 py-2.5">
-                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
-                            <div
-                              className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </Panel>
-
-        {/* Side rail */}
         <div className="space-y-5">
-          <Panel eyebrow="Conversion" title="Program performance">
+          {/* Leaderboard */}
+          <Panel
+            eyebrow="Leaderboard"
+            title="Top partners by commission"
+            action={
+              <Link
+                to="/admin/affiliates/partners"
+                className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
+              >
+                All partners <ArrowUpRight className="h-3 w-3" />
+              </Link>
+            }
+          >
             {loading ? (
-              <PanelLoading rows={2} />
+              <PanelLoading />
+            ) : !d || d.leaderboard.length === 0 ? (
+              <EmptyState
+                icon={Trophy}
+                title="Leaderboard is warming up"
+                body="No commissions have been earned yet. Invite partners and log their first referrals — top performers will rank here automatically."
+                cta={{ to: "/admin/affiliates/partners", label: "Invite a partner" }}
+              />
             ) : (
-              <div className="space-y-3 p-5">
-                <div>
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs text-muted-foreground">Win rate</span>
-                    <span className="text-lg font-semibold tabular-nums">{wonRate}%</span>
-                  </div>
-                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400"
-                      style={{ width: `${Math.min(100, wonRate)}%` }}
-                    />
-                  </div>
-                  <p className="mt-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
-                    Won this month vs. all referrals
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 pt-2">
-                  <MiniStat label="Total deal value" value={fmtMoney(d?.dealValue ?? 0)} />
-                  <MiniStat label="Open pipeline" value={fmtMoney(openPipelineValue)} />
-                </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                      <th className="px-5 py-2.5 font-semibold">#</th>
+                      <th className="px-5 py-2.5 font-semibold">Partner</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Won</th>
+                      <th className="px-5 py-2.5 text-right font-semibold">Commission</th>
+                      <th className="px-5 py-2.5 font-semibold w-[120px]">Share</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {d.leaderboard.map((b, i) => {
+                      const top = d.leaderboard[0].commission || 1;
+                      const pct = Math.max(4, Math.round((b.commission / top) * 100));
+                      return (
+                        <tr
+                          key={b.partner_id}
+                          className="border-t border-border/40 transition-colors hover:bg-muted/20"
+                        >
+                          <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
+                            <RankBadge index={i} />
+                          </td>
+                          <td className="px-5 py-2.5">
+                            <Link
+                              to="/admin/affiliates/partners/$id"
+                              params={{ id: b.partner_id }}
+                              className="group flex min-w-0 items-center gap-2.5"
+                            >
+                              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[11px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
+                                {initials(b.name)}
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block truncate font-medium text-foreground group-hover:text-cyan-200">
+                                  {b.name}
+                                </span>
+                                <span className="block truncate text-xs text-muted-foreground">
+                                  {b.company ?? "—"}
+                                </span>
+                              </span>
+                            </Link>
+                          </td>
+                          <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
+                          <td className="px-5 py-2.5 text-right font-semibold tabular-nums text-cyan-200">
+                            {fmtMoney(b.commission)}
+                          </td>
+                          <td className="px-5 py-2.5">
+                            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                              <div
+                                className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             )}
           </Panel>
 
+          {/* Recent referral activity */}
+          <Panel
+            eyebrow="Activity"
+            title="Recent referrals"
+            action={
+              <Link
+                to="/admin/affiliates/referrals"
+                className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
+              >
+                All referrals <ArrowUpRight className="h-3 w-3" />
+              </Link>
+            }
+          >
+            {loading ? (
+              <PanelLoading rows={3} />
+            ) : recent.length === 0 ? (
+              <EmptyState
+                icon={Handshake}
+                title="No referrals yet"
+                body="When partners submit new deals, they show up here so you can triage them fast."
+                cta={{ to: "/admin/affiliates/referrals", label: "Open referrals" }}
+              />
+            ) : (
+              <ul className="divide-y divide-border/40">
+                {recent.map((r) => (
+                  <li key={r.id} className="flex items-center gap-3 px-5 py-3">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[10px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
+                      {initials(r.partner?.full_name ?? "—")}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline gap-2">
+                        <p className="truncate text-sm font-medium text-foreground">
+                          {r.client_name ?? "Untitled"}
+                        </p>
+                        <StatusPill status={r.status} />
+                      </div>
+                      <p className="truncate text-[11px] text-muted-foreground">
+                        {r.partner?.full_name ?? "—"} · {timeAgo(r.created_at)}
+                      </p>
+                    </div>
+                    <span className="shrink-0 text-sm font-semibold tabular-nums text-cyan-200">
+                      {fmtMoney(Number(r.deal_value ?? 0))}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Panel>
+        </div>
+
+        {/* Side rail */}
+        <div className="space-y-5">
+          {/* Needs attention */}
+          <Panel eyebrow="Operations" title="Needs attention">
+            <div className="space-y-2.5 p-4">
+              <AlertRow
+                icon={UserX}
+                tone={partnersNoActivity > 0 ? "amber" : "neutral"}
+                label="Partners with no activity"
+                value={loading ? "—" : partnersNoActivity}
+                hint="Never submitted a referral"
+                to="/admin/affiliates/partners"
+              />
+              <AlertRow
+                icon={Clock}
+                tone={stalled.length > 0 ? "amber" : "neutral"}
+                label="Stuck referrals"
+                value={loading ? "—" : stalled.length}
+                hint={`No activity in ${STALL_DAYS}+ days`}
+                to="/admin/affiliates/referrals"
+              />
+              <AlertRow
+                icon={AlertTriangle}
+                tone={pendingReview > 0 ? "cyan" : "neutral"}
+                label="Payouts awaiting review"
+                value={loading ? "—" : pendingReview}
+                hint="Approve to release funds"
+                to="/admin/affiliates/payouts"
+              />
+              {!loading && partnersNoActivity === 0 && stalled.length === 0 && pendingReview === 0 && (
+                <div className="flex items-center gap-2 rounded-lg border border-emerald-400/20 bg-emerald-500/5 px-3 py-2.5 text-xs text-emerald-200">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  All clear — no operational issues.
+                </div>
+              )}
+            </div>
+          </Panel>
+
+          {/* Payout snapshot */}
           <Panel eyebrow="Cash flow" title="Payout snapshot">
             {loading ? (
               <PanelLoading rows={3} />
@@ -370,6 +443,168 @@ function AffiliatesOverview() {
       </div>
     </div>
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* Extra building blocks                                               */
+/* ------------------------------------------------------------------ */
+
+function HeroCard({
+  tone, eyebrow, label, value, hint, icon: Icon, cta,
+}: {
+  tone: "amber" | "cyan";
+  eyebrow: string;
+  label: string;
+  value: React.ReactNode;
+  hint: string;
+  icon: any;
+  cta: { to: string; label: string };
+}) {
+  const styles =
+    tone === "amber"
+      ? {
+          ring: "ring-amber-400/25",
+          bg: "from-amber-500/[0.08] via-amber-500/[0.02] to-transparent",
+          accent: "text-amber-200",
+          dot: "bg-amber-400",
+          btn: "border-amber-400/30 text-amber-100 hover:bg-amber-500/10",
+          icon: "bg-amber-500/15 text-amber-200 ring-amber-400/30",
+        }
+      : {
+          ring: "ring-cyan-400/25",
+          bg: "from-cyan-500/[0.08] via-cyan-500/[0.02] to-transparent",
+          accent: "text-cyan-200",
+          dot: "bg-cyan-400",
+          btn: "border-cyan-400/30 text-cyan-100 hover:bg-cyan-500/10",
+          icon: "bg-cyan-500/15 text-cyan-200 ring-cyan-400/30",
+        };
+  return (
+    <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${styles.bg} p-5 ring-1 ${styles.ring}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+            <span className={`h-1.5 w-1.5 rounded-full ${styles.dot}`} />
+            {eyebrow}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">{label}</p>
+          <p className={`mt-1 text-3xl font-semibold tabular-nums tracking-tight sm:text-4xl ${styles.accent}`}>
+            {value}
+          </p>
+          <p className="mt-2 text-[11px] text-muted-foreground">{hint}</p>
+        </div>
+        <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ring-1 ${styles.icon}`}>
+          <Icon className="h-5 w-5" />
+        </span>
+      </div>
+      <Link
+        to={cta.to}
+        className={`mt-4 inline-flex items-center gap-1.5 rounded-lg border bg-background/20 px-3 py-1.5 text-xs font-semibold transition ${styles.btn}`}
+      >
+        {cta.label} <ArrowUpRight className="h-3 w-3" />
+      </Link>
+    </div>
+  );
+}
+
+function HealthBar({
+  label, pct, caption, tone,
+}: {
+  label: string;
+  pct: number;
+  caption: string;
+  tone: "emerald" | "cyan" | "amber";
+}) {
+  const bar =
+    tone === "emerald" ? "from-emerald-500 to-teal-400"
+    : tone === "amber" ? "from-amber-500 to-orange-400"
+    : "from-cyan-500 to-teal-400";
+  const txt =
+    tone === "emerald" ? "text-emerald-300"
+    : tone === "amber" ? "text-amber-300"
+    : "text-cyan-200";
+  return (
+    <div>
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-xs font-medium text-foreground">{label}</span>
+        <span className={`text-sm font-semibold tabular-nums ${txt}`}>{pct}%</span>
+      </div>
+      <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+        <div
+          className={`h-full rounded-full bg-gradient-to-r ${bar}`}
+          style={{ width: `${Math.min(100, Math.max(0, pct))}%` }}
+        />
+      </div>
+      <p className="mt-1.5 truncate text-[10px] uppercase tracking-wider text-muted-foreground">
+        {caption}
+      </p>
+    </div>
+  );
+}
+
+function AlertRow({
+  icon: Icon, tone, label, value, hint, to,
+}: {
+  icon: any;
+  tone: "amber" | "cyan" | "neutral";
+  label: string;
+  value: React.ReactNode;
+  hint: string;
+  to: string;
+}) {
+  const active = tone !== "neutral";
+  const iconCls =
+    tone === "amber" ? "text-amber-300 bg-amber-500/10 ring-amber-400/25"
+    : tone === "cyan" ? "text-cyan-300 bg-cyan-500/10 ring-cyan-400/25"
+    : "text-muted-foreground bg-muted/30 ring-border/60";
+  return (
+    <Link
+      to={to}
+      className="flex items-center gap-3 rounded-lg border border-border/50 bg-background/30 px-3 py-2.5 transition hover:border-cyan-400/40 hover:bg-cyan-500/5"
+    >
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ring-1 ${iconCls}`}>
+        <Icon className="h-3.5 w-3.5" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="truncate text-xs font-medium text-foreground">{label}</p>
+          <p className={`text-sm font-semibold tabular-nums ${active ? "text-foreground" : "text-muted-foreground"}`}>
+            {value}
+          </p>
+        </div>
+        <p className="truncate text-[10px] text-muted-foreground">{hint}</p>
+      </div>
+    </Link>
+  );
+}
+
+function StatusPill({ status }: { status: string }) {
+  const map: Record<string, string> = {
+    new: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+    contacted: "bg-cyan-500/10 text-cyan-200 ring-cyan-400/25",
+    in_discussion: "bg-blue-500/10 text-blue-200 ring-blue-400/25",
+    onboarding: "bg-violet-500/10 text-violet-200 ring-violet-400/25",
+    won: "bg-emerald-500/10 text-emerald-300 ring-emerald-400/25",
+    lost: "bg-rose-500/10 text-rose-300 ring-rose-400/25",
+  };
+  const cls = map[status] ?? "bg-muted/30 text-muted-foreground ring-border/60";
+  return (
+    <span className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ring-1 ${cls}`}>
+      {status.replace(/_/g, " ")}
+    </span>
+  );
+}
+
+function timeAgo(iso: string) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const days = Math.floor(h / 24);
+  if (days < 30) return `${days}d ago`;
+  const mo = Math.floor(days / 30);
+  return `${mo}mo ago`;
 }
 
 /* ------------------------------------------------------------------ */
