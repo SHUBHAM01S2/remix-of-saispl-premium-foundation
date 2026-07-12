@@ -635,3 +635,114 @@ export function EmptyState({ icon: Icon, title, body, cta }: { icon: any; title:
     </div>
   );
 }
+
+function DashboardHero({ partner, referralLink, copied, setCopied }: { partner: any; referralLink: string; copied: boolean; setCopied: (v: boolean) => void }) {
+  return (
+    <section className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 sm:p-7">
+      <div className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-teal-500/10 blur-3xl" />
+      <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl" />
+      <div className="relative flex flex-col md:flex-row md:items-end gap-5 justify-between">
+        <div className="min-w-0">
+          <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Welcome back, {partner.full_name?.split(" ")[0] ?? "Partner"}</p>
+          <h2 className="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">Partner Dashboard</h2>
+          <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track referrals, conversion, deal value, and payouts in one place.</p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+          <div className="w-full md:min-w-[300px]">
+            <label className="text-[10px] uppercase tracking-widest text-slate-400">Your referral link</label>
+            <div className="mt-1.5 flex items-stretch gap-2 rounded-xl border border-white/10 bg-slate-950/40 p-1.5">
+              <input readOnly value={referralLink}
+                className="flex-1 min-w-0 bg-transparent px-2 text-xs text-slate-200 outline-none" />
+              <button onClick={() => { navigator.clipboard?.writeText(referralLink); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 text-slate-100 px-2.5 py-1.5 text-xs hover:bg-white/10">
+                {copied ? <><Check className="h-3.5 w-3.5" /> Copied</> : <><Copy className="h-3.5 w-3.5" /> Copy</>}
+              </button>
+            </div>
+          </div>
+          <Link to="/partner/referrals/new" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 hover:brightness-110 transition">
+            <Sparkles className="h-4 w-4" /> New Referral
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function KpiGroup({ title, caption, children }: { title: string; caption: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <div className="flex items-baseline justify-between mb-3">
+        <div>
+          <h3 className="text-sm font-semibold">{title}</h3>
+          <p className="text-xs text-slate-500">{caption}</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-6">{children}</div>
+    </section>
+  );
+}
+
+function LegendPill({ dot, label, value, total }: { dot: string; label: string; value: number; total: number }) {
+  const pct = total ? Math.round((value / total) * 100) : 0;
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2">
+      <span className="flex items-center gap-2 text-slate-400"><span className={`h-2 w-2 rounded-full ${dot}`} /> {label}</span>
+      <span className="font-medium text-slate-200">{value} <span className="text-slate-500 text-[10px]">· {pct}%</span></span>
+    </div>
+  );
+}
+
+function ProgressRow({ label, value, pct, className }: { label: string; value: string; pct: number; className: string }) {
+  const capped = Math.min(100, Math.max(0, pct));
+  return (
+    <div>
+      <div className="flex items-baseline justify-between text-xs">
+        <span className="text-slate-400">{label}</span>
+        <span className="font-medium text-slate-100">{value}</span>
+      </div>
+      <div className="mt-2 h-1.5 rounded-full bg-white/5 overflow-hidden">
+        <div className={`h-full rounded-full bg-gradient-to-r ${className} transition-all`} style={{ width: `${capped}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function SummaryRow({ label, value, accent }: { label: string; value: string; accent?: string }) {
+  return (
+    <div className="flex items-center justify-between rounded-lg border border-white/5 bg-slate-950/30 px-3 py-2.5">
+      <span className="text-xs text-slate-400">{label}</span>
+      <span className={`text-sm font-semibold ${accent ?? "text-slate-100"}`}>{value}</span>
+    </div>
+  );
+}
+
+function TipRow({ n, title, body }: { n: number; title: string; body: string }) {
+  return (
+    <li className="flex items-start gap-3">
+      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-teal-500/15 text-teal-300 text-[11px] font-semibold">{n}</span>
+      <div className="min-w-0">
+        <p className="text-xs font-medium text-slate-200">{title}</p>
+        <p className="text-[11px] text-slate-500 leading-relaxed">{body}</p>
+      </div>
+    </li>
+  );
+}
+
+function ProgramLine({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between border-t border-white/5 pt-2">
+      <span className="text-slate-400">{label}</span>
+      <span className="text-slate-200 font-medium">{value}</span>
+    </div>
+  );
+}
+
+function OnboardStep({ n, title, body }: { n: number; title: string; body: string }) {
+  return (
+    <div className="rounded-xl border border-white/5 bg-white/[0.03] p-4">
+      <span className="inline-grid h-7 w-7 place-items-center rounded-full bg-teal-500/15 text-teal-300 text-xs font-semibold">{n}</span>
+      <p className="mt-2 text-sm font-semibold">{title}</p>
+      <p className="mt-1 text-xs text-slate-400 leading-relaxed">{body}</p>
+    </div>
+  );
+}
