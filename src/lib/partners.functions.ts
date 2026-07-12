@@ -321,7 +321,7 @@ export const adminListReferrals = createServerFn({ method: "GET" })
     const admin = supabaseAdmin as any;
     let q = admin
       .from("referrals")
-      .select(`${REFERRAL_COLS}, partner:sales_partners(id,full_name,company,email)`)
+      .select(`${REFERRAL_COLS}, partner:sales_partners(id,full_name,company,email,payout_method)`)
       .order("created_at", { ascending: false });
     if (data.partner_id) q = q.eq("partner_id", data.partner_id);
     if (data.status) q = q.eq("status", data.status);
@@ -331,7 +331,7 @@ export const adminListReferrals = createServerFn({ method: "GET" })
     }
     const { data: rows, error } = await q;
     if (error) throw error;
-    return (rows ?? []) as (ReferralRow & { partner: { id: string; full_name: string; company: string | null; email: string } | null })[];
+    return (rows ?? []) as (ReferralRow & { partner: { id: string; full_name: string; company: string | null; email: string; payout_method: string | null } | null })[];
   });
 
 export const adminGetReferral = createServerFn({ method: "GET" })
