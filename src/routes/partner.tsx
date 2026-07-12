@@ -426,7 +426,7 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             </div>
             <h2 className="mt-6 text-2xl sm:text-3xl font-semibold tracking-tight">Ready to earn your first commission?</h2>
             <p className="mt-3 text-sm text-slate-400">
-              Introduce us to a business you know. Our team qualifies, pitches, and closes — you earn on every win. Most partners submit their first referral in under 2 minutes.
+              Introduce SAISPL to a business in your network. Our team qualifies, pitches, and closes every opportunity — you earn on every win. Most partners submit their first referral in under two minutes.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
               <button onClick={openNewReferral} className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-5 py-2.5 text-sm shadow-lg shadow-teal-500/25">
@@ -438,9 +438,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
               </button>
             </div>
             <div className="relative mt-10 grid gap-3 sm:grid-cols-3 text-left">
-              <OnboardStep n={1} title="Share your link" body="Send it to businesses that could use SAISPL." />
-              <OnboardStep n={2} title="We close the deal" body="Our team qualifies, pitches, and onboards." />
-              <OnboardStep n={3} title="You get paid" body="Commission is paid on the 5th of every month." />
+              <OnboardStep n={1} title="Share your unique link" body="Send it to businesses that could benefit from SAISPL's expertise." />
+              <OnboardStep n={2} title="We close the deal" body="Our specialists qualify the lead, present the solution, and onboard the client." />
+              <OnboardStep n={3} title="Get paid every month" body="Commissions are released on the 5th of every month to your saved payout method." />
             </div>
           </div>
         </section>
