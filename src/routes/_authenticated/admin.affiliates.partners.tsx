@@ -631,10 +631,17 @@ function EmptyPartners({ hasFilter, onAdd }: { hasFilter: boolean; onAdd: () => 
       <div className="grid place-items-center gap-2 px-6 py-16 text-center">
         <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60"><Search className="h-4 w-4" /></span>
         <p className="text-sm font-medium">No partners match your filters</p>
-        <p className="text-xs text-muted-foreground">Adjust the search or clear the status filter.</p>
+        <p className="max-w-xs text-xs text-muted-foreground">Adjust the search, switch the status filter, or invite a new partner to grow the network.</p>
+        <button
+          onClick={onAdd}
+          className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200"
+        >
+          <Plus className="h-3.5 w-3.5" /> Invite a partner
+        </button>
       </div>
     );
   }
+
   return (
     <div className="relative grid place-items-center gap-4 overflow-hidden px-6 py-20 text-center">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.12),transparent_60%)]" />

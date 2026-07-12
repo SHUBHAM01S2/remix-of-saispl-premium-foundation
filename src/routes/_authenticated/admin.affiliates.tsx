@@ -466,9 +466,11 @@ function AffiliatesOverview() {
               <EmptyState
                 icon={Handshake}
                 title="No referrals yet"
-                body="When partners submit new deals, they show up here so you can triage them fast."
-                cta={{ to: "/admin/affiliates/referrals", label: "Open referrals" }}
+                body="Share onboarding resources with partners so they know how to submit deals, or add the first referral manually to seed the pipeline."
+                cta={{ to: "/admin/affiliates/referrals", label: "Add first referral" }}
+                secondary={{ to: "/admin/affiliates/partners", label: "Review partners" }}
               />
+
             ) : (
               <ul className="divide-y divide-border/40">
                 {recent.map((r) => (
@@ -970,30 +972,50 @@ function PanelLoading({ rows = 4 }: { rows?: number }) {
 }
 
 function EmptyState({
-  icon: Icon, title, body, cta,
+  icon: Icon, title, body, cta, secondary,
 }: {
-  icon: any; title: string; body: string; cta?: { to: string; label: string };
+  icon: any;
+  title: string;
+  body: string;
+  cta?: { to: string; label: string };
+  secondary?: { to: string; label: string };
 }) {
   return (
-    <div className="grid place-items-center gap-3 px-6 py-12 text-center">
-      <span className="grid h-11 w-11 place-items-center rounded-full bg-cyan-500/5 text-cyan-300 ring-1 ring-cyan-400/20">
-        <Icon className="h-4 w-4" />
-      </span>
-      <div className="max-w-xs">
-        <p className="text-sm font-medium text-foreground">{title}</p>
-        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{body}</p>
+    <div className="relative overflow-hidden px-6 py-12">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.10),transparent_65%)]" />
+      <div className="relative mx-auto grid max-w-sm place-items-center gap-3 text-center">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400/20 to-teal-500/10 text-cyan-200 ring-1 ring-cyan-400/25 shadow-[0_8px_24px_-10px_rgba(34,211,238,0.45)]">
+          <Icon className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-foreground">{title}</p>
+          <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{body}</p>
+        </div>
+        {(cta || secondary) && (
+          <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+            {cta && (
+              <Link
+                to={cta.to}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_18px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
+              >
+                <Plus className="h-3.5 w-3.5" /> {cta.label}
+              </Link>
+            )}
+            {secondary && (
+              <Link
+                to={secondary.to}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+              >
+                {secondary.label} <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+          </div>
+        )}
       </div>
-      {cta && (
-        <Link
-          to={cta.to}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
-        >
-          <Plus className="h-3.5 w-3.5" /> {cta.label}
-        </Link>
-      )}
     </div>
   );
 }
+
 
 function RankBadge({ index }: { index: number }) {
   const tone =

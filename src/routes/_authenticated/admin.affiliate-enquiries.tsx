@@ -12,6 +12,8 @@ import {
   Loader2,
   Search,
   Trash2,
+  Inbox,
+  UserPlus,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
@@ -195,7 +197,35 @@ function AffiliateEnquiriesPage() {
               {error instanceof Error ? error.message : "Failed to load"}
             </p>
           ) : rows.length === 0 ? (
-            <p className="px-6 py-8 text-sm text-muted-foreground">No affiliate enquiries yet.</p>
+            <div className="relative overflow-hidden px-6 py-16">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.10),transparent_65%)]" />
+              <div className="relative mx-auto grid max-w-md place-items-center gap-3 text-center">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400/20 to-teal-500/10 text-cyan-600 ring-1 ring-cyan-400/25 dark:text-cyan-200">
+                  <Inbox className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">No affiliate enquiries yet</p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                    Once prospective partners apply through the public affiliate page, their details land here for review. In the meantime, invite trusted contacts directly to seed the program.
+                  </p>
+                </div>
+                <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+                  <Link
+                    to="/admin/affiliates/partners"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground shadow-sm transition hover:brightness-110"
+                  >
+                    <UserPlus className="h-3.5 w-3.5" /> Invite a partner
+                  </Link>
+                  <Link
+                    to="/affiliate-program"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-primary/40 hover:text-primary"
+                  >
+                    View public program page <ExternalLink className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

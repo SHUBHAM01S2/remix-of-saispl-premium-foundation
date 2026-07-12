@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, Target, Mail, ArrowRight } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
 import { adminGetPartner, adminUpdatePartner } from "@/lib/partners.functions";
 import { fmtDate, fmtMoney, StatusChip, PayoutChip, PARTNER_STATUS_STYLES } from "@/lib/partners-ui";
@@ -85,7 +85,37 @@ function PartnerDetail() {
       <section className="rounded-2xl border border-border/60 bg-card/60 backdrop-blur overflow-hidden">
         <div className="p-5 border-b border-border/60"><h2 className="text-sm font-semibold">All referrals ({referrals.length})</h2></div>
         {referrals.length === 0 ? (
-          <div className="p-8 text-center text-sm text-muted-foreground">No referrals from this partner yet.</div>
+          <div className="relative overflow-hidden px-6 py-14">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(6,182,212,0.10),transparent_65%)]" />
+            <div className="relative mx-auto grid max-w-md place-items-center gap-3 text-center">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-cyan-500/10 text-cyan-600 ring-1 ring-cyan-400/25 dark:text-cyan-200">
+                <Target className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-foreground">No referrals from this partner yet</p>
+                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                  Send them the onboarding pack and confirm they can access the partner portal. A quick nudge often unlocks the first deal.
+                </p>
+              </div>
+              <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+                {q.data?.partner?.email && (
+                  <a
+                    href={`mailto:${q.data.partner.email}?subject=Getting%20started%20with%20our%20partner%20program`}
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3.5 py-1.5 text-xs font-semibold text-brand-foreground shadow-sm transition hover:brightness-110"
+                  >
+                    <Mail className="h-3.5 w-3.5" /> Email onboarding pack
+                  </a>
+                )}
+                <Link
+                  to="/admin/affiliates/referrals"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-brand/40 hover:text-brand"
+                >
+                  Add a referral manually <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[800px]">
