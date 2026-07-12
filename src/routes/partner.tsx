@@ -183,46 +183,46 @@ function PartnerShell() {
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_0%,rgba(20,184,166,0.10),transparent_60%),radial-gradient(60%_50%_at_80%_10%,rgba(56,189,248,0.08),transparent_60%)]" />
 
         {/* Sidebar (desktop) */}
-        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-white/5 bg-[#0b1220]/80 backdrop-blur-xl lg:flex lg:flex-col">
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] border-r border-white/[0.06] bg-[#080d17]/90 backdrop-blur-2xl lg:flex lg:flex-col">
           <SidebarInner partner={partner} path={path} onNav={() => {}} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
         </aside>
 
         {/* Sidebar (mobile drawer) */}
         {mobileNav && (
           <div className="fixed inset-0 z-40 lg:hidden">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
-            <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/5 bg-[#0b1220] flex flex-col">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
+            <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/[0.06] bg-[#080d17] flex flex-col shadow-2xl shadow-black/50">
               <SidebarInner partner={partner} path={path} onNav={() => setMobileNav(false)} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
             </aside>
           </div>
         )}
 
-        <div className="lg:pl-[248px]">
+        <div className="lg:pl-[260px]">
           {/* Top bar */}
-          <header className="sticky top-0 z-20 border-b border-white/5 bg-[#0a0f1a]/80 backdrop-blur-xl">
-            <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-16">
-              <button onClick={() => setMobileNav(true)} className="lg:hidden p-2 -ml-2 text-slate-300 hover:text-white" aria-label="Open menu">
+          <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#0a0f1a]/85 backdrop-blur-xl">
+            <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-[68px]">
+              <button onClick={() => setMobileNav(true)} className="lg:hidden -ml-2 grid h-9 w-9 place-items-center rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </button>
               <div className="min-w-0 flex-1">
-                <h1 className="text-base sm:text-lg font-semibold truncate">{header.title}</h1>
-                <p className="hidden sm:block text-xs text-slate-400 truncate">{header.sub}</p>
+                <h1 className="text-[15px] sm:text-base font-semibold tracking-tight truncate">{header.title}</h1>
+                <p className="hidden sm:block text-xs text-slate-500 truncate mt-0.5">{header.sub}</p>
               </div>
               <button
                 onClick={openModal}
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20 hover:brightness-110 transition">
-                <Sparkles className="h-4 w-4" /> New referral
+                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 ring-1 ring-teal-300/40 hover:shadow-teal-500/40 hover:brightness-[1.05] active:scale-[0.98] transition-all">
+                <Sparkles className="h-4 w-4" /> Submit referral
               </button>
-              <button className="relative p-2 rounded-lg border border-white/5 text-slate-300 hover:text-white hover:bg-white/5" aria-label="Notifications">
+              <button className="relative grid h-9 w-9 place-items-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-slate-300 hover:text-white hover:bg-white/[0.06] hover:border-white/10 transition" aria-label="Notifications">
                 <Bell className="h-4 w-4" />
-                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400" />
+                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400 ring-2 ring-[#0a0f1a]" />
               </button>
-              <div className="flex items-center gap-2 pl-2 border-l border-white/5">
+              <div className="flex items-center gap-2.5 pl-3 ml-1 border-l border-white/[0.06]">
                 <div className="hidden md:block text-right">
-                  <p className="text-xs font-medium leading-tight truncate max-w-[140px]">{partner.full_name ?? "Partner"}</p>
-                  <p className="text-[10px] text-slate-400 truncate max-w-[140px]">{partner.company ?? partner.email}</p>
+                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner.full_name ?? "Partner"}</p>
+                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner.company ?? partner.email}</p>
                 </div>
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow shadow-teal-500/20">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow-md shadow-teal-500/30 ring-2 ring-white/10">
                   {initials}
                 </span>
               </div>
@@ -231,8 +231,8 @@ function PartnerShell() {
             <div className="sm:hidden px-4 pb-3">
               <button
                 onClick={openModal}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm">
-                <Sparkles className="h-4 w-4" /> New referral
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/20">
+                <Sparkles className="h-4 w-4" /> Submit referral
               </button>
             </div>
           </header>
@@ -243,6 +243,7 @@ function PartnerShell() {
             </div>
           </main>
         </div>
+
 
         <NewReferralModal open={modalOpen} onClose={() => setModalOpen(false)} referralLink={referralLink} />
       </div>
