@@ -88,7 +88,7 @@ function PartnerShell() {
             </span>
             <div className="min-w-0">
               <h1 className="text-base sm:text-lg font-semibold truncate">SAISPL Partner Portal</h1>
-              <p className="text-xs text-slate-400">Sign in to manage your referrals</p>
+              <p className="text-xs text-slate-400">Sign in to manage referrals, track deals, and monitor payouts.</p>
             </div>
           </div>
           <form
