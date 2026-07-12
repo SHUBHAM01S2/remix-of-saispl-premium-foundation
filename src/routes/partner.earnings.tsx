@@ -252,12 +252,12 @@ function EarningsPage() {
                 icon={Wallet}
                 tone="indigo"
                 compact
-                title="No payouts in this stage"
-                body="Nothing sits at this payout stage right now. Try a different tab, or keep the pipeline flowing with a fresh referral."
-                cta={{ label: "Submit a referral", onClick: openNewReferral, icon: Sparkles }}
+                title="No payouts in this stage right now"
+                body="There are no commissions at this payout stage yet. Switch to another tab to review activity, or keep the pipeline moving by submitting a new referral."
+                cta={{ label: "Submit a new referral", onClick: openNewReferral, icon: Sparkles }}
                 quickLinks={[
                   { label: "View all payouts", onClick: () => setLedgerFilter("all"), icon: ArrowUpRight },
-                  { label: "Commission rules", to: "/partner/profile", icon: BookOpen },
+                  { label: "Review commission policy", to: "/partner/profile", icon: BookOpen },
                 ]}
               />
             </div>
