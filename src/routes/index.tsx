@@ -10,7 +10,7 @@ import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 const TITLE =
   "Shivaryan Infotech — AI Automation, Custom Software & Web Development Company";
 const DESCRIPTION =
-  "Shivaryan Infotech (SAISPL) is an India-based software company building AI agents, workflow automation, custom web apps, and business portals for startups and enterprises across 12+ countries. Trusted engineering partner for founders and operations leaders who want to ship faster.";
+  "Shivaryan Infotech (SAISPL) builds AI agents, workflow automation, custom web apps, and business portals for founders and ops leaders across 12+ countries.";
 const CANONICAL = "/";
 
 export const Route = createFileRoute("/")({
