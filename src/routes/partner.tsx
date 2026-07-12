@@ -730,11 +730,11 @@ function DashboardHero({ partner, referralLink, copied, setCopied, onOpenModal }
         <div className="min-w-0">
           <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Welcome back, {partner.full_name?.split(" ")[0] ?? "Partner"}</p>
           <h2 className="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight">Partner Dashboard</h2>
-          <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track referrals, conversion, deal value, and payouts in one place.</p>
+          <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Monitor referrals, deal progress, earnings, and payout status from one workspace.</p>
         </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
           <div className="w-full md:min-w-[300px]">
-            <label className="text-[10px] uppercase tracking-widest text-slate-400">Your referral link</label>
+            <label className="text-[10px] uppercase tracking-widest text-slate-400">Your unique referral link</label>
             <div className="mt-1.5 flex items-stretch gap-2 rounded-xl border border-white/10 bg-slate-950/40 p-1.5">
               <input readOnly value={referralLink}
                 className="flex-1 min-w-0 bg-transparent px-2 text-xs text-slate-200 outline-none" />
