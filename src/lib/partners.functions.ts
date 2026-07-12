@@ -222,6 +222,9 @@ export const createMyReferral = createServerFn({ method: "POST" })
     package_selected?: string | null;
     source?: string | null;
     notes?: string | null;
+    status?: ReferralStatus | null;
+    deal_stage?: ReferralDealStage | null;
+    deal_value?: number | null;
   }) => {
     if (!d?.client_name?.trim()) throw new Error("Client name is required");
     return d;
@@ -231,25 +234,32 @@ export const createMyReferral = createServerFn({ method: "POST" })
       .from("sales_partners").select("id,default_commission_pct")
       .eq("user_id", context.userId).maybeSingle();
     if (!partner) throw new Error("You are not registered as a sales partner");
+    const insert: any = {
+      partner_id: partner.id,
+      client_name: data.client_name.trim(),
+      company: data.company || null,
+      email: data.email || null,
+      phone: data.phone || null,
+      service_interested: data.service_interested || null,
+      package_selected: data.package_selected || null,
+      source: data.source || null,
+      notes: data.notes || null,
+      commission_pct: partner.default_commission_pct,
+    };
+    if (data.status) insert.status = data.status;
+    if (data.deal_stage) insert.deal_stage = data.deal_stage;
+    if (data.deal_value !== undefined && data.deal_value !== null && !isNaN(Number(data.deal_value))) {
+      insert.deal_value = Number(data.deal_value);
+    }
     const { data: row, error } = await (context.supabase as any)
       .from("referrals")
-      .insert({
-        partner_id: partner.id,
-        client_name: data.client_name.trim(),
-        company: data.company || null,
-        email: data.email || null,
-        phone: data.phone || null,
-        service_interested: data.service_interested || null,
-        package_selected: data.package_selected || null,
-        source: data.source || null,
-        notes: data.notes || null,
-        commission_pct: partner.default_commission_pct,
-      })
+      .insert(insert)
       .select(REFERRAL_COLS)
       .single();
     if (error) throw error;
     return row as ReferralRow;
   });
+
 
 // ============================================================
 // ADMIN-SCOPED

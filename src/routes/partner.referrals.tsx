@@ -2,10 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Loader2, Search, Plus, Users, Filter } from "lucide-react";
+import { Search, Plus, Users, Filter, AlertTriangle, RefreshCw } from "lucide-react";
 import { listMyReferrals, REFERRAL_STATUSES, type ReferralStatus } from "@/lib/partners.functions";
 import { fmtDate, fmtMoney, StatusChip, PayoutChip } from "@/lib/partners-ui";
 import { EmptyState } from "./partner";
+import { useOpenNewReferral } from "@/components/partner/new-referral-context";
 
 export const Route = createFileRoute("/partner/referrals")({
   component: MyReferralsPage,
@@ -16,6 +17,7 @@ function MyReferralsPage() {
   const q = useQuery({ queryKey: ["partner", "referrals"], queryFn: () => listFn() });
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<ReferralStatus | "">("");
+  const openNewReferral = useOpenNewReferral();
 
   const rows = useMemo(() => {
     const items = q.data ?? [];
@@ -54,20 +56,44 @@ function MyReferralsPage() {
             </select>
           </div>
         </div>
-        <Link to="/partner/referrals/new" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/20">
+        <button onClick={openNewReferral} className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/20">
           <Plus className="h-4 w-4" /> New referral
-        </Link>
+        </button>
       </div>
+
+      {q.error && (
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-rose-500/15 text-rose-300">
+            <AlertTriangle className="h-4 w-4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-rose-100">We couldn't load your referrals</p>
+            <p className="text-xs text-rose-200/80 truncate">{(q.error as any)?.message ?? "Unknown error"}</p>
+          </div>
+          <button onClick={() => q.refetch()} className="inline-flex items-center gap-1.5 rounded-lg border border-rose-400/30 bg-rose-400/10 px-3 py-1.5 text-xs font-medium text-rose-100 hover:bg-rose-400/20">
+            <RefreshCw className="h-3.5 w-3.5" /> Retry
+          </button>
+        </div>
+      )}
 
       <section className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
         {q.isLoading ? (
-          <div className="p-10 text-center text-slate-400 text-sm"><Loader2 className="inline h-4 w-4 animate-spin mr-2" />Loading…</div>
+          <div className="p-5 space-y-3 animate-pulse">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className="h-4 w-40 rounded bg-white/10" />
+                <div className="h-4 w-32 rounded bg-white/5" />
+                <div className="h-4 w-24 rounded bg-white/5" />
+                <div className="ml-auto h-4 w-16 rounded bg-white/10" />
+              </div>
+            ))}
+          </div>
         ) : !hasData ? (
           <EmptyState
             icon={Users}
             title="No referrals yet"
             body="You haven't submitted any referrals. Introduce us to a business and start earning commissions."
-            cta={{ to: "/partner/referrals/new", label: "Submit your first referral" }}
+            cta={{ onClick: openNewReferral, label: "Submit your first referral" }}
           />
         ) : rows.length === 0 ? (
           <div className="p-10 text-center text-sm text-slate-400">No referrals match your filters.</div>
