@@ -820,32 +820,114 @@ function TableSkeleton() {
 }
 
 function EmptyPayouts({ status, onReset }: { status: FilterStatus; onReset: () => void }) {
-  const map: Partial<Record<FilterStatus, { title: string; body: string }>> = {
-    all:       { title: "No commissions yet", body: "When partners close deals, commissions appear here for review and payout." },
-    pending:   { title: "No pending payouts", body: "You're all caught up. New commissions land here as soon as a partner wins a deal." },
-    approved:  { title: "Nothing approved yet", body: "Review pending payouts and approve them to move them into the release queue." },
-    scheduled: { title: "Nothing scheduled", body: "Approved payouts appear here until they're marked paid." },
-    paid:      { title: "No paid payouts yet", body: "Once you mark approved payouts as paid, they'll show here for the audit trail." },
-    on_hold:   { title: "Nothing on hold", body: "Payouts you flag for review will appear here until resumed." },
-    delayed:   { title: "No delayed payouts", body: `Nothing approved has been sitting for more than ${DELAY_DAYS} days.` },
+  type Copy = {
+    title: string;
+    body: string;
+    icon: any;
+    primary?: { label: string; to?: string; onClick?: () => void };
+    secondary?: { label: string; to?: string; onClick?: () => void };
+  };
+  const map: Partial<Record<FilterStatus, Copy>> = {
+    all: {
+      title: "No commissions yet",
+      body: "Once partners close deals, commissions land here for review and payout. Start by activating partners and confirming your commission rules.",
+      icon: Wallet,
+      primary: { label: "Review partners", to: "/admin/affiliates/partners" },
+      secondary: { label: "See referral pipeline", to: "/admin/affiliates/referrals" },
+    },
+    pending: {
+      title: "Payout queue is clear",
+      body: "No commissions are waiting for review. New wins from partners will appear here the moment a deal is marked won.",
+      icon: CheckCircle2,
+      primary: { label: "View all commissions", onClick: onReset },
+      secondary: { label: "Open referral pipeline", to: "/admin/affiliates/referrals" },
+    },
+    approved: {
+      title: "Nothing approved yet",
+      body: "Approved commissions wait here until you mark them paid. Review pending payouts and approve them to release funds to partners.",
+      icon: ShieldCheck,
+      primary: { label: "Review pending", onClick: () => { /* handled by parent via reset then user filters */ onReset(); } },
+      secondary: { label: "View all commissions", onClick: onReset },
+    },
+    scheduled: {
+      title: "Nothing scheduled",
+      body: "Approved payouts stay here until they're marked paid. Approve pending payouts to build the release queue.",
+      icon: CalendarClock,
+      primary: { label: "Review pending", onClick: onReset },
+    },
+    paid: {
+      title: "No paid payouts yet",
+      body: "Once you mark approved payouts as paid, they show here for the audit trail. Approve outstanding payouts to move them forward.",
+      icon: BadgeCheck,
+      primary: { label: "Review pending", onClick: onReset },
+    },
+    on_hold: {
+      title: "Nothing on hold",
+      body: "Payouts you flag for review appear here until you resume them. Use hold when a deal needs verification before release.",
+      icon: PauseCircle,
+      primary: { label: "View all commissions", onClick: onReset },
+    },
+    delayed: {
+      title: "No delayed payouts",
+      body: `You're on schedule — nothing approved has been sitting for more than ${DELAY_DAYS} days. Keep releasing payouts on cycle to stay clear.`,
+      icon: Zap,
+      primary: { label: "Review approved queue", onClick: onReset },
+    },
   };
   const m = map[status] ?? map.all!;
+  const Icon = m.icon;
   return (
-    <div className="grid place-items-center gap-2 px-6 py-16 text-center">
-      <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60">
-        <Wallet className="h-4 w-4" />
-      </span>
-      <p className="text-sm font-medium">{m.title}</p>
-      <p className="max-w-xs text-xs text-muted-foreground">{m.body}</p>
-      {status !== "all" && (
-        <button onClick={onReset}
-          className="mt-1 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200">
-          View all commissions
-        </button>
-      )}
+    <div className="relative overflow-hidden px-6 py-16">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(34,211,238,0.10),transparent_65%)]" />
+      <div className="relative mx-auto grid max-w-md place-items-center gap-3 text-center">
+        <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-cyan-400/20 to-teal-500/10 text-cyan-200 ring-1 ring-cyan-400/25 shadow-[0_8px_24px_-10px_rgba(34,211,238,0.45)]">
+          <Icon className="h-5 w-5" />
+        </span>
+        <div>
+          <p className="text-sm font-semibold text-foreground">{m.title}</p>
+          <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">{m.body}</p>
+        </div>
+        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+          {m.primary && (
+            m.primary.to ? (
+              <Link
+                to={m.primary.to}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_18px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
+              >
+                {m.primary.label}
+              </Link>
+            ) : (
+              <button
+                onClick={m.primary.onClick}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_18px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
+              >
+                {m.primary.label}
+              </button>
+            )
+          )}
+          {m.secondary && (
+            m.secondary.to ? (
+              <Link
+                to={m.secondary.to}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+              >
+                {m.secondary.label}
+              </Link>
+            ) : (
+              <button
+                onClick={m.secondary.onClick}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+              >
+                {m.secondary.label}
+              </button>
+            )
+          )}
+        </div>
+      </div>
     </div>
   );
 }
+
 
 const fsel = "rounded-lg border border-border/70 bg-background/40 px-2.5 py-1.5 text-xs outline-none transition focus:border-cyan-400/50 focus:ring-1 focus:ring-cyan-400/20";
 
