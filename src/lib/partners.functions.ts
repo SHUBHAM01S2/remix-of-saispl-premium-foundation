@@ -617,3 +617,21 @@ export const adminUpdatePartner = createServerFn({ method: "POST" })
     if (error) throw error;
     return row as PartnerRow;
   });
+
+export const adminResendPartnerInvite = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => { if (!d?.id) throw new Error("id required"); return d; })
+  .handler(async ({ context, data }) => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+    const { data: p, error } = await admin
+      .from("sales_partners").select("id,email,full_name").eq("id", data.id).maybeSingle();
+    if (error) throw error;
+    if (!p?.email) throw new Error("Partner has no email on file");
+    const { error: inviteErr } = await admin.auth.admin.inviteUserByEmail(p.email, {
+      data: { full_name: p.full_name, role: "partner" },
+    });
+    if (inviteErr && !/already/i.test(inviteErr.message)) throw inviteErr;
+    return { ok: true, email: p.email };
+  });
