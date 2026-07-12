@@ -546,7 +546,7 @@ function AdminDashboardContent({
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center justify-between gap-2">
                             <p className="truncate text-sm font-medium">{item.name}</p>
-                            <span className="shrink-0 text-[10px] uppercase tracking-wider text-muted-foreground">{timeAgo(item.createdAt)}</span>
+                            <span className="shrink-0 whitespace-nowrap text-[10px] tracking-wider text-muted-foreground">{formatIST(item.createdAt)}</span>
                           </div>
                           <p className="truncate text-xs text-muted-foreground">{item.subtitle}</p>
                         </div>
