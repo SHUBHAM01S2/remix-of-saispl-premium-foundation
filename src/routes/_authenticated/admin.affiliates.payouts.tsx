@@ -200,7 +200,7 @@ function PayoutsPage() {
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Payout Operations</h1>
           <p className="mt-0.5 text-sm text-muted-foreground">
-            Finance ledger for partner commissions — review, approve, release, and audit.
+            Finance ledger for partner commissions — review, approve, release, and audit every payout cycle.
           </p>
         </div>
         <div className="flex items-center gap-2">
