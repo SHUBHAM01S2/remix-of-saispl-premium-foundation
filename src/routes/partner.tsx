@@ -473,13 +473,14 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
         {/* Pipeline group */}
         <KpiGroup title="Pipeline" caption="Where your referrals stand right now">
-          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={{ dir: "up", value: "+12%" }} hint="vs last month" />
-          <KpiCard label="Active"       value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   trend={{ dir: "up", value: "+3" }}   hint="in pipeline" />
+          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={leadsTrend} hint="vs last month" />
+          <KpiCard label="Active"       value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   hint="in pipeline" />
           <KpiCard label="Pending"      value={s?.pending ?? 0}             icon={Clock}        tint="bg-amber-500/15 text-amber-300"     hint="awaiting first contact" />
-          <KpiCard label="Won"          value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={{ dir: "up", value: "+2" }} hint="this quarter" />
+          <KpiCard label="Won"          value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={wonTrend} hint="this month" />
           <KpiCard label="Lost"         value={s?.lost ?? 0}                icon={XCircle}      tint="bg-rose-500/15 text-rose-300"       hint="closed lost" />
           <KpiCard label="Conversion"   value={(s?.conversionRate ?? 0) + "%"} icon={ArrowUpRight} tint="bg-cyan-500/15 text-cyan-300"   hint="leads → won" />
         </KpiGroup>
+
 
         {/* Revenue group */}
         <KpiGroup title="Revenue" caption="Deal value flowing through your referrals">
