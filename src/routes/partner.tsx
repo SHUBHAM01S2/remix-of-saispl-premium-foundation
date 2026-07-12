@@ -70,6 +70,13 @@ function PartnerShell() {
     enabled: !!session,
   });
 
+  const partner = profileQ.data;
+  const referralLink = useMemo(() => {
+    const code = (partner as any)?.referral_code ?? partner?.id ?? "";
+    if (typeof window === "undefined") return `https://shivaryaninfotech.com/?ref=${code}`;
+    return `${window.location.origin}/?ref=${code}`;
+  }, [partner]);
+
   if (session === undefined) {
     return (
       <div className="min-h-screen bg-[#0a0f1a] text-slate-100 grid place-items-center">
