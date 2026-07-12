@@ -170,9 +170,9 @@ function AllReferralsPage() {
       {/* Header */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">All Referrals</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Referral Pipeline</h1>
           <p className="mt-0.5 text-sm text-muted-foreground">
-            Referral operations across every partner. Filter, triage, and progress deals.
+            Triage and progress every partner referral — filter, qualify, and move deals through the pipeline.
           </p>
         </div>
         <div className="flex items-center gap-2">
