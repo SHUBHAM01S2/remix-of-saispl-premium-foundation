@@ -12,6 +12,8 @@ import {
   Loader2,
   Search,
   Trash2,
+  Inbox,
+  UserPlus,
 } from "lucide-react";
 
 import { checkIsAdmin } from "@/lib/admin.functions";
