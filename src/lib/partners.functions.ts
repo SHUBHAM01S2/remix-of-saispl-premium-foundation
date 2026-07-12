@@ -276,19 +276,22 @@ export const adminListPartners = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false });
     if (error) throw error;
     const { data: refs } = await admin
-      .from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status");
-    const stats = new Map<string, { total: number; won: number; commission: number; unpaid: number }>();
+      .from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,last_activity_at,created_at");
+    const stats = new Map<string, { total: number; won: number; commission: number; unpaid: number; dealValue: number; lastActive: string | null }>();
     for (const r of (refs ?? []) as any[]) {
-      const s = stats.get(r.partner_id) ?? { total: 0, won: 0, commission: 0, unpaid: 0 };
+      const s = stats.get(r.partner_id) ?? { total: 0, won: 0, commission: 0, unpaid: 0, dealValue: 0, lastActive: null };
       s.total += 1;
       if (r.status === "won") s.won += 1;
       s.commission += Number(r.commission_amount ?? 0);
+      s.dealValue += Number(r.deal_value ?? 0);
       if (r.payout_status !== "paid") s.unpaid += Number(r.commission_amount ?? 0);
+      const ts = r.last_activity_at ?? r.created_at ?? null;
+      if (ts && (!s.lastActive || ts > s.lastActive)) s.lastActive = ts;
       stats.set(r.partner_id, s);
     }
     return (partners ?? []).map((p: any) => ({
       ...(p as PartnerRow),
-      stats: stats.get(p.id) ?? { total: 0, won: 0, commission: 0, unpaid: 0 },
+      stats: stats.get(p.id) ?? { total: 0, won: 0, commission: 0, unpaid: 0, dealValue: 0, lastActive: null },
     }));
   });
 
