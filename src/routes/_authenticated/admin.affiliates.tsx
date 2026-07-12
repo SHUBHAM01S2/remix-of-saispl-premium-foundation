@@ -10,13 +10,15 @@ import {
   Trophy,
   Plus,
   ArrowUpRight,
-  Activity,
   Handshake,
-  Loader2,
-  Sparkles,
+  AlertTriangle,
+  Clock,
+  UserX,
+  CheckCircle2,
+  BarChart3,
 } from "lucide-react";
 import { checkIsAdmin } from "@/lib/admin.functions";
-import { adminOverview } from "@/lib/partners.functions";
+import { adminOverview, adminListReferrals } from "@/lib/partners.functions";
 import { fmtMoney } from "@/lib/partners-ui";
 
 export const Route = createFileRoute("/_authenticated/admin/affiliates")({
@@ -36,8 +38,8 @@ export const Route = createFileRoute("/_authenticated/admin/affiliates")({
 
 const TABS = [
   { to: "/admin/affiliates", label: "Overview", icon: LayoutDashboard, end: true },
-  { to: "/admin/affiliates/partners", label: "Sales Partners", icon: Users },
-  { to: "/admin/affiliates/referrals", label: "All Referrals", icon: TrendingUp },
+  { to: "/admin/affiliates/partners", label: "Partners", icon: Users },
+  { to: "/admin/affiliates/referrals", label: "Referrals", icon: TrendingUp },
   { to: "/admin/affiliates/payouts", label: "Payouts", icon: Wallet },
 ];
 
@@ -47,38 +49,38 @@ function AffiliatesShell() {
   const isIndex = path === "/admin/affiliates";
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:flex-wrap sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
-            Affiliate program
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+            <span className="inline-flex h-1.5 w-1.5 rounded-full bg-cyan-400 shadow-[0_0_8px_var(--tw-shadow-color)] shadow-cyan-400/60" />
+            Affiliate operations
           </div>
-          <h1 className="mt-1.5 truncate text-xl font-semibold tracking-tight sm:text-2xl">
-            Referral operations
+          <h1 className="mt-2 truncate text-2xl font-semibold tracking-tight sm:text-[26px]">
+            Referral program control
           </h1>
-          <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
-            Partners, pipeline, and payouts at a glance.
+          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+            Partners, pipeline, and payouts in one workspace.
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <Link
             to="/admin/affiliates/payouts"
-            className="hidden items-center gap-1.5 rounded-lg border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted/40 hover:text-foreground sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-lg border border-border/70 bg-card/60 px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-cyan-400/40 hover:bg-cyan-500/5 hover:text-foreground sm:inline-flex"
           >
             <Wallet className="h-3.5 w-3.5" /> Payout queue
           </Link>
           <Link
             to="/admin/affiliates/partners"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-brand-foreground shadow-sm shadow-brand/20 transition hover:-translate-y-px hover:shadow-brand/30"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-cyan-400 to-cyan-600 px-3 py-2 text-xs font-semibold text-slate-950 shadow-[0_1px_0_0_rgba(255,255,255,0.15)_inset,0_8px_24px_-8px_rgba(6,182,212,0.5)] transition hover:from-cyan-300 hover:to-cyan-500"
           >
             <Plus className="h-3.5 w-3.5" /> New partner
           </Link>
         </div>
       </header>
 
-      {/* Tabs — segmented pill row */}
+      {/* Tabs — segmented rail */}
       <nav
         className="scrollbar-none -mx-1 flex gap-1 overflow-x-auto rounded-xl border border-border/60 bg-card/40 p-1 backdrop-blur"
         aria-label="Affiliate sections"
@@ -90,13 +92,13 @@ function AffiliatesShell() {
             <Link
               key={t.to}
               to={t.to}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${
                 active
-                  ? "bg-background text-foreground shadow-sm ring-1 ring-border/60"
+                  ? "bg-background text-foreground shadow-sm ring-1 ring-border/70"
                   : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
               }`}
             >
-              <Icon className="h-3.5 w-3.5" />
+              <Icon className={`h-3.5 w-3.5 ${active ? "text-cyan-300" : ""}`} />
               {t.label}
             </Link>
           );
@@ -108,60 +110,124 @@ function AffiliatesShell() {
   );
 }
 
-function AffiliatesOverview() {
-  const fn = useServerFn(adminOverview);
-  const q = useQuery({ queryKey: ["admin", "affiliates", "overview"], queryFn: () => fn() });
-  const d = q.data;
-  const loading = q.isLoading;
+/* ------------------------------------------------------------------ */
+/* Overview                                                            */
+/* ------------------------------------------------------------------ */
 
-  const inactivePartners =
-    d ? Math.max(0, (d.totalPartners ?? 0) - (d.activePartners ?? 0)) : 0;
+const STALL_DAYS = 14;
+const STALL_MS = STALL_DAYS * 24 * 60 * 60 * 1000;
+const OPEN_STATUSES = new Set(["new", "contacted", "in_discussion", "onboarding"]);
+
+function AffiliatesOverview() {
+  const overviewFn = useServerFn(adminOverview);
+  const refsFn = useServerFn(adminListReferrals);
+
+  const q = useQuery({ queryKey: ["admin", "affiliates", "overview"], queryFn: () => overviewFn() });
+  const refsQ = useQuery({ queryKey: ["admin", "referrals"], queryFn: () => refsFn() });
+
+  const d = q.data;
+  const refs = refsQ.data ?? [];
+  const loading = q.isLoading || refsQ.isLoading;
+
+  const inactivePartners = d ? Math.max(0, (d.totalPartners ?? 0) - (d.activePartners ?? 0)) : 0;
+  const wonRate = d && d.totalReferrals ? Math.round(((d.wonThisMonth ?? 0) / d.totalReferrals) * 100) : 0;
+
+  const now = Date.now();
+  const stalled = refs.filter((r) => {
+    if (!OPEN_STATUSES.has(r.status)) return false;
+    const ts = new Date((r.last_activity_at as any) ?? r.created_at).getTime();
+    return now - ts > STALL_MS;
+  });
+  const approvedTotal = refs
+    .filter((r) => r.payout_status === "approved")
+    .reduce((s, r) => s + Number(r.commission_amount ?? 0), 0);
+  const paidTotal = refs
+    .filter((r) => r.payout_status === "paid")
+    .reduce((s, r) => s + Number(r.commission_amount ?? 0), 0);
+  const openPipelineValue = refs
+    .filter((r) => OPEN_STATUSES.has(r.status))
+    .reduce((s, r) => s + Number(r.deal_value ?? 0), 0);
 
   return (
-    <div className="space-y-5">
-      {/* KPI strip — 2 → 3 → 6 columns, compact */}
-      <section className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6">
-        <KPI
-          label="Partners"
-          value={loading ? "—" : d?.totalPartners ?? 0}
-          hint={loading ? "" : `${d?.activePartners ?? 0} active`}
-          icon={Users}
-          tint="text-brand"
+    <div className="space-y-6">
+      {/* KPI clusters */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <ClusterCard title="Partners" hint="Network health" icon={Users}>
+          <KpiTile label="Total" value={loading ? "—" : d?.totalPartners ?? 0} />
+          <KpiTile
+            label="Active"
+            value={loading ? "—" : d?.activePartners ?? 0}
+            tone="emerald"
+          />
+          <KpiTile
+            label="Inactive"
+            value={loading ? "—" : inactivePartners}
+            tone={inactivePartners > 0 ? "amber" : undefined}
+          />
+        </ClusterCard>
+
+        <ClusterCard title="Pipeline" hint="Deal flow" icon={TrendingUp}>
+          <KpiTile label="Referrals" value={loading ? "—" : d?.totalReferrals ?? 0} />
+          <KpiTile
+            label="Won this mo."
+            value={loading ? "—" : d?.wonThisMonth ?? 0}
+            tone="emerald"
+          />
+          <KpiTile
+            label="Open value"
+            value={loading ? "—" : fmtMoney(openPipelineValue)}
+            tone="cyan"
+            money
+          />
+        </ClusterCard>
+
+        <ClusterCard title="Commissions" hint="Cash position" icon={Wallet}>
+          <KpiTile
+            label="Pending"
+            value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
+            tone="amber"
+            money
+          />
+          <KpiTile
+            label="Approved"
+            value={loading ? "—" : fmtMoney(approvedTotal)}
+            tone="cyan"
+            money
+          />
+          <KpiTile
+            label="Paid"
+            value={loading ? "—" : fmtMoney(paidTotal)}
+            tone="emerald"
+            money
+          />
+        </ClusterCard>
+      </div>
+
+      {/* Attention / signals */}
+      <section className="grid gap-3 md:grid-cols-3">
+        <SignalCard
+          tone={stalled.length > 0 ? "amber" : "neutral"}
+          icon={Clock}
+          label="Stalled referrals"
+          value={loading ? "—" : stalled.length}
+          hint={`No activity in ${STALL_DAYS}+ days`}
+          cta={stalled.length > 0 ? { to: "/admin/affiliates/referrals", label: "Review" } : undefined}
         />
-        <KPI
-          label="Active"
-          value={loading ? "—" : d?.activePartners ?? 0}
-          hint={loading ? "" : `${inactivePartners} inactive`}
-          icon={Handshake}
-          tint="text-emerald-300"
+        <SignalCard
+          tone={inactivePartners > 0 ? "amber" : "neutral"}
+          icon={UserX}
+          label="Inactive partners"
+          value={loading ? "—" : inactivePartners}
+          hint="Paused or dormant partners"
+          cta={inactivePartners > 0 ? { to: "/admin/affiliates/partners", label: "View" } : undefined}
         />
-        <KPI
-          label="Referrals"
-          value={loading ? "—" : d?.totalReferrals ?? 0}
-          hint="All time"
-          icon={TrendingUp}
-          tint="text-violet-300"
-        />
-        <KPI
-          label="Won this mo."
-          value={loading ? "—" : d?.wonThisMonth ?? 0}
-          hint="Closed deals"
-          icon={Trophy}
-          tint="text-amber-300"
-        />
-        <KPI
-          label="Deal value"
-          value={loading ? "—" : fmtMoney(d?.dealValue)}
-          hint="Pipeline total"
+        <SignalCard
+          tone={(d?.pendingPayout ?? 0) > 0 ? "cyan" : "neutral"}
           icon={BadgeDollarSign}
-          tint="text-cyan-300"
-        />
-        <KPI
-          label="Pending payout"
-          value={loading ? "—" : fmtMoney(d?.pendingPayout)}
-          hint="Awaiting release"
-          icon={Wallet}
-          tint="text-rose-300"
+          label="Awaiting release"
+          value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
+          hint="Approve to release funds"
+          cta={(d?.pendingPayout ?? 0) > 0 ? { to: "/admin/affiliates/payouts", label: "Approve" } : undefined}
         />
       </section>
 
@@ -170,13 +236,13 @@ function AffiliatesOverview() {
         {/* Top partners */}
         <Panel
           eyebrow="Leaderboard"
-          title="Top partners"
+          title="Top partners by commission"
           action={
             <Link
               to="/admin/affiliates/partners"
-              className="inline-flex items-center gap-1 text-xs font-medium text-brand hover:underline"
+              className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
             >
-              View all <ArrowUpRight className="h-3 w-3" />
+              All partners <ArrowUpRight className="h-3 w-3" />
             </Link>
           }
         >
@@ -186,54 +252,67 @@ function AffiliatesOverview() {
             <EmptyState
               icon={Trophy}
               title="No partner activity yet"
-              body="Once your partners start closing referrals, top performers will appear here ranked by commission earned."
+              body="Once partners start closing referrals, top performers appear here ranked by commission earned."
               cta={{ to: "/admin/affiliates/partners", label: "Invite a partner" }}
             />
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-left text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-                    <th className="px-5 py-2.5 font-medium">#</th>
-                    <th className="px-5 py-2.5 font-medium">Partner</th>
-                    <th className="px-5 py-2.5 text-right font-medium">Won</th>
-                    <th className="px-5 py-2.5 text-right font-medium">Commission</th>
+                  <tr className="text-left text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    <th className="px-5 py-2.5 font-semibold">#</th>
+                    <th className="px-5 py-2.5 font-semibold">Partner</th>
+                    <th className="px-5 py-2.5 text-right font-semibold">Won</th>
+                    <th className="px-5 py-2.5 text-right font-semibold">Commission</th>
+                    <th className="px-5 py-2.5 font-semibold w-[120px]">Share</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {d.leaderboard.map((b, i) => (
-                    <tr
-                      key={b.partner_id}
-                      className="border-t border-border/40 transition-colors hover:bg-muted/20"
-                    >
-                      <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
-                        <RankBadge index={i} />
-                      </td>
-                      <td className="px-5 py-2.5">
-                        <Link
-                          to="/admin/affiliates/partners/$id"
-                          params={{ id: b.partner_id }}
-                          className="group flex min-w-0 items-center gap-2.5"
-                        >
-                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand/10 text-[11px] font-semibold text-brand ring-1 ring-brand/20">
-                            {initials(b.name)}
-                          </span>
-                          <span className="min-w-0">
-                            <span className="block truncate font-medium text-foreground group-hover:text-brand">
-                              {b.name}
+                  {d.leaderboard.map((b, i) => {
+                    const top = d.leaderboard[0].commission || 1;
+                    const pct = Math.max(4, Math.round((b.commission / top) * 100));
+                    return (
+                      <tr
+                        key={b.partner_id}
+                        className="border-t border-border/40 transition-colors hover:bg-muted/20"
+                      >
+                        <td className="px-5 py-2.5 text-xs tabular-nums text-muted-foreground">
+                          <RankBadge index={i} />
+                        </td>
+                        <td className="px-5 py-2.5">
+                          <Link
+                            to="/admin/affiliates/partners/$id"
+                            params={{ id: b.partner_id }}
+                            className="group flex min-w-0 items-center gap-2.5"
+                          >
+                            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-cyan-500/10 text-[11px] font-semibold text-cyan-200 ring-1 ring-cyan-400/25">
+                              {initials(b.name)}
                             </span>
-                            <span className="block truncate text-xs text-muted-foreground">
-                              {b.company ?? "—"}
+                            <span className="min-w-0">
+                              <span className="block truncate font-medium text-foreground group-hover:text-cyan-200">
+                                {b.name}
+                              </span>
+                              <span className="block truncate text-xs text-muted-foreground">
+                                {b.company ?? "—"}
+                              </span>
                             </span>
-                          </span>
-                        </Link>
-                      </td>
-                      <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
-                      <td className="px-5 py-2.5 text-right font-medium tabular-nums">
-                        {fmtMoney(b.commission)}
-                      </td>
-                    </tr>
-                  ))}
+                          </Link>
+                        </td>
+                        <td className="px-5 py-2.5 text-right tabular-nums">{b.won}</td>
+                        <td className="px-5 py-2.5 text-right font-semibold tabular-nums text-cyan-200">
+                          {fmtMoney(b.commission)}
+                        </td>
+                        <td className="px-5 py-2.5">
+                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-400"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -242,54 +321,48 @@ function AffiliatesOverview() {
 
         {/* Side rail */}
         <div className="space-y-5">
-          <Panel eyebrow="Cash" title="Payout snapshot">
+          <Panel eyebrow="Conversion" title="Program performance">
             {loading ? (
               <PanelLoading rows={2} />
             ) : (
               <div className="space-y-3 p-5">
-                <SummaryRow
-                  label="Awaiting release"
-                  value={fmtMoney(d?.pendingPayout ?? 0)}
-                  accent="text-rose-300"
-                />
-                <SummaryRow
-                  label="Pipeline deal value"
-                  value={fmtMoney(d?.dealValue ?? 0)}
-                  accent="text-cyan-300"
-                />
-                <Link
-                  to="/admin/affiliates/payouts"
-                  className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/60 bg-background/40 px-3 py-2 text-xs font-medium text-foreground transition hover:bg-muted/40"
-                >
-                  <Wallet className="h-3.5 w-3.5" /> Review payout queue
-                </Link>
+                <div>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-muted-foreground">Win rate</span>
+                    <span className="text-lg font-semibold tabular-nums">{wonRate}%</span>
+                  </div>
+                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted/40">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-emerald-400"
+                      style={{ width: `${Math.min(100, wonRate)}%` }}
+                    />
+                  </div>
+                  <p className="mt-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Won this month vs. all referrals
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-2 pt-2">
+                  <MiniStat label="Total deal value" value={fmtMoney(d?.dealValue ?? 0)} />
+                  <MiniStat label="Open pipeline" value={fmtMoney(openPipelineValue)} />
+                </div>
               </div>
             )}
           </Panel>
 
-          <Panel eyebrow="Signals" title="Program health">
+          <Panel eyebrow="Cash flow" title="Payout snapshot">
             {loading ? (
               <PanelLoading rows={3} />
             ) : (
-              <div className="space-y-2.5 p-5 text-sm">
-                <HealthRow
-                  icon={Users}
-                  label="Active partners"
-                  value={`${d?.activePartners ?? 0}/${d?.totalPartners ?? 0}`}
-                  ok={(d?.activePartners ?? 0) > 0}
-                />
-                <HealthRow
-                  icon={Activity}
-                  label="Won deals this month"
-                  value={String(d?.wonThisMonth ?? 0)}
-                  ok={(d?.wonThisMonth ?? 0) > 0}
-                />
-                <HealthRow
-                  icon={Sparkles}
-                  label="Referrals in pipeline"
-                  value={String(d?.totalReferrals ?? 0)}
-                  ok={(d?.totalReferrals ?? 0) > 0}
-                />
+              <div className="space-y-2.5 p-5">
+                <PayoutRow tone="amber" label="Pending" value={fmtMoney(d?.pendingPayout ?? 0)} />
+                <PayoutRow tone="cyan" label="Approved" value={fmtMoney(approvedTotal)} />
+                <PayoutRow tone="emerald" label="Paid" value={fmtMoney(paidTotal)} />
+                <Link
+                  to="/admin/affiliates/payouts"
+                  className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3 py-2 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:bg-cyan-500/5"
+                >
+                  <BarChart3 className="h-3.5 w-3.5" /> Open payout workflow
+                </Link>
               </div>
             )}
           </Panel>
@@ -303,47 +376,97 @@ function AffiliatesOverview() {
 /* Building blocks                                                     */
 /* ------------------------------------------------------------------ */
 
-function KPI({
-  label,
-  value,
-  hint,
-  icon: Icon,
-  tint,
+function ClusterCard({
+  title, hint, icon: Icon, children,
+}: {
+  title: string; hint: string; icon: any; children: React.ReactNode;
+}) {
+  return (
+    <section className="overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-b from-card/70 to-card/40 backdrop-blur">
+      <header className="flex items-center justify-between gap-3 border-b border-border/50 px-4 py-2.5">
+        <div className="flex items-center gap-2">
+          <span className="grid h-6 w-6 place-items-center rounded-md bg-cyan-500/10 text-cyan-300 ring-1 ring-cyan-400/20">
+            <Icon className="h-3 w-3" />
+          </span>
+          <div>
+            <p className="text-[11px] font-semibold tracking-tight">{title}</p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{hint}</p>
+          </div>
+        </div>
+      </header>
+      <div className="grid grid-cols-3 divide-x divide-border/40">{children}</div>
+    </section>
+  );
+}
+
+function KpiTile({
+  label, value, tone, money,
 }: {
   label: string;
   value: React.ReactNode;
-  hint?: string;
-  icon: any;
-  tint: string;
+  tone?: "emerald" | "amber" | "cyan" | "rose";
+  money?: boolean;
 }) {
+  const toneCls =
+    tone === "emerald" ? "text-emerald-300"
+    : tone === "amber" ? "text-amber-300"
+    : tone === "cyan" ? "text-cyan-200"
+    : tone === "rose" ? "text-rose-300"
+    : "text-foreground";
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border/60 bg-card/60 px-3.5 py-3 backdrop-blur transition-colors hover:border-border">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
-          {label}
-        </p>
-        <Icon className={`h-3.5 w-3.5 shrink-0 ${tint}`} />
-      </div>
-      <p className="mt-1.5 truncate text-xl font-semibold tabular-nums tracking-tight">
+    <div className="px-4 py-3.5">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <p className={`mt-1.5 truncate ${money ? "text-lg" : "text-xl"} font-semibold tabular-nums tracking-tight ${toneCls}`}>
         {value}
       </p>
-      {hint && (
-        <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{hint}</p>
+    </div>
+  );
+}
+
+function SignalCard({
+  tone, icon: Icon, label, value, hint, cta,
+}: {
+  tone: "amber" | "cyan" | "neutral";
+  icon: any;
+  label: string;
+  value: React.ReactNode;
+  hint: string;
+  cta?: { to: string; label: string };
+}) {
+  const ring =
+    tone === "amber" ? "ring-amber-400/25 bg-amber-500/[0.03]"
+    : tone === "cyan" ? "ring-cyan-400/25 bg-cyan-500/[0.03]"
+    : "ring-border/60 bg-card/40";
+  const iconCls =
+    tone === "amber" ? "text-amber-300 bg-amber-500/10 ring-amber-400/25"
+    : tone === "cyan" ? "text-cyan-300 bg-cyan-500/10 ring-cyan-400/25"
+    : "text-muted-foreground bg-muted/30 ring-border/60";
+  return (
+    <div className={`flex items-center gap-3 rounded-xl p-4 ring-1 ${ring}`}>
+      <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg ring-1 ${iconCls}`}>
+        <Icon className="h-4 w-4" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{label}</p>
+        <p className="truncate text-lg font-semibold tabular-nums tracking-tight">{value}</p>
+        <p className="truncate text-[11px] text-muted-foreground">{hint}</p>
+      </div>
+      {cta && (
+        <Link
+          to={cta.to}
+          className="shrink-0 rounded-lg border border-border/60 bg-background/40 px-2.5 py-1.5 text-[11px] font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
+        >
+          {cta.label}
+        </Link>
       )}
     </div>
   );
 }
 
 function Panel({
-  eyebrow,
-  title,
-  action,
-  children,
+  eyebrow, title, action, children,
 }: {
-  eyebrow?: string;
-  title: string;
-  action?: React.ReactNode;
-  children: React.ReactNode;
+  eyebrow?: string; title: string; action?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
     <section className="overflow-hidden rounded-2xl border border-border/60 bg-card/50 backdrop-blur">
@@ -378,19 +501,13 @@ function PanelLoading({ rows = 4 }: { rows?: number }) {
 }
 
 function EmptyState({
-  icon: Icon,
-  title,
-  body,
-  cta,
+  icon: Icon, title, body, cta,
 }: {
-  icon: any;
-  title: string;
-  body: string;
-  cta?: { to: string; label: string };
+  icon: any; title: string; body: string; cta?: { to: string; label: string };
 }) {
   return (
-    <div className="grid place-items-center gap-3 px-6 py-10 text-center">
-      <span className="grid h-10 w-10 place-items-center rounded-full border border-border/60 bg-background/40 text-muted-foreground">
+    <div className="grid place-items-center gap-3 px-6 py-12 text-center">
+      <span className="grid h-11 w-11 place-items-center rounded-full bg-cyan-500/5 text-cyan-300 ring-1 ring-cyan-400/20">
         <Icon className="h-4 w-4" />
       </span>
       <div className="max-w-xs">
@@ -400,7 +517,7 @@ function EmptyState({
       {cta && (
         <Link
           to={cta.to}
-          className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/40 px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-muted/40"
+          className="mt-1 inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
         >
           <Plus className="h-3.5 w-3.5" /> {cta.label}
         </Link>
@@ -419,58 +536,43 @@ function RankBadge({ index }: { index: number }) {
       ? "bg-orange-500/10 text-orange-300 ring-orange-500/25"
       : "bg-muted/30 text-muted-foreground ring-border/60";
   return (
-    <span
-      className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold ring-1 ${tone}`}
-    >
+    <span className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold ring-1 ${tone}`}>
       {index + 1}
     </span>
   );
 }
 
-function SummaryRow({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: React.ReactNode;
-  accent?: string;
-}) {
+function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between gap-3">
-      <span className="text-xs text-muted-foreground">{label}</span>
-      <span className={`text-sm font-semibold tabular-nums ${accent ?? ""}`}>{value}</span>
+    <div className="rounded-lg border border-border/50 bg-background/30 px-3 py-2">
+      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-0.5 truncate text-sm font-semibold tabular-nums">{value}</p>
     </div>
   );
 }
 
-function HealthRow({
-  icon: Icon,
-  label,
-  value,
-  ok,
+function PayoutRow({
+  tone, label, value,
 }: {
-  icon: any;
+  tone: "amber" | "cyan" | "emerald";
   label: string;
   value: string;
-  ok: boolean;
 }) {
+  const dot =
+    tone === "amber" ? "bg-amber-400"
+    : tone === "cyan" ? "bg-cyan-400"
+    : "bg-emerald-400";
+  const text =
+    tone === "amber" ? "text-amber-300"
+    : tone === "cyan" ? "text-cyan-200"
+    : "text-emerald-300";
   return (
     <div className="flex items-center justify-between gap-3 rounded-lg border border-border/50 bg-background/30 px-3 py-2">
-      <span className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-        <Icon className="h-3.5 w-3.5 shrink-0" />
-        <span className="truncate">{label}</span>
+      <span className="flex items-center gap-2 text-xs text-muted-foreground">
+        <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
+        {label}
       </span>
-      <span
-        className={`inline-flex items-center gap-1.5 text-xs font-medium tabular-nums ${
-          ok ? "text-emerald-300" : "text-muted-foreground"
-        }`}
-      >
-        <span
-          className={`h-1.5 w-1.5 rounded-full ${ok ? "bg-emerald-400" : "bg-muted-foreground/50"}`}
-        />
-        {value}
-      </span>
+      <span className={`text-sm font-semibold tabular-nums ${text}`}>{value}</span>
     </div>
   );
 }
