@@ -235,19 +235,21 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isAdmin = pathname.startsWith("/admin") || pathname.startsWith("/_authenticated/admin");
+  const isPortal = pathname.startsWith("/partner") || isAdmin;
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Navbar />
-      <main className="pt-16">
+      {!isPortal && <Navbar />}
+      <main className={isPortal ? "" : "pt-16"}>
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </main>
-      <TechPartners />
-      <Footer />
-      {!isAdmin && <WhatsAppChatButton />}
+      {!isPortal && <TechPartners />}
+      {!isPortal && <Footer />}
+      {!isAdmin && !isPortal && <WhatsAppChatButton />}
       <BackToTopButton />
       <Toaster theme="dark" position="top-right" richColors closeButton />
     </QueryClientProvider>
   );
 }
+
