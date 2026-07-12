@@ -540,18 +540,18 @@ function EarningsEmpty({ onOpen }: { onOpen: () => void }) {
     <PartnerEmptyState
       illustration={<CoinsIllustration />}
       tone="emerald"
-      eyebrow="Your earnings will land here"
-      title="No commissions yet — but they're on the way"
-      body="Once one of your referrals closes, you'll see the commission calculated, its payout stage, and every payment we send you — all in one clean ledger."
+      eyebrow="Your earnings will appear here"
+      title="No commissions yet — they'll show up the moment a deal closes"
+      body="As soon as one of your referrals closes, we'll calculate the commission, track its payout stage, and log every payment released to you — all in a single, transparent ledger."
       cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
       quickLinks={[
-        { label: "How commissions work", to: "/partner/profile", icon: BookOpen },
-        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+        { label: "How commissions are calculated", to: "/partner/profile", icon: BookOpen },
+        { label: "Copy your referral link", to: "/partner/profile", icon: Copy },
       ]}
       steps={[
-        { title: "Deal closes", body: "We mark your referral as won." },
-        { title: "Commission approved", body: "Reviewed within 5 business days." },
-        { title: "Payout on the 5th", body: "Sent to your chosen method." },
+        { title: "Deal closes", body: "The referred client signs and we mark the referral as won." },
+        { title: "Commission approved", body: "Our finance team reviews and approves within 5 business days." },
+        { title: "Payout released on the 5th", body: "Funds are sent to your saved payout method every month." },
       ]}
     />
   );
