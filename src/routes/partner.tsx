@@ -537,8 +537,8 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             </div>
 
             <div className="mt-6 border-t border-white/5 pt-4 grid gap-3 sm:grid-cols-2">
-              <InfoRow icon={Trophy} label="Best-performing referral" value={bestReferral ? `${bestReferral.client_name} • ${fmtMoney(bestReferral.deal_value)}` : "No wins yet"} />
-              <InfoRow icon={Target} label="Deals to next tier"       value={`${Math.max(0, goal - wonCount)} more wins`} />
+              <InfoRow icon={Trophy} label="Top-performing referral" value={bestReferral ? `${bestReferral.client_name} • ${fmtMoney(bestReferral.deal_value)}` : "No closed deals yet"} />
+              <InfoRow icon={Target} label="Deals to next tier"     value={`${Math.max(0, goal - wonCount)} more to unlock`} />
             </div>
           </section>
 
