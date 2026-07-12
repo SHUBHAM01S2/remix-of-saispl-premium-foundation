@@ -134,7 +134,7 @@ function MyReferralsPage() {
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-widest text-teal-300/80">Referral pipeline</p>
             <h1 className="mt-1 truncate text-2xl sm:text-3xl font-semibold tracking-tight">My Referrals</h1>
-            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track every lead you've introduced — status, deal value, and expected commission at a glance.</p>
+            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Manage every lead you've introduced — review deal stage, projected value, and expected commission in a single view.</p>
           </div>
           <button
             onClick={openNewReferral}
