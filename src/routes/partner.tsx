@@ -473,28 +473,28 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
 
         {/* Pipeline group */}
-        <KpiGroup title="Pipeline" caption="Where your referrals stand right now">
-          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={leadsTrend} hint="vs last month" />
-          <KpiCard label="Active"       value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   hint="in pipeline" />
-          <KpiCard label="Pending"      value={s?.pending ?? 0}             icon={Clock}        tint="bg-amber-500/15 text-amber-300"     hint="awaiting first contact" />
-          <KpiCard label="Won"          value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={wonTrend} hint="this month" />
-          <KpiCard label="Lost"         value={s?.lost ?? 0}                icon={XCircle}      tint="bg-rose-500/15 text-rose-300"       hint="closed lost" />
-          <KpiCard label="Conversion"   value={(s?.conversionRate ?? 0) + "%"} icon={ArrowUpRight} tint="bg-cyan-500/15 text-cyan-300"   hint="leads → won" />
+        <KpiGroup title="Pipeline health" caption="A real-time snapshot of every referral in your pipeline.">
+          <KpiCard label="Total leads"  value={total}                       icon={Users}        tint="bg-teal-500/15 text-teal-300"       trend={leadsTrend} hint="vs. last month" />
+          <KpiCard label="Active deals" value={s?.active ?? 0}              icon={Rocket}       tint="bg-violet-500/15 text-violet-300"   hint="currently in progress" />
+          <KpiCard label="Awaiting review" value={s?.pending ?? 0}          icon={Clock}        tint="bg-amber-500/15 text-amber-300"     hint="pending qualification" />
+          <KpiCard label="Closed won"   value={s?.won ?? 0}                 icon={CheckCircle2} tint="bg-emerald-500/15 text-emerald-300" trend={wonTrend} hint="this month" />
+          <KpiCard label="Closed lost"  value={s?.lost ?? 0}                icon={XCircle}      tint="bg-rose-500/15 text-rose-300"       hint="did not convert" />
+          <KpiCard label="Conversion rate" value={(s?.conversionRate ?? 0) + "%"} icon={ArrowUpRight} tint="bg-cyan-500/15 text-cyan-300"   hint="leads that closed" />
         </KpiGroup>
 
 
         {/* Revenue group */}
-        <KpiGroup title="Revenue" caption="Deal value flowing through your referrals">
+        <KpiGroup title="Revenue impact" caption="Total deal value your referrals are generating for SAISPL.">
           <KpiCard label="Total deal value"   value={fmtMoney(s?.dealValue)}     icon={BadgeDollarSign} tint="bg-amber-500/15 text-amber-300"     hint="pipeline + closed" />
           <KpiCard label="Won deal value"     value={fmtMoney((s?.dealValue ?? 0) * (s?.won && s?.total ? s.won / s.total : 0))} icon={Trophy} tint="bg-emerald-500/15 text-emerald-300" hint="closed & invoiced" />
-          <KpiCard label="Avg deal size"      value={fmtMoney(total ? (s?.dealValue ?? 0) / total : 0)} icon={TrendingUp} tint="bg-cyan-500/15 text-cyan-300" hint="across all referrals" />
+          <KpiCard label="Average deal size"  value={fmtMoney(total ? (s?.dealValue ?? 0) / total : 0)} icon={TrendingUp} tint="bg-cyan-500/15 text-cyan-300" hint="across all referrals" />
         </KpiGroup>
 
         {/* Payout group */}
-        <KpiGroup title="Payouts" caption="What you've earned and what's on the way">
-          <KpiCard label="Total commission" value={fmtMoney(commissionTotal)} icon={Wallet}        tint="bg-emerald-500/15 text-emerald-300" hint="lifetime earned" />
-          <KpiCard label="Paid till date"   value={fmtMoney(paidTotal)}       icon={CheckCircle2}  tint="bg-teal-500/15 text-teal-300"       hint="cleared payouts" />
-          <KpiCard label="Pending payout"   value={fmtMoney(pendingPayout)}   icon={CalendarClock} tint="bg-violet-500/15 text-violet-300"   hint={`Next: ${fmtDate(nextPayout.toISOString())}`} />
+        <KpiGroup title="Commissions & payouts" caption="Track earned commissions and upcoming payments in real time.">
+          <KpiCard label="Total commission" value={fmtMoney(commissionTotal)} icon={Wallet}        tint="bg-emerald-500/15 text-emerald-300" hint="lifetime earnings" />
+          <KpiCard label="Paid to date"     value={fmtMoney(paidTotal)}       icon={CheckCircle2}  tint="bg-teal-500/15 text-teal-300"       hint="cleared payouts" />
+          <KpiCard label="Pending payout"   value={fmtMoney(pendingPayout)}   icon={CalendarClock} tint="bg-violet-500/15 text-violet-300"   hint={`Next release: ${fmtDate(nextPayout.toISOString())}`} />
         </KpiGroup>
 
         {/* Performance + Commission summary */}
