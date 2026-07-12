@@ -503,9 +503,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-semibold">Performance overview</h3>
-                <p className="text-xs text-slate-400">Pipeline distribution across all your referrals.</p>
+                <p className="text-xs text-slate-400">A live view of how your referrals are distributed across each pipeline stage.</p>
               </div>
-              <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all →</Link>
+              <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all referrals →</Link>
             </div>
 
             {/* Stacked bar */}
