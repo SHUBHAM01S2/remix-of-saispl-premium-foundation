@@ -391,6 +391,13 @@
   }
 }
 
+/* Hide horizontal scrollbar on tab rails while keeping scroll behavior */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
 /* Semantic status chip system (semantic classic) */
 @utility chip {
   display: inline-flex;
