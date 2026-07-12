@@ -453,7 +453,23 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="min-w-0 space-y-6">
         {/* Hero */}
-        <DashboardHero partner={partner} referralLink={referralLink} copied={copied} setCopied={setCopied} />
+        <DashboardHero partner={partner} referralLink={referralLink} copied={copied} setCopied={setCopied} onOpenModal={openNewReferral} />
+
+        {statsQ.error && (
+          <ErrorBanner
+            title="We couldn't load your KPIs"
+            message={(statsQ.error as any)?.message ?? "Unknown error"}
+            onRetry={() => statsQ.refetch()}
+          />
+        )}
+        {listQ.error && (
+          <ErrorBanner
+            title="We couldn't load your referrals"
+            message={(listQ.error as any)?.message ?? "Unknown error"}
+            onRetry={() => listQ.refetch()}
+          />
+        )}
+
 
         {/* Pipeline group */}
         <KpiGroup title="Pipeline" caption="Where your referrals stand right now">
