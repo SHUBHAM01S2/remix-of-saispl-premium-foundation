@@ -226,7 +226,7 @@ function AffiliatesOverview() {
 
       {/* KPI groups */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <ClusterCard title="Partner metrics" hint="Network" icon={Users}>
+        <ClusterCard title="Partner network" hint="Coverage" icon={Users}>
           <KpiTile label="Total" value={loading ? "—" : d?.totalPartners ?? 0} />
           <KpiTile label="Active" value={loading ? "—" : d?.activePartners ?? 0} tone="emerald" />
           <KpiTile
@@ -236,16 +236,16 @@ function AffiliatesOverview() {
           />
         </ClusterCard>
 
-        <ClusterCard title="Referrals & pipeline" hint="Deal flow" icon={TrendingUp}>
+        <ClusterCard title="Pipeline throughput" hint="Deal flow" icon={TrendingUp}>
           <KpiTile label="Referrals" value={loading ? "—" : d?.totalReferrals ?? 0} />
-          <KpiTile label="Open" value={loading ? "—" : openReferrals} tone="cyan" />
-          <KpiTile label="Won this mo." value={loading ? "—" : d?.wonThisMonth ?? 0} tone="emerald" />
+          <KpiTile label="In pipeline" value={loading ? "—" : openReferrals} tone="cyan" />
+          <KpiTile label="Won MTD" value={loading ? "—" : d?.wonThisMonth ?? 0} tone="emerald" />
         </ClusterCard>
 
-        <ClusterCard title="Earnings & payouts" hint="Cash" icon={BadgeDollarSign}>
+        <ClusterCard title="Revenue & payouts" hint="Cash flow" icon={BadgeDollarSign}>
           <KpiTile label="Deal value" value={loading ? "—" : fmtMoney(d?.dealValue ?? 0)} money />
           <KpiTile label="Approved" value={loading ? "—" : fmtMoney(approvedTotal)} tone="cyan" money />
-          <KpiTile label="Paid" value={loading ? "—" : fmtMoney(paidTotal)} tone="emerald" money />
+          <KpiTile label="Released" value={loading ? "—" : fmtMoney(paidTotal)} tone="emerald" money />
         </ClusterCard>
       </div>
 
