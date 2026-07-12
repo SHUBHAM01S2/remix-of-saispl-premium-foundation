@@ -363,9 +363,10 @@ export const adminOverview = createServerFn({ method: "GET" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
     const [partnersRes, refsRes] = await Promise.all([
-      admin.from("sales_partners").select("id,status,full_name,company"),
-      admin.from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,created_at"),
+      admin.from("sales_partners").select("id,status,full_name,company,created_at"),
+      admin.from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,created_at,last_activity_at"),
     ]);
+
     if (partnersRes.error) throw partnersRes.error;
     if (refsRes.error) throw refsRes.error;
     const partners = (partnersRes.data ?? []) as any[];
