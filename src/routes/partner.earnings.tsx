@@ -5,11 +5,12 @@ import { useMemo, useState } from "react";
 import {
   Wallet, CheckCircle2, Clock, CalendarClock, TrendingUp, Download, Info,
   ShieldCheck, Sparkles, ArrowUpRight, ArrowDownRight, FileText, ChevronRight,
-  AlertTriangle, RefreshCw,
+  AlertTriangle, RefreshCw, BookOpen, Copy,
 } from "lucide-react";
 import { listMyReferrals, getMyStats } from "@/lib/partners.functions";
 import { fmtDate, fmtMoney, PayoutChip } from "@/lib/partners-ui";
 import { useOpenNewReferral } from "@/components/partner/new-referral-context";
+import { PartnerEmptyState, CoinsIllustration } from "@/components/partner/EmptyState";
 
 export const Route = createFileRoute("/partner/earnings")({
   component: EarningsPage,
