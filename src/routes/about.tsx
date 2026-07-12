@@ -46,13 +46,13 @@ const team = [
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About Shivaryan Infotech — AI & Software Team from Himachal Pradesh" },
+      { title: "About SAISPL — AI & Software Team, Himachal Pradesh" },
       {
         name: "description",
         content:
-          "Shivaryan Infotech is an AI automation and software development company based in Himachal Pradesh, India, building custom software, AI agents, and web platforms for global clients.",
+          "Shivaryan Infotech (SAISPL) builds AI automation, custom software, and web platforms from Himachal Pradesh for clients across India and worldwide.",
       },
-      { property: "og:title", content: "About Shivaryan Infotech — AI & Software Team from Himachal Pradesh" },
+      { property: "og:title", content: "About SAISPL — AI & Software Team, Himachal Pradesh" },
       {
         property: "og:description",
         content:
