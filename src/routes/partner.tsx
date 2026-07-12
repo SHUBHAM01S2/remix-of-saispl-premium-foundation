@@ -35,10 +35,10 @@ const NAV = [
 ];
 
 const PAGE_TITLES: Record<string, { title: string; sub: string }> = {
-  "/partner": { title: "Partner Performance", sub: "Track referrals, deals and payouts in one place." },
-  "/partner/referrals": { title: "My Referrals", sub: "Every client you have referred to SAISPL." },
-  "/partner/earnings": { title: "Earnings & Payouts", sub: "What you've earned and what's on the way." },
-  "/partner/profile": { title: "Profile & Payouts", sub: "Keep this current so payouts reach you." },
+  "/partner": { title: "Partner Dashboard", sub: "Monitor referrals, deal progress, earnings, and payout status from one workspace." },
+  "/partner/referrals": { title: "My Referrals", sub: "Manage every lead you've introduced to SAISPL and follow each deal to close." },
+  "/partner/earnings": { title: "Earnings & Payouts", sub: "Review approved commissions, upcoming payouts, and your full payment history." },
+  "/partner/profile": { title: "Account & Payout Settings", sub: "Keep your profile, tax details, and payout preferences current so every payment reaches you on time." },
 };
 
 function PartnerShell() {
