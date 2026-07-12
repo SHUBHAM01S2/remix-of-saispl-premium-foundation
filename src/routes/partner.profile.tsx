@@ -179,24 +179,24 @@ function ProfilePage() {
         </header>
 
         {/* Personal */}
-        <Card id="personal" icon={UserIcon} tint="text-teal-300 bg-teal-500/10" title="Personal information" desc="How we address you across the platform.">
+        <Card id="personal" icon={UserIcon} tint="text-teal-300 bg-teal-500/10" title="Personal information" desc="How SAISPL identifies and contacts you across the partner platform.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Full name" hint="Appears on payouts and communications." required>
+            <Field label="Full name" hint="This name appears on all payouts and official communications." required>
               <input {...bind("full_name")} placeholder="e.g. Ananya Sharma" className={inp} />
             </Field>
-            <Field label="Email" hint="Contact support to change your email.">
+            <Field label="Email address" hint="Contact support if you need to update your email.">
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input value={q.data?.email ?? ""} readOnly className={`${inp} pl-9 opacity-60 cursor-not-allowed`} />
               </div>
             </Field>
-            <Field label="Phone" hint="We'll call only for deal coordination.">
+            <Field label="Phone number" hint="Used only for time-sensitive deal coordination.">
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input {...bind("phone")} placeholder="+91 90000 00000" className={`${inp} pl-9`} />
               </div>
             </Field>
-            <Field label="Website" hint="Personal or professional site (optional).">
+            <Field label="Website" hint="Your personal or professional site (optional).">
               <input {...bind("website")} placeholder="https://" className={inp} />
             </Field>
           </div>
