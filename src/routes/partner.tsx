@@ -531,9 +531,9 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
             {/* Progress bars */}
             <div className="mt-6 space-y-4 border-t border-white/5 pt-5">
-              <ProgressRow label="Conversion rate"   value={`${s?.conversionRate ?? 0}%`} pct={s?.conversionRate ?? 0} className="from-teal-400 to-cyan-400" />
-              <ProgressRow label="Quarterly goal"    value={`${wonCount} / ${goal} wins`} pct={goalPct} className="from-emerald-400 to-teal-400" />
-              <ProgressRow label="Payout collected"  value={`${commissionTotal ? Math.round((paidTotal / commissionTotal) * 100) : 0}%`} pct={commissionTotal ? (paidTotal / commissionTotal) * 100 : 0} className="from-violet-400 to-fuchsia-400" />
+              <ProgressRow label="Conversion rate"    value={`${s?.conversionRate ?? 0}%`} pct={s?.conversionRate ?? 0} className="from-teal-400 to-cyan-400" />
+              <ProgressRow label="Quarterly target"   value={`${wonCount} / ${goal} closed`} pct={goalPct} className="from-emerald-400 to-teal-400" />
+              <ProgressRow label="Payouts collected"  value={`${commissionTotal ? Math.round((paidTotal / commissionTotal) * 100) : 0}%`} pct={commissionTotal ? (paidTotal / commissionTotal) * 100 : 0} className="from-violet-400 to-fuchsia-400" />
             </div>
 
             <div className="mt-6 border-t border-white/5 pt-4 grid gap-3 sm:grid-cols-2">
