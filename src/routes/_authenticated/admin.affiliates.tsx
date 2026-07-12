@@ -1157,12 +1157,10 @@ function LeaderboardEmpty() {
         </span>
         <div>
           <p className="text-sm font-semibold text-foreground">
-            No ranked performance yet
+            No measurable partner activity yet
           </p>
           <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-            Once partners start generating qualified referrals and closed deals,
-            this leaderboard will highlight top contributors with commission, deal
-            value, and 30-day momentum.
+            Invite partners, verify onboarding, and track the first qualified referrals. Rankings surface here once commission, deal value, and 30-day momentum start accruing.
           </p>
         </div>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
@@ -1170,17 +1168,17 @@ function LeaderboardEmpty() {
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_20px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
           >
-            <UserPlus className="h-3.5 w-3.5" /> Invite a partner
+            <UserPlus className="h-3.5 w-3.5" /> Invite partners
           </Link>
           <Link
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
           >
-            <Settings2 className="h-3.5 w-3.5" /> Review partner setup
+            <Settings2 className="h-3.5 w-3.5" /> Verify onboarding
           </Link>
         </div>
         <p className="mt-1 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
-          <Sparkles className="h-3 w-3 text-cyan-300" /> Auto-ranks by commission · Updates in real time
+          <Sparkles className="h-3 w-3 text-cyan-300" /> Auto-ranked by commission · Updates in real time
         </p>
       </div>
     </div>
