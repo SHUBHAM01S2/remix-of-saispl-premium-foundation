@@ -183,7 +183,7 @@ function MyReferralsPage() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search leads, company, email, service…"
+              placeholder="Search by lead, company, email, or service…"
               className="w-full rounded-xl border border-white/10 bg-slate-950/40 pl-9 pr-3 py-2.5 text-sm outline-none focus:border-teal-400/50 focus:ring-2 focus:ring-teal-400/20"
             />
           </div>
