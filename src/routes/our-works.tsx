@@ -37,11 +37,11 @@ const fallbackProjects: Project[] = [
 export const Route = createFileRoute("/our-works")({
   head: () => ({
     meta: [
-      { title: "Our Work — AI, Software & Web Portfolio | Shivaryan Infotech" },
+      { title: "Our Work — AI, Software & Web Portfolio | SAISPL" },
       {
         name: "description",
         content:
-          "Case studies from Shivaryan Infotech: AI automation, custom software, web platforms, and product design delivered to clients across Himachal Pradesh, India, and globally.",
+          "Case studies from Shivaryan Infotech: AI automation, custom software, and web platforms delivered for clients across India and worldwide.",
       },
       {
         name: "keywords",
