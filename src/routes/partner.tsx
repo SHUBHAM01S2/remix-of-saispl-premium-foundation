@@ -125,7 +125,7 @@ function PartnerShell() {
             </button>
           </form>
           <p className="mt-5 text-xs text-slate-400 text-center">
-            Not a partner yet? <Link to="/affiliate-enquiry" className="text-teal-300 hover:underline">Apply to the affiliate program</Link>
+            Not a partner yet? <Link to="/affiliate-enquiry" className="text-teal-300 hover:underline">Apply to join the SAISPL affiliate program</Link>
           </p>
         </div>
       </div>
