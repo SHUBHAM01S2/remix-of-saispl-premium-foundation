@@ -138,7 +138,15 @@ function ReferralDetailAdmin() {
               </button>
             </div>
             {activity.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No activity yet.</p>
+              <div className="grid place-items-center gap-2 rounded-xl border border-dashed border-border/60 bg-muted/10 px-4 py-8 text-center">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-brand/10 text-brand ring-1 ring-brand/25">
+                  <Send className="h-4 w-4" />
+                </span>
+                <p className="text-sm font-medium text-foreground">Start the activity log</p>
+                <p className="max-w-xs text-xs text-muted-foreground">
+                  Log the first internal note above — outreach attempts, call outcomes, or next steps — so the next admin can pick up right where you left off.
+                </p>
+              </div>
             ) : (
               <ol className="space-y-3">
                 {activity.map((a) => (
