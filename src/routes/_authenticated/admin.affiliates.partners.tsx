@@ -649,8 +649,8 @@ function EmptyPartners({ hasFilter, onAdd }: { hasFilter: boolean; onAdd: () => 
         <UserPlus className="h-6 w-6" />
       </span>
       <div className="relative max-w-md">
-        <p className="text-base font-semibold">Build your affiliate network</p>
-        <p className="mt-1.5 text-sm text-muted-foreground">Invite your first sales partner. They'll get access to the partner portal to submit referrals, track deals, and receive commissions automatically.</p>
+        <p className="text-base font-semibold">Activate the partner network</p>
+        <p className="mt-1.5 text-sm text-muted-foreground">Invite your first sales partner. They'll gain access to the portal to submit referrals, track deal progress, and receive commission payouts automatically.</p>
       </div>
       <button onClick={onAdd} className="relative inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-cyan-400 to-cyan-600 px-4 py-2 text-sm font-semibold text-slate-950 shadow-[0_1px_0_0_rgba(255,255,255,0.2)_inset,0_10px_28px_-10px_rgba(6,182,212,0.55)]">
         <Plus className="h-4 w-4" /> Invite first partner
