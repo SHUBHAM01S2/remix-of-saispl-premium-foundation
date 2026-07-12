@@ -166,6 +166,43 @@ function AdminShell() {
     }
   }, [inboxSummaryQ.data]);
 
+  // Realtime toast when a partner submits a new referral
+  useEffect(() => {
+    if (!isAdminRole) return;
+    const channel = supabase
+      .channel("admin-referrals-notify")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "referrals" },
+        (payload) => {
+          const row = payload.new as {
+            id: string;
+            company?: string | null;
+            contact_name?: string | null;
+            deal_value?: number | null;
+          };
+          const who = row.company || row.contact_name || "New lead";
+          const value =
+            typeof row.deal_value === "number" && row.deal_value > 0
+              ? ` · ₹${row.deal_value.toLocaleString("en-IN")}`
+              : "";
+          toast.success("New referral received", {
+            description: `${who}${value}`,
+            action: {
+              label: "Open",
+              onClick: () => {
+                window.location.href = `/admin/affiliates/referrals?focus=${row.id}`;
+              },
+            },
+          });
+        },
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [isAdminRole]);
+
   const isSuper = me?.isSuperAdmin ?? false;
   const groups = NAV_GROUPS.map((g) => ({
     ...g,
