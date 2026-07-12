@@ -697,3 +697,10 @@ function timeAgo(iso: string): string {
   if (d < 30) return `${d}d`;
   return new Date(iso).toLocaleDateString();
 }
+
+function formatIST(iso: string): string {
+  const d = new Date(iso);
+  const date = d.toLocaleDateString("en-GB", { timeZone: "Asia/Kolkata", day: "2-digit", month: "2-digit", year: "numeric" });
+  const time = d.toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour: "2-digit", minute: "2-digit", hour12: false });
+  return `${date} · ${time}`;
+}
