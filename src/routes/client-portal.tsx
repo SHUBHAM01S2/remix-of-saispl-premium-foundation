@@ -175,6 +175,7 @@ function SignInView({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [showPw, setShowPw] = useState(false);
   const getPartner = useServerFn(getMyPartnerProfile);
 
   const isPartner = role === "partner";
