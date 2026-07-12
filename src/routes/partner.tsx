@@ -577,7 +577,8 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
             <Link to="/partner/referrals" className="text-xs text-teal-300 hover:underline">View all →</Link>
           </div>
           {listQ.isLoading ? (
-            <div className="p-10 text-center text-slate-400 text-sm"><Loader2 className="inline h-4 w-4 animate-spin mr-2" />Loading your referrals…</div>
+            <TableSkeleton />
+
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm min-w-[860px]">
