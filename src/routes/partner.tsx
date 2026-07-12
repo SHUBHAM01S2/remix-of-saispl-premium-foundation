@@ -831,3 +831,58 @@ function OnboardStep({ n, title, body }: { n: number; title: string; body: strin
     </div>
   );
 }
+
+function SectionSkeleton({ titleWidth = "w-24", rows = 1, cols = 6 }: { titleWidth?: string; rows?: number; cols?: number }) {
+  return (
+    <section className="animate-pulse">
+      <div className={`h-4 rounded bg-white/10 mb-3 ${titleWidth}`} />
+      <div className={`grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-${cols}`}>
+        {Array.from({ length: rows * cols }).map((_, i) => (
+          <div key={i} className="h-[104px] rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+            <div className="h-3 w-20 rounded bg-white/10" />
+            <div className="mt-4 h-6 w-16 rounded bg-white/10" />
+            <div className="mt-3 h-2 w-24 rounded bg-white/5" />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function TableSkeleton() {
+  return (
+    <div className="p-5 space-y-3 animate-pulse">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <div className="h-4 w-40 rounded bg-white/10" />
+          <div className="h-4 w-32 rounded bg-white/5" />
+          <div className="h-4 w-20 rounded bg-white/5" />
+          <div className="ml-auto h-4 w-16 rounded bg-white/10" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ErrorBanner({ title, message, onRetry }: { title: string; message: string; onRetry?: () => void }) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-2xl border border-rose-500/25 bg-rose-500/10 px-4 py-3">
+      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-rose-500/15 text-rose-300">
+        <AlertTriangle className="h-4 w-4" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold text-rose-100">{title}</p>
+        <p className="text-xs text-rose-200/80 truncate">{message}</p>
+      </div>
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          className="inline-flex items-center gap-1.5 rounded-lg border border-rose-400/30 bg-rose-400/10 px-3 py-1.5 text-xs font-medium text-rose-100 hover:bg-rose-400/20"
+        >
+          <RefreshCw className="h-3.5 w-3.5" /> Retry
+        </button>
+      )}
+    </div>
+  );
+}
+
