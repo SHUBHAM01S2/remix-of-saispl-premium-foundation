@@ -276,19 +276,22 @@ export const adminListPartners = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false });
     if (error) throw error;
     const { data: refs } = await admin
-      .from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status");
-    const stats = new Map<string, { total: number; won: number; commission: number; unpaid: number }>();
+      .from("referrals").select("partner_id,status,deal_value,commission_amount,payout_status,last_activity_at,created_at");
+    const stats = new Map<string, { total: number; won: number; commission: number; unpaid: number; dealValue: number; lastActive: string | null }>();
     for (const r of (refs ?? []) as any[]) {
-      const s = stats.get(r.partner_id) ?? { total: 0, won: 0, commission: 0, unpaid: 0 };
+      const s = stats.get(r.partner_id) ?? { total: 0, won: 0, commission: 0, unpaid: 0, dealValue: 0, lastActive: null };
       s.total += 1;
       if (r.status === "won") s.won += 1;
       s.commission += Number(r.commission_amount ?? 0);
+      s.dealValue += Number(r.deal_value ?? 0);
       if (r.payout_status !== "paid") s.unpaid += Number(r.commission_amount ?? 0);
+      const ts = r.last_activity_at ?? r.created_at ?? null;
+      if (ts && (!s.lastActive || ts > s.lastActive)) s.lastActive = ts;
       stats.set(r.partner_id, s);
     }
     return (partners ?? []).map((p: any) => ({
       ...(p as PartnerRow),
-      stats: stats.get(p.id) ?? { total: 0, won: 0, commission: 0, unpaid: 0 },
+      stats: stats.get(p.id) ?? { total: 0, won: 0, commission: 0, unpaid: 0, dealValue: 0, lastActive: null },
     }));
   });
 
@@ -613,4 +616,22 @@ export const adminUpdatePartner = createServerFn({ method: "POST" })
       .select(PARTNER_COLS).single();
     if (error) throw error;
     return row as PartnerRow;
+  });
+
+export const adminResendPartnerInvite = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string }) => { if (!d?.id) throw new Error("id required"); return d; })
+  .handler(async ({ context, data }) => {
+    await assertAnyAdmin(context as any);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+    const { data: p, error } = await admin
+      .from("sales_partners").select("id,email,full_name").eq("id", data.id).maybeSingle();
+    if (error) throw error;
+    if (!p?.email) throw new Error("Partner has no email on file");
+    const { error: inviteErr } = await admin.auth.admin.inviteUserByEmail(p.email, {
+      data: { full_name: p.full_name, role: "partner" },
+    });
+    if (inviteErr && !/already/i.test(inviteErr.message)) throw inviteErr;
+    return { ok: true, email: p.email };
   });
