@@ -38,6 +38,7 @@ function ShiviLogin() {
   const [resetOpen, setResetOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
+  const [showPw, setShowPw] = useState(false);
   // When a client account somehow lands on /shivi with an active session,
   // we render the full-screen wrong-role notice instead of the login card.
   const [wrongRoleEmail, setWrongRoleEmail] = useState<string | null>(null);
