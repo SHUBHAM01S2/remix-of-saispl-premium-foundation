@@ -246,7 +246,20 @@ function EarningsPage() {
           ) : earning.length === 0 ? (
             <EarningsEmpty onOpen={openNewReferral} />
           ) : filteredEarning.length === 0 ? (
-            <div className="p-10 text-center text-sm text-slate-400">No payouts in this stage.</div>
+            <div className="p-5">
+              <PartnerEmptyState
+                icon={Wallet}
+                tone="indigo"
+                compact
+                title="No payouts in this stage"
+                body="Nothing sits at this payout stage right now. Try a different tab, or keep the pipeline flowing with a fresh referral."
+                cta={{ label: "Submit a referral", onClick: openNewReferral, icon: Sparkles }}
+                quickLinks={[
+                  { label: "View all payouts", onClick: () => setLedgerFilter("all"), icon: ArrowUpRight },
+                  { label: "Commission rules", to: "/partner/profile", icon: BookOpen },
+                ]}
+              />
+            </div>
           ) : (
             <>
               {/* Desktop table */}
