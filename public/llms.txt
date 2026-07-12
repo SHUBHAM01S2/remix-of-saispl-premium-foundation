@@ -1,0 +1,28 @@
+# Shivaryan Infotech (SAISPL)
+
+> India-based software company building AI automation, custom software, web apps, and business portals for startups and enterprises worldwide.
+
+## Pages
+
+- [Home](/): Overview of Shivaryan Infotech services and capabilities.
+- [About](/about): Team, story, and how we work.
+- [Services](/services): Full service catalog.
+- [Web Design & Development](/web-design-development): Custom websites and web apps.
+- [SEO & Digital Marketing](/seo-digital-marketing): Technical SEO and local marketing.
+- [AI & Automation](/automation-ai-services): AI agents, LLM integrations, workflow automation.
+- [Custom Portals & Software](/custom-portals-software): Internal tools and business portals.
+- [Branding & Graphic Design](/branding-graphic-design): Brand and product design.
+- [Care & Maintenance](/care-maintenance): Monthly website care plans.
+- [Pricing](/pricing): Package and plan pricing.
+- [Our Work](/our-works): Portfolio and case studies.
+- [Bilaspur, HP](/web-development-company-bilaspur-himachal-pradesh): Local landing page.
+- [FAQ](/faq): Common questions.
+- [Blog](/blog): Insights on web, SEO, and automation.
+- [Careers](/career): Open roles.
+- [Contact](/contact): Get in touch.
+- [Affiliate Program](/affiliate): Partner with us.
+
+## Optional
+
+- [Privacy](/privacy)
+- [Terms](/terms)
