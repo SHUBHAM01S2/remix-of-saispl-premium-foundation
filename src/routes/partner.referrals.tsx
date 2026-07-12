@@ -476,12 +476,12 @@ function NoResults({ onClear }: { onClear: () => void }) {
     <PartnerEmptyState
       icon={Search}
       tone="indigo"
-      title="No referrals match your filters"
-      body="Try broadening your search, changing the status tab, or clearing the active filters."
-      cta={{ label: "Clear filters", onClick: onClear, icon: X }}
+      title="No referrals match the current filters"
+      body="Try broadening your search terms, switching to another status tab, or clearing the active filters to see more results."
+      cta={{ label: "Clear all filters", onClick: onClear, icon: X }}
       quickLinks={[
-        { label: "Submit a referral", to: "/partner/referrals/new", icon: Sparkles },
-        { label: "View commission rules", to: "/partner/earnings", icon: BookOpen },
+        { label: "Submit a new referral", to: "/partner/referrals/new", icon: Sparkles },
+        { label: "Review commission rules", to: "/partner/earnings", icon: BookOpen },
       ]}
       compact
     />
@@ -492,18 +492,18 @@ function FirstReferralEmpty({ onOpen }: { onOpen: () => void }) {
   return (
     <PartnerEmptyState
       illustration={<ReferralIllustration Icon={Users} />}
-      eyebrow="Your referrals live here"
-      title="You haven't submitted any referrals yet"
-      body="Start by adding your first lead and we'll help you track every stage — from first intro to closed deal and paid commission."
+      eyebrow="Your referrals will appear here"
+      title="No referrals submitted yet"
+      body="Submit your first lead to begin tracking deals and commissions. We'll guide every referral from introduction to closed deal — and pay you when the client onboards."
       cta={{ label: "Submit your first referral", onClick: onOpen, icon: Sparkles }}
       quickLinks={[
         { label: "How commissions work", to: "/partner/earnings", icon: BookOpen },
-        { label: "Copy invite link", to: "/partner/profile", icon: Copy },
+        { label: "Copy your referral link", to: "/partner/profile", icon: Copy },
       ]}
       steps={[
-        { title: "Introduce a business", body: "Anyone who could benefit from our engineering, AI, or automation services." },
-        { title: "Submit their details", body: "Add company, contact, and the service they're interested in — takes under a minute." },
-        { title: "Earn on conversion", body: "You get paid commission the moment the deal closes and the client onboards." },
+        { title: "Introduce a business", body: "Anyone in your network who could benefit from our engineering, AI, or automation expertise." },
+        { title: "Submit lead details", body: "Add the company, contact, and service of interest — the form takes under a minute to complete." },
+        { title: "Earn on every close", body: "Receive your commission the moment the deal closes and the client is successfully onboarded." },
       ]}
     />
   );
