@@ -6,12 +6,20 @@ import type {
 } from "@/lib/partners.functions";
 
 export const STATUS_STYLES: Record<ReferralStatus, string> = {
-  new: "bg-blue-500/15 text-blue-300 border-blue-500/30",
-  contacted: "bg-amber-500/15 text-amber-300 border-amber-500/30",
-  in_discussion: "bg-violet-500/15 text-violet-300 border-violet-500/30",
-  onboarding: "bg-cyan-500/15 text-cyan-300 border-cyan-500/30",
-  won: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-  lost: "bg-rose-500/15 text-rose-300 border-rose-500/30",
+  new: "bg-blue-500/10 text-blue-200 border-blue-400/25",
+  contacted: "bg-amber-500/10 text-amber-200 border-amber-400/25",
+  in_discussion: "bg-violet-500/10 text-violet-200 border-violet-400/25",
+  onboarding: "bg-cyan-500/10 text-cyan-200 border-cyan-400/25",
+  won: "bg-emerald-500/10 text-emerald-200 border-emerald-400/25",
+  lost: "bg-rose-500/10 text-rose-200 border-rose-400/25",
+};
+export const STATUS_DOT: Record<ReferralStatus, string> = {
+  new: "bg-blue-400",
+  contacted: "bg-amber-400",
+  in_discussion: "bg-violet-400",
+  onboarding: "bg-cyan-400",
+  won: "bg-emerald-400",
+  lost: "bg-rose-400",
 };
 export const STATUS_LABEL: Record<ReferralStatus, string> = {
   new: "New",
@@ -32,18 +40,24 @@ export const STAGE_LABEL: Record<ReferralDealStage, string> = {
 };
 
 export const PAYOUT_STYLES: Record<ReferralPayoutStatus, string> = {
-  pending: "bg-zinc-500/15 text-zinc-300 border-zinc-500/30",
-  approved: "bg-blue-500/15 text-blue-300 border-blue-500/30",
-  paid: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-  on_hold: "bg-amber-500/15 text-amber-300 border-amber-500/30",
+  pending: "bg-zinc-500/10 text-zinc-200 border-zinc-400/25",
+  approved: "bg-blue-500/10 text-blue-200 border-blue-400/25",
+  paid: "bg-emerald-500/10 text-emerald-200 border-emerald-400/25",
+  on_hold: "bg-amber-500/10 text-amber-200 border-amber-400/25",
+};
+export const PAYOUT_DOT: Record<ReferralPayoutStatus, string> = {
+  pending: "bg-zinc-400",
+  approved: "bg-blue-400",
+  paid: "bg-emerald-400",
+  on_hold: "bg-amber-400",
 };
 export const PAYOUT_LABEL: Record<ReferralPayoutStatus, string> = {
   pending: "Pending", approved: "Approved", paid: "Paid", on_hold: "On Hold",
 };
 
 export const PARTNER_STATUS_STYLES: Record<PartnerStatus, string> = {
-  active: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-  paused: "bg-zinc-500/15 text-zinc-300 border-zinc-500/30",
+  active: "bg-emerald-500/10 text-emerald-200 border-emerald-400/25",
+  paused: "bg-zinc-500/10 text-zinc-200 border-zinc-400/25",
 };
 
 export function fmtMoney(n: number | null | undefined) {
@@ -64,14 +78,16 @@ export function fmtDateTime(s: string | null | undefined) {
 
 export function StatusChip({ status }: { status: ReferralStatus }) {
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[status]}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-tight ${STATUS_STYLES[status]}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
       {STATUS_LABEL[status]}
     </span>
   );
 }
 export function PayoutChip({ status }: { status: ReferralPayoutStatus }) {
   return (
-    <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${PAYOUT_STYLES[status]}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-tight ${PAYOUT_STYLES[status]}`}>
+      <span className={`h-1.5 w-1.5 rounded-full ${PAYOUT_DOT[status]}`} />
       {PAYOUT_LABEL[status]}
     </span>
   );

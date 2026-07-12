@@ -183,46 +183,46 @@ function PartnerShell() {
         <div className="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(70%_60%_at_20%_0%,rgba(20,184,166,0.10),transparent_60%),radial-gradient(60%_50%_at_80%_10%,rgba(56,189,248,0.08),transparent_60%)]" />
 
         {/* Sidebar (desktop) */}
-        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] border-r border-white/5 bg-[#0b1220]/80 backdrop-blur-xl lg:flex lg:flex-col">
+        <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] border-r border-white/[0.06] bg-[#080d17]/90 backdrop-blur-2xl lg:flex lg:flex-col">
           <SidebarInner partner={partner} path={path} onNav={() => {}} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
         </aside>
 
         {/* Sidebar (mobile drawer) */}
         {mobileNav && (
           <div className="fixed inset-0 z-40 lg:hidden">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
-            <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/5 bg-[#0b1220] flex flex-col">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
+            <aside className="absolute inset-y-0 left-0 w-[280px] max-w-[85%] border-r border-white/[0.06] bg-[#080d17] flex flex-col shadow-2xl shadow-black/50">
               <SidebarInner partner={partner} path={path} onNav={() => setMobileNav(false)} onSignOut={async () => { await supabase.auth.signOut(); router.invalidate(); }} />
             </aside>
           </div>
         )}
 
-        <div className="lg:pl-[248px]">
+        <div className="lg:pl-[260px]">
           {/* Top bar */}
-          <header className="sticky top-0 z-20 border-b border-white/5 bg-[#0a0f1a]/80 backdrop-blur-xl">
-            <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-16">
-              <button onClick={() => setMobileNav(true)} className="lg:hidden p-2 -ml-2 text-slate-300 hover:text-white" aria-label="Open menu">
+          <header className="sticky top-0 z-20 border-b border-white/[0.06] bg-[#0a0f1a]/85 backdrop-blur-xl">
+            <div className="flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-[68px]">
+              <button onClick={() => setMobileNav(true)} className="lg:hidden -ml-2 grid h-9 w-9 place-items-center rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </button>
               <div className="min-w-0 flex-1">
-                <h1 className="text-base sm:text-lg font-semibold truncate">{header.title}</h1>
-                <p className="hidden sm:block text-xs text-slate-400 truncate">{header.sub}</p>
+                <h1 className="text-[15px] sm:text-base font-semibold tracking-tight truncate">{header.title}</h1>
+                <p className="hidden sm:block text-xs text-slate-500 truncate mt-0.5">{header.sub}</p>
               </div>
               <button
                 onClick={openModal}
-                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2 text-sm shadow-lg shadow-teal-500/20 hover:brightness-110 transition">
-                <Sparkles className="h-4 w-4" /> New referral
+                className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 ring-1 ring-teal-300/40 hover:shadow-teal-500/40 hover:brightness-[1.05] active:scale-[0.98] transition-all">
+                <Sparkles className="h-4 w-4" /> Submit referral
               </button>
-              <button className="relative p-2 rounded-lg border border-white/5 text-slate-300 hover:text-white hover:bg-white/5" aria-label="Notifications">
+              <button className="relative grid h-9 w-9 place-items-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-slate-300 hover:text-white hover:bg-white/[0.06] hover:border-white/10 transition" aria-label="Notifications">
                 <Bell className="h-4 w-4" />
-                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400" />
+                <span className="absolute top-1.5 right-1.5 h-1.5 w-1.5 rounded-full bg-teal-400 ring-2 ring-[#0a0f1a]" />
               </button>
-              <div className="flex items-center gap-2 pl-2 border-l border-white/5">
+              <div className="flex items-center gap-2.5 pl-3 ml-1 border-l border-white/[0.06]">
                 <div className="hidden md:block text-right">
-                  <p className="text-xs font-medium leading-tight truncate max-w-[140px]">{partner.full_name ?? "Partner"}</p>
-                  <p className="text-[10px] text-slate-400 truncate max-w-[140px]">{partner.company ?? partner.email}</p>
+                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner.full_name ?? "Partner"}</p>
+                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner.company ?? partner.email}</p>
                 </div>
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow shadow-teal-500/20">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow-md shadow-teal-500/30 ring-2 ring-white/10">
                   {initials}
                 </span>
               </div>
@@ -231,8 +231,8 @@ function PartnerShell() {
             <div className="sm:hidden px-4 pb-3">
               <button
                 onClick={openModal}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm">
-                <Sparkles className="h-4 w-4" /> New referral
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/20">
+                <Sparkles className="h-4 w-4" /> Submit referral
               </button>
             </div>
           </header>
@@ -244,6 +244,7 @@ function PartnerShell() {
           </main>
         </div>
 
+
         <NewReferralModal open={modalOpen} onClose={() => setModalOpen(false)} referralLink={referralLink} />
       </div>
     </NewReferralContext.Provider>
@@ -252,52 +253,64 @@ function PartnerShell() {
 
 
 function SidebarInner({ partner, path, onNav, onSignOut }: { partner: any; path: string; onNav: () => void; onSignOut: () => void }) {
+  const initials = (partner.full_name ?? partner.email ?? "P").split(" ").map((s: string) => s[0]).slice(0, 2).join("").toUpperCase();
   return (
     <>
-      <div className="flex items-center justify-between gap-3 px-5 py-5 border-b border-white/5">
+      <div className="flex items-center justify-between gap-3 px-5 h-[68px] border-b border-white/[0.06]">
         <div className="flex items-center gap-3 min-w-0">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 shadow shadow-teal-500/20">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 shadow-md shadow-teal-500/25 ring-1 ring-teal-300/40">
             <Handshake className="h-4 w-4" />
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight truncate">SAISPL</p>
-            <p className="text-[10px] uppercase tracking-widest text-slate-400">Partner Portal</p>
+            <p className="text-sm font-semibold leading-tight truncate tracking-tight">SAISPL</p>
+            <p className="text-[10px] uppercase tracking-[0.14em] text-slate-500 mt-0.5">Partner Portal</p>
           </div>
         </div>
-        <button className="lg:hidden text-slate-400 hover:text-white" onClick={onNav} aria-label="Close">
+        <button className="lg:hidden grid h-8 w-8 place-items-center rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition" onClick={onNav} aria-label="Close">
           <X className="h-4 w-4" />
         </button>
       </div>
-      <nav className="flex-1 overflow-y-auto p-3">
-        <p className="px-3 pt-2 pb-1 text-[10px] uppercase tracking-widest text-slate-500">Workspace</p>
-        {NAV.map((item) => {
-          const active = item.end ? path === item.to : path === item.to || path.startsWith(item.to + "/");
-          const Icon = item.icon;
-          return (
-            <Link key={item.to} to={item.to} onClick={onNav}
-              className={`group relative mb-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
-                active
-                  ? "bg-gradient-to-r from-teal-500/15 to-cyan-500/5 text-white ring-1 ring-teal-400/25"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
-              }`}>
-              {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-teal-400" />}
-              <Icon className={`h-4 w-4 ${active ? "text-teal-300" : ""}`} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 overflow-y-auto px-3 py-4">
+        <p className="px-3 pb-2 text-[10px] uppercase tracking-[0.14em] text-slate-500 font-medium">Workspace</p>
+        <div className="space-y-0.5">
+          {NAV.map((item) => {
+            const active = item.end ? path === item.to : path === item.to || path.startsWith(item.to + "/");
+            const Icon = item.icon;
+            return (
+              <Link key={item.to} to={item.to} onClick={onNav}
+                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
+                  active
+                    ? "bg-gradient-to-r from-teal-500/[0.18] via-teal-500/[0.08] to-transparent text-white ring-1 ring-inset ring-teal-400/20"
+                    : "text-slate-400 hover:bg-white/[0.04] hover:text-slate-100"
+                }`}>
+                {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-teal-400 shadow-[0_0_12px_rgba(45,212,191,0.6)]" />}
+                <Icon className={`h-[18px] w-[18px] transition-colors ${active ? "text-teal-300" : "text-slate-500 group-hover:text-slate-300"}`} />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
-      <div className="border-t border-white/5 p-3 space-y-2">
-        <div className="rounded-xl border border-white/5 bg-white/[0.02] p-3">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
+      <div className="border-t border-white/[0.06] p-3 space-y-2">
+        <div className="rounded-xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-3.5">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-slate-500 font-medium">
             <Award className="h-3.5 w-3.5 text-teal-300" /> Partner tier
           </div>
-          <p className="mt-1 text-sm font-semibold">{partner.company ? "Verified Partner" : "Getting Started"}</p>
+          <p className="mt-1.5 text-sm font-semibold tracking-tight">{partner.company ? "Verified Partner" : "Getting Started"}</p>
         </div>
-        <button onClick={onSignOut}
-          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-slate-400 hover:bg-white/5 hover:text-white">
-          <LogOut className="h-4 w-4" /> Sign out
-        </button>
+        <div className="flex items-center gap-2.5 rounded-xl px-2.5 py-2">
+          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-[11px] font-bold ring-2 ring-white/10">
+            {initials}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-semibold truncate">{partner.full_name ?? "Partner"}</p>
+            <p className="text-[10px] text-slate-500 truncate">{partner.email}</p>
+          </div>
+          <button onClick={onSignOut} title="Sign out"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-500 hover:text-rose-300 hover:bg-rose-500/10 transition">
+            <LogOut className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </>
   );
@@ -309,23 +322,23 @@ function KpiCard({
   label, value, icon: Icon, tint, trend, hint,
 }: { label: string; value: string | number; icon: any; tint: string; trend?: { dir: "up" | "down"; value: string }; hint?: string }) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:border-white/10 hover:bg-white/[0.035] transition">
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-[radial-gradient(80%_60%_at_100%_0%,rgba(20,184,166,0.08),transparent_60%)]" />
-      <div className="relative flex items-center justify-between">
-        <p className="text-xs text-slate-400">{label}</p>
-        <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${tint}`}><Icon className="h-4 w-4" /></span>
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] to-white/[0.01] p-5 transition-all hover:border-white/[0.12] hover:from-white/[0.05] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20">
+      <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-[radial-gradient(80%_60%_at_100%_0%,rgba(20,184,166,0.10),transparent_60%)]" />
+      <div className="relative flex items-start justify-between gap-3">
+        <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500 font-medium">{label}</p>
+        <span className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset ring-white/5 ${tint}`}><Icon className="h-4 w-4" /></span>
       </div>
-      <p className="relative mt-3 text-2xl font-semibold tracking-tight">{value}</p>
-      <div className="relative mt-2 flex items-center gap-2 text-xs">
+      <p className="relative mt-3 text-[26px] font-semibold tracking-tight leading-none tabular-nums">{value}</p>
+      <div className="relative mt-auto pt-3 flex items-center gap-2 text-xs min-h-[22px]">
         {trend && (
-          <span className={`inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 font-medium ${
-            trend.dir === "up" ? "bg-emerald-500/10 text-emerald-300" : "bg-rose-500/10 text-rose-300"
+          <span className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 font-semibold text-[10.5px] ${
+            trend.dir === "up" ? "bg-emerald-500/10 text-emerald-300 ring-1 ring-inset ring-emerald-400/20" : "bg-rose-500/10 text-rose-300 ring-1 ring-inset ring-rose-400/20"
           }`}>
             {trend.dir === "up" ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
             {trend.value}
           </span>
         )}
-        {hint && <span className="text-slate-500">{hint}</span>}
+        {hint && <span className="text-slate-500 truncate">{hint}</span>}
       </div>
     </div>
   );
