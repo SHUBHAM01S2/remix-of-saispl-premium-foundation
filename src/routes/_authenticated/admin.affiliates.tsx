@@ -449,14 +449,14 @@ function AffiliatesOverview() {
 
           {/* Recent referral activity */}
           <Panel
-            eyebrow="Activity"
+            eyebrow="Latest activity"
             title="Recent referrals"
             action={
               <Link
                 to="/admin/affiliates/referrals"
                 className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
               >
-                All referrals <ArrowUpRight className="h-3 w-3" />
+                View all referrals <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
           >
@@ -465,10 +465,10 @@ function AffiliatesOverview() {
             ) : recent.length === 0 ? (
               <EmptyState
                 icon={Handshake}
-                title="No referrals yet"
-                body="Share onboarding resources with partners so they know how to submit deals, or add the first referral manually to seed the pipeline."
-                cta={{ to: "/admin/affiliates/referrals", label: "Add first referral" }}
-                secondary={{ to: "/admin/affiliates/partners", label: "Review partners" }}
+                title="No measurable referral activity yet"
+                body="Distribute onboarding assets to partners or log the first referral manually to seed the pipeline."
+                cta={{ to: "/admin/affiliates/referrals", label: "Log first referral" }}
+                secondary={{ to: "/admin/affiliates/partners", label: "Verify partner setup" }}
               />
 
             ) : (
