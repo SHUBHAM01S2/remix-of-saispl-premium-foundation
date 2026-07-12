@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   LayoutDashboard, Users, TrendingUp, User as UserIcon, LogOut, Loader2, Sparkles,
-  ArrowUpRight, BadgeDollarSign, CheckCircle2, Handshake, XCircle,
+  ArrowUpRight, BadgeDollarSign, CheckCircle2, Handshake, XCircle, Eye, EyeOff,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getMyPartnerProfile, getMyStats, listMyReferrals } from "@/lib/partners.functions";
@@ -36,6 +36,7 @@ function PartnerShell() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [showPw, setShowPw] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -64,14 +65,14 @@ function PartnerShell() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-background text-foreground grid place-items-center px-4">
-        <div className="w-full max-w-md rounded-2xl border border-border/60 bg-card/70 backdrop-blur p-8 shadow-xl">
+      <div className="min-h-screen bg-background text-foreground grid place-items-center px-4 py-8">
+        <div className="w-full max-w-md rounded-2xl border border-border/60 bg-card/70 backdrop-blur p-6 sm:p-8 shadow-xl">
           <div className="flex items-center gap-3 mb-6">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand/60 text-brand-foreground">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand/60 text-brand-foreground">
               <Handshake className="h-5 w-5" />
             </span>
-            <div>
-              <h1 className="text-lg font-semibold">Sales Partner Portal</h1>
+            <div className="min-w-0">
+              <h1 className="text-base sm:text-lg font-semibold truncate">Sales Partner Portal</h1>
               <p className="text-xs text-muted-foreground">Sign in to view your referrals</p>
             </div>
           </div>
@@ -87,16 +88,26 @@ function PartnerShell() {
           >
             <div>
               <label className="text-xs text-muted-foreground">Email</label>
-              <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-border bg-background/60 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <input required type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-border bg-background/60 px-3 py-2.5 text-base sm:text-sm outline-none focus:border-brand" />
             </div>
             <div>
               <label className="text-xs text-muted-foreground">Password</label>
-              <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full rounded-lg border border-border bg-background/60 px-3 py-2 text-sm outline-none focus:border-brand" />
+              <div className="relative mt-1">
+                <input required type={showPw ? "text" : "password"} autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}
+                  className="w-full rounded-lg border border-border bg-background/60 px-3 py-2.5 pr-11 text-base sm:text-sm outline-none focus:border-brand" />
+                <button
+                  type="button"
+                  onClick={() => setShowPw((s) => !s)}
+                  aria-label={showPw ? "Hide password" : "Show password"}
+                  className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground hover:text-foreground"
+                >
+                  {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
             {err && <p className="text-sm text-rose-400">{err}</p>}
-            <button disabled={busy} className="w-full rounded-lg bg-brand text-brand-foreground font-medium py-2 hover:opacity-90 disabled:opacity-50">
+            <button disabled={busy} className="w-full rounded-lg bg-brand text-brand-foreground font-medium py-2.5 hover:opacity-90 disabled:opacity-50">
               {busy ? "Signing in…" : "Sign in"}
             </button>
           </form>

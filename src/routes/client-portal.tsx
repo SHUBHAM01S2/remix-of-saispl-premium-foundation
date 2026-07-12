@@ -10,6 +10,8 @@ import {
   Circle,
   Clock,
   ExternalLink,
+  Eye,
+  EyeOff,
   FileUp,
   Paperclip,
   KeyRound,
@@ -173,6 +175,7 @@ function SignInView({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [showPw, setShowPw] = useState(false);
   const getPartner = useServerFn(getMyPartnerProfile);
 
   const isPartner = role === "partner";
@@ -339,15 +342,25 @@ function SignInView({
 
               <div>
                 <label className="mb-1 block text-xs font-medium text-muted-foreground">Password</label>
-                <input
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="min-h-[44px] w-full rounded-lg border border-input bg-background px-3 py-2.5 text-base outline-none focus:border-brand sm:text-sm"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    type={showPw ? "text" : "password"}
+                    required
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="min-h-[44px] w-full rounded-lg border border-input bg-background px-3 py-2.5 pr-11 text-base outline-none focus:border-brand sm:text-sm"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw((s) => !s)}
+                    aria-label={showPw ? "Hide password" : "Show password"}
+                    className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-muted-foreground hover:text-foreground"
+                  >
+                    {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
               </div>
 
               {error && (
