@@ -36,6 +36,7 @@ function PartnerShell() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [showPw, setShowPw] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
