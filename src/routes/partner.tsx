@@ -719,7 +719,7 @@ export function EmptyState({ icon: Icon, title, body, cta }: { icon: any; title:
   );
 }
 
-function DashboardHero({ partner, referralLink, copied, setCopied }: { partner: any; referralLink: string; copied: boolean; setCopied: (v: boolean) => void }) {
+function DashboardHero({ partner, referralLink, copied, setCopied, onOpenModal }: { partner: any; referralLink: string; copied: boolean; setCopied: (v: boolean) => void; onOpenModal: () => void }) {
   return (
     <section className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 sm:p-7">
       <div className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-teal-500/10 blur-3xl" />
@@ -742,9 +742,10 @@ function DashboardHero({ partner, referralLink, copied, setCopied }: { partner: 
               </button>
             </div>
           </div>
-          <Link to="/partner/referrals/new" className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 hover:brightness-110 transition">
+          <button onClick={onOpenModal} className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-semibold px-4 py-2.5 text-sm shadow-lg shadow-teal-500/25 hover:brightness-110 transition">
             <Sparkles className="h-4 w-4" /> New Referral
-          </Link>
+          </button>
+
         </div>
       </div>
     </section>
