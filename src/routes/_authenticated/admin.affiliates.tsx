@@ -171,6 +171,35 @@ function AffiliatesOverview() {
   const partnersNoActivity = d ? Math.max(0, (d.totalPartners ?? 0) - activePartnersWithRefs) : 0;
   const pendingReview = refs.filter((r) => r.payout_status === "pending").length;
 
+  // Derived health scores (0–100, higher is healthier)
+  const stallRate = openReferrals > 0 ? Math.round((stalled.length / openReferrals) * 100) : 0;
+  const pipelineHealth = openReferrals === 0
+    ? (d?.totalReferrals ? 30 : 0)
+    : Math.max(0, 100 - stallRate);
+  const activationScore = d?.avgActivationDays == null
+    ? 0
+    : d.avgActivationDays <= 7
+    ? 100
+    : d.avgActivationDays <= 14
+    ? 75
+    : d.avgActivationDays <= 30
+    ? 50
+    : 25;
+  const healthScore = loading
+    ? 0
+    : Math.round(
+        (activeRate +
+          pipelineHealth +
+          Math.min(100, wonRate * 2) +
+          Math.max(0, 100 - stallRate) +
+          payoutReadiness +
+          activationScore) /
+          6,
+      );
+  const healthLabel =
+    healthScore >= 70 ? "Healthy" : healthScore >= 40 ? "Needs attention" : "At risk";
+
+
   return (
     <div className="space-y-6">
       {/* Hero action cards: pending payout + pipeline value */}
