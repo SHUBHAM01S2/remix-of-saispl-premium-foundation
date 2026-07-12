@@ -113,10 +113,11 @@ function ProfilePage() {
   return (
     <form
       onSubmit={(e) => { e.preventDefault(); m.mutate(); }}
-      className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)] items-start"
+      className="grid gap-6 items-start lg:[grid-template-columns:300px_minmax(0,1fr)]"
     >
       {/* Sidebar summary */}
-      <aside className="space-y-4 lg:sticky lg:top-6">
+      <aside className="space-y-4 min-w-0">
+
         <div className="rounded-2xl border border-white/5 bg-gradient-to-br from-white/[0.05] to-white/[0.01] p-5 text-center relative overflow-hidden">
           <div className="absolute inset-x-0 -top-16 h-32 bg-gradient-to-b from-teal-500/20 to-transparent blur-2xl" />
           <span className="relative mx-auto grid h-20 w-20 place-items-center rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xl font-bold shadow-lg shadow-teal-500/30 ring-4 ring-slate-950">
