@@ -625,14 +625,14 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
       <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
         <section className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
           <div className="flex items-center gap-2 text-xs text-teal-300">
-            <Sparkles className="h-3.5 w-3.5" /> Partner tips
+            <Sparkles className="h-3.5 w-3.5" /> Partner playbook
           </div>
-          <h3 className="mt-1 text-sm font-semibold">How to earn more</h3>
+          <h3 className="mt-1 text-sm font-semibold">Proven ways to grow your earnings</h3>
           <ul className="mt-4 space-y-3">
-            <TipRow n={1} title="Target mid-market ops teams" body="They convert 2× faster than enterprise leads." />
-            <TipRow n={2} title="Share the full deck early"    body="Prospects who see our case studies close in 40% less time." />
-            <TipRow n={3} title="Follow up within 48 hours"    body="Fastest wins come from partners who nudge us on stale leads." />
-            <TipRow n={4} title="Focus on retainer packages"   body="Recurring deals earn you recurring commissions." />
+            <TipRow n={1} title="Target mid-market operations teams" body="They typically convert twice as fast as enterprise leads." />
+            <TipRow n={2} title="Share our case studies upfront"     body="Prospects who see proven outcomes close in 40% less time." />
+            <TipRow n={3} title="Follow up within 48 hours"          body="Fast-moving partners close the majority of qualified deals." />
+            <TipRow n={4} title="Prioritise retainer packages"       body="Recurring engagements unlock recurring commissions for you." />
           </ul>
         </section>
 
@@ -643,15 +643,15 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
           </div>
           <h3 className="relative mt-1 text-sm font-semibold">How commissions work</h3>
           <p className="relative mt-2 text-xs text-slate-400 leading-relaxed">
-            Earn <span className="text-teal-300 font-medium">10–15%</span> on the first-year contract value of every closed referral. Retainer packages pay recurring commissions for the lifetime of the account.
+            Earn <span className="text-teal-300 font-medium">10–15%</span> on the first-year contract value of every closed referral. Retainer engagements pay recurring commissions for the lifetime of the account.
           </p>
           <div className="relative mt-4 space-y-2 text-xs">
-            <ProgramLine label="Standard tier" value="10% • up to 5 wins" />
-            <ProgramLine label="Verified tier" value="12% • 5+ wins" />
-            <ProgramLine label="Elite tier"    value="15% • 10+ wins" />
+            <ProgramLine label="Standard tier" value="10% • up to 5 closed deals" />
+            <ProgramLine label="Verified tier" value="12% • 5+ closed deals" />
+            <ProgramLine label="Elite tier"    value="15% • 10+ closed deals" />
           </div>
           <Link to="/affiliate" className="relative mt-4 inline-flex items-center gap-1 text-xs text-cyan-300 hover:underline">
-            Read the full program terms →
+            Review the full program terms →
           </Link>
         </section>
 
