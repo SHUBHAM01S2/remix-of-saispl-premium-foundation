@@ -458,7 +458,7 @@ function PartnerHome({ partner, referralLink }: { partner: any; referralLink: st
 
         {statsQ.error && (
           <ErrorBanner
-            title="We couldn't load your KPIs"
+            title="We couldn't load your performance metrics"
             message={(statsQ.error as any)?.message ?? "Unknown error"}
             onRetry={() => statsQ.refetch()}
           />
