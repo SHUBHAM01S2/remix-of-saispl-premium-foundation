@@ -131,7 +131,7 @@ function EarningsPage() {
               <ShieldCheck className="h-3 w-3" /> Verified partner earnings
             </div>
             <h1 className="mt-3 truncate text-2xl sm:text-3xl font-semibold tracking-tight">Earnings & Payouts</h1>
-            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Track every commission you've earned, every payout in flight, and everything that's already landed in your account.</p>
+            <p className="mt-1.5 text-sm text-slate-400 max-w-xl">Review every commission you've earned, monitor payouts in progress, and view a complete history of payments already released to your account.</p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button
@@ -139,7 +139,7 @@ function EarningsPage() {
               disabled={earning.length === 0}
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-slate-100 hover:bg-white/[0.06] disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <Download className="h-4 w-4" /> Statement
+              <Download className="h-4 w-4" /> Export statement
             </button>
           </div>
         </div>
@@ -147,9 +147,9 @@ function EarningsPage() {
         {/* Hero stats grid */}
         <div className="relative mt-6 grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
           <HeroMoney tint="from-teal-500/25 to-cyan-500/5" icon={Wallet} label="Total earnings" value={fmtMoney(totalCommission)} sub="Lifetime commission" loading={s.isLoading} />
-          <HeroMoney tint="from-amber-500/25 to-orange-500/5" icon={Clock} label="Pending payout" value={fmtMoney(pendingPayout)} sub={`Next in ${daysToPayout}d`} loading={s.isLoading} />
-          <HeroMoney tint="from-emerald-500/25 to-teal-500/5" icon={CheckCircle2} label="Paid amount" value={fmtMoney(paidTotal)} sub="Cleared to date" loading={s.isLoading} />
-          <HeroMoney tint="from-violet-500/25 to-fuchsia-500/5" icon={TrendingUp} label="This month" value={fmtMoney(thisMonthEarnings)} sub={momDelta ? `${momDelta.value} vs last month` : "First month"} delta={momDelta ?? undefined} loading={l.isLoading} />
+          <HeroMoney tint="from-amber-500/25 to-orange-500/5" icon={Clock} label="Pending payout" value={fmtMoney(pendingPayout)} sub={`Releases in ${daysToPayout} days`} loading={s.isLoading} />
+          <HeroMoney tint="from-emerald-500/25 to-teal-500/5" icon={CheckCircle2} label="Paid to date" value={fmtMoney(paidTotal)} sub="Successfully cleared" loading={s.isLoading} />
+          <HeroMoney tint="from-violet-500/25 to-fuchsia-500/5" icon={TrendingUp} label="This month" value={fmtMoney(thisMonthEarnings)} sub={momDelta ? `${momDelta.value} vs. last month` : "First month of earnings"} delta={momDelta ?? undefined} loading={l.isLoading} />
         </div>
       </section>
 
