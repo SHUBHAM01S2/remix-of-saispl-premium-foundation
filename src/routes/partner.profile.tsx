@@ -203,12 +203,12 @@ function ProfilePage() {
         </Card>
 
         {/* Company */}
-        <Card id="company" icon={Building2} tint="text-cyan-300 bg-cyan-500/10" title="Company details" desc="Details about the business you represent.">
+        <Card id="company" icon={Building2} tint="text-cyan-300 bg-cyan-500/10" title="Company details" desc="Information about the business you represent.">
           <div className="grid gap-5 md:grid-cols-2">
-            <Field label="Company name" hint="Leave blank if you're an independent partner.">
+            <Field label="Company name" hint="Leave blank if you're operating as an independent partner.">
               <input {...bind("company")} placeholder="Acme Pvt Ltd" className={inp} />
             </Field>
-            <Field label="Business type">
+            <Field label="Business entity">
               <select {...bind("business_type")} className={inp}>
                 <option value="individual">Individual / Freelancer</option>
                 <option value="proprietor">Sole Proprietor</option>
@@ -218,7 +218,7 @@ function ProfilePage() {
               </select>
             </Field>
             <div className="md:col-span-2">
-              <Field label="Business address" hint="Used for invoices and tax records.">
+              <Field label="Registered business address" hint="Used on invoices and for tax reporting.">
                 <textarea {...bind("address")} rows={3} placeholder="Street, City, State, PIN" className={`${inp} resize-none`} />
               </Field>
             </div>
@@ -226,9 +226,9 @@ function ProfilePage() {
         </Card>
 
         {/* Payout */}
-        <Card id="payout" icon={Wallet} tint="text-emerald-300 bg-emerald-500/10" title="Payout details" desc="Choose how you'd like to receive commissions." accent>
+        <Card id="payout" icon={Wallet} tint="text-emerald-300 bg-emerald-500/10" title="Payout details" desc="Select how you'd like to receive your commissions." accent>
           <div className="grid gap-5">
-            <Field label="Payout method" hint="You can switch methods anytime — the change applies to the next cycle.">
+            <Field label="Preferred payout method" hint="You can change methods at any time — updates apply to the next payout cycle.">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {[
                   { v: "upi", label: "UPI" },
