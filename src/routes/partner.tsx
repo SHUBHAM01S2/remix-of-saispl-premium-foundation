@@ -219,8 +219,8 @@ function PartnerShell() {
               </button>
               <div className="flex items-center gap-2.5 pl-3 ml-1 border-l border-white/[0.06]">
                 <div className="hidden md:block text-right">
-                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner.full_name ?? "Partner"}</p>
-                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner.company ?? partner.email}</p>
+                  <p className="text-xs font-semibold leading-tight truncate max-w-[160px]">{partner!.full_name ?? "Partner"}</p>
+                  <p className="text-[10px] text-slate-500 truncate max-w-[160px] mt-0.5">{partner!.company ?? partner!.email}</p>
                 </div>
                 <span className="grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold shadow-md shadow-teal-500/30 ring-2 ring-white/10">
                   {initials}
