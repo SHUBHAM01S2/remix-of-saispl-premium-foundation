@@ -502,28 +502,28 @@ function AffiliatesOverview() {
         {/* Side rail */}
         <div className="space-y-5">
           {/* Needs attention */}
-          <Panel eyebrow="Operations" title="Needs attention">
+          <Panel eyebrow="Operations queue" title="Requires attention">
             <div className="space-y-2.5 p-4">
               <AlertRow
                 icon={UserX}
                 tone={partnersNoActivity > 0 ? "amber" : "neutral"}
-                label="Partners with no activity"
+                label="Dormant partners"
                 value={loading ? "—" : partnersNoActivity}
-                hint="Never submitted a referral"
+                hint="No referrals submitted to date"
                 to="/admin/affiliates/partners"
               />
               <AlertRow
                 icon={Clock}
                 tone={stalled.length > 0 ? "amber" : "neutral"}
-                label="Stuck referrals"
+                label="Stalled referrals"
                 value={loading ? "—" : stalled.length}
-                hint={`No activity in ${STALL_DAYS}+ days`}
+                hint={`Inactive for ${STALL_DAYS}+ days`}
                 to="/admin/affiliates/referrals"
               />
               <AlertRow
                 icon={AlertTriangle}
                 tone={pendingReview > 0 ? "cyan" : "neutral"}
-                label="Payouts awaiting review"
+                label="Payouts pending review"
                 value={loading ? "—" : pendingReview}
                 hint="Approve to release funds"
                 to="/admin/affiliates/payouts"
@@ -531,14 +531,14 @@ function AffiliatesOverview() {
               {!loading && partnersNoActivity === 0 && stalled.length === 0 && pendingReview === 0 && (
                 <div className="flex items-center gap-2 rounded-lg border border-emerald-400/20 bg-emerald-500/5 px-3 py-2.5 text-xs text-emerald-200">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  All clear — no operational issues.
+                  All clear — no open operational items.
                 </div>
               )}
             </div>
           </Panel>
 
           {/* Payout snapshot */}
-          <Panel eyebrow="Cash flow" title="Payout snapshot">
+          <Panel eyebrow="Cash position" title="Payout snapshot">
             {loading ? (
               <PanelLoading rows={3} />
             ) : (
