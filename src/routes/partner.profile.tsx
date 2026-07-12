@@ -351,7 +351,7 @@ function ProfilePage() {
               : "border-white/5 bg-slate-950/50"
           }`}>
             <p className="text-xs text-slate-400">
-              {dirty ? "You have unsaved changes — don't forget to save." : "All changes saved."}
+              {dirty ? "You have unsaved changes — remember to save before leaving this page." : "All changes saved."}
             </p>
             <div className="flex gap-2">
               {dirty && (
