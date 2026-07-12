@@ -466,9 +466,11 @@ function AffiliatesOverview() {
               <EmptyState
                 icon={Handshake}
                 title="No referrals yet"
-                body="When partners submit new deals, they show up here so you can triage them fast."
-                cta={{ to: "/admin/affiliates/referrals", label: "Open referrals" }}
+                body="Share onboarding resources with partners so they know how to submit deals, or add the first referral manually to seed the pipeline."
+                cta={{ to: "/admin/affiliates/referrals", label: "Add first referral" }}
+                secondary={{ to: "/admin/affiliates/partners", label: "Review partners" }}
               />
+
             ) : (
               <ul className="divide-y divide-border/40">
                 {recent.map((r) => (
