@@ -170,9 +170,9 @@ function AllReferralsPage() {
       {/* Header */}
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">All Referrals</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Referral Pipeline</h1>
           <p className="mt-0.5 text-sm text-muted-foreground">
-            Referral operations across every partner. Filter, triage, and progress deals.
+            Triage and progress every partner referral — filter, qualify, and move deals through the pipeline.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -567,15 +567,15 @@ function EmptyState({ anyFilter, onClear }: { anyFilter: boolean; onClear: () =>
         <span className="grid h-11 w-11 place-items-center rounded-full bg-muted/30 text-muted-foreground ring-1 ring-border/60">
           <Search className="h-4 w-4" />
         </span>
-        <p className="text-sm font-medium">No referrals match your filters</p>
+        <p className="text-sm font-medium">No referrals match the current filters</p>
         <p className="max-w-xs text-xs text-muted-foreground">
-          Try widening the date range, resetting the status filter, or searching a different partner.
+          Widen the date range, reset status, or search a different partner to surface more deals.
         </p>
         <button
           onClick={onClear}
           className="mt-1 rounded-lg border border-border/70 bg-background/40 px-3 py-1.5 text-xs font-medium hover:border-cyan-400/40 hover:text-cyan-200"
         >
-          Clear all filters
+          Reset all filters
         </button>
       </div>
     );
@@ -588,9 +588,9 @@ function EmptyState({ anyFilter, onClear }: { anyFilter: boolean; onClear: () =>
           <Target className="h-5 w-5" />
         </span>
         <div>
-          <p className="text-sm font-semibold text-foreground">No referrals in the pipeline yet</p>
+          <p className="text-sm font-semibold text-foreground">No qualified referrals in the pipeline yet</p>
           <p className="mt-1.5 max-w-sm text-xs leading-relaxed text-muted-foreground">
-            Share the onboarding pack with partners so they know how to submit deals, or activate more partners to start driving referrals.
+            Distribute the onboarding pack to partners or activate additional partners to start generating pipeline deals.
           </p>
         </div>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-2">

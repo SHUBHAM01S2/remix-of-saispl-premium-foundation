@@ -61,13 +61,13 @@ function AffiliatesShell() {
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
             <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_8px_var(--tw-shadow-color)] shadow-cyan-400/60" />
-            Command center · Live
+            Operations command center · Live
           </div>
           <h1 className="mt-2 truncate text-2xl font-semibold tracking-tight sm:text-[28px]">
-            Affiliate Program
+            Affiliate Operations
           </h1>
           <p className="mt-1 max-w-2xl text-xs text-muted-foreground sm:text-sm">
-            Referral operations, partner performance, pipeline, and payouts at a glance.
+            Monitor partner performance, referral pipeline, and payout activity from one operational view.
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
@@ -75,13 +75,13 @@ function AffiliatesShell() {
             to="/admin/affiliates/payouts"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card/60 px-3.5 py-2 text-xs font-semibold text-foreground/90 transition hover:border-cyan-400/40 hover:bg-cyan-500/5 hover:text-foreground"
           >
-            <Wallet className="h-3.5 w-3.5" /> Payout Queue
+            <Wallet className="h-3.5 w-3.5" /> Payout queue
           </Link>
           <Link
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-cyan-400 to-cyan-600 px-3.5 py-2 text-xs font-semibold text-slate-950 shadow-[0_1px_0_0_rgba(255,255,255,0.2)_inset,0_10px_28px_-10px_rgba(6,182,212,0.55)] transition hover:from-cyan-300 hover:to-cyan-500"
           >
-            <Plus className="h-3.5 w-3.5" /> New Partner
+            <Plus className="h-3.5 w-3.5" /> Add partner
           </Link>
         </div>
       </header>
@@ -216,17 +216,17 @@ function AffiliatesOverview() {
         <HeroCard
           tone="cyan"
           eyebrow="Live pipeline"
-          label="Pipeline deal value"
+          label="Open pipeline value"
           value={loading ? "—" : fmtMoney(openPipelineValue)}
           hint={`${openReferrals} open deal${openReferrals === 1 ? "" : "s"} in motion`}
           icon={TrendingUp}
-          cta={{ to: "/admin/affiliates/referrals", label: "View pipeline" }}
+          cta={{ to: "/admin/affiliates/referrals", label: "Review pipeline" }}
         />
       </div>
 
       {/* KPI groups */}
       <div className="grid gap-4 lg:grid-cols-3">
-        <ClusterCard title="Partner metrics" hint="Network" icon={Users}>
+        <ClusterCard title="Partner network" hint="Coverage" icon={Users}>
           <KpiTile label="Total" value={loading ? "—" : d?.totalPartners ?? 0} />
           <KpiTile label="Active" value={loading ? "—" : d?.activePartners ?? 0} tone="emerald" />
           <KpiTile
@@ -236,23 +236,23 @@ function AffiliatesOverview() {
           />
         </ClusterCard>
 
-        <ClusterCard title="Referrals & pipeline" hint="Deal flow" icon={TrendingUp}>
+        <ClusterCard title="Pipeline throughput" hint="Deal flow" icon={TrendingUp}>
           <KpiTile label="Referrals" value={loading ? "—" : d?.totalReferrals ?? 0} />
-          <KpiTile label="Open" value={loading ? "—" : openReferrals} tone="cyan" />
-          <KpiTile label="Won this mo." value={loading ? "—" : d?.wonThisMonth ?? 0} tone="emerald" />
+          <KpiTile label="In pipeline" value={loading ? "—" : openReferrals} tone="cyan" />
+          <KpiTile label="Won MTD" value={loading ? "—" : d?.wonThisMonth ?? 0} tone="emerald" />
         </ClusterCard>
 
-        <ClusterCard title="Earnings & payouts" hint="Cash" icon={BadgeDollarSign}>
+        <ClusterCard title="Revenue & payouts" hint="Cash flow" icon={BadgeDollarSign}>
           <KpiTile label="Deal value" value={loading ? "—" : fmtMoney(d?.dealValue ?? 0)} money />
           <KpiTile label="Approved" value={loading ? "—" : fmtMoney(approvedTotal)} tone="cyan" money />
-          <KpiTile label="Paid" value={loading ? "—" : fmtMoney(paidTotal)} tone="emerald" money />
+          <KpiTile label="Released" value={loading ? "—" : fmtMoney(paidTotal)} tone="emerald" money />
         </ClusterCard>
       </div>
 
-      {/* Program health */}
+      {/* Operational Health */}
       <Panel
-        eyebrow="Program health"
-        title="Operational status"
+        eyebrow="Operational Health"
+        title="Program status"
         action={
           <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             <span className={`h-1.5 w-1.5 rounded-full ${healthScore >= 70 ? "bg-emerald-400" : healthScore >= 40 ? "bg-cyan-400" : "bg-amber-400"} animate-pulse`} />
@@ -350,14 +350,14 @@ function AffiliatesOverview() {
         <div className="space-y-5">
           {/* Leaderboard */}
           <Panel
-            eyebrow="Business intelligence · Leaderboard"
-            title="Top performing partners"
+            eyebrow="Performance intelligence"
+            title="Top-performing partners"
             action={
               <Link
                 to="/admin/affiliates/partners"
                 className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
               >
-                All partners <ArrowUpRight className="h-3 w-3" />
+                View all partners <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
           >
@@ -449,14 +449,14 @@ function AffiliatesOverview() {
 
           {/* Recent referral activity */}
           <Panel
-            eyebrow="Activity"
+            eyebrow="Latest activity"
             title="Recent referrals"
             action={
               <Link
                 to="/admin/affiliates/referrals"
                 className="inline-flex items-center gap-1 text-xs font-medium text-cyan-300 hover:text-cyan-200"
               >
-                All referrals <ArrowUpRight className="h-3 w-3" />
+                View all referrals <ArrowUpRight className="h-3 w-3" />
               </Link>
             }
           >
@@ -465,10 +465,10 @@ function AffiliatesOverview() {
             ) : recent.length === 0 ? (
               <EmptyState
                 icon={Handshake}
-                title="No referrals yet"
-                body="Share onboarding resources with partners so they know how to submit deals, or add the first referral manually to seed the pipeline."
-                cta={{ to: "/admin/affiliates/referrals", label: "Add first referral" }}
-                secondary={{ to: "/admin/affiliates/partners", label: "Review partners" }}
+                title="No measurable referral activity yet"
+                body="Distribute onboarding assets to partners or log the first referral manually to seed the pipeline."
+                cta={{ to: "/admin/affiliates/referrals", label: "Log first referral" }}
+                secondary={{ to: "/admin/affiliates/partners", label: "Verify partner setup" }}
               />
 
             ) : (
@@ -502,28 +502,28 @@ function AffiliatesOverview() {
         {/* Side rail */}
         <div className="space-y-5">
           {/* Needs attention */}
-          <Panel eyebrow="Operations" title="Needs attention">
+          <Panel eyebrow="Operations queue" title="Requires attention">
             <div className="space-y-2.5 p-4">
               <AlertRow
                 icon={UserX}
                 tone={partnersNoActivity > 0 ? "amber" : "neutral"}
-                label="Partners with no activity"
+                label="Dormant partners"
                 value={loading ? "—" : partnersNoActivity}
-                hint="Never submitted a referral"
+                hint="No referrals submitted to date"
                 to="/admin/affiliates/partners"
               />
               <AlertRow
                 icon={Clock}
                 tone={stalled.length > 0 ? "amber" : "neutral"}
-                label="Stuck referrals"
+                label="Stalled referrals"
                 value={loading ? "—" : stalled.length}
-                hint={`No activity in ${STALL_DAYS}+ days`}
+                hint={`Inactive for ${STALL_DAYS}+ days`}
                 to="/admin/affiliates/referrals"
               />
               <AlertRow
                 icon={AlertTriangle}
                 tone={pendingReview > 0 ? "cyan" : "neutral"}
-                label="Payouts awaiting review"
+                label="Payouts pending review"
                 value={loading ? "—" : pendingReview}
                 hint="Approve to release funds"
                 to="/admin/affiliates/payouts"
@@ -531,14 +531,14 @@ function AffiliatesOverview() {
               {!loading && partnersNoActivity === 0 && stalled.length === 0 && pendingReview === 0 && (
                 <div className="flex items-center gap-2 rounded-lg border border-emerald-400/20 bg-emerald-500/5 px-3 py-2.5 text-xs text-emerald-200">
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  All clear — no operational issues.
+                  All clear — no open operational items.
                 </div>
               )}
             </div>
           </Panel>
 
           {/* Payout snapshot */}
-          <Panel eyebrow="Cash flow" title="Payout snapshot">
+          <Panel eyebrow="Cash position" title="Payout snapshot">
             {loading ? (
               <PanelLoading rows={3} />
             ) : (
@@ -1157,12 +1157,10 @@ function LeaderboardEmpty() {
         </span>
         <div>
           <p className="text-sm font-semibold text-foreground">
-            No ranked performance yet
+            No measurable partner activity yet
           </p>
           <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
-            Once partners start generating qualified referrals and closed deals,
-            this leaderboard will highlight top contributors with commission, deal
-            value, and 30-day momentum.
+            Invite partners, verify onboarding, and track the first qualified referrals. Rankings surface here once commission, deal value, and 30-day momentum start accruing.
           </p>
         </div>
         <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
@@ -1170,17 +1168,17 @@ function LeaderboardEmpty() {
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-teal-400 px-3.5 py-1.5 text-xs font-semibold text-slate-950 shadow-[0_6px_20px_-6px_rgba(34,211,238,0.55)] transition hover:brightness-110"
           >
-            <UserPlus className="h-3.5 w-3.5" /> Invite a partner
+            <UserPlus className="h-3.5 w-3.5" /> Invite partners
           </Link>
           <Link
             to="/admin/affiliates/partners"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-cyan-400/40 hover:text-cyan-200"
           >
-            <Settings2 className="h-3.5 w-3.5" /> Review partner setup
+            <Settings2 className="h-3.5 w-3.5" /> Verify onboarding
           </Link>
         </div>
         <p className="mt-1 inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground/80">
-          <Sparkles className="h-3 w-3 text-cyan-300" /> Auto-ranks by commission · Updates in real time
+          <Sparkles className="h-3 w-3 text-cyan-300" /> Auto-ranked by commission · Updates in real time
         </p>
       </div>
     </div>
