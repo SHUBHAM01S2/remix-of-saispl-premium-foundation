@@ -221,34 +221,100 @@ function AffiliatesOverview() {
       </div>
 
       {/* Program health */}
-      <Panel eyebrow="Program health" title="Operational status" >
-        <div className="grid gap-5 p-5 sm:grid-cols-2 lg:grid-cols-4">
-          <HealthBar
+      <Panel
+        eyebrow="Program health"
+        title="Operational status"
+        action={
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <span className={`h-1.5 w-1.5 rounded-full ${healthScore >= 70 ? "bg-emerald-400" : healthScore >= 40 ? "bg-cyan-400" : "bg-amber-400"} animate-pulse`} />
+            Overall {loading ? "—" : `${healthScore}%`} · {healthLabel}
+          </span>
+        }
+      >
+        <div className="grid gap-3 p-4 sm:p-5 md:grid-cols-2 xl:grid-cols-3">
+          <HealthMetric
+            icon={Users}
             label="Active partners"
+            value={loading ? "—" : `${activeRate}%`}
+            supporting={loading ? "—" : `${d?.activePartners ?? 0} active · ${inactivePartners} idle`}
             pct={activeRate}
-            caption={loading ? "—" : `${d?.activePartners ?? 0} of ${d?.totalPartners ?? 0} onboarded`}
-            tone={activeRate >= 60 ? "emerald" : activeRate >= 30 ? "cyan" : "amber"}
+            status={activeRate >= 60 ? "healthy" : activeRate >= 30 ? "watch" : "critical"}
+            warning={!loading && inactivePartners > 0 ? `${inactivePartners} inactive` : null}
+            to="/admin/affiliates/partners"
+            ctaLabel="Manage partners"
           />
-          <HealthBar
-            label="Referrals in progress"
-            pct={openRate}
-            caption={loading ? "—" : `${openReferrals} open of ${d?.totalReferrals ?? 0}`}
-            tone="cyan"
+          <HealthMetric
+            icon={TrendingUp}
+            label="Pipeline health"
+            value={loading ? "—" : `${openReferrals}`}
+            supporting={loading ? "—" : `${fmtMoney(openPipelineValue)} · ${openRate}% of all referrals`}
+            pct={pipelineHealth}
+            status={pipelineHealth >= 70 ? "healthy" : pipelineHealth >= 40 ? "watch" : "critical"}
+            warning={!loading && stalled.length > 0 ? `${stalled.length} stalled` : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Open pipeline"
           />
-          <HealthBar
-            label="Conversion performance"
-            pct={wonRate}
-            caption={loading ? "—" : `${d?.wonThisMonth ?? 0} won this month`}
-            tone={wonRate >= 25 ? "emerald" : wonRate >= 10 ? "cyan" : "amber"}
+          <HealthMetric
+            icon={CheckCircle2}
+            label="Won this month"
+            value={loading ? "—" : `${d?.wonThisMonth ?? 0}`}
+            supporting={loading ? "—" : `${wonRate}% win rate all-time`}
+            pct={Math.min(100, wonRate * 2)}
+            status={wonRate >= 25 ? "healthy" : wonRate >= 10 ? "watch" : "critical"}
+            warning={!loading && (d?.wonThisMonth ?? 0) === 0 && (d?.totalReferrals ?? 0) > 0 ? "No wins yet" : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Review closed deals"
           />
-          <HealthBar
-            label="Payout readiness"
+          <HealthMetric
+            icon={Clock}
+            label="Stalled follow-ups"
+            value={loading ? "—" : `${stalled.length}`}
+            supporting={loading ? "—" : `>${STALL_DAYS}d inactive · ${stallRate}% of open pipeline`}
+            pct={100 - stallRate}
+            status={stallRate === 0 ? "healthy" : stallRate <= 20 ? "watch" : "critical"}
+            warning={!loading && stalled.length > 0 ? "Needs follow-up" : null}
+            to="/admin/affiliates/referrals"
+            ctaLabel="Chase stalled deals"
+          />
+          <HealthMetric
+            icon={Wallet}
+            label="Pending payout load"
+            value={loading ? "—" : fmtMoney(d?.pendingPayout ?? 0)}
+            supporting={loading ? "—" : `${pendingReview} awaiting review · ${payoutReadiness}% cleared`}
             pct={payoutReadiness}
-            caption={loading ? "—" : `${paidCount} paid · ${pendingCount} pending`}
-            tone={payoutReadiness >= 70 ? "emerald" : payoutReadiness >= 40 ? "cyan" : "amber"}
+            status={payoutReadiness >= 70 ? "healthy" : payoutReadiness >= 40 ? "watch" : "critical"}
+            warning={!loading && pendingReview >= 5 ? "Backlog building" : null}
+            to="/admin/affiliates/payouts"
+            ctaLabel="Process payouts"
+          />
+          <HealthMetric
+            icon={Sparkles}
+            label="Avg. partner activation"
+            value={loading ? "—" : d?.avgActivationDays == null ? "—" : `${d.avgActivationDays}d`}
+            supporting={
+              loading
+                ? "—"
+                : d?.avgActivationDays == null
+                ? "No activations yet"
+                : `${d?.activatedPartners ?? 0} of ${d?.totalPartners ?? 0} activated · ${partnersNoActivity} pending`
+            }
+            pct={activationScore}
+            status={
+              d?.avgActivationDays == null
+                ? "watch"
+                : activationScore >= 70
+                ? "healthy"
+                : activationScore >= 40
+                ? "watch"
+                : "critical"
+            }
+            warning={!loading && partnersNoActivity > 0 ? `${partnersNoActivity} never active` : null}
+            to="/admin/affiliates/partners"
+            ctaLabel="Onboard partners"
           />
         </div>
       </Panel>
+
 
       {/* Two-column: leaderboard + side rail (alerts, recent, snapshot) */}
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
