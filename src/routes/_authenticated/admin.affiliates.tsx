@@ -53,24 +53,31 @@ function AffiliatesShell() {
   const location = useLocation();
   const path = location.pathname.replace(/\/$/, "");
   const isIndex = path === "/admin/affiliates";
+  const activeTab = TABS.find((t) => (t.end ? path === t.to : path === t.to || path.startsWith(t.to + "/")));
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:flex-wrap sm:items-end sm:justify-between">
+    <div className="admin-canvas space-y-5 xl:space-y-6">
+      {/* Header — stronger hierarchy, cleaner action cluster */}
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 md:flex md:flex-wrap md:items-end md:justify-between">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-            <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_8px_var(--tw-shadow-color)] shadow-cyan-400/60" />
+            <span className="inline-flex h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_10px_2px_rgba(34,211,238,0.55)]" />
             Operations command center · Live
           </div>
-          <h1 className="mt-2 truncate text-2xl font-semibold tracking-tight sm:text-[28px]">
+          <h1 className="mt-2 truncate text-[22px] font-semibold tracking-tight sm:text-2xl xl:text-[28px]">
             Affiliate Operations
           </h1>
-          <p className="mt-1 max-w-2xl text-xs text-muted-foreground sm:text-sm">
+          <p className="mt-1 max-w-2xl text-xs leading-relaxed text-muted-foreground sm:text-[13px]">
             Monitor partner performance, referral pipeline, and payout activity from one operational view.
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <Link
+            to="/admin"
+            className="hidden items-center gap-1.5 rounded-lg border border-border/60 bg-card/40 px-3 py-2 text-[11px] font-medium text-muted-foreground transition hover:border-border hover:text-foreground md:inline-flex"
+          >
+            <LayoutDashboard className="h-3.5 w-3.5" /> Back to admin
+          </Link>
           <Link
             to="/admin/affiliates/payouts"
             className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-card/60 px-3.5 py-2 text-xs font-semibold text-foreground/90 transition hover:border-cyan-400/40 hover:bg-cyan-500/5 hover:text-foreground"
@@ -86,35 +93,41 @@ function AffiliatesShell() {
         </div>
       </header>
 
-      {/* Tabs — segmented rail */}
-      <nav
-        className="scrollbar-none -mx-1 flex gap-1 overflow-x-auto rounded-xl border border-border/60 bg-card/40 p-1 backdrop-blur"
-        aria-label="Affiliate sections"
-      >
-        {TABS.map((t) => {
-          const active = t.end ? path === t.to : path === t.to || path.startsWith(t.to + "/");
-          const Icon = t.icon;
-          return (
-            <Link
-              key={t.to}
-              to={t.to}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition ${
-                active
-                  ? "bg-background text-foreground shadow-sm ring-1 ring-border/70"
-                  : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-              }`}
-            >
-              <Icon className={`h-3.5 w-3.5 ${active ? "text-cyan-300" : ""}`} />
-              {t.label}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Sticky segmented tab rail with active underline */}
+      <div className="sticky top-0 z-20 -mx-4 border-b border-border/50 bg-background/70 px-4 pb-1.5 pt-2 backdrop-blur-md sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <nav
+          className="scrollbar-none relative -mb-px flex gap-1 overflow-x-auto"
+          aria-label="Affiliate sections"
+        >
+          {TABS.map((t) => {
+            const active = t.end ? path === t.to : path === t.to || path.startsWith(t.to + "/");
+            const Icon = t.icon;
+            return (
+              <Link
+                key={t.to}
+                to={t.to}
+                className={`aff-tab ${active ? "aff-tab-active" : ""}`}
+                aria-current={active ? "page" : undefined}
+              >
+                <Icon className={`h-3.5 w-3.5 ${active ? "text-cyan-300" : ""}`} />
+                {t.label}
+              </Link>
+            );
+          })}
+          {activeTab && (
+            <span className="ml-auto hidden items-center gap-1.5 self-center text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground md:inline-flex">
+              <span className="h-1 w-1 rounded-full bg-cyan-400" />
+              {activeTab.label}
+            </span>
+          )}
+        </nav>
+      </div>
 
       {isIndex ? <AffiliatesOverview /> : <Outlet />}
     </div>
   );
 }
+
 
 /* ------------------------------------------------------------------ */
 /* Overview                                                            */
