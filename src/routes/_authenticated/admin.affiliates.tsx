@@ -216,11 +216,11 @@ function AffiliatesOverview() {
         <HeroCard
           tone="cyan"
           eyebrow="Live pipeline"
-          label="Pipeline deal value"
+          label="Open pipeline value"
           value={loading ? "—" : fmtMoney(openPipelineValue)}
           hint={`${openReferrals} open deal${openReferrals === 1 ? "" : "s"} in motion`}
           icon={TrendingUp}
-          cta={{ to: "/admin/affiliates/referrals", label: "View pipeline" }}
+          cta={{ to: "/admin/affiliates/referrals", label: "Review pipeline" }}
         />
       </div>
 
