@@ -248,7 +248,7 @@ function Contact() {
                   </div>
                   <h3 className="text-xl font-semibold text-white">
                     Message sent
-                  </h2>
+                  </h3>
                   <p className="mt-2 max-w-xs text-sm text-zinc-400">
                     We respond within 4 business hours.
                   </p>
