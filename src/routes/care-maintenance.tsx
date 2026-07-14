@@ -71,7 +71,7 @@ export const Route = createFileRoute("/care-maintenance")({
           "@type": "Service",
           name: "Website Care & Maintenance",
           serviceType: "Website Maintenance",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
           areaServed: [
             { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },

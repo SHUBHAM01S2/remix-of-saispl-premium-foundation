@@ -67,7 +67,7 @@ export const Route = createFileRoute("/branding-graphic-design")({
           "@type": "Service",
           name: "Branding & Graphic Design",
           serviceType: "Graphic Design",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
           areaServed: [
             { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },
