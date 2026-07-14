@@ -145,16 +145,6 @@ export const Route = createFileRoute("/")({
           provider: { "@id": "https://shivaryaninfotech.com/#organization" },
         }),
       },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "https://shivaryaninfotech.com/" },
-          ],
-        }),
-      },
     ],
   }),
   component: Index,
