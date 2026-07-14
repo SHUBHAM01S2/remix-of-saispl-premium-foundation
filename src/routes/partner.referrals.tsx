@@ -409,36 +409,41 @@ function Th({ label, k, sortKey, sortDir, onSort, align = "left" }: { label: str
   );
 }
 
-function RowActions({ id, openMenu, setOpenMenu, onCopy, copied }: { id: string; openMenu: string | null; setOpenMenu: (v: string | null) => void; onCopy: () => void; copied: boolean }) {
-  const open = openMenu === id;
+function RowActions({ id, onCopy, copied }: { id: string; onCopy: () => void; copied: boolean }) {
   return (
-    <div className="relative inline-block text-left">
-      <button
-        onClick={() => setOpenMenu(open ? null : id)}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.02] text-slate-300 hover:bg-white/[0.06]"
-        aria-label="Row actions"
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/[0.02] text-slate-300 hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400/40"
+          aria-label="Row actions"
+        >
+          <MoreHorizontal className="h-4 w-4" />
+        </button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
+        sideOffset={6}
+        collisionPadding={12}
+        className="w-44 rounded-xl border border-white/10 bg-slate-950/95 backdrop-blur p-1 shadow-2xl text-slate-200"
       >
-        <MoreHorizontal className="h-4 w-4" />
-      </button>
-      {open && (
-        <>
-          <button className="fixed inset-0 z-10 cursor-default" onClick={() => setOpenMenu(null)} aria-hidden />
-          <div className="absolute right-0 z-20 mt-1.5 w-44 rounded-xl border border-white/10 bg-slate-950/95 backdrop-blur p-1 shadow-2xl">
-            <Link to="/partner/referrals/$id" params={{ id }} onClick={() => setOpenMenu(null)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/[0.06]">
-              <Eye className="h-4 w-4" /> View
-            </Link>
-            <Link to="/partner/referrals/$id" params={{ id }} onClick={() => setOpenMenu(null)} className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/[0.06]">
-              <Pencil className="h-4 w-4" /> Edit
-            </Link>
-            <button onClick={onCopy} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-slate-200 hover:bg-white/[0.06]">
-              {copied ? <><Check className="h-4 w-4 text-emerald-400" /> Copied</> : <><Copy className="h-4 w-4" /> Copy details</>}
-            </button>
-          </div>
-        </>
-      )}
-    </div>
+        <DropdownMenuItem asChild className="rounded-lg px-3 py-2 text-sm focus:bg-white/[0.06] focus:text-slate-50">
+          <Link to="/partner/referrals/$id" params={{ id }} className="flex items-center gap-2">
+            <Eye className="h-4 w-4" /> View
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild className="rounded-lg px-3 py-2 text-sm focus:bg-white/[0.06] focus:text-slate-50">
+          <Link to="/partner/referrals/$id" params={{ id }} className="flex items-center gap-2">
+            <Pencil className="h-4 w-4" /> Edit
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={(e) => { e.preventDefault(); onCopy(); }} className="rounded-lg px-3 py-2 text-sm focus:bg-white/[0.06] focus:text-slate-50">
+          {copied ? <><Check className="h-4 w-4 text-emerald-400" /> Copied</> : <><Copy className="h-4 w-4" /> Copy details</>}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
+
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
