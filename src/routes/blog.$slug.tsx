@@ -119,13 +119,22 @@ export const Route = createFileRoute("/blog/$slug")({
               "@type": "BlogPosting",
               headline: rawTitle,
               description,
-              image: m.cover_image_url || undefined,
+              image: m.cover_image_url || "https://shivaryaninfotech.com/saispl-logo.png",
               datePublished: m.published_at || undefined,
+              dateModified: m.published_at || undefined,
               author: m.author_name
                 ? { "@type": "Person", name: m.author_name }
-                : { "@type": "Organization", name: SITE },
-              publisher: { "@type": "Organization", name: SITE },
-              mainEntityOfPage: url,
+                : { "@type": "Organization", name: SITE, url: "https://shivaryaninfotech.com/" },
+              publisher: {
+                "@type": "Organization",
+                name: SITE,
+                url: "https://shivaryaninfotech.com/",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://shivaryaninfotech.com/saispl-logo.png",
+                },
+              },
+              mainEntityOfPage: { "@type": "WebPage", "@id": url },
               articleSection: m.category || undefined,
             }),
           },
