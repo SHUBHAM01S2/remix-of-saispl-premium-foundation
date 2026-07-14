@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { StrategyCallButton } from "@/components/StrategyCallButton";
 import { useState } from "react";
 import {
@@ -561,6 +562,7 @@ function SeoDigitalMarketingPage() {
         </div>
       </section>
 
+      <RelatedLinks currentPath="/seo-digital-marketing" />
       {/* FINAL CTA */}
       <section className="relative overflow-hidden border-y border-white/10 bg-[#050505] px-6 py-24 md:py-32">
         <div

@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Shield, CheckCircle2 } from "lucide-react";
 import { ScrollReveal, StaggerContainer, StaggerItem } from "@/components/ScrollReveal";
+import { RelatedLinks } from "@/components/RelatedLinks";
+
 
 type Plan = {
   name: string;
@@ -384,6 +386,8 @@ function CareMaintenance() {
           </ScrollReveal>
         </div>
       </section>
+      <RelatedLinks currentPath="/care-maintenance" />
     </div>
   );
 }
+

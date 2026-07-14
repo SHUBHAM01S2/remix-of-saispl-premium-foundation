@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import {
   Monitor,
   ArrowRight,
@@ -400,6 +401,8 @@ function CaseStudyDetail() {
           </div>
         </div>
       </section>
+      <RelatedLinks currentPath="/our-works" heading="Explore related services" eyebrow="What powered this project" />
     </div>
   );
 }
+
