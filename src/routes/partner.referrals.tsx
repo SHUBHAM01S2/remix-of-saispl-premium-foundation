@@ -120,8 +120,8 @@ function MyReferralsPage() {
       `Referred: ${fmtDate(r.referral_date)}`,
     ].filter(Boolean).join("\n");
     try { await navigator.clipboard.writeText(text); setCopiedId(r.id); setTimeout(() => setCopiedId(null), 1600); } catch {}
-    setOpenMenu(null);
   };
+
 
   const totalValue = rows.reduce((sum, r) => sum + Number(r.deal_value ?? 0), 0);
   const totalCommission = rows.reduce((sum, r) => sum + Number(r.commission_amount ?? 0), 0);
