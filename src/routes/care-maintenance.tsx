@@ -386,6 +386,8 @@ function CareMaintenance() {
           </ScrollReveal>
         </div>
       </section>
+      <RelatedLinks currentPath="/care-maintenance" />
     </div>
   );
 }
+
