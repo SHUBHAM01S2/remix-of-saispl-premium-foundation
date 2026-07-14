@@ -366,6 +366,8 @@ function BlogPostPage() {
           </section>
         </ScrollReveal>
       )}
+      <RelatedLinks currentPath="/blog" heading="Services referenced in this article" eyebrow="Related services" />
     </article>
   );
 }
+
