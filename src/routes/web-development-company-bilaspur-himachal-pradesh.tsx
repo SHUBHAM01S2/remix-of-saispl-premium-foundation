@@ -160,10 +160,10 @@ export const Route = createFileRoute("/web-development-company-bilaspur-himachal
           name: "Shivaryan Infotech (SAISPL)",
           alternateName: "SAISPL",
           description: SEO_DESCRIPTION,
-          url: URL_PATH,
+          url: `https://shivaryaninfotech.com${URL_PATH}`,
           telephone: "+91-94180-31050",
           email: "shivaryaninfotech@gmail.com",
-          image: "/favicon.png",
+          image: "https://shivaryaninfotech.com/saispl-logo.png",
           priceRange: "₹₹",
           address: {
             "@type": "PostalAddress",
