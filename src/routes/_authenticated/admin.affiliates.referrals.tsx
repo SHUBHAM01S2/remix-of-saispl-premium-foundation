@@ -347,7 +347,7 @@ function AllReferralsPage() {
                               <Clock className={`h-3 w-3 ${stalled ? "text-amber-300" : "text-muted-foreground"}`} />
                               <span className={stalled ? "text-amber-300" : "text-muted-foreground"}>{timeAgo(r.updated_at ?? r.created_at)}</span>
                             </div>
-                            <div className="mt-0.5"><PayoutChip status={r.payout_status} /></div>
+                            <div className="mt-0.5"><PayoutChip status={r.payout_status} voided={r.status === "lost"} /></div>
                           </td>
                           <td className="px-2 py-3.5" onClick={(e) => e.stopPropagation()}>
                             <RowMenu
