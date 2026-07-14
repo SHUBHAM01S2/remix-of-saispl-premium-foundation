@@ -37,7 +37,7 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/branding-graphic-design")({
   head: () => ({
     meta: [
-      { title: "Branding & Graphic Design Services in India | SAISPL" },
+      { title: "Branding { title: "Branding & Graphic Design Services in India | SAISPL" } Graphic Design | Shivaryan Infotech" },
       {
         name: "description",
         content:

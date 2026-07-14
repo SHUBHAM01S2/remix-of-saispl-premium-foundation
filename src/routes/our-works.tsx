@@ -37,7 +37,7 @@ const fallbackProjects: Project[] = [
 export const Route = createFileRoute("/our-works")({
   head: () => ({
     meta: [
-      { title: "Our Work — AI, Software & Web Portfolio | SAISPL" },
+      { title: "Portfolio | Shivaryan Infotech" },
       {
         name: "description",
         content:

@@ -46,7 +46,7 @@ const team = [
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About SAISPL — AI & Software Team, Himachal Pradesh" },
+      { title: "About Shivaryan Infotech" },
       {
         name: "description",
         content:

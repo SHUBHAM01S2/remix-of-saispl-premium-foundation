@@ -34,7 +34,7 @@ import { StrategyCallButton } from "@/components/StrategyCallButton";
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
 const SEO_TITLE =
-  "Web Design & Development Company in India | Custom Websites — SAISPL";
+  "Web Design "Web Design & Development Company in India | Custom Websites — SAISPL" Development | Shivaryan Infotech";
 const SEO_DESCRIPTION =
   "Custom web design and development company in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, mobile-first websites and web apps for clinics, hotels, schools, real estate, SaaS and local businesses — serving clients in 12+ countries.";
 const SEO_URL = "/web-design-development";

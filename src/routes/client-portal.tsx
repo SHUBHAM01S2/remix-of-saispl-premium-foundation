@@ -70,7 +70,7 @@ export const Route = createFileRoute("/client-portal")({
   component: ClientPortalPage,
   head: () => ({
     meta: [
-      { title: "Client Portal — SAISPL" },
+      { title: "Client Portal | Shivaryan Infotech" },
       {
         name: "description",
         content:

@@ -40,7 +40,7 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/automation-ai-services")({
   head: () => ({
     meta: [
-      { title: "WhatsApp & AI Automation Services in India | SAISPL" },
+      { title: "AI Automation Services | Shivaryan Infotech" },
       {
         name: "description",
         content:

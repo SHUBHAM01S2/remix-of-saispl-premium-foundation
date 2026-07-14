@@ -10,7 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/career")({
   head: () => ({
     meta: [
-      { title: "Careers — AI & Software Jobs at Shivaryan Infotech (Himachal Pradesh & Remote)" },
+      { title: "Careers | Shivaryan Infotech" },
       {
         name: "description",
         content:

@@ -156,7 +156,7 @@ const stats = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Services — Web, SEO, Automation & Software | SAISPL" },
+      { title: "Services | Shivaryan Infotech" },
       {
         name: "description",
         content:

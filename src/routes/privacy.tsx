@@ -174,7 +174,7 @@ const sections: Section[] = [
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — Shivaryan Infotech" },
+      { title: "Privacy Policy | Shivaryan Infotech" },
       {
         name: "description",
         content:

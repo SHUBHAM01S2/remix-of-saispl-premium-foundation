@@ -38,7 +38,7 @@ const plans: Plan[] = [
 export const Route = createFileRoute("/care-maintenance")({
   head: () => ({
     meta: [
-      { title: "Monthly Website Care & Maintenance Plans India | SAISPL" },
+      { title: "Website Care { title: "Monthly Website Care & Maintenance Plans India | SAISPL" } Maintenance | Shivaryan Infotech" },
       {
         name: "description",
         content:

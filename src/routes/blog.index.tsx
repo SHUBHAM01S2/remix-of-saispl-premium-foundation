@@ -118,7 +118,7 @@ async function fetchBlogPosts(): Promise<{ posts: BlogPost[]; source: "db" | "fa
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Blog & Insights — Web, SEO & Automation | SAISPL" },
+      { title: "Blog | Shivaryan Infotech" },
       {
         name: "description",
         content:

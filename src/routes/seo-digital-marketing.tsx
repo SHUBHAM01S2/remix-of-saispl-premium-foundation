@@ -37,7 +37,7 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/seo-digital-marketing")({
   head: () => ({
     meta: [
-      { title: "SEO & Local Digital Marketing in Himachal Pradesh | SAISPL" },
+      { title: "SEO { title: "SEO & Local Digital Marketing in Himachal Pradesh | SAISPL" } Digital Marketing | Shivaryan Infotech" },
       {
         name: "description",
         content:
