@@ -401,6 +401,8 @@ function CaseStudyDetail() {
           </div>
         </div>
       </section>
+      <RelatedLinks currentPath="/our-works" heading="Explore related services" eyebrow="What powered this project" />
     </div>
   );
 }
+
