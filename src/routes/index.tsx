@@ -60,92 +60,29 @@ export const Route = createFileRoute("/")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "ProfessionalService",
+          "@type": "Organization",
           "@id": "https://shivaryaninfotech.com/#service-provider",
           name: "Shivaryan Infotech (SAISPL)",
-          description:
-            "AI automation, custom software development, and business portal engineering for global clients.",
           url: "https://shivaryaninfotech.com/",
-          areaServed: "Worldwide",
-          serviceType: [
-            "AI Automation",
-            "AI Agents & LLM Integration",
-            "Custom Software Development",
-            "Web Application Development",
-            "Custom Business Portals",
-            "Product Design (UX/UI)",
-            "SEO & Digital Marketing",
-            "Software Care & Maintenance",
-          ],
-          hasOfferCatalog: {
-            "@type": "OfferCatalog",
-            name: "Shivaryan Infotech Services",
-            itemListElement: [
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "AI Automation & AI Agents",
-                  url: "https://shivaryaninfotech.com/automation-ai-services",
-                  description:
-                    "LLM-powered agents, RAG systems, and workflow automations that cut cost and eliminate operational bottlenecks.",
-                },
-              },
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "Web & Software Development",
-                  url: "https://shivaryaninfotech.com/web-design-development",
-                  description:
-                    "Scalable web apps and custom software built with React, Node, and TypeScript.",
-                },
-              },
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "Custom Business Portals",
-                  url: "https://shivaryaninfotech.com/custom-portals-software",
-                  description:
-                    "Dashboards and internal portals that unify data and give teams real-time visibility.",
-                },
-              },
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "Branding & Product Design",
-                  url: "https://shivaryaninfotech.com/branding-graphic-design",
-                  description:
-                    "User-centered design and prototyping for high-conversion digital products.",
-                },
-              },
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "SEO & Digital Marketing",
-                  url: "https://shivaryaninfotech.com/seo-digital-marketing",
-                  description:
-                    "Technical SEO, content, and AI-search optimization to grow qualified traffic.",
-                },
-              },
-              {
-                "@type": "Offer",
-                itemOffered: {
-                  "@type": "Service",
-                  name: "Care & Maintenance",
-                  url: "https://shivaryaninfotech.com/care-maintenance",
-                  description:
-                    "Ongoing engineering, monitoring, and support to keep production software healthy.",
-                },
-              },
-            ],
+          logo: "https://shivaryaninfotech.com/saispl-logo.png",
+          image: "https://shivaryaninfotech.com/saispl-logo.png",
+          telephone: "+91-94180-31050",
+          email: "shivaryaninfotech@gmail.com",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Bilaspur",
+            addressLocality: "Bilaspur",
+            addressRegion: "Himachal Pradesh",
+            postalCode: "174001",
+            addressCountry: "IN",
           },
-          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
+          areaServed: "Worldwide",
+          sameAs: [
+            "https://www.linkedin.com/company/shivaryan-infotech",
+          ],
         }),
       },
+
     ],
   }),
   component: Index,
