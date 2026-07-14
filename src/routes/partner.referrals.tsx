@@ -293,14 +293,13 @@ function MyReferralsPage() {
                       <td className="px-5 py-3.5 text-right">
                         <RowActions
                           id={r.id}
-                          openMenu={openMenu}
-                          setOpenMenu={setOpenMenu}
                           onCopy={() => copyDetails(r)}
                           copied={copiedId === r.id}
                         />
                       </td>
                     </tr>
                   ))}
+
                 </tbody>
               </table>
             </div>
