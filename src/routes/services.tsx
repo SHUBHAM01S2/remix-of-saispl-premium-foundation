@@ -250,6 +250,21 @@ function Services() {
 
       {/* Services grid — homepage style */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <ScrollReveal className="mb-12 max-w-3xl">
+          <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.25em] text-brand">
+            What we deliver
+          </span>
+          <h2
+            className="text-3xl font-black tracking-tight text-foreground md:text-4xl"
+            style={displayFont}
+          >
+            Everything you need to grow online
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Six focused service tracks — pick one to solve a specific gap, or combine
+            them into a full digital operating system.
+          </p>
+        </ScrollReveal>
         <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((svc) => {
             const Icon = svc.icon;
