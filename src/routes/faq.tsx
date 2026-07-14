@@ -191,7 +191,7 @@ const categories: Category[] = [
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — Shivaryan Infotech (SAISPL)" },
+      { title: "FAQ | Shivaryan Infotech" },
       {
         name: "description",
         content:

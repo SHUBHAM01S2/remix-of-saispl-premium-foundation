@@ -167,7 +167,7 @@ function renderBlocks(blocks: Block[]) {
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms and Conditions — Shivaryan Infotech" },
+      { title: "Terms & Conditions | Shivaryan Infotech" },
       {
         name: "description",
         content:

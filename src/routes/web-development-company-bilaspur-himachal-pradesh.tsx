@@ -27,7 +27,7 @@ const REGION = "Himachal Pradesh";
 const LOCATION = `${CITY}, ${REGION}`;
 const URL_PATH = "/web-development-company-bilaspur-himachal-pradesh";
 
-const SEO_TITLE = `Web Development & Software Company in ${LOCATION} | SAISPL`;
+const SEO_TITLE = `Web Development Company in ${LOCATION} | Shivaryan Infotech`;
 const SEO_DESCRIPTION = `Looking for a web development, software, or AI automation company in ${LOCATION}? Shivaryan Infotech (SAISPL) is a ${CITY}-based team building custom websites, business portals, and AI workflows for local businesses across ${REGION} and clients in 12+ countries.`;
 
 const faqs = [

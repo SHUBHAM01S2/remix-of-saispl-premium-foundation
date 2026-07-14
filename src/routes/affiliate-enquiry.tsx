@@ -17,7 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/affiliate-enquiry")({
   head: () => ({
     meta: [
-      { title: "Apply as Affiliate — Shivaryan Infotech" },
+      { title: "Apply as Affiliate | Shivaryan Infotech" },
       {
         name: "description",
         content:

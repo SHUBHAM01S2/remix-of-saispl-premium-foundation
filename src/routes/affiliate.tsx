@@ -9,7 +9,7 @@ import { EmailContactLink } from "@/components/EmailContactLink";
 export const Route = createFileRoute("/affiliate")({
   head: () => ({
     meta: [
-      { title: "Affiliate Program — Shivaryan Infotech" },
+      { title: "Affiliate Program | Shivaryan Infotech" },
       {
         name: "description",
         content:

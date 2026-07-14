@@ -33,7 +33,7 @@ export const Route = createFileRoute("/contact")({
   validateSearch: zodValidator(contactSearchSchema),
   head: () => ({
     meta: [
-      { title: "Contact Shivaryan Infotech — Bilaspur, Himachal Pradesh" },
+      { title: "Contact | Shivaryan Infotech" },
       {
         name: "description",
         content:

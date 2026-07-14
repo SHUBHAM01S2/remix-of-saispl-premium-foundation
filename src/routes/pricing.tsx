@@ -188,7 +188,7 @@ const faqs = [
 export const Route = createFileRoute("/pricing")({
   head: () => ({
     meta: [
-      { title: "Pricing — Websites, Portals, Care Plans & Add-Ons | Shivaryan Infotech" },
+      { title: "Pricing | Shivaryan Infotech" },
       {
         name: "description",
         content:

@@ -84,7 +84,7 @@ export const Route = createFileRoute("/blog/$slug")({
     const m = loaderData?.meta;
     const url = `/blog/${params.slug}`;
     const rawTitle = m?.title?.trim() || params.slug.replace(/-/g, " ");
-    const title = truncate(`${rawTitle} — ${SITE} Blog`, 60);
+    const title = truncate(`${rawTitle} | ${SITE}`, 65);
     const description = truncate(
       stripHtml(m?.excerpt || `${rawTitle} — insights from the ${SITE} team.`),
       160,

@@ -40,7 +40,7 @@ const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-seri
 export const Route = createFileRoute("/custom-portals-software")({
   head: () => ({
     meta: [
-      { title: "Custom Portals & Business Software Development | SAISPL" },
+      { title: "Custom Portals & Software | Shivaryan Infotech" },
       {
         name: "description",
         content:
