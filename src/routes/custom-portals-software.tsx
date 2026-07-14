@@ -70,7 +70,7 @@ export const Route = createFileRoute("/custom-portals-software")({
           "@type": "Service",
           name: "Custom Portals & Software Development",
           serviceType: "Custom Software Development",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
           areaServed: [
             { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },

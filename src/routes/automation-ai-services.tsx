@@ -70,7 +70,7 @@ export const Route = createFileRoute("/automation-ai-services")({
           "@type": "Service",
           name: "WhatsApp & AI Automation",
           serviceType: "Business Process Automation",
-          provider: { "@type": "Organization", name: "Shivaryan Infotech (SAISPL)", url: "/" },
+          provider: { "@id": "https://shivaryaninfotech.com/#organization" },
           areaServed: [
             { "@type": "AdministrativeArea", name: "Himachal Pradesh" },
             { "@type": "Country", name: "India" },

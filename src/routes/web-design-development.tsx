@@ -119,13 +119,13 @@ export const Route = createFileRoute("/web-design-development")({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-            { "@type": "ListItem", position: 2, name: "Services", item: "/services" },
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://shivaryaninfotech.com/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "https://shivaryaninfotech.com/services" },
             {
               "@type": "ListItem",
               position: 3,
               name: "Web Design & Development",
-              item: SEO_URL,
+              item: `https://shivaryaninfotech.com${SEO_URL}`,
             },
           ],
         }),

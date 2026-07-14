@@ -141,10 +141,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "/#organization",
+              "@id": "https://shivaryaninfotech.com/#organization",
               name: "Shivaryan Infotech",
               legalName: "Shivaryan Infotech (SAISPL)",
-              url: "/",
+              url: "https://shivaryaninfotech.com/",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://shivaryaninfotech.com/saispl-logo.png",
+              },
               email: "shivaryaninfotech@gmail.com",
               telephone: "+91-94180-31050",
               address: {
@@ -168,10 +172,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "LocalBusiness",
-              "@id": "/#localbusiness",
+              "@id": "https://shivaryaninfotech.com/#localbusiness",
               name: "Shivaryan Infotech (SAISPL)",
-              image: "/favicon.png",
-              url: "/",
+              image: "https://shivaryaninfotech.com/saispl-logo.png",
+              url: "https://shivaryaninfotech.com/",
               telephone: "+91-94180-31050",
               email: "shivaryaninfotech@gmail.com",
               priceRange: "₹₹",
@@ -198,10 +202,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "WebSite",
-              "@id": "/#website",
-              url: "/",
+              "@id": "https://shivaryaninfotech.com/#website",
+              url: "https://shivaryaninfotech.com/",
               name: "Shivaryan Infotech",
-              publisher: { "@id": "/#organization" },
+              publisher: { "@id": "https://shivaryaninfotech.com/#organization" },
             },
           ],
         }),
