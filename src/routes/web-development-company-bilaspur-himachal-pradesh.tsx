@@ -226,13 +226,13 @@ export const Route = createFileRoute("/web-development-company-bilaspur-himachal
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: "/" },
-            { "@type": "ListItem", position: 2, name: "Services", item: "/services" },
+            { "@type": "ListItem", position: 1, name: "Home", item: "https://shivaryaninfotech.com/" },
+            { "@type": "ListItem", position: 2, name: "Services", item: "https://shivaryaninfotech.com/services" },
             {
               "@type": "ListItem",
               position: 3,
               name: `Web Development in ${LOCATION}`,
-              item: URL_PATH,
+              item: `https://shivaryaninfotech.com${URL_PATH}`,
             },
           ],
         }),
