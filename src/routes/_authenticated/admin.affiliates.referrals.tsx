@@ -642,7 +642,7 @@ function PreviewDrawer({ row, onClose, onEdit }: { row: any; onClose: () => void
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <StatusChip status={row.status} />
           <StageBadge stage={row.deal_stage} />
-          <PayoutChip status={row.payout_status} />
+          <PayoutChip status={row.payout_status} voided={row.status === "lost"} />
         </div>
         <dl className="grid grid-cols-2 gap-3 text-sm">
           <Info label="Deal value" value={fmtMoney(row.deal_value)} />
