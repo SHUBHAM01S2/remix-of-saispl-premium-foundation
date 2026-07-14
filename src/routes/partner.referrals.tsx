@@ -45,7 +45,7 @@ function MyReferralsPage() {
   const [sortKey, setSortKey] = useState<SortKey>("referral_date");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  
 
   const all = q.data ?? [];
 
