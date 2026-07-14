@@ -8,10 +8,11 @@ import { WhatWeDoSection } from "@/components/WhatWeDoSection";
 import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 
 const TITLE =
-  "Shivaryan Infotech — AI Automation, Custom Software & Web Development Company";
+  "Shivaryan Infotech — AI Automation & Software Company";
 const DESCRIPTION =
-  "Shivaryan Infotech (SAISPL) builds AI agents, workflow automation, custom web apps, and business portals for founders and ops leaders across 12+ countries.";
+  "SAISPL builds AI agents, workflow automation, custom web apps, and business portals for founders and ops leaders in 12+ countries.";
 const CANONICAL = "/";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
