@@ -245,9 +245,9 @@ function MyReferralsPage() {
       ) : (
         <>
           {/* Desktop table */}
-          <div className="hidden lg:block rounded-2xl border border-white/5 bg-white/[0.02]">
-            <div className="overflow-x-auto xl:overflow-x-visible">
-              <table className="w-full min-w-[900px] xl:min-w-0 text-sm">
+          <div className="hidden lg:block rounded-2xl border border-white/5 bg-white/[0.02] overflow-visible">
+            <div className="overflow-x-auto lg:overflow-visible">
+              <table className="w-full min-w-0 text-sm">
 
                 <thead className="text-left text-[11px] uppercase tracking-wider text-slate-400 bg-white/[0.02]">
                   <tr>
