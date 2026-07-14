@@ -8,7 +8,7 @@ import { WhatWeDoSection } from "@/components/WhatWeDoSection";
 import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 
 const TITLE =
-  "Shivaryan Infotech — AI Automation & Software Company";
+  "Shivaryan Infotech | AI, Software & Web Development";
 const DESCRIPTION =
   "SAISPL builds AI agents, workflow automation, custom web apps, and business portals for founders and ops leaders in 12+ countries.";
 const CANONICAL = "/";
