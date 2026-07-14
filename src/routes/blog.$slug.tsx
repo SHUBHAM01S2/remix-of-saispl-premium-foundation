@@ -15,12 +15,15 @@ const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
 );
 
 async function fetchBySlug(slug: string): Promise<BlogPost | null> {
+  const nowIso = new Date().toISOString();
   const { data, error } = await supabase
     .from("blog_posts" as never)
     .select(
       "id, title, slug, excerpt, content, cover_image_url, category, author_name, published_at",
     )
     .eq("slug", slug)
+    .not("published_at", "is", null)
+    .lte("published_at", nowIso)
     .maybeSingle();
   if (!error && data) return data as unknown as BlogPost;
   return SEED_INDEX[slug] ?? null;
@@ -30,12 +33,15 @@ async function fetchRelated(
   category: string | null,
   excludeSlug: string,
 ): Promise<BlogPost[]> {
+  const nowIso = new Date().toISOString();
   let query = supabase
     .from("blog_posts" as never)
     .select(
       "id, title, slug, excerpt, content, cover_image_url, category, author_name, published_at",
     )
     .neq("slug", excludeSlug)
+    .not("published_at", "is", null)
+    .lte("published_at", nowIso)
     .order("published_at", { ascending: false })
     .limit(3);
   if (category) query = query.eq("category", category);
