@@ -99,12 +99,14 @@ export const SEED: BlogPost[] = [
 ];
 
 async function fetchBlogPosts(): Promise<{ posts: BlogPost[]; source: "db" | "fallback" }> {
+  const nowIso = new Date().toISOString();
   const res = await (supabase as any)
     .from("blog_posts")
     .select(
       "id, title, slug, excerpt, content, cover_image_url, category, author_name, published_at",
     )
     .not("published_at", "is", null)
+    .lte("published_at", nowIso)
     .order("published_at", { ascending: false });
   const rows = res.data as BlogPost[] | null;
   if (res.error || !Array.isArray(rows) || rows.length === 0) {
