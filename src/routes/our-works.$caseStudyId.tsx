@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import {
   Monitor,
   ArrowRight,
