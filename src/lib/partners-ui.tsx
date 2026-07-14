@@ -86,7 +86,15 @@ export function StatusChip({ status }: { status: ReferralStatus }) {
     </span>
   );
 }
-export function PayoutChip({ status }: { status: ReferralPayoutStatus }) {
+export function PayoutChip({ status, voided }: { status: ReferralPayoutStatus; voided?: boolean }) {
+  if (voided) {
+    return (
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-300 ring-1 ring-inset ring-zinc-400/25">
+        <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+        Void
+      </span>
+    );
+  }
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${PAYOUT_STYLES[status]}`}>
       <span className={`h-1.5 w-1.5 rounded-full ${PAYOUT_DOT[status]}`} />
@@ -94,3 +102,4 @@ export function PayoutChip({ status }: { status: ReferralPayoutStatus }) {
     </span>
   );
 }
+
