@@ -6,7 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPublicBlogPostMeta } from "@/lib/blog-public.functions";
 import { BLOG_PROSE_CLASSES } from "@/lib/blog-content-styles";
 import { htmlToVisibleText, sanitizeBlogContentHtml } from "@/lib/blog-content-sanitize";
+import { RelatedLinks } from "@/components/RelatedLinks";
 import { SEED, type BlogPost } from "./blog.index";
+
 
 const SEED_INDEX: Record<string, BlogPost> = Object.fromEntries(
   SEED.map((p) => [p.slug, p]),
