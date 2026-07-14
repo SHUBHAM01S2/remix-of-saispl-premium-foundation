@@ -173,9 +173,9 @@ function Contact() {
 
             <div className="grid grid-cols-1 gap-8 border-t border-white/10 pt-8 sm:grid-cols-2">
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
                   Office
-                </h3>
+                </h2>
                 <p className="leading-relaxed text-zinc-300">
                   Bilaspur, Himachal Pradesh 174001,
                   <br />
@@ -183,9 +183,9 @@ function Contact() {
                 </p>
               </div>
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
                   Direct Connect
-                </h3>
+                </h2>
                 <div className="flex flex-col space-y-2">
                   <a
                     href={OFFICE.whatsapp}
@@ -212,18 +212,18 @@ function Contact() {
                 </div>
               </div>
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
                   Response
-                </h3>
+                </h2>
                 <p className="flex items-center gap-2 text-zinc-300">
                   <Clock className="h-4 w-4 text-blue-400" />
                   Within 4 business hours
                 </p>
               </div>
               <div className="space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-500">
                   Prefer chat
-                </h3>
+                </h2>
                 <a
                   href={OFFICE.whatsapp}
                   target="_blank"

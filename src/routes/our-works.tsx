@@ -127,6 +127,15 @@ function OurWorks() {
 
       <section className="bg-background pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-10 text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              Selected case studies
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-muted-foreground">
+              Filter by discipline to see websites, AI automation, and brand systems
+              we've shipped for clients across India and beyond.
+            </p>
+          </ScrollReveal>
           <ScrollReveal className="mb-10 flex flex-wrap items-center justify-center gap-2">
             {filters.map((f) => (
               <button
