@@ -106,11 +106,14 @@ function Index() {
     <div>
       <HeroSection />
       <TrustedByStrip />
-      <WhatWeDoSection />
-      <WhyChooseUsSection />
-      <FeaturedWorkSection />
-      <TestimonialsSection />
-      <CTASection />
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <WhatWeDoSection />
+        <WhyChooseUsSection />
+        <FeaturedWorkSection />
+        <TestimonialsSection />
+        <CTASection />
+      </Suspense>
     </div>
   );
 }
+
