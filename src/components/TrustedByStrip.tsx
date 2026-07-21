@@ -1,4 +1,4 @@
-import { ScrollReveal } from "@/components/ScrollReveal";
+
 
 const DARK_BG = "#1b1b1b";
 
