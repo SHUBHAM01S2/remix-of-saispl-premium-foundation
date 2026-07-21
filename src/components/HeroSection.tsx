@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Globe2 } from "lucide-react";
-import { motion } from "framer-motion";
+
 
 const metrics = [
   { k: "120+", v: "Global teams" },
