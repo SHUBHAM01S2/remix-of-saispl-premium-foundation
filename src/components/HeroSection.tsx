@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Globe2 } from "lucide-react";
-import { motion } from "framer-motion";
+
 
 const metrics = [
   { k: "120+", v: "Global teams" },
@@ -54,25 +54,17 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100dvh-4rem)] max-w-5xl flex-col items-center justify-center px-4 py-24 sm:px-6 md:py-28 lg:px-8">
         {/* eyebrow */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur"
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur"
         >
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
           </span>
           Now booking Q3 2026 — 3 slots left
-        </motion.div>
+        </div>
 
         {/* headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-[6.25rem] leading-[0.94]"
+        <h1 className="mx-auto max-w-4xl text-center text-5xl font-extrabold tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-[6.25rem] leading-[0.94]"
         >
           Intelligent{" "}
           <span className="relative inline-block text-brand">
@@ -89,23 +81,15 @@ export function HeroSection() {
           ,
           <br />
           engineered to ship.
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="mx-auto mt-7 max-w-xl text-center text-base leading-relaxed text-muted-foreground sm:text-lg"
+        <p className="mx-auto mt-7 max-w-xl text-center text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
           AI agents, automation and custom platforms — built by Shivaryan
           Infotech to help global teams ship faster and operate smarter.
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-          className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
           <Link
             to="/contact"
@@ -121,14 +105,10 @@ export function HeroSection() {
             View our work
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
-        </motion.div>
+        </div>
 
         {/* metric strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.55 }}
-          className="mt-16 grid w-full max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 sm:grid-cols-4"
+        <div className="mt-16 grid w-full max-w-4xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 sm:grid-cols-4"
         >
           {metrics.map((m) => (
             <div
@@ -143,18 +123,14 @@ export function HeroSection() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* global-serving pill */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.75 }}
-          className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur"
+        <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.02] px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground backdrop-blur"
         >
           <Globe2 className="h-3.5 w-3.5 text-brand" />
           Serving clients in 12+ countries
-        </motion.div>
+        </div>
       </div>
     </section>
   );
