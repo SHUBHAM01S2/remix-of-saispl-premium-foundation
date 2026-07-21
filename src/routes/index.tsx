@@ -1,24 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { lazy, Suspense } from "react";
+import { CTASection } from "@/components/CTASection";
+import { FeaturedWorkSection } from "@/components/FeaturedWorkSection";
 import { HeroSection } from "@/components/HeroSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { TrustedByStrip } from "@/components/TrustedByStrip";
-
-const WhatWeDoSection = lazy(() =>
-  import("@/components/WhatWeDoSection").then((m) => ({ default: m.WhatWeDoSection })),
-);
-const WhyChooseUsSection = lazy(() =>
-  import("@/components/WhyChooseUsSection").then((m) => ({ default: m.WhyChooseUsSection })),
-);
-const FeaturedWorkSection = lazy(() =>
-  import("@/components/FeaturedWorkSection").then((m) => ({ default: m.FeaturedWorkSection })),
-);
-const TestimonialsSection = lazy(() =>
-  import("@/components/TestimonialsSection").then((m) => ({ default: m.TestimonialsSection })),
-);
-const CTASection = lazy(() =>
-  import("@/components/CTASection").then((m) => ({ default: m.CTASection })),
-);
-
+import { WhatWeDoSection } from "@/components/WhatWeDoSection";
+import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
 
 const TITLE =
   "Shivaryan Infotech | AI, Software & Web Development";
@@ -106,14 +93,11 @@ function Index() {
     <div>
       <HeroSection />
       <TrustedByStrip />
-      <Suspense fallback={<div className="min-h-[400px]" />}>
-        <WhatWeDoSection />
-        <WhyChooseUsSection />
-        <FeaturedWorkSection />
-        <TestimonialsSection />
-        <CTASection />
-      </Suspense>
+      <WhatWeDoSection />
+      <WhyChooseUsSection />
+      <FeaturedWorkSection />
+      <TestimonialsSection />
+      <CTASection />
     </div>
   );
 }
-
