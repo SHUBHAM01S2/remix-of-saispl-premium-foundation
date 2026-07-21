@@ -65,7 +65,7 @@ export function HeroSection() {
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand" />
           </span>
           Now booking Q3 2026 — 3 slots left
-        </motion.div>
+        </div>
 
         {/* headline */}
         <motion.h1
@@ -89,7 +89,7 @@ export function HeroSection() {
           ,
           <br />
           engineered to ship.
-        </motion.h1>
+        </h1>
 
         <motion.p
           initial={{ opacity: 0, y: 18 }}
@@ -99,7 +99,7 @@ export function HeroSection() {
         >
           AI agents, automation and custom platforms — built by Shivaryan
           Infotech to help global teams ship faster and operate smarter.
-        </motion.p>
+        </p>
 
         <motion.div
           initial={{ opacity: 0, y: 18 }}
@@ -121,7 +121,7 @@ export function HeroSection() {
             View our work
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
-        </motion.div>
+        </div>
 
         {/* metric strip */}
         <motion.div
@@ -143,7 +143,7 @@ export function HeroSection() {
               </div>
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* global-serving pill */}
         <motion.div
@@ -154,7 +154,7 @@ export function HeroSection() {
         >
           <Globe2 className="h-3.5 w-3.5 text-brand" />
           Serving clients in 12+ countries
-        </motion.div>
+        </div>
       </div>
     </section>
   );
