@@ -1,11 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CTASection } from "@/components/CTASection";
-import { FeaturedWorkSection } from "@/components/FeaturedWorkSection";
+import { lazy, Suspense } from "react";
 import { HeroSection } from "@/components/HeroSection";
-import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { TrustedByStrip } from "@/components/TrustedByStrip";
-import { WhatWeDoSection } from "@/components/WhatWeDoSection";
-import { WhyChooseUsSection } from "@/components/WhyChooseUsSection";
+
+const WhatWeDoSection = lazy(() =>
+  import("@/components/WhatWeDoSection").then((m) => ({ default: m.WhatWeDoSection })),
+);
+const WhyChooseUsSection = lazy(() =>
+  import("@/components/WhyChooseUsSection").then((m) => ({ default: m.WhyChooseUsSection })),
+);
+const FeaturedWorkSection = lazy(() =>
+  import("@/components/FeaturedWorkSection").then((m) => ({ default: m.FeaturedWorkSection })),
+);
+const TestimonialsSection = lazy(() =>
+  import("@/components/TestimonialsSection").then((m) => ({ default: m.TestimonialsSection })),
+);
+const CTASection = lazy(() =>
+  import("@/components/CTASection").then((m) => ({ default: m.CTASection })),
+);
+
 
 const TITLE =
   "Shivaryan Infotech | AI, Software & Web Development";
