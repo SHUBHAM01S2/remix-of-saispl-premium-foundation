@@ -765,6 +765,49 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* WEBSITE MAINTENANCE AND GROWTH */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <ScrollReveal>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Website Maintenance and Growth
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                A website that grows with your business.
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  A website is not just a one-time project. It needs regular updates, security checks, performance improvements, and content changes to stay useful and competitive. Our website maintenance and support services help businesses keep their websites secure, fast, and relevant over time.
+                </p>
+                <p>
+                  A custom website can grow with your business. Whether you need to add new features, create more landing pages, integrate tools, or improve SEO, we are here to support your growth.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {[
+                  { title: "Regular updates", desc: "Keep content fresh and features current." },
+                  { title: "Security monitoring", desc: "Protect your site and customer data." },
+                  { title: "Performance tuning", desc: "Maintain speed and Core Web Vitals." },
+                  { title: "SEO improvements", desc: "Continued optimization for better rankings." },
+                ].map((item) => (
+                  <StaggerItem key={item.title} className="h-full">
+                    <div className="group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                      <h3 className="text-sm font-bold text-foreground" style={displayFont}>
+                        {item.title}
+                      </h3>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* WHY CUSTOM OVER A TEMPLATE */}
       <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
