@@ -224,8 +224,24 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How long does a website project take?",
-    a: "Starter sites launch in 2 weeks. Business sites typically take 3–5 weeks. Larger portals or custom web apps run 6–10 weeks depending on scope.",
+    q: "What is custom web development?",
+    a: "Custom web development is the process of building a website from scratch based on your business needs instead of using a pre-made template. Every part is planned around your brand, audience, and goals.",
+  },
+  {
+    q: "Is custom web development good for SEO?",
+    a: "Yes. Custom web development is good for SEO because it allows better control over website structure, speed, responsiveness, internal linking, clean URLs, heading hierarchy, optimized images, schema markup, and technical SEO.",
+  },
+  {
+    q: "How long does it take to build a custom website?",
+    a: "The timeline depends on the size and complexity of the project. A simple business website may take a few weeks, while larger or more advanced websites can take longer. We provide clear timelines after discovery.",
+  },
+  {
+    q: "Can I update content on a custom website?",
+    a: "Yes. Many custom websites use a CMS, which makes it easy to update text, images, blog posts, and other content without rebuilding the entire site.",
+  },
+  {
+    q: "Do you provide website maintenance after launch?",
+    a: "Yes. Website maintenance and post-launch support are valuable because websites often need updates, security checks, content changes, and performance improvements over time.",
   },
   {
     q: "Do you provide content writing?",
@@ -238,10 +254,6 @@ const faqs = [
   {
     q: "Will the site be mobile-friendly?",
     a: "Every site we ship is mobile-first, tested on real devices, and scored 90+ on Google's mobile usability and Core Web Vitals.",
-  },
-  {
-    q: "Do you also maintain the website after launch?",
-    a: "Yes — we offer monthly maintenance plans covering hosting, security updates, content changes, monitoring, and priority support.",
   },
 ];
 
