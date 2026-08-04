@@ -404,6 +404,51 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* CUSTOM WEB DEVELOPMENT FOR SEO */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <ScrollReveal>
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Custom Web Development for SEO
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Built to rank before it launches.
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                SEO and custom web development work very well together. When a website is built correctly from the beginning, it becomes easier for search engines to crawl, understand, and rank the pages, which is why SEO-friendly website development is important for modern businesses.
+              </p>
+              <p>
+                A well-developed custom website can support SEO through clean URLs, proper heading structure, mobile-friendly responsive design, fast page loading speed, optimized images and alt text, internal linking, schema markup, and secure HTTPS configuration.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[
+                "Clean URLs & redirects",
+                "Proper heading structure",
+                "Mobile-first responsive design",
+                "Fast page loading speed",
+                "Optimized images & alt text",
+                "Internal linking strategy",
+                "Schema markup",
+                "Secure HTTPS configuration",
+              ].map((item) => (
+                <StaggerItem key={item}>
+                  <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-brand/10">
+                      <Check className="h-3 w-3 text-brand" strokeWidth={3} />
+                    </span>
+                    <span className="text-sm font-medium text-foreground">{item}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* WHAT'S INCLUDED */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
