@@ -68,8 +68,8 @@ export const Route = createFileRoute("/web-design-development")({
           "@context": "https://schema.org",
           "@type": "Service",
           "@id": `${SEO_URL}#service`,
-          name: "Web Design & Development",
-          serviceType: "Web Design & Development",
+          name: "Custom Web Development Services",
+          serviceType: "Custom Web Development Services",
           provider: { "@id": "/#organization" },
           areaServed: [
             { "@type": "Country", name: "India" },
