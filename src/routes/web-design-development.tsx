@@ -616,6 +616,83 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* TECHNOLOGIES WE USE */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <ScrollReveal className="mb-14 md:mb-16">
+          <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Technologies We Use
+          </span>
+          <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+            Modern tools for fast, secure, and scalable builds.
+          </h2>
+        </ScrollReveal>
+
+        <div className="grid gap-8 lg:grid-cols-2">
+          <ScrollReveal>
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                We work with modern tools and frameworks to build fast, secure, and scalable websites. Depending on the project, we may use React, Next.js, Node.js, WordPress, CMS integrations, and database-backed solutions that support long-term maintainability.
+              </p>
+              <p>
+                This technical flexibility helps us create websites for simple business pages, advanced portals, content-driven platforms, and custom web applications.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <StaggerContainer className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {["React", "Next.js", "Node.js", "WordPress", "CMS Integrations", "Database Solutions", "TypeScript", "Tailwind CSS"].map((tech) => (
+                <StaggerItem key={tech}>
+                  <div className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                    <Code2 className="h-4 w-4 text-brand transition-colors" />
+                    <span className="text-sm font-semibold text-foreground">{tech}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* WHY CUSTOM OVER A TEMPLATE */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <ScrollReveal>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Custom vs Template
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                Why choose custom over a template?
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  Template websites can be useful for quick launches, but they often come with limitations. They may look similar to other websites, include unnecessary code, or restrict the way your site functions, which can make long-term growth harder.
+                </p>
+                <p>
+                  A custom website gives you full control over design, better technical performance, more SEO potential, greater flexibility for future growth, and a stronger professional image. If you want a website built around your business instead of adapted from a general theme, custom web development is the better option.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Growth Impact
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                How custom web development supports growth.
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  A well-built website can do much more than display information. It can help your business grow by improving trust, attracting traffic, and turning visitors into leads or customers.
+                </p>
+                <p>
+                  Custom web development supports growth by improving the user journey, making your services easier to understand, increasing conversions with better layout and calls to action, supporting content marketing, and strengthening brand credibility. For many businesses, the website becomes one of the most valuable long-term marketing assets.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* PRICING PREVIEW */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
