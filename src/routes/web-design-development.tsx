@@ -34,9 +34,9 @@ import { StrategyCallButton } from "@/components/StrategyCallButton";
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
 const SEO_TITLE =
-  "Web Design & Development | Shivaryan Infotech";
+  "Custom Web Development Services | Shivaryan Infotech";
 const SEO_DESCRIPTION =
-  "Custom web design and development company in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, mobile-first websites and web apps for clinics, hotels, schools, real estate, SaaS and local businesses — serving clients in 12+ countries.";
+  "Custom web development services in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, custom websites and web apps for business, e-commerce, landing pages, and portals — tailored to your goals and serving clients in 12+ countries.";
 const SEO_URL = "/web-design-development";
 
 export const Route = createFileRoute("/web-design-development")({
