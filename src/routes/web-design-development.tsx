@@ -466,6 +466,53 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* OUR CUSTOM WEB DEVELOPMENT SERVICES */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <ScrollReveal className="mb-14 md:mb-16">
+          <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Our Custom Web Development Services
+          </span>
+          <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+            Websites designed for results, not just visuals.
+          </h2>
+          <p className="mt-4 max-w-3xl text-muted-foreground">
+            We create custom websites that are designed to look professional, work smoothly, and support business goals. As a web development company, we focus on solutions that are both visually strong and conversion-friendly.
+          </p>
+        </ScrollReveal>
+
+        <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { title: "Business website development", desc: "Professional websites for service-based companies that build trust and generate leads." },
+            { title: "Landing page development", desc: "Campaign-focused pages designed for lead generation, promotions, and conversions." },
+            { title: "E-commerce development", desc: "Product-based online stores with secure checkout, inventory, and scalable architecture." },
+            { title: "CMS integration", desc: "Update pages, blog posts, and images easily without touching code." },
+            { title: "Responsive web design", desc: "Flawless experiences across mobile, tablet, laptop, and desktop devices." },
+            { title: "SEO-friendly development", desc: "Clean URLs, structured headings, fast load times, and technical SEO from the ground up." },
+            { title: "Website redesign", desc: "Modernize outdated websites with better design, speed, and SEO performance." },
+            { title: "Custom web applications", desc: "Portals, dashboards, and tools built around your specific workflows." },
+            { title: "Maintenance & support", desc: "Ongoing updates, security checks, and improvements after launch." },
+          ].map((s) => (
+            <StaggerItem key={s.title} className="h-full">
+              <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                <div
+                  className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                  style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                />
+                <div className="relative flex items-center justify-between">
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                </div>
+                <h3 className="relative mt-5 text-lg font-bold text-foreground" style={displayFont}>
+                  {s.title}
+                </h3>
+                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {s.desc}
+                </p>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </section>
+
       {/* PROCESS */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
