@@ -886,10 +886,10 @@ function WebsiteDesignDevelopmentPage() {
                 className="text-4xl font-extrabold leading-[1] tracking-tight text-foreground md:text-6xl"
                 style={displayFont}
               >
-                Ready to Build a Website That Brings{" "}
+                Ready for a Custom Website Built Around{" "}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-b from-brand via-brand to-indigo-400 bg-clip-text italic text-transparent">
-                    Real Business?
+                    Your Business?
                   </span>
                   <span
                     className="pointer-events-none absolute inset-0 -z-10 blur-2xl"
@@ -897,13 +897,23 @@ function WebsiteDesignDevelopmentPage() {
                   />
                 </span>
               </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-muted-foreground">
+                If you need a website that is fast, scalable, SEO-friendly, and built around your business goals, custom web development is the right choice. Book a consultation or request a custom quote to discuss your project, website requirements, and growth goals.
+              </p>
 
-              <div className="mt-10 flex justify-center">
-                <StrategyCallButton
-                  ariaLabel="Book a free discovery call"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03]"
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03] sm:w-auto"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                  <span className="relative">Book a Consultation</span>
+                  <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+                <StrategyCallButton
+                  ariaLabel="Book a free discovery call"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-white/15 bg-white/[0.04] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-brand/40 hover:bg-white/[0.08] sm:w-auto"
+                >
                   <span className="relative">Book a Free Discovery Call</span>
                   <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </StrategyCallButton>
