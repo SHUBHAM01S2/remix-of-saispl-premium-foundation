@@ -269,7 +269,7 @@ function WebsiteDesignDevelopmentPage() {
         <ScrollReveal className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand">
             <Globe className="h-3 w-3" />
-            Website Design & Development
+            Custom Web Development Services
           </span>
           <h1
             className="text-5xl font-black leading-[0.95] tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]"
@@ -287,8 +287,7 @@ function WebsiteDesignDevelopmentPage() {
             </span>
           </h1>
           <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            We design and build custom websites that load fast, rank well, and turn visitors into
-            customers.
+            Custom web development designed for your business goals, audience, and long-term growth. We build fast, SEO-ready, and conversion-focused websites that do more than just look good.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -296,7 +295,7 @@ function WebsiteDesignDevelopmentPage() {
               className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03] sm:w-auto"
             >
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-              <span className="relative">Get a Free Quote</span>
+              <span className="relative">Get a Custom Website Quote</span>
               <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
             <Link
@@ -307,6 +306,47 @@ function WebsiteDesignDevelopmentPage() {
             </Link>
           </div>
         </ScrollReveal>
+      </section>
+
+      {/* CUSTOM WEB DEV INTRO */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <ScrollReveal>
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              What Is Custom Web Development?
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Built around your business, not a template.
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                Custom web development is the process of creating a website specifically for your business, goals, and audience. Instead of using a generic template, a custom-built website gives you better control over design, functionality, speed, and SEO.
+              </p>
+              <p>
+                A custom website is ideal for businesses that want a unique online presence, better performance, and long-term scalability. Whether you need a business website, landing page, e-commerce store, or web application, our custom website development services help you build a site that supports both user experience and business growth.
+              </p>
+              <p>
+                We build custom websites that are not only visually strong but also structured for SEO, lead generation, and long-term scalability. Our approach focuses on performance, usability, and business outcomes rather than just design alone.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.01] p-8 md:p-10">
+              <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-brand/10 blur-3xl" />
+              <h3 className="mb-6 text-2xl font-bold text-foreground" style={displayFont}>
+                Why Custom Web Development Matters
+              </h3>
+              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Your website is often the first impression people get of your business. If it looks outdated, loads slowly, or feels hard to use, visitors may leave before taking action, so a custom-built website helps improve trust, usability, and performance.
+                </p>
+                <p>
+                  It also gives your business the freedom to grow. As your needs change, your website can be expanded with new features, pages, and tools without being limited by template restrictions, which is why many businesses choose custom development for long-term growth.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* WHAT'S INCLUDED */}
