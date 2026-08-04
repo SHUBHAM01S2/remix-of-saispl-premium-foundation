@@ -570,6 +570,61 @@ function WebsiteDesignDevelopmentPage() {
         </StaggerContainer>
       </section>
 
+      {/* RESULTS AND PROOF */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-14 text-center md:mb-16">
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Results and Proof
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Real results from a custom-built website.
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+            <ScrollReveal>
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-8">
+                <div className="mb-6 text-sm font-semibold uppercase tracking-wider text-brand">
+                  Case Study: Manufacturing Company in Bilaspur
+                </div>
+                <h3 className="text-2xl font-bold text-foreground" style={displayFont}>
+                  From invisible to ranked in local search.
+                </h3>
+                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
+                  <div>
+                    <div className="text-3xl font-black text-foreground">3x</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Lead increase</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-black text-foreground">Top 5</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Google ranking</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-black text-foreground">40%</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Faster load</div>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  A local manufacturing company in Bilaspur approached us for a custom website. They had a generic site with poor performance, slow loading, and no visibility on Google. We redesigned their website with a clear structure, optimized content, and SEO-focused development.
+                </p>
+                <p>
+                  Within a few months, their website started ranking in the top five positions for important local keywords. Website speed improved significantly, mobile performance became smooth, and the number of business enquiries grew three times.
+                </p>
+                <p>
+                  This is what custom web development can do when strategy, design, and SEO work together.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* PROCESS */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
