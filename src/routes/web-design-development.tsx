@@ -565,44 +565,54 @@ function WebsiteDesignDevelopmentPage() {
         </StaggerContainer>
       </section>
 
-      {/* WHY CHOOSE */}
+      {/* WHY CHOOSE US */}
       <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="mb-14 md:mb-16">
             <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
-              Why Choose SAISPL
+              Why Choose Us
             </span>
             <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
-              A partner, not a vendor.
+              A partner invested in your growth.
             </h2>
           </ScrollReveal>
 
-          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {why.map((w) => {
-              const Icon = w.icon;
-              return (
-                <StaggerItem key={w.title} className="h-full">
-                  <div className="group relative flex h-full gap-5 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
-                    <div
-                      className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
-                      style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
-                    />
-                    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all group-hover:border-brand/40 group-hover:from-brand/20">
-                      <Icon className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
-                    </div>
-                    <div className="relative">
-                      <h3 className="text-lg font-bold text-foreground" style={displayFont}>
-                        {w.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                        {w.desc}
-                      </p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
+          <div className="grid gap-12 lg:grid-cols-2">
+            <ScrollReveal>
+              <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  We focus on building websites that support real business goals, not just visual presentation. Our websites are planned around usability, SEO structure, speed, and scalability so your business can continue growing after launch.
+                </p>
+                <p>
+                  We also support businesses with updates, maintenance, and future improvements, which helps turn a website into a long-term digital asset instead of a one-time project.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {why.map((w) => {
+                  const Icon = w.icon;
+                  return (
+                    <StaggerItem key={w.title} className="h-full">
+                      <div className="group relative flex h-full gap-4 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40">
+                        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] transition-all group-hover:border-brand/40 group-hover:from-brand/20">
+                          <Icon className="h-4 w-4 text-foreground/90 transition-colors group-hover:text-brand" />
+                        </div>
+                        <div className="relative">
+                          <h3 className="text-sm font-bold text-foreground" style={displayFont}>
+                            {w.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                            {w.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  );
+                })}
+              </StaggerContainer>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
