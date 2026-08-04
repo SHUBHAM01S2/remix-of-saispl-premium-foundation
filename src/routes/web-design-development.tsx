@@ -809,7 +809,7 @@ function WebsiteDesignDevelopmentPage() {
       </section>
 
       {/* WHY CUSTOM OVER A TEMPLATE */}
-      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+      <section className="border-b border-white/5 bg-white/[0.01] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2">
             <ScrollReveal>
