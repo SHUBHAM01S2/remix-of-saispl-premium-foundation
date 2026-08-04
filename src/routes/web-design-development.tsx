@@ -349,6 +349,49 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* BENEFITS OF CUSTOM WEB DEVELOPMENT */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-14 md:mb-16">
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Benefits of Custom Web Development
+            </span>
+            <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              More control. Better performance. Longer growth.
+            </h2>
+          </ScrollReveal>
+
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { title: "Unique design that matches your brand", desc: "Stand out instead of looking like other websites using the same theme." },
+              { title: "Better performance", desc: "Custom websites avoid unnecessary code, extra plugins, and bulky design elements." },
+              { title: "Stronger SEO foundation", desc: "Proper structure, speed, mobile optimization, and clean markup from the start." },
+              { title: "More flexibility", desc: "Add booking systems, custom forms, portals, or advanced features as needed." },
+              { title: "Scalability", desc: "Your website can grow with your business without hitting template limits." },
+              { title: "Better security", desc: "Fewer unnecessary third-party tools reduce exposure and maintenance risk." },
+            ].map((b) => (
+              <StaggerItem key={b.title} className="h-full">
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                  <div
+                    className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                  />
+                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.01] transition-all group-hover:border-brand/40 group-hover:from-brand/20">
+                    <Check className="h-5 w-5 text-brand" strokeWidth={3} />
+                  </div>
+                  <h3 className="relative mt-5 text-lg font-bold text-foreground" style={displayFont}>
+                    {b.title}
+                  </h3>
+                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {b.desc}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
       {/* WHAT'S INCLUDED */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
