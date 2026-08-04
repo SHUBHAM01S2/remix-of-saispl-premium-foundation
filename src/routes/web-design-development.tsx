@@ -34,9 +34,9 @@ import { StrategyCallButton } from "@/components/StrategyCallButton";
 const displayFont = { fontFamily: "'Outfit', ui-sans-serif, system-ui, sans-serif" };
 
 const SEO_TITLE =
-  "Web Design & Development | Shivaryan Infotech";
+  "Custom Web Development Services | Shivaryan Infotech";
 const SEO_DESCRIPTION =
-  "Custom web design and development company in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, mobile-first websites and web apps for clinics, hotels, schools, real estate, SaaS and local businesses — serving clients in 12+ countries.";
+  "Custom web development services in India. Shivaryan Infotech (SAISPL) builds fast, SEO-ready, custom websites and web apps for business, e-commerce, landing pages, and portals — tailored to your goals and serving clients in 12+ countries.";
 const SEO_URL = "/web-design-development";
 
 export const Route = createFileRoute("/web-design-development")({
@@ -68,8 +68,8 @@ export const Route = createFileRoute("/web-design-development")({
           "@context": "https://schema.org",
           "@type": "Service",
           "@id": `${SEO_URL}#service`,
-          name: "Web Design & Development",
-          serviceType: "Web Design & Development",
+          name: "Custom Web Development Services",
+          serviceType: "Custom Web Development Services",
           provider: { "@id": "/#organization" },
           areaServed: [
             { "@type": "Country", name: "India" },
@@ -224,8 +224,24 @@ const pricing = [
 
 const faqs = [
   {
-    q: "How long does a website project take?",
-    a: "Starter sites launch in 2 weeks. Business sites typically take 3–5 weeks. Larger portals or custom web apps run 6–10 weeks depending on scope.",
+    q: "What is custom web development?",
+    a: "Custom web development is the process of building a website from scratch based on your business needs instead of using a pre-made template. Every part is planned around your brand, audience, and goals.",
+  },
+  {
+    q: "Is custom web development good for SEO?",
+    a: "Yes. Custom web development is good for SEO because it allows better control over website structure, speed, responsiveness, internal linking, clean URLs, heading hierarchy, optimized images, schema markup, and technical SEO.",
+  },
+  {
+    q: "How long does it take to build a custom website?",
+    a: "The timeline depends on the size and complexity of the project. A simple business website may take a few weeks, while larger or more advanced websites can take longer. We provide clear timelines after discovery.",
+  },
+  {
+    q: "Can I update content on a custom website?",
+    a: "Yes. Many custom websites use a CMS, which makes it easy to update text, images, blog posts, and other content without rebuilding the entire site.",
+  },
+  {
+    q: "Do you provide website maintenance after launch?",
+    a: "Yes. Website maintenance and post-launch support are valuable because websites often need updates, security checks, content changes, and performance improvements over time.",
   },
   {
     q: "Do you provide content writing?",
@@ -238,10 +254,6 @@ const faqs = [
   {
     q: "Will the site be mobile-friendly?",
     a: "Every site we ship is mobile-first, tested on real devices, and scored 90+ on Google's mobile usability and Core Web Vitals.",
-  },
-  {
-    q: "Do you also maintain the website after launch?",
-    a: "Yes — we offer monthly maintenance plans covering hosting, security updates, content changes, monitoring, and priority support.",
   },
 ];
 
@@ -269,7 +281,7 @@ function WebsiteDesignDevelopmentPage() {
         <ScrollReveal className="relative mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <span className="mb-8 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-brand">
             <Globe className="h-3 w-3" />
-            Website Design & Development
+            Custom Web Development Services
           </span>
           <h1
             className="text-5xl font-black leading-[0.95] tracking-tighter text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]"
@@ -287,8 +299,7 @@ function WebsiteDesignDevelopmentPage() {
             </span>
           </h1>
           <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            We design and build custom websites that load fast, rank well, and turn visitors into
-            customers.
+            Custom web development designed for your business goals, audience, and long-term growth. We build fast, SEO-ready, and conversion-focused websites that do more than just look good.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -296,7 +307,7 @@ function WebsiteDesignDevelopmentPage() {
               className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03] sm:w-auto"
             >
               <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
-              <span className="relative">Get a Free Quote</span>
+              <span className="relative">Get a Custom Website Quote</span>
               <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </Link>
             <Link
@@ -307,6 +318,135 @@ function WebsiteDesignDevelopmentPage() {
             </Link>
           </div>
         </ScrollReveal>
+      </section>
+
+      {/* CUSTOM WEB DEV INTRO */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <ScrollReveal>
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              What Is Custom Web Development?
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Built around your business, not a template.
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                Custom web development is the process of creating a website specifically for your business, goals, and audience. Instead of using a generic template, a custom-built website gives you better control over design, functionality, speed, and SEO.
+              </p>
+              <p>
+                A custom website is ideal for businesses that want a unique online presence, better performance, and long-term scalability. Whether you need a business website, landing page, e-commerce store, or web application, our custom website development services help you build a site that supports both user experience and business growth.
+              </p>
+              <p>
+                We build custom websites that are not only visually strong but also structured for SEO, lead generation, and long-term scalability. Our approach focuses on performance, usability, and business outcomes rather than just design alone.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.01] p-8 md:p-10">
+              <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-brand/10 blur-3xl" />
+              <h3 className="mb-6 text-2xl font-bold text-foreground" style={displayFont}>
+                Why Custom Web Development Matters
+              </h3>
+              <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  Your website is often the first impression people get of your business. If it looks outdated, loads slowly, or feels hard to use, visitors may leave before taking action, so a custom-built website helps improve trust, usability, and performance.
+                </p>
+                <p>
+                  It also gives your business the freedom to grow. As your needs change, your website can be expanded with new features, pages, and tools without being limited by template restrictions, which is why many businesses choose custom development for long-term growth.
+                </p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* BENEFITS OF CUSTOM WEB DEVELOPMENT */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-14 md:mb-16">
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Benefits of Custom Web Development
+            </span>
+            <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              More control. Better performance. Longer growth.
+            </h2>
+          </ScrollReveal>
+
+          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              { title: "Unique design that matches your brand", desc: "Stand out instead of looking like other websites using the same theme." },
+              { title: "Better performance", desc: "Custom websites avoid unnecessary code, extra plugins, and bulky design elements." },
+              { title: "Stronger SEO foundation", desc: "Proper structure, speed, mobile optimization, and clean markup from the start." },
+              { title: "More flexibility", desc: "Add booking systems, custom forms, portals, or advanced features as needed." },
+              { title: "Scalability", desc: "Your website can grow with your business without hitting template limits." },
+              { title: "Better security", desc: "Fewer unnecessary third-party tools reduce exposure and maintenance risk." },
+            ].map((b) => (
+              <StaggerItem key={b.title} className="h-full">
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                  <div
+                    className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                    style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                  />
+                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.01] transition-all group-hover:border-brand/40 group-hover:from-brand/20">
+                    <Check className="h-5 w-5 text-brand" strokeWidth={3} />
+                  </div>
+                  <h3 className="relative mt-5 text-lg font-bold text-foreground" style={displayFont}>
+                    {b.title}
+                  </h3>
+                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {b.desc}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* CUSTOM WEB DEVELOPMENT FOR SEO */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+          <ScrollReveal>
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Custom Web Development for SEO
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Built to rank before it launches.
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                SEO and custom web development work very well together. When a website is built correctly from the beginning, it becomes easier for search engines to crawl, understand, and rank the pages, which is why SEO-friendly website development is important for modern businesses.
+              </p>
+              <p>
+                A well-developed custom website can support SEO through clean URLs, proper heading structure, mobile-friendly responsive design, fast page loading speed, optimized images and alt text, internal linking, schema markup, and secure HTTPS configuration.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <StaggerContainer className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {[
+                "Clean URLs & redirects",
+                "Proper heading structure",
+                "Mobile-first responsive design",
+                "Fast page loading speed",
+                "Optimized images & alt text",
+                "Internal linking strategy",
+                "Schema markup",
+                "Secure HTTPS configuration",
+              ].map((item) => (
+                <StaggerItem key={item}>
+                  <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-brand/30 bg-brand/10">
+                      <Check className="h-3 w-3 text-brand" strokeWidth={3} />
+                    </span>
+                    <span className="text-sm font-medium text-foreground">{item}</span>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* WHAT'S INCLUDED */}
@@ -383,6 +523,108 @@ function WebsiteDesignDevelopmentPage() {
         </div>
       </section>
 
+      {/* OUR CUSTOM WEB DEVELOPMENT SERVICES */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <ScrollReveal className="mb-14 md:mb-16">
+          <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Our Custom Web Development Services
+          </span>
+          <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+            Websites designed for results, not just visuals.
+          </h2>
+          <p className="mt-4 max-w-3xl text-muted-foreground">
+            We create custom websites that are designed to look professional, work smoothly, and support business goals. As a web development company, we focus on solutions that are both visually strong and conversion-friendly.
+          </p>
+        </ScrollReveal>
+
+        <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { title: "Business website development", desc: "Professional websites for service-based companies that build trust and generate leads." },
+            { title: "Landing page development", desc: "Campaign-focused pages designed for lead generation, promotions, and conversions." },
+            { title: "E-commerce development", desc: "Product-based online stores with secure checkout, inventory, and scalable architecture." },
+            { title: "CMS integration", desc: "Update pages, blog posts, and images easily without touching code." },
+            { title: "Responsive web design", desc: "Flawless experiences across mobile, tablet, laptop, and desktop devices." },
+            { title: "SEO-friendly development", desc: "Clean URLs, structured headings, fast load times, and technical SEO from the ground up." },
+            { title: "Website redesign", desc: "Modernize outdated websites with better design, speed, and SEO performance." },
+            { title: "Custom web applications", desc: "Portals, dashboards, and tools built around your specific workflows." },
+            { title: "Maintenance & support", desc: "Ongoing updates, security checks, and improvements after launch." },
+          ].map((s) => (
+            <StaggerItem key={s.title} className="h-full">
+              <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
+                <div
+                  className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
+                  style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
+                />
+                <div className="relative flex items-center justify-between">
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand" />
+                </div>
+                <h3 className="relative mt-5 text-lg font-bold text-foreground" style={displayFont}>
+                  {s.title}
+                </h3>
+                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {s.desc}
+                </p>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </section>
+
+      {/* RESULTS AND PROOF */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ScrollReveal className="mb-14 text-center md:mb-16">
+            <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+              Results and Proof
+            </span>
+            <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+              Real results from a custom-built website.
+            </h2>
+          </ScrollReveal>
+
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
+            <ScrollReveal>
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-8">
+                <div className="mb-6 text-sm font-semibold uppercase tracking-wider text-brand">
+                  Case Study: Manufacturing Company in Bilaspur
+                </div>
+                <h3 className="text-2xl font-bold text-foreground" style={displayFont}>
+                  From invisible to ranked in local search.
+                </h3>
+                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-white/10 pt-6">
+                  <div>
+                    <div className="text-3xl font-black text-foreground">3x</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Lead increase</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-black text-foreground">Top 5</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Google ranking</div>
+                  </div>
+                  <div>
+                    <div className="text-3xl font-black text-foreground">40%</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Faster load</div>
+                  </div>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <div className="space-y-4 text-muted-foreground">
+                <p>
+                  A local manufacturing company in Bilaspur approached us for a custom website. They had a generic site with poor performance, slow loading, and no visibility on Google. We redesigned their website with a clear structure, optimized content, and SEO-focused development.
+                </p>
+                <p>
+                  Within a few months, their website started ranking in the top five positions for important local keywords. Website speed improved significantly, mobile performance became smooth, and the number of business enquiries grew three times.
+                </p>
+                <p>
+                  This is what custom web development can do when strategy, design, and SEO work together.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
       {/* PROCESS */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
         <ScrollReveal className="mb-14 md:mb-16">
@@ -435,44 +677,174 @@ function WebsiteDesignDevelopmentPage() {
         </StaggerContainer>
       </section>
 
-      {/* WHY CHOOSE */}
+      {/* WHY CHOOSE US */}
       <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="mb-14 md:mb-16">
             <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
-              Why Choose SAISPL
+              Why Choose Us
             </span>
             <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
-              A partner, not a vendor.
+              A partner invested in your growth.
             </h2>
           </ScrollReveal>
 
-          <StaggerContainer className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {why.map((w) => {
-              const Icon = w.icon;
-              return (
-                <StaggerItem key={w.title} className="h-full">
-                  <div className="group relative flex h-full gap-5 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40 hover:shadow-[0_20px_60px_-20px_color-mix(in_oklab,var(--color-brand)_45%,transparent)]">
-                    <div
-                      className="pointer-events-none absolute -top-32 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-100"
-                      style={{ background: "color-mix(in oklab, var(--color-brand) 55%, transparent)" }}
-                    />
-                    <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] shadow-inner transition-all group-hover:border-brand/40 group-hover:from-brand/20">
-                      <Icon className="h-6 w-6 text-foreground/90 transition-colors group-hover:text-brand" />
-                    </div>
-                    <div className="relative">
-                      <h3 className="text-lg font-bold text-foreground" style={displayFont}>
-                        {w.title}
-                      </h3>
-                      <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                        {w.desc}
-                      </p>
-                    </div>
+          <div className="grid gap-12 lg:grid-cols-2">
+            <ScrollReveal>
+              <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  We focus on building websites that support real business goals, not just visual presentation. Our websites are planned around usability, SEO structure, speed, and scalability so your business can continue growing after launch.
+                </p>
+                <p>
+                  We also support businesses with updates, maintenance, and future improvements, which helps turn a website into a long-term digital asset instead of a one-time project.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {why.map((w) => {
+                  const Icon = w.icon;
+                  return (
+                    <StaggerItem key={w.title} className="h-full">
+                      <div className="group relative flex h-full gap-4 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 transition-all duration-500 hover:-translate-y-1 hover:border-brand/40">
+                        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-white/[0.1] to-white/[0.02] transition-all group-hover:border-brand/40 group-hover:from-brand/20">
+                          <Icon className="h-4 w-4 text-foreground/90 transition-colors group-hover:text-brand" />
+                        </div>
+                        <div className="relative">
+                          <h3 className="text-sm font-bold text-foreground" style={displayFont}>
+                            {w.title}
+                          </h3>
+                          <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                            {w.desc}
+                          </p>
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  );
+                })}
+              </StaggerContainer>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* TECHNOLOGIES WE USE */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8">
+        <ScrollReveal className="mb-14 md:mb-16">
+          <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+            Technologies We Use
+          </span>
+          <h2 className="max-w-2xl text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+            Modern tools for fast, secure, and scalable builds.
+          </h2>
+        </ScrollReveal>
+
+        <div className="grid gap-8 lg:grid-cols-2">
+          <ScrollReveal>
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+              <p>
+                We work with modern tools and frameworks to build fast, secure, and scalable websites. Depending on the project, we may use React, Next.js, Node.js, WordPress, CMS integrations, and database-backed solutions that support long-term maintainability.
+              </p>
+              <p>
+                This technical flexibility helps us create websites for simple business pages, advanced portals, content-driven platforms, and custom web applications.
+              </p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <StaggerContainer className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {["React", "Next.js", "Node.js", "WordPress", "CMS Integrations", "Database Solutions", "TypeScript", "Tailwind CSS"].map((tech) => (
+                <StaggerItem key={tech}>
+                  <div className="group flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                    <Code2 className="h-4 w-4 text-brand transition-colors" />
+                    <span className="text-sm font-semibold text-foreground">{tech}</span>
                   </div>
                 </StaggerItem>
-              );
-            })}
-          </StaggerContainer>
+              ))}
+            </StaggerContainer>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* WEBSITE MAINTENANCE AND GROWTH */}
+      <section className="border-y border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <ScrollReveal>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Website Maintenance and Growth
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                A website that grows with your business.
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  A website is not just a one-time project. It needs regular updates, security checks, performance improvements, and content changes to stay useful and competitive. Our website maintenance and support services help businesses keep their websites secure, fast, and relevant over time.
+                </p>
+                <p>
+                  A custom website can grow with your business. Whether you need to add new features, create more landing pages, integrate tools, or improve SEO, we are here to support your growth.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <StaggerContainer className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {[
+                  { title: "Regular updates", desc: "Keep content fresh and features current." },
+                  { title: "Security monitoring", desc: "Protect your site and customer data." },
+                  { title: "Performance tuning", desc: "Maintain speed and Core Web Vitals." },
+                  { title: "SEO improvements", desc: "Continued optimization for better rankings." },
+                ].map((item) => (
+                  <StaggerItem key={item.title} className="h-full">
+                    <div className="group h-full rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-5 transition-all hover:border-brand/40 hover:bg-white/[0.06]">
+                      <h3 className="text-sm font-bold text-foreground" style={displayFont}>
+                        {item.title}
+                      </h3>
+                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            </ScrollReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CUSTOM OVER A TEMPLATE */}
+      <section className="border-b border-white/5 bg-white/[0.01] py-20 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <ScrollReveal>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Custom vs Template
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                Why choose custom over a template?
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  Template websites can be useful for quick launches, but they often come with limitations. They may look similar to other websites, include unnecessary code, or restrict the way your site functions, which can make long-term growth harder.
+                </p>
+                <p>
+                  A custom website gives you full control over design, better technical performance, more SEO potential, greater flexibility for future growth, and a stronger professional image. If you want a website built around your business instead of adapted from a general theme, custom web development is the better option.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <span className="mb-4 block text-[11px] font-semibold uppercase tracking-[0.25em] text-brand">
+                Growth Impact
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-foreground md:text-5xl" style={displayFont}>
+                How custom web development supports growth.
+              </h2>
+              <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground">
+                <p>
+                  A well-built website can do much more than display information. It can help your business grow by improving trust, attracting traffic, and turning visitors into leads or customers.
+                </p>
+                <p>
+                  Custom web development supports growth by improving the user journey, making your services easier to understand, increasing conversions with better layout and calls to action, supporting content marketing, and strengthening brand credibility. For many businesses, the website becomes one of the most valuable long-term marketing assets.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
@@ -657,10 +1029,10 @@ function WebsiteDesignDevelopmentPage() {
                 className="text-4xl font-extrabold leading-[1] tracking-tight text-foreground md:text-6xl"
                 style={displayFont}
               >
-                Ready to Build a Website That Brings{" "}
+                Ready for a Custom Website Built Around{" "}
                 <span className="relative inline-block">
                   <span className="bg-gradient-to-b from-brand via-brand to-indigo-400 bg-clip-text italic text-transparent">
-                    Real Business?
+                    Your Business?
                   </span>
                   <span
                     className="pointer-events-none absolute inset-0 -z-10 blur-2xl"
@@ -668,13 +1040,23 @@ function WebsiteDesignDevelopmentPage() {
                   />
                 </span>
               </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-muted-foreground">
+                If you need a website that is fast, scalable, SEO-friendly, and built around your business goals, custom web development is the right choice. Book a consultation or request a custom quote to discuss your project, website requirements, and growth goals.
+              </p>
 
-              <div className="mt-10 flex justify-center">
-                <StrategyCallButton
-                  ariaLabel="Book a free discovery call"
-                  className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03]"
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                <Link
+                  to="/contact"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-foreground px-10 py-5 text-sm font-bold text-background transition-transform hover:scale-[1.03] sm:w-auto"
                 >
                   <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-1000 group-hover:translate-x-full" />
+                  <span className="relative">Book a Consultation</span>
+                  <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </Link>
+                <StrategyCallButton
+                  ariaLabel="Book a free discovery call"
+                  className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-full border border-white/15 bg-white/[0.04] px-10 py-5 text-sm font-bold text-foreground transition-all hover:border-brand/40 hover:bg-white/[0.08] sm:w-auto"
+                >
                   <span className="relative">Book a Free Discovery Call</span>
                   <ArrowUpRight className="relative h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </StrategyCallButton>
