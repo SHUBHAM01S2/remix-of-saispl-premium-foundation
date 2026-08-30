@@ -111,6 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "jgP4fwrXhNaxn_eTlSC7DvD4b0gFiBW9KSeUSbZHt04" },
       { title: "Shivaryan Infotech | AI, Software & Web Development" },
       { name: "description", content: "SAISPL delivers enterprise-grade business software and AI automation solutions for international high-performing clients." },
       { name: "author", content: "Shivaryan Infotech (SAISPL)" },
