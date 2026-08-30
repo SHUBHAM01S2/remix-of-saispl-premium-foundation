@@ -216,7 +216,7 @@ function AffiliateEnquiriesPage() {
                     <UserPlus className="h-3.5 w-3.5" /> Invite a partner
                   </Link>
                   <Link
-                    to="/affiliate-program"
+                    to="/affiliate"
                     className="inline-flex items-center gap-1.5 rounded-lg border border-border/70 bg-background/40 px-3.5 py-1.5 text-xs font-medium text-foreground transition hover:border-primary/40 hover:text-primary"
                   >
                     View public program page <ExternalLink className="h-3.5 w-3.5" />
