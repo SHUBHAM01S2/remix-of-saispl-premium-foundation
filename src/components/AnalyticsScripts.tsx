@@ -7,24 +7,17 @@
  *
  * Configure in the project's env:
  *   VITE_GA_MEASUREMENT_ID   e.g. "G-XXXXXXXXXX"
- *   VITE_GSC_VERIFICATION    Google Search Console meta content value
  *   VITE_META_PIXEL_ID       Meta / Facebook Pixel numeric ID
  *   VITE_LINKEDIN_PARTNER_ID LinkedIn Insight Tag partner ID
  */
 
 const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
-const GSC = import.meta.env.VITE_GSC_VERIFICATION as string | undefined;
 const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID as string | undefined;
 const LINKEDIN_ID = import.meta.env.VITE_LINKEDIN_PARTNER_ID as string | undefined;
 
 export function AnalyticsScripts() {
   return (
     <>
-      {/* Google Search Console site verification */}
-      {GSC && (
-        <meta name="google-site-verification" content={GSC} />
-      )}
-
       {/* Google Analytics 4 */}
       {GA_ID && (
         <>
