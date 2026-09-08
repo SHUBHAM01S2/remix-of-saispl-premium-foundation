@@ -156,10 +156,12 @@ export const Route = createFileRoute("/blog/$slug")({
     };
   },
   component: BlogPostPage,
-  errorComponent: ({ error }) => (
+  errorComponent: ({ error }: { error: unknown }) => (
     <div className="mx-auto max-w-2xl px-4 py-24 text-center">
       <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+      <p className="mt-2 text-sm text-muted-foreground">
+        {error instanceof Error ? error.message : String(error)}
+      </p>
       <Link to="/blog" className="mt-6 inline-block text-brand hover:underline">
         ← Back to blog
       </Link>
