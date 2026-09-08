@@ -288,7 +288,7 @@ function PlanCard({ plan, currency }: { plan: Plan; currency: Currency }) {
 
 function Pricing() {
   const [tab, setTab] = useState<"web" | "care">("web");
-  const [currency, setCurrency] = useState<Currency>("INR");
+  const [currency, setCurrency] = useState<Currency>("GBP");
   const plans = tab === "web" ? webPackages : carePlans;
 
   return (
@@ -338,22 +338,6 @@ function Pricing() {
               >
                 Monthly Care Plans
               </button>
-            </div>
-            <div className="inline-flex flex-wrap rounded-full border border-border/60 bg-surface p-1.5 shadow-sm">
-              {(["INR", "USD", "GBP", "EUR"] as Currency[]).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCurrency(c)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-                    currency === c
-                      ? "bg-brand text-cta-foreground shadow-md"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                  aria-pressed={currency === c}
-                >
-                  {c === "INR" ? "₹ INR" : c === "USD" ? "$ USD" : c === "GBP" ? "£ GBP" : "€ EUR"}
-                </button>
-              ))}
             </div>
           </div>
         </ScrollReveal>
