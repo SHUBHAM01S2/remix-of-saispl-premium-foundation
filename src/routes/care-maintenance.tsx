@@ -14,23 +14,23 @@ type Plan = {
 const plans: Plan[] = [
   {
     name: "Care Basic",
-    fee: "Rs.3,000 – Rs.6,000",
+    fee: "£60 – £90",
     inclusions: "Security updates, uptime check, 1 change/month, backup",
   },
   {
     name: "Care Plus",
-    fee: "Rs.7,000 – Rs.12,000",
+    fee: "£110 – £190",
     inclusions: "2–4 changes/mo, speed check, quarterly report",
     highlighted: true,
   },
   {
     name: "Growth Plan",
-    fee: "Rs.15,000 – Rs.25,000",
+    fee: "£225 – £450",
     inclusions: "Landing pages, SEO hygiene, monthly review call",
   },
   {
     name: "Growth + Automation",
-    fee: "Rs.25,000 – Rs.45,000",
+    fee: "£450 – £900",
     inclusions: "Automation tweaks, WhatsApp/CRM support, KPI dashboard",
   },
 ];
@@ -42,26 +42,26 @@ export const Route = createFileRoute("/care-maintenance")({
       {
         name: "description",
         content:
-          "Monthly website care & maintenance plans from Rs.3,000 — security updates, uptime, SEO hygiene, and content changes. Start your care plan today.",
+          "Monthly website care & maintenance plans from £60 — security updates, uptime, SEO hygiene, and content changes. Start your care plan today.",
       },
       {
         name: "keywords",
         content:
           "website maintenance India, website care plans, uptime monitoring, security updates, SEO maintenance, Shivaryan Infotech, SAISPL",
       },
-      { property: "og:title", content: "Monthly Website Care & Maintenance Plans India | SAISPL" },
+      { property: "og:title", content: "Monthly Website Care & Maintenance Plans | SAISPL" },
       {
         property: "og:description",
         content:
-          "Monthly plans from Rs.3,000 to keep your website secure, fast, and growing. Start your care plan today.",
+          "Monthly plans from £60 to keep your website secure, fast, and growing. Start your care plan today.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/care-maintenance" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Monthly Website Care & Maintenance Plans India | SAISPL" },
+      { name: "twitter:title", content: "Monthly Website Care & Maintenance Plans | SAISPL" },
       {
         name: "twitter:description",
-        content: "Monthly website care plans starting at Rs.3,000 — security, updates, and growth support.",
+        content: "Monthly website care plans starting at £60 — security, updates, and growth support.",
       },
     ],
     links: [{ rel: "canonical", href: "/care-maintenance" }],
@@ -203,7 +203,7 @@ function CareMaintenance() {
               Care plans and pricing
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Transparent monthly pricing in INR. All tiers are billed monthly with a
+              Transparent monthly pricing in GBP. All tiers are billed monthly with a
               30-day cancellation window — no long lock-ins.
             </p>
           </ScrollReveal>
